@@ -46,12 +46,17 @@ export default function Home() {
 
         {/* Search Box */}
         <div className="searchBox">
-          <input
-            placeholder="اكتب اسم المنتج..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="input"
-          />
+  <input
+    placeholder="اكتب اسم المنتج..."
+    value={query}
+    onChange={(e) => setQuery(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        handleSearch();
+      }
+    }}
+    className="input"
+  />
 
           <button onClick={handleSearch} className="button">
             {loading ? "جاري البحث..." : "بحث"}
