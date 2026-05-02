@@ -24,3 +24,40 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* Background gradient */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #d7f0ff, #ffffff);
+  overflow-x: hidden;
+}
+
+/* Waves animation */
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 200px;
+  background: rgba(0, 150, 255, 0.15);
+  border-radius: 40%;
+  animation: waveMove 10s linear infinite;
+}
+
+.wave:nth-child(2) {
+  animation-delay: -5s;
+  opacity: 0.3;
+}
+
+@keyframes waveMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Glass card */
+.card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 12px;
+}

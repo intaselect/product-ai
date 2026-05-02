@@ -34,77 +34,204 @@ export default function Home() {
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Product Search</h1>
+    <div className="page">
 
-      <div style={{ marginBottom: 15 }}>
-        <input
-          placeholder="اكتب اسم المنتج..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{ padding: 8, marginRight: 10, width: 250 }}
-        />
+      {/* 🌊 Waves Background */}
+      <div className="wave"></div>
+      <div className="wave"></div>
 
-        <button onClick={handleSearch}>
-          {loading ? "جاري البحث..." : "بحث"}
-        </button>
-      </div>
+      <div className="container">
 
-      <div style={{ marginTop: 20 }}>
-        {!loading && results.length === 0 && (
-          <p>لا توجد نتائج</p>
-        )}
+        <h1 className="title">Product Search</h1>
 
-        {results.map((item, i) => {
-          const data = item as any;
+        {/* Search Box */}
+        <div className="searchBox">
+          <input
+            placeholder="اكتب اسم المنتج..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="input"
+          />
 
-          return (
-            <div
-              key={i}
-              style={{
-                marginBottom: 15,
-                padding: 12,
-                border: "1px solid #ccc",
-                borderRadius: 8,
-                display: "flex",
-                gap: 15,
-                alignItems: "center",
-              }}
-            >
-              {/* صورة المنتج */}
-              <img
-  src={data.image}
-  width={80}
-  height={80}
-  style={{ objectFit: "cover", borderRadius: 8 }}
-/>
-  
-              {/* تفاصيل المنتج */}
-              <div>
-                <div style={{ fontWeight: "bold", fontSize: 16 }}>
-                  {data.title || data.name || "No title"}
+          <button onClick={handleSearch} className="button">
+            {loading ? "جاري البحث..." : "بحث"}
+          </button>
+        </div>
+
+        {/* Results */}
+        <div className="results">
+          {!loading && results.length === 0 && (
+            <p className="empty">لا توجد نتائج</p>
+          )}
+
+          {results.map((item, i) => {
+            const data = item as any;
+
+            return (
+              <div key={i} className="card">
+
+                <img
+                  src={data.image}
+                  className="image"
+                />
+
+                <div className="info">
+                  <div className="name">
+                    {data.title || data.name || "No title"}
+                  </div>
+
+                  <div className="price">
+                    💰 {data.price ? `${data.price} SAR` : "No price"}
+                  </div>
+
+                  <div className="store">
+                    🏬 {data.store || "Unknown store"}
+                  </div>
+
+                  <a href={data.url || "#"} target="_blank" className="link">
+                    عرض المنتج
+                  </a>
                 </div>
 
-                <div style={{ marginTop: 5 }}>
-                  💰 {data.price ? `${data.price} SAR` : "No price"}
-                </div>
-
-                <div>
-                  🏬 {data.store || "Unknown store"}
-                </div>
-
-                <a
-                  href={data.url || "#"}
-                  target="_blank"
-                  style={{ display: "inline-block", marginTop: 5 }}
-                >
-                  عرض المنتج
-                </a>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+
       </div>
+
+      {/* CSS */}
+      <style jsx>{`
+        .page {
+          min-height: 100vh;
+          position: relative;
+          background: linear-gradient(135deg, #d7f0ff, #ffffff);
+          overflow: hidden;
+        }
+
+        .container {
+          position: relative;
+          z-index: 2;
+          padding: 30px;
+          max-width: 900px;
+          margin: auto;
+        }
+
+        .title {
+          text-align: center;
+          font-size: 32px;
+          margin-bottom: 25px;
+        }
+
+        .searchBox {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          margin-bottom: 25px;
+        }
+
+        .input {
+          padding: 10px;
+          width: 260px;
+          border-radius: 8px;
+          border: 1px solid #ccc;
+          outline: none;
+        }
+
+        .button {
+          padding: 10px 15px;
+          border: none;
+          border-radius: 8px;
+          background: #00aaff;
+          color: white;
+          cursor: pointer;
+        }
+
+        .results {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .empty {
+          text-align: center;
+          color: #666;
+        }
+
+        .card {
+          display: flex;
+          gap: 15px;
+          padding: 15px;
+          border-radius: 14px;
+          background: rgba(255, 255, 255, 0.6);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .image {
+          width: 90px;
+          height: 90px;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+
+        .info {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .name {
+          font-weight: bold;
+          font-size: 16px;
+        }
+
+        .price {
+          color: #333;
+        }
+
+        .store {
+          font-size: 14px;
+          color: #555;
+        }
+
+        .link {
+          margin-top: 5px;
+          color: #0077ff;
+          text-decoration: none;
+        }
+
+        /* 🌊 Waves */
+        .wave {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 200%;
+          height: 220px;
+          background: rgba(0, 170, 255, 0.15);
+          border-radius: 40%;
+          animation: waveMove 10s linear infinite;
+        }
+
+        .wave:nth-child(1) {
+          opacity: 0.25;
+        }
+
+        .wave:nth-child(2) {
+          animation-delay: -5s;
+          opacity: 0.35;
+        }
+
+        @keyframes waveMove {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+      `}</style>
+
     </div>
   );
 }
