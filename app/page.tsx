@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <div className="page">
       <div className="container">
-        <h1 className="title">Product Search</h1>
+        <h1 className="title">best Product Search chat www.bpschat.com</h1>
 
         <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 
