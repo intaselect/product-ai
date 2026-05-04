@@ -7,7 +7,7 @@ export default function Home() {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
  
-  const [country, setCountry] = useState("auto");
+  const [country, setCountry] = useState("sa");
 
   async function handleSearch() {
     setLoading(true);
@@ -54,9 +54,8 @@ export default function Home() {
   onChange={(e) => setCountry(e.target.value)}
   style={{ marginBottom: "10px", padding: "5px" }}
 >
-  <option value="auto">تلقائي</option>
-  <option value="EG">مصر</option>
-  <option value="SA">السعودية</option>
+  <option value="sa">السعودية</option>
+<option value="eg">مصر</option>
 </select>
 
         {/* Search Box */}
