@@ -45,7 +45,7 @@ export default function Home() {
       <div className="container">
 
         <h1 className="title">Product Search</h1>
-        //السطور الجديده هي الي تحت 
+        
         <select
   value={country}
   onChange={(e) => setCountry(e.target.value)}
@@ -55,7 +55,7 @@ export default function Home() {
   <option value="EG">مصر</option>
   <option value="SA">السعودية</option>
 </select>
-// نهاية السطور الجديدة
+
         {/* Search Box */}
         <div className="searchBox">
   <input
