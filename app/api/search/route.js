@@ -2,12 +2,12 @@ import { fetchRealProducts } from "@/lib/fetchRealProducts";
 
 export async function POST(req) {
   try {
-    const { query } = await req.json();
+    const { query, country } = await req.json();
 
-    const results = await fetchRealProducts(query);
+    const results = await fetchRealProducts(query, country);
 
     return Response.json({
-      value: results
+      value: results,
     });
 
   } catch (err) {
