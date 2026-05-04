@@ -6,6 +6,8 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  //الجديد السطر الي تحت بس
+  const [country, setCountry] = useState("auto");
 
   async function handleSearch() {
     setLoading(true);
@@ -43,7 +45,17 @@ export default function Home() {
       <div className="container">
 
         <h1 className="title">Product Search</h1>
-
+        //السطور الجديده هي الي تحت 
+        <select
+  value={country}
+  onChange={(e) => setCountry(e.target.value)}
+  style={{ marginBottom: "10px", padding: "5px" }}
+>
+  <option value="auto">تلقائي</option>
+  <option value="EG">مصر</option>
+  <option value="SA">السعودية</option>
+</select>
+// نهاية السطور الجديدة
         {/* Search Box */}
         <div className="searchBox">
   <input
