@@ -6,22 +6,25 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  //الجديد السطر الي تحت بس
+ 
   const [country, setCountry] = useState("auto");
 
   async function handleSearch() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: query.trim() === "" ? "*" : query,
-        }),
-      });
+  const res = await fetch("/api/search", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: query.trim() === "" ? "*" : query,
+      country: country, // 👈 ضفنا الدولة هنا
+    }),
+  });
+
+ 
 
       const data = await res.json();
 
