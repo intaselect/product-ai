@@ -6,25 +6,22 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
- 
   const [country, setCountry] = useState("sa");
 
   async function handleSearch() {
     setLoading(true);
 
     try {
-  const res = await fetch("/api/search", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: query.trim() === "" ? "*" : query,
-      country: country, // 👈 ضفنا الدولة هنا
-    }),
-  });
-
- 
+      const res = await fetch("/api/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: query.trim() === "" ? "*" : query,
+          country: country,
+        }),
+      });
 
       const data = await res.json();
 
@@ -40,44 +37,38 @@ export default function Home() {
 
   return (
     <div className="page">
-
-      {/* 🌊 Waves Background */}
-      <div className="wave"></div>
-      <div className="wave"></div>
-
       <div className="container">
-
         <h1 className="title">Product Search</h1>
-        
-        <select
-  value={country}
-  onChange={(e) => setCountry(e.target.value)}
-  style={{ marginBottom: "10px", padding: "5px" }}
->
-  <option value="sa">السعودية</option>
-<option value="eg">مصر</option>
-</select>
 
-        {/* Search Box */}
+        <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
+
+        <select
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+          className="select"
+        >
+          <option value="sa">السعودية</option>
+          <option value="eg">مصر</option>
+        </select>
+
         <div className="searchBox">
-  <input
-    placeholder="اكتب اسم المنتج..."
-    value={query}
-    onChange={(e) => setQuery(e.target.value)}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") {
-        handleSearch();
-      }
-    }}
-    className="input"
-  />
+          <input
+            placeholder="اكتب اسم المنتج..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
+            className="input"
+          />
 
           <button onClick={handleSearch} className="button">
             {loading ? "جاري البحث..." : "بحث"}
           </button>
         </div>
 
-        {/* Results */}
         <div className="results">
           {!loading && results.length === 0 && (
             <p className="empty">لا توجد نتائج</p>
@@ -88,11 +79,7 @@ export default function Home() {
 
             return (
               <div key={i} className="card">
-
-                <img
-                  src={data.image}
-                  className="image"
-                />
+                <img src={data.image} className="image" />
 
                 <div className="info">
                   <div className="name">
@@ -100,70 +87,102 @@ export default function Home() {
                   </div>
 
                   <div className="price">
-                    💰 {data.price ? `${data.price} SAR` : "No price"}
+                    💰{" "}
+                    {data.price
+                      ? `${data.price} ${country === "eg" ? "EGP" : "SAR"}`
+                      : "No price"}
                   </div>
 
                   <div className="store">
                     🏬 {data.store || "Unknown store"}
                   </div>
 
-                  <a href={data.url || "#"} target="_blank" className="link">
+                  <a
+                    href={data.url || "#"}
+                    target="_blank"
+                    className="link"
+                  >
                     عرض المنتج
                   </a>
                 </div>
-
               </div>
             );
           })}
         </div>
-
       </div>
 
-      {/* CSS */}
       <style jsx>{`
         .page {
           min-height: 100vh;
-          position: relative;
-          background: linear-gradient(135deg, #d7f0ff, #ffffff);
+          background: #212121;
+          color: #ececec;
           overflow: hidden;
         }
 
         .container {
-          position: relative;
-          z-index: 2;
-          padding: 30px;
+          padding: 40px 24px;
           max-width: 900px;
           margin: auto;
         }
 
         .title {
           text-align: center;
-          font-size: 32px;
-          margin-bottom: 25px;
+          font-size: 36px;
+          margin-bottom: 8px;
+          color: #ffffff;
+          font-weight: 700;
+        }
+
+        .subtitle {
+          text-align: center;
+          color: #b4b4b4;
+          margin-bottom: 24px;
+        }
+
+        .select {
+          display: block;
+          margin: 0 auto 14px auto;
+          padding: 10px 12px;
+          border-radius: 10px;
+          border: 1px solid #3a3a3a;
+          background: #2f2f2f;
+          color: #ececec;
+          outline: none;
         }
 
         .searchBox {
           display: flex;
           justify-content: center;
           gap: 10px;
-          margin-bottom: 25px;
+          margin-bottom: 28px;
         }
 
         .input {
-          padding: 10px;
-          width: 260px;
-          border-radius: 8px;
-          border: 1px solid #ccc;
+          padding: 12px 14px;
+          width: 300px;
+          border-radius: 12px;
+          border: 1px solid #3a3a3a;
+          background: #2f2f2f;
+          color: #ffffff;
           outline: none;
         }
 
+        .input::placeholder {
+          color: #9b9b9b;
+        }
+
         .button {
-          padding: 10px 15px;
+          padding: 12px 18px;
           border: none;
-          border-radius: 8px;
-          background: #00aaff;
+          border-radius: 12px;
+          background: #10a37f;
           color: white;
           cursor: pointer;
+          font-weight: 600;
+        }
+
+        .button:hover {
+          background: #0e8f6e;
         }
 
         .results {
@@ -174,83 +193,58 @@ export default function Home() {
 
         .empty {
           text-align: center;
-          color: #666;
+          color: #b4b4b4;
         }
 
         .card {
           display: flex;
           gap: 15px;
           padding: 15px;
-          border-radius: 14px;
-          background: rgba(255, 255, 255, 0.6);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,255,255,0.4);
+          border-radius: 16px;
+          background: #2f2f2f;
+          border: 1px solid #3a3a3a;
         }
 
         .image {
           width: 90px;
           height: 90px;
           object-fit: cover;
-          border-radius: 10px;
+          border-radius: 12px;
+          background: #1f1f1f;
         }
 
         .info {
           display: flex;
           flex-direction: column;
-          gap: 5px;
+          gap: 6px;
         }
 
         .name {
           font-weight: bold;
           font-size: 16px;
+          color: #ffffff;
         }
 
         .price {
-          color: #333;
+          color: #ececec;
         }
 
         .store {
           font-size: 14px;
-          color: #555;
+          color: #b4b4b4;
         }
 
         .link {
           margin-top: 5px;
-          color: #0077ff;
+          color: #10a37f;
           text-decoration: none;
+          font-weight: 600;
         }
 
-        /* 🌊 Waves */
-        .wave {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 200%;
-          height: 220px;
-          background: rgba(0, 170, 255, 0.15);
-          border-radius: 40%;
-          animation: waveMove 10s linear infinite;
-        }
-
-        .wave:nth-child(1) {
-          opacity: 0.25;
-        }
-
-        .wave:nth-child(2) {
-          animation-delay: -5s;
-          opacity: 0.35;
-        }
-
-        @keyframes waveMove {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+        .link:hover {
+          text-decoration: underline;
         }
       `}</style>
-
     </div>
   );
 }
