@@ -49,6 +49,9 @@ export default function Home() {
         >
           <option value="sa">السعودية</option>
           <option value="ae">الإمارات</option>
+          <option value="kw">الكويت</option>
+<option value="qa">قطر</option>
+<option value="bh">البحرين</option>
           <option value="eg">مصر</option>
         </select>
 
@@ -88,16 +91,7 @@ export default function Home() {
                   </div>
 
                   <div className="price">
-  💰{" "}
-  {data.price
-    ? `${data.price} ${
-        country === "eg"
-          ? "EGP"
-          : country === "ae"
-          ? "AED"
-          : "SAR"
-      }`
-    : "No price"}
+  💰 {data.priceText || "No price"}
 </div>
 
                   <div className="store">
