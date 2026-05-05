@@ -88,11 +88,17 @@ export default function Home() {
                   </div>
 
                   <div className="price">
-                    💰{" "}
-                    {data.price
-                      ? `${data.price} ${country === "eg" ? "EGP" : "SAR"}`
-                      : "No price"}
-                  </div>
+  💰{" "}
+  {data.price
+    ? `${data.price} ${
+        country === "eg"
+          ? "EGP"
+          : country === "ae"
+          ? "AED"
+          : "SAR"
+      }`
+    : "No price"}
+</div>
 
                   <div className="store">
                     🏬 {data.store || "Unknown store"}
