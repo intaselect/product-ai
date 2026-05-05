@@ -48,6 +48,7 @@ export default function Home() {
           className="select"
         >
           <option value="sa">السعودية</option>
+          <option value="ae">الإمارات</option>
           <option value="eg">مصر</option>
         </select>
 
