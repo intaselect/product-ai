@@ -8,6 +8,25 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [country, setCountry] = useState("sa");
 
+  // 🔥 Ads (تقدر تغيرهم بعد كده)
+  const ads = [
+    {
+      title: "🔥 iPhone 15 عرض خاص",
+      image: "https://via.placeholder.com/300x200",
+      url: "https://example.com",
+    },
+    {
+      title: "خصم 30% على اللابتوبات",
+      image: "https://via.placeholder.com/300x200",
+      url: "https://example.com",
+    },
+    {
+      title: "أفضل سماعات 2026",
+      image: "https://via.placeholder.com/300x200",
+      url: "https://example.com",
+    },
+  ];
+
   async function handleSearch() {
     if (loading) return;
 
@@ -43,8 +62,9 @@ export default function Home() {
       <main className="container">
         <section className="hero">
           <div className="badge">Product Search AI</div>
-          <h1 className="title">best Product Search chat V:1.0.8</h1>
+          <h1 className="title">best Product Search chat V:1.0.9</h1>
           <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
+          
         </section>
 
         <section className="composer">
@@ -137,249 +157,146 @@ export default function Home() {
         }
 
         .container {
-          width: 100%;
           max-width: 900px;
-          margin: 0 auto;
-          padding: 42px 18px 60px;
+          margin: auto;
+          padding: 40px 16px;
         }
 
         .hero {
           text-align: center;
-          margin-bottom: 22px;
         }
 
         .badge {
-          display: inline-flex;
-          padding: 7px 12px;
-          border: 1px solid #3a3a3a;
-          border-radius: 999px;
           background: #2f2f2f;
-          color: #b4b4b4;
-          font-size: 13px;
-          margin-bottom: 12px;
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          color: #aaa;
         }
 
         .title {
-          font-size: 36px;
-          line-height: 1.15;
-          margin: 0 0 10px;
-          color: #ffffff;
-          font-weight: 700;
-          letter-spacing: -0.5px;
+          font-size: 32px;
+          margin: 10px 0;
         }
 
         .subtitle {
-          color: #b4b4b4;
-          margin: 0;
-          font-size: 15px;
+          color: #aaa;
+        }
+
+        /* 🔥 Ads */
+        .adsWrapper {
+          display: flex;
+          gap: 12px;
+          overflow-x: auto;
+          margin: 20px 0;
+        }
+
+        .adCard {
+          min-width: 200px;
+          background: #2f2f2f;
+          border-radius: 12px;
+          overflow: hidden;
+          text-decoration: none;
+          color: white;
+        }
+
+        .adImage {
+          width: 100%;
+          height: 100px;
+          object-fit: cover;
+        }
+
+        .adInfo {
+          padding: 10px;
+        }
+
+        .adTitle {
+          font-size: 14px;
+          margin-bottom: 4px;
+        }
+
+        .adTag {
+          font-size: 12px;
+          color: #10a37f;
         }
 
         .composer {
           position: sticky;
           top: 0;
-          z-index: 10;
-          padding: 14px 0 20px;
-          background: linear-gradient(
-            180deg,
-            #212121 0%,
-            #212121 75%,
-            rgba(33, 33, 33, 0)
-          );
+          background: #212121;
+          padding: 10px 0;
         }
 
         .select {
           display: block;
-          margin: 0 auto 12px;
-          padding: 10px 14px;
-          border-radius: 12px;
-          border: 1px solid #3a3a3a;
+          margin: auto;
+          margin-bottom: 10px;
+          padding: 10px;
+          border-radius: 10px;
           background: #2f2f2f;
-          color: #ececec;
-          outline: none;
-          cursor: pointer;
+          color: white;
         }
 
         .searchBox {
           display: flex;
-          justify-content: center;
           gap: 10px;
+          justify-content: center;
         }
 
         .input {
-          width: min(520px, 100%);
-          padding: 15px 16px;
-          border-radius: 16px;
-          border: 1px solid #3a3a3a;
+          padding: 12px;
+          border-radius: 12px;
           background: #2f2f2f;
-          color: #ffffff;
-          outline: none;
-          font-size: 15px;
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
-        }
-
-        .input:focus {
-          border-color: #565656;
-          background: #303030;
-        }
-
-        .input::placeholder {
-          color: #9b9b9b;
+          border: 1px solid #444;
+          color: white;
+          width: 60%;
         }
 
         .button {
-          min-width: 70px;
-          padding: 0 18px;
-          border: none;
-          border-radius: 16px;
           background: #10a37f;
+          border: none;
+          padding: 12px;
+          border-radius: 12px;
           color: white;
-          cursor: pointer;
-          font-weight: 700;
-          font-size: 15px;
-        }
-
-        .button:hover {
-          background: #0e8f6e;
-        }
-
-        .button:disabled {
-          opacity: 0.75;
-          cursor: not-allowed;
         }
 
         .results {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          margin-top: 10px;
-        }
-
-        .empty,
-        .loadingCard {
-          text-align: center;
-          color: #b4b4b4;
-          padding: 26px 16px;
-        }
-
-        .loadingCard {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .dot {
-          width: 9px;
-          height: 9px;
-          background: #10a37f;
-          border-radius: 50%;
-          animation: pulse 1s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.35;
-            transform: scale(0.9);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.15);
-          }
+          margin-top: 20px;
         }
 
         .card {
           display: flex;
-          gap: 14px;
-          padding: 14px;
-          border-radius: 18px;
+          gap: 10px;
+          padding: 10px;
           background: #2f2f2f;
-          border: 1px solid #3a3a3a;
-          transition: background 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover {
-          background: #333333;
-          border-color: #4a4a4a;
+          border-radius: 12px;
+          margin-bottom: 10px;
         }
 
         .image {
-          width: 88px;
-          height: 88px;
-          object-fit: cover;
-          border-radius: 14px;
-          background: #1f1f1f;
-          flex-shrink: 0;
-        }
-
-        .info {
-          min-width: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          justify-content: center;
+          width: 80px;
+          height: 80px;
+          border-radius: 10px;
         }
 
         .name {
-          font-weight: 700;
-          font-size: 16px;
-          color: #ffffff;
-          line-height: 1.45;
+          font-weight: bold;
         }
 
         .meta {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px 14px;
-          color: #d7d7d7;
           font-size: 14px;
         }
 
         .link {
           color: #10a37f;
-          text-decoration: none;
-          font-weight: 700;
-          font-size: 14px;
-          width: fit-content;
         }
 
-        .link:hover {
-          text-decoration: underline;
+        .loadingCard {
+          text-align: center;
         }
 
-        @media (max-width: 600px) {
-          .container {
-            padding: 28px 12px 40px;
-          }
-
-          .title {
-            font-size: 28px;
-          }
-
-          .searchBox {
-            align-items: stretch;
-          }
-
-          .input {
-            flex: 1;
-            width: 100%;
-          }
-
-          .button {
-            min-width: 64px;
-          }
-
-          .card {
-            border-radius: 16px;
-          }
-
-          .image {
-            width: 74px;
-            height: 74px;
-          }
-
-          .name {
-            font-size: 15px;
-          }
+        .empty {
+          text-align: center;
         }
       `}</style>
     </div>
