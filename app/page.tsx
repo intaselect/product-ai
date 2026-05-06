@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 export default function Home() {
@@ -60,7 +61,7 @@ export default function Home() {
       <main className="container">
         <section className="hero">
           <div className="badge">Product Search AI</div>
-          <h1 className="title">best Product Search chat V:1.1.2</h1>
+          <h1 className="title">best Product Search chat V:1.1.3</h1>
           <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
         </section>
 
