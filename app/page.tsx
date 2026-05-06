@@ -9,6 +9,8 @@ export default function Home() {
   const [country, setCountry] = useState("sa");
 
   async function handleSearch() {
+    if (loading) return;
+
     setLoading(true);
 
     try {
@@ -27,18 +29,19 @@ export default function Home() {
 
       console.log("API RESULT:", data);
 
-      setResults(data.value || []);
+      setResults(data?.value || data?.products || data || []);
     } catch (err) {
       console.error("Search error:", err);
+      setResults([]);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
     <div className="page">
       <div className="container">
-        <h1 className="title">best Product Search chat www.bpschat.com</h1>
+        <h1 className="title">best Product Search chat</h1>
 
         <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 
@@ -50,8 +53,8 @@ export default function Home() {
           <option value="sa">السعودية</option>
           <option value="ae">الإمارات</option>
           <option value="kw">الكويت</option>
-<option value="qa">قطر</option>
-<option value="bh">البحرين</option>
+          <option value="qa">قطر</option>
+          <option value="bh">البحرين</option>
           <option value="eg">مصر</option>
         </select>
 
@@ -91,8 +94,8 @@ export default function Home() {
                   </div>
 
                   <div className="price">
-  💰 {data.priceText || "No price"}
-</div>
+                    💰 {data.priceText || "No price"}
+                  </div>
 
                   <div className="store">
                     🏬 {data.store || "Unknown store"}
