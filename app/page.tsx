@@ -7,24 +7,113 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [country, setCountry] = useState("sa");
 
-  // 🔥 Ads (تقدر تغيرهم بعد كده)
-  const ads = [
-    {
-      title: "🔥 iPhone 15 عرض خاص",
-      image: "https://via.placeholder.com/300x200",
-      url: "https://example.com",
-    },
-    {
-      title: "خصم 30% على اللابتوبات",
-      image: "https://via.placeholder.com/300x200",
-      url: "https://example.com",
-    },
-    {
-      title: "أفضل سماعات 2026",
-      image: "https://via.placeholder.com/300x200",
-      url: "https://example.com",
-    },
-  ];
+  // 🔥 Ads حسب الدولة
+  const adsByCountry: any = {
+    sa: [
+      {
+        title: "🔥 عروض السعودية",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/sa",
+      },
+      {
+        title: "خصم السعودية على الإلكترونيات",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/sa-electronics",
+      },
+      {
+        title: "أفضل منتجات السعودية",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/sa-products",
+      },
+    ],
+    ae: [
+      {
+        title: "🔥 عروض الإمارات",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/ae",
+      },
+      {
+        title: "خصم الإمارات على اللابتوبات",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/ae-laptops",
+      },
+      {
+        title: "أفضل منتجات الإمارات",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/ae-products",
+      },
+    ],
+    kw: [
+      {
+        title: "🔥 عروض الكويت",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/kw",
+      },
+      {
+        title: "خصم الكويت على الموبايلات",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/kw-mobiles",
+      },
+      {
+        title: "أفضل منتجات الكويت",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/kw-products",
+      },
+    ],
+    qa: [
+      {
+        title: "🔥 عروض قطر",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/qa",
+      },
+      {
+        title: "خصم قطر على الإلكترونيات",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/qa-electronics",
+      },
+      {
+        title: "أفضل منتجات قطر",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/qa-products",
+      },
+    ],
+    bh: [
+      {
+        title: "🔥 عروض البحرين",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/bh",
+      },
+      {
+        title: "خصم البحرين على الموبايلات",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/bh-mobiles",
+      },
+      {
+        title: "أفضل منتجات البحرين",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/bh-products",
+      },
+    ],
+    eg: [
+      {
+        title: "🔥 عروض مصر",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/eg",
+      },
+      {
+        title: "خصم مصر على اللابتوبات",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/eg-laptops",
+      },
+      {
+        title: "أفضل منتجات مصر",
+        image: "https://via.placeholder.com/300x200",
+        url: "https://example.com/eg-products",
+      },
+    ],
+  };
+
+  const ads = adsByCountry[country] || [];
 
   async function handleSearch() {
     if (loading) return;
@@ -67,7 +156,7 @@ export default function Home() {
 
         {/* 🔥 Ads Slider */}
         <div className="adsWrapper">
-          {ads.map((ad, i) => (
+          {ads.map((ad: any, i: number) => (
             <a
               key={i}
               href={ad.url}
