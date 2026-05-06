@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <div className="page">
       <div className="container">
-        <h1 className="title">best Product Search chat 2</h1>
+        <h1 className="title">best Product Search chat V:1.0.1</h1>
 
         <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 
