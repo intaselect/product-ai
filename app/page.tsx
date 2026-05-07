@@ -483,27 +483,72 @@ const useMainLogo = true;
   color: #aaa;
 }
 
-/* 🔥 Ads */
 .adsWrapper {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   overflow-x: auto;
-  margin: 20px 0;
+  padding: 12px 6px 18px;
+  margin: 22px 0;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #10a37f #2f2f2f;
 }
 
-.adCard {
-  min-width: 200px;
+.adsWrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.adsWrapper::-webkit-scrollbar-track {
   background: #2f2f2f;
-  border-radius: 12px;
+  border-radius: 999px;
+}
+
+.adsWrapper::-webkit-scrollbar-thumb {
+  background: #10a37f;
+  border-radius: 999px;
+}
+.adCard {
+  min-width: 230px;
+  background: #2f2f2f;
+  border-radius: 16px;
   overflow: hidden;
   text-decoration: none;
   color: white;
+  position: relative;
+  transition: all 0.25s ease;
+  border: 1px solid #3a3a3a;
+}
+
+/* ✨ hover احترافي */
+.adCard:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: #10a37f;
+  box-shadow: 0 10px 30px rgba(16, 163, 127, 0.2);
 }
 
 .adImage {
   width: 100%;
-  height: 100px;
+  height: 130px;
   object-fit: cover;
+}
+  .adCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transition: 0.6s;
+}
+
+.adCard:hover::before {
+  left: 100%;
 }
 
 .adInfo {
