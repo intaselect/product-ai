@@ -303,7 +303,7 @@ const useMainLogo = true;
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  border-right: 2px solid #10a37f;
+  
   padding-right: 5px;
   animation: typing 2.5s steps(30, end) forwards, blink 0.8s infinite;
 }
