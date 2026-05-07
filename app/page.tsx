@@ -13,15 +13,16 @@ useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
 
-  let scrollAmount = 0;
-
   const interval = setInterval(() => {
-    if (slider.scrollWidth - slider.clientWidth <= slider.scrollLeft) {
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+    if (slider.scrollLeft >= maxScrollLeft - 2) {
       slider.scrollTo({ left: 0, behavior: "smooth" });
-    } else {
-      slider.scrollBy({ left: 1, behavior: "smooth" });
+      return;
     }
-  }, 30); // السرعة (كل ما تقل الرقم = أسرع)
+
+    slider.scrollLeft += 0.5;
+  }, 50);
 
   return () => clearInterval(interval);
 }, []);
