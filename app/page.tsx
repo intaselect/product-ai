@@ -149,9 +149,12 @@ const useMainLogo = true;
     <div className="page">
       <main className="container">
        <section className="hero">
-  <img src="/logo-main.png" alt="BPS Chat Logo" className="mainLogo" />
+  
   <div className="badge">Product Search AI</div>
-  <h1 className="title">best Product Search chat V:1.1.3</h1>
+  <h1 className="titleWithLogo">
+  <img src="/logo-icon.png" className="inlineLogo" />
+  best Product Search chat V:1.1.4
+</h1>
   <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 </section>
 
@@ -263,12 +266,19 @@ const useMainLogo = true;
           background: #212121;
           color: #ececec;
         }
-          .mainLogo {
-  width: 180px;
-  max-width: 80%;
-  height: auto;
-  margin-bottom: 14px;
-  border-radius: 18px;
+         .titleWithLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 32px;
+  margin: 10px 0;
+}
+
+.inlineLogo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
 }
 
         .container {
