@@ -172,10 +172,11 @@ const useMainLogo = true;
   
   <div className="badge">Product Search AI</div>
   <h1 className="titleWithLogo">
-  <img src="/logo-icon.png" className="inlineLogo" />
+  <img src="/logo-icon.png" className="inlineLogo leftLogo" />
   <span className="typingText">
     best Product Search chat V:1.1.6
   </span>
+  <img src="/logo-icon.png" className="inlineLogo rightLogo" />
 </h1>
   <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 </section>
@@ -297,15 +298,58 @@ const useMainLogo = true;
   font-size: 30px;
   margin: 10px 0;
 }
+  /* ✍️ Typing (مظبوط من غير ما يبوّظ العرض) */
+.typingText {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #10a37f;
+  padding-right: 5px;
+  animation: typing 2.5s steps(30, end) forwards, blink 0.8s infinite;
+}
 
-/* ❌ شيلنا typing عشان كان مسبب مشاكل */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
 
-/* 🤖 Logo */
+@keyframes blink {
+  50% { border-color: transparent }
+}
+/* 🤖 Logo base */
 .inlineLogo {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   object-fit: contain;
 }
+
+/* 👈 الشمال يهتز */
+.leftLogo {
+  animation: logoWave 2.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* 👉 اليمين حركة خفيفة مختلفة */
+.rightLogo {
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+/* 🔄 حركة الشمال */
+@keyframes logoWave {
+  0%, 100% { transform: rotate(0deg) translateY(0) }
+  20% { transform: rotate(-8deg) translateY(-2px) }
+  40% { transform: rotate(8deg) translateY(-2px) }
+  60% { transform: rotate(-5deg) }
+  80% { transform: rotate(5deg) }
+}
+
+/* 🔄 حركة اليمين */
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-4px) }
+}
+
+
 
 /* 📦 Container */
 .container {
