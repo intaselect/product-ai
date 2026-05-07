@@ -26,6 +26,16 @@ const useMainLogo = true;
         image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
         url: "https://store-3.com/qGpOyXN",
       },
+      {
+        title: "خصم السعودية على الإلكترونيات",
+        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
+        url: "https://store-3.com/qGpOyXN",
+      },
+      {
+        title: "خصم السعودية على الإلكترونيات",
+        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
+        url: "https://store-3.com/qGpOyXN",
+      },
     ],
     ae: [
       {
