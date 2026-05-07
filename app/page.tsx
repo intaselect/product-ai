@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -7,7 +7,24 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [country, setCountry] = useState("sa");
   const [menuOpen, setMenuOpen] = useState(false);
-const useMainLogo = true;
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+useEffect(() => {
+  const slider = sliderRef.current;
+  if (!slider) return;
+
+  let scrollAmount = 0;
+
+  const interval = setInterval(() => {
+    if (slider.scrollWidth - slider.clientWidth <= slider.scrollLeft) {
+      slider.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      slider.scrollBy({ left: 1, behavior: "smooth" });
+    }
+  }, 30); // السرعة (كل ما تقل الرقم = أسرع)
+
+  return () => clearInterval(interval);
+}, []);
   // 🔥 Ads حسب الدولة
   const adsByCountry: any = {
     sa: [
@@ -192,7 +209,7 @@ const useMainLogo = true;
 </section>
 
         {/* 🔥 Ads Slider */}
-        <div className="adsWrapper">
+        <div className="adsWrapper" ref={sliderRef}>
           {ads.map((ad: any, i: number) => (
             <a
               key={i}
