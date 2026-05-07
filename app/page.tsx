@@ -543,13 +543,7 @@ const useMainLogo = true;
           color: white;
         }
 
-        .searchBox {
-          display: flex;
-          gap: 10px;
-          justify-content: center;
-        }
-
-        .input {
+       .input {
           padding: 12px;
           border-radius: 12px;
           background: #2f2f2f;
@@ -565,10 +559,10 @@ const useMainLogo = true;
           border-radius: 12px;
           color: white;
         }
-
         .results {
           margin-top: 20px;
         }
+          
 
         .card {
           display: flex;
