@@ -276,9 +276,33 @@ const useMainLogo = true;
 }
 
 .inlineLogo {
-  width: 36px;
-  height: 36px;
+  width: 45px;
+  height: 45px;
   object-fit: contain;
+
+  animation: logoWave 2.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes logoWave {
+  0%, 100% {
+    transform: rotate(0deg) translateY(0);
+  }
+  10% {
+    transform: rotate(-8deg) translateY(-2px);
+  }
+  20% {
+    transform: rotate(8deg) translateY(-2px);
+  }
+  30% {
+    transform: rotate(-5deg) translateY(0);
+  }
+  40% {
+    transform: rotate(5deg) translateY(0);
+  }
+  50% {
+    transform: rotate(0deg) translateY(0);
+  }
 }
 
         .container {
