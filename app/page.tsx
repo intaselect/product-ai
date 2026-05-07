@@ -153,7 +153,9 @@ const useMainLogo = true;
   <div className="badge">Product Search AI</div>
   <h1 className="titleWithLogo">
   <img src="/logo-icon.png" className="inlineLogo" />
-  best Product Search chat V:1.1.4
+  <span className="typingText">
+    best Product Search chat V:1.1.5
+  </span>
 </h1>
   <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 </section>
@@ -273,6 +275,50 @@ const useMainLogo = true;
   gap: 10px;
   font-size: 32px;
   margin: 10px 0;
+}
+  .typingText {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #10a37f;
+  width: 0;
+  animation: typing 3s steps(40, end) forwards, blink 0.8s infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+  .typingText {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #10a37f;
+  width: 0;
+  animation: typing 3s steps(40, end) forwards, blink 0.8s infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
 }
 
 .inlineLogo {
