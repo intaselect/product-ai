@@ -162,10 +162,10 @@ const useMainLogo = true;
     </button>
   </div>
 
-  <a href="#" className="menuItem">تسجيل الدخول</a>
-  <a href="#" className="menuItem">أعلن معنا</a>
-  <a href="#" className="menuItem">عن الموقع</a>
-  <a href="#" className="menuItem">تواصل معنا</a>
+  <a href="/login" className="menuItem">تسجيل الدخول</a>
+<a href="/advertise" className="menuItem">أعلن معنا</a>
+<a href="/about" className="menuItem">عن الموقع</a>
+<a href="/contact" className="menuItem">تواصل معنا</a>
 </aside>
       <main className="container">
        <section className="hero">
