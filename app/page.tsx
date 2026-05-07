@@ -13,15 +13,20 @@ useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
 
+  let direction = 1;
+
   const interval = setInterval(() => {
     const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
 
     if (slider.scrollLeft >= maxScrollLeft - 2) {
-      slider.scrollTo({ left: 0, behavior: "smooth" });
-      return;
+      direction = -1;
     }
 
-    slider.scrollLeft += 0.5;
+    if (slider.scrollLeft <= 2) {
+      direction = 1;
+    }
+
+    slider.scrollLeft += 0.5 * direction;
   }, 50);
 
   return () => clearInterval(interval);
