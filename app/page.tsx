@@ -170,7 +170,7 @@ const useMainLogo = true;
       <main className="container">
        <section className="hero">
   
-  <div className="badge">Product Search AI</div>
+  <div className="badge">Best Product Search AI</div>
   <h1 className="titleWithLogo">
   <img src="/logo-icon.png" className="inlineLogo leftLogo" />
   <span className="typingText">
