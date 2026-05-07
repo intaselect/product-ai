@@ -6,6 +6,7 @@ export default function Home() {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [country, setCountry] = useState("sa");
+  const [menuOpen, setMenuOpen] = useState(false);
 const useMainLogo = true;
   // 🔥 Ads حسب الدولة
   const adsByCountry: any = {
@@ -147,6 +148,25 @@ const useMainLogo = true;
 
   return (
     <div className="page">
+      <button className="menuButton" onClick={() => setMenuOpen(true)}>
+  ☰
+</button>
+
+{menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)} />}
+
+<aside className={`sidebar ${menuOpen ? "open" : ""}`}>
+  <div className="sidebarHeader">
+    <strong>BPS Chat</strong>
+    <button className="closeButton" onClick={() => setMenuOpen(false)}>
+      ×
+    </button>
+  </div>
+
+  <a href="#" className="menuItem">تسجيل الدخول</a>
+  <a href="#" className="menuItem">أعلن معنا</a>
+  <a href="#" className="menuItem">عن الموقع</a>
+  <a href="#" className="menuItem">تواصل معنا</a>
+</aside>
       <main className="container">
        <section className="hero">
   
@@ -154,7 +174,7 @@ const useMainLogo = true;
   <h1 className="titleWithLogo">
   <img src="/logo-icon.png" className="inlineLogo" />
   <span className="typingText">
-    best Product Search chat V:1.1.5
+    best Product Search chat V:1.1.6
   </span>
 </h1>
   <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
@@ -368,6 +388,97 @@ const useMainLogo = true;
           font-size: 12px;
           color: #aaa;
         }
+          .menuButton {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 50;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  background: #2f2f2f;
+  color: #ffffff;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  background: #383838;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 60;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 260px;
+  height: 100vh;
+  background: #171717;
+  border-right: 1px solid #2f2f2f;
+  z-index: 70;
+  padding: 18px;
+  transition: left 0.25s ease;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  margin-bottom: 22px;
+  font-size: 18px;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: #ececec;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.menuItem {
+  display: block;
+  padding: 13px 12px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  color: #ececec;
+  text-decoration: none;
+  background: transparent;
+}
+
+.menuItem:hover {
+  background: #2f2f2f;
+}
+
+@media (max-width: 600px) {
+  .menuButton {
+    top: 12px;
+    left: 12px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .sidebar {
+    width: 82%;
+    left: -85%;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+}
 
         .title {
           font-size: 32px;
