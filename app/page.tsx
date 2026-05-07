@@ -12,19 +12,19 @@ const useMainLogo = true;
   const adsByCountry: any = {
     sa: [
       {
-        title: "🔥 عروض السعودية",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/sa",
+         title: "خصم السعودية على الإلكترونيات",
+        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
+        url: "https://store-3.com/qGpOyXN",
       },
       {
         title: "خصم السعودية على الإلكترونيات",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/sa-electronics",
+        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
+        url: "https://store-3.com/qGpOyXN",
       },
       {
-        title: "أفضل منتجات السعودية",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/sa-products",
+        title: "خصم السعودية على الإلكترونيات",
+        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
+        url: "https://store-3.com/qGpOyXN",
       },
     ],
     ae: [
