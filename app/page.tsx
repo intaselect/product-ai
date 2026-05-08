@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { saveSearch } from "@/lib/saveSearch";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -167,34 +168,36 @@ useEffect(() => {
   const ads = adsByCountry[country] || [];
 
   async function handleSearch() {
-    if (loading) return;
+  if (loading) return;
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const res = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: query.trim() === "" ? "*" : query,
-          country: country,
-        }),
-      });
+  try {
+    await saveSearch(query, country); // 🔥 أضف السطر ده
 
-      const data = await res.json();
+    const res = await fetch("/api/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: query.trim() === "" ? "*" : query,
+        country: country,
+      }),
+    });
 
-      console.log("API RESULT:", data);
+    const data = await res.json();
 
-      setResults(data?.value || data?.products || data || []);
-    } catch (err) {
-      console.error("Search error:", err);
-      setResults([]);
-    } finally {
-      setLoading(false);
-    }
+    console.log("API RESULT:", data);
+
+    setResults(data?.value || data?.products || data || []);
+  } catch (err) {
+    console.error("Search error:", err);
+    setResults([]);
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
     <div className="page">
