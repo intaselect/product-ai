@@ -8,14 +8,27 @@ export default function Home() {
   const [country, setCountry] = useState("sa");
   const [menuOpen, setMenuOpen] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
-
 useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
 
   let direction = 1;
+  let isPaused = false;
+
+  const handleMouseEnter = () => {
+    isPaused = true;
+  };
+
+  const handleMouseLeave = () => {
+    isPaused = false;
+  };
+
+  slider.addEventListener("mouseenter", handleMouseEnter);
+  slider.addEventListener("mouseleave", handleMouseLeave);
 
   const interval = setInterval(() => {
+    if (isPaused) return;
+
     const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
 
     if (slider.scrollLeft >= maxScrollLeft - 2) {
@@ -29,7 +42,11 @@ useEffect(() => {
     slider.scrollLeft += 0.5 * direction;
   }, 50);
 
-  return () => clearInterval(interval);
+  return () => {
+    clearInterval(interval);
+    slider.removeEventListener("mouseenter", handleMouseEnter);
+    slider.removeEventListener("mouseleave", handleMouseLeave);
+  };
 }, []);
   // 🔥 Ads حسب الدولة
   const adsByCountry: any = {
