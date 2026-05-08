@@ -173,7 +173,6 @@ useEffect(() => {
   setLoading(true);
 
   try {
-    await saveSearch(query, country); // 🔥 أضف السطر ده
 
     const res = await fetch("/api/search", {
       method: "POST",

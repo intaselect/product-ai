@@ -1,7 +1,14 @@
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 
 export async function saveSearch(query: string, country: string) {
   if (!query) return;
+
+  console.log("🔥 SERVER SAVE:", query, country);
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
   const slug = `${query.toLowerCase().replace(/\s+/g, "-")}-${country}`;
 
