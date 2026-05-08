@@ -1,26 +1,34 @@
 import { createClient } from "@supabase/supabase-js";
 
+function cleanText(text: string) {
+  return text
+    .toLowerCase()
+    .trim()
+    .normalize("NFKC")
+    .replace(/[\u200E\u200F\u202A-\u202E]/g, "")
+    .replace(/[^\w\u0600-\u06FF\s-]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function makeSlug(query: string, country: string) {
+  return `${query.replace(/\s+/g, "-")}-${country}`;
+}
+
 export async function saveSearch(query: string, country: string) {
   if (!query) return;
 
-  const cleanQuery = query
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ")
-    .replace(/[^\w\u0600-\u06FF\s]/g, "");
-
+  const cleanQuery = cleanText(query);
   if (!cleanQuery) return;
 
   const cleanCountry = country?.toLowerCase().trim() || "sa";
+  const slug = makeSlug(cleanQuery, cleanCountry);
 
-  console.log("🔥 SERVER SAVE:", cleanQuery, cleanCountry);
+  console.log("🔥 SERVER SAVE:", cleanQuery, cleanCountry, slug);
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
-
-  const slug = `${cleanQuery.replace(/\s+/g, "-")}-${cleanCountry}`;
 
   const { data: existing, error: selectError } = await supabase
     .from("search_terms")
