@@ -7,7 +7,7 @@ export async function saveSearch(query: string, country: string) {
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.SUPABASE_SERVICE_ROLE_KEY! // 🔥 المهم
   );
 
   const slug = `${query.toLowerCase().replace(/\s+/g, "-")}-${country}`;
