@@ -3,14 +3,24 @@ import { createClient } from "@supabase/supabase-js";
 export async function saveSearch(query: string, country: string) {
   if (!query) return;
 
-  console.log("🔥 SERVER SAVE:", query, country);
+  const cleanQuery = query
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/[^\w\u0600-\u06FF\s]/g, "");
+
+  if (!cleanQuery) return;
+
+  const cleanCountry = country?.toLowerCase().trim() || "sa";
+
+  console.log("🔥 SERVER SAVE:", cleanQuery, cleanCountry);
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY! // 🔥 المهم
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const slug = `${query.toLowerCase().replace(/\s+/g, "-")}-${country}`;
+  const slug = `${cleanQuery.replace(/\s+/g, "-")}-${cleanCountry}`;
 
   const { data: existing, error: selectError } = await supabase
     .from("search_terms")
@@ -28,20 +38,19 @@ export async function saveSearch(query: string, country: string) {
       .from("search_terms")
       .update({
         search_count: existing.search_count + 1,
-        updated_at: new Date(),
+        updated_at: new Date().toISOString(),
       })
       .eq("slug", slug);
 
     if (updateError) console.error("Update error:", updateError);
-  } else {
-    const { error: insertError } = await supabase
-      .from("search_terms")
-      .insert({
-        query,
-        country,
-        slug,
-      });
-
-    if (insertError) console.error("Insert error:", insertError);
+    return;
   }
+
+  const { error: insertError } = await supabase.from("search_terms").insert({
+    query: cleanQuery,
+    country: cleanCountry,
+    slug,
+  });
+
+  if (insertError) console.error("Insert error:", insertError);
 }
