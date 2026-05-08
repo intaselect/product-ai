@@ -12,9 +12,36 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "BPS Chat",
-  description: "Best Product Search Chat",
+export const metadata: Metadata = {
+  title: "BPS Chat | أفضل محرك بحث منتجات في السعودية والخليج",
+  description:
+    "ابحث عن أفضل المنتجات والأسعار في السعودية، الإمارات، الكويت، قطر، البحرين ومصر بسهولة.",
+  keywords: [
+    "بحث منتجات",
+    "مقارنة أسعار",
+    "أفضل أسعار",
+    "منتجات السعودية",
+    "منتجات الإمارات",
+    "منتجات مصر",
+    "BPS Chat",
+  ],
+  openGraph: {
+    title: "BPS Chat | أفضل محرك بحث منتجات",
+    description:
+      "ابحث عن المنتجات وقارن الأسعار حسب الدولة بسهولة من خلال BPS Chat.",
+    url: "https://www.bpschat.com",
+    siteName: "BPS Chat",
+    images: [
+      {
+        url: "/logo-icon.png",
+        width: 512,
+        height: 512,
+        alt: "BPS Chat Logo",
+      },
+    ],
+    locale: "ar_AR",
+    type: "website",
+  },
 };
 export default function RootLayout({
   children,
