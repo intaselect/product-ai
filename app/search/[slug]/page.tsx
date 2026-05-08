@@ -1,5 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 
+export async function generateMetadata({ params }: any) {
+  const { slug } = await params;
+
+  return {
+    title: `أفضل سعر ${decodeURIComponent(slug)} في السعودية`,
+    description: `اعرف أحدث أسعار ${decodeURIComponent(slug)} وقارن بين المتاجر في السعودية`,
+  };
+}
+
 async function getSearchData(slug: string) {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
