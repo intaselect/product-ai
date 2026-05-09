@@ -10,13 +10,36 @@ function cleanSlug(slug: string) {
     .replace(/\s+/g, "-");
 }
 
+const countryMap: any = {
+  sa: "السعودية",
+  ae: "الإمارات",
+  kw: "الكويت",
+  qa: "قطر",
+  bh: "البحرين",
+  eg: "مصر",
+};
+
+function parseSlug(slug: string) {
+  const clean = cleanSlug(slug);
+  const parts = clean.split("-");
+  const countryCode = parts.pop() || "sa";
+  const query = parts.join(" ");
+
+  return {
+    clean,
+    countryCode,
+    query,
+    countryName: countryMap[countryCode] || countryCode,
+  };
+}
+
 async function getSearchData(slug: string) {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const clean = cleanSlug(slug);
+  const { clean } = parseSlug(slug);
 
   const { data, error } = await supabase
     .from("search_terms")
@@ -30,33 +53,10 @@ async function getSearchData(slug: string) {
 
   return data;
 }
-const countryMap: any = {
-  sa: "السعودية",
-  ae: "الإمارات",
-  kw: "الكويت",
-  qa: "قطر",
-  bh: "البحرين",
-  eg: "مصر",
-};
+
 export async function generateMetadata({ params }: any) {
   const { slug } = await params;
-
-  const clean = cleanSlug(slug);
-
-  const parts = clean.split("-");
-  const countryCode = parts.pop();
-  const query = parts.join(" ");
-
-  const countryMap: any = {
-    sa: "السعودية",
-    ae: "الإمارات",
-    kw: "الكويت",
-    qa: "قطر",
-    bh: "البحرين",
-    eg: "مصر",
-  };
-
-  const countryName = countryMap[countryCode || ""] || "السعودية";
+  const { query, countryName } = parseSlug(slug);
 
   return {
     title: `أفضل سعر ${query} في ${countryName}`,
@@ -66,27 +66,18 @@ export async function generateMetadata({ params }: any) {
 
 export default async function Page({ params }: any) {
   const { slug } = await params;
-
-  const clean = cleanSlug(slug);
+  const { query, countryName } = parseSlug(slug);
   const data = await getSearchData(slug);
-
-  const parts = clean.split("-");
-  const countryCode = parts.pop();
-  const query = parts.join(" ");
-
-  const countryName = countryMap[countryCode || ""] || countryCode;
 
   return (
     <main style={{ padding: "40px", color: "white", background: "#212121", minHeight: "100vh" }}>
-      
-      <h1>أفضل سعر {query} في {countryName}</h1>
+      <h1>أفضل سعر {data?.query || query} في {countryName}</h1>
 
       <p>عدد مرات البحث: {data?.search_count || 0}</p>
 
       <p>
-        عروض {query} في {countryName} وأفضل أماكن الشراء والمتاجر المتاحة.
+        عروض {data?.query || query} في {countryName} وأفضل أماكن الشراء والمتاجر المتاحة.
       </p>
-
     </main>
   );
 }
