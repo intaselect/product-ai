@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { saveSearch } from "@/lib/saveSearch";
+import PopularSearches from "@/app/components/PopularSearches";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -332,6 +333,7 @@ useEffect(() => {
               );
             })}
         </section>
+        <PopularSearches />
       </main>
 
 <style jsx>{`
