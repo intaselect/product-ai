@@ -138,6 +138,18 @@ useEffect(() => {
         image: "https://m.media-amazon.com/images/I/61CxDvB+76L._AC_SY300_SX300_QL70_ML2_.jpg",
         url: "https://www.amazon.ae/%D8%A7%D9%86%D9%83%D8%B1-%D8%A7%D9%84%D8%B3%D8%B1%D8%B9%D8%A9-%D8%A7%D9%84%D9%84%D8%A7%D8%A8%D8%AA%D9%88%D8%A8-%D8%A7%D9%84%D9%85%D8%B2%D8%AF%D9%88%D8%AC%D8%A9%D8%8C-%D8%B3%D8%A7%D9%85%D8%B3%D9%88%D9%86%D8%AC%D8%8C/dp/B0DCBB2YTR/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.lHbLA0UqdkQK2AP6m8d-pL5ENGUW-5GkP6kbZEca9gszZnrR3Nei8Hvt7Gbl9dTs7HodzTfnTKtOrZ1z9QpPEOGOgv8ZkSM3vwlDDWTJe_dQzn1WaLNjJZrKQU6usYGnYy3MQHGjcB-t3Q7renBAHG9pCJVEnY6D38se1Pmraj56MQxiDywOIjvhtmt_Oe70HdFRtHnttLMQNZu4e-1fRCCqAL-1OuyuCeDRY5ftinfcUrBkWes4NeNiMunvBBw_TDRgQVnEPh5SnbmLonj-OwLEy7GS8ZGhUIH3EKTp-kw.gCKCJB5np1v1yeef7XSC7s09slT3U3wel6Skow5_le8&dib_tag=se&keywords=power%2Bbank&qid=1778356027&sr=8-1-spons&aref=d1K7xJs6Ow&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1",
       },
+      {
+        title: "جوغر بقصة واسعة مطبع بكتابةماك بوك برو M5 الجديد 2025 MDE04 لابتوب بشاشة ريتينا XDR مقاس 14 بوصة، شريحة M5 مع معالج 10 نواة، معالج رسومي 10 نواة/ 16 جيجابايت ذاكرة عشوائية/ 512 جيجابايت SSD/ ماك أو إس/ نسخة دولية",
+        price: "5819 درهم",
+        image: "https://f.nooncdn.com/p/pnsku/N70248386V/45/_/1764242114/a46b0fdb-72db-4bc1-a5aa-569022495a78.jpg?width=800",
+        url: "https://www.noon.com/uae-ar/macbook-pro-mde04-14-inch-display-apple-m5-chip-10-core-cpu-and-10-core-gpu-16gb-ram-512gb-ssd-macos-english-keyboard-international-version-english-space-black/N70248386V/p/?o=d90a817a02a43f5a&shareId=07f73e94-5f58-4a86-9fec-c9643c289725",
+      },
+      {
+        title: "جوغر بقصة واسعة مطبع بكتابةصندوق الهدايا وايت",
+        price: "470 درهم",
+        image: "https://emiratespride.com/ae/wp-content/uploads/sites/10/2023/10/White-gift-set-scaled.webp",
+        url: "https://emiratespride.com/ae/caballo-white-gift-set/?lang=ar",
+      },
       
    
     ],
