@@ -81,10 +81,18 @@ export default async function Page({ params }: any) {
       <p>عدد مرات البحث: {data?.search_count || 0}</p>
 
       <p>
-        عروض {data?.query || query} في {countryName} وأفضل أماكن الشراء والمتاجر المتاحة.
-      </p>
+  إذا كنت تبحث عن أفضل سعر {data?.query || query} في {countryName} فأنت في المكان الصحيح.
+  نقدم لك مقارنة شاملة لأفضل العروض المتاحة لـ {data?.query || query} في {countryName} من مختلف المتاجر.
+</p>
 
-      <h2 style={{ marginTop: "30px" }}>أفضل المنتجات المتاحة</h2>
+<h2 style={{ marginTop: "30px" }}>سعر {data?.query || query} في {countryName}</h2>
+
+<p>
+  يختلف سعر {data?.query || query} في {countryName} حسب المتجر والعروض المتاحة.
+  يمكنك من خلال هذه الصفحة معرفة أحدث الأسعار ومقارنة المنتجات بسهولة.
+</p>
+
+<h2 style={{ marginTop: "30px" }}>أفضل عروض {data?.query || query}</h2>
 
       <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
         {products?.slice(0, 20).map((product: any, index: number) => (
@@ -136,6 +144,47 @@ export default async function Page({ params }: any) {
           </div>
         ))}
       </div>
+      <section style={{ marginTop: "40px" }}>
+  <h2>
+    أسئلة شائعة عن {data?.query || query} في {countryName}
+  </h2>
+
+  <div style={{ marginTop: "20px", display: "grid", gap: "16px" }}>
+    
+    <div>
+      <h3>ما هو أفضل سعر {data?.query || query} في {countryName}؟</h3>
+      <p>
+        يختلف أفضل سعر {data?.query || query} في {countryName} حسب المتجر والعروض المتاحة.
+        يمكنك مقارنة الأسعار بسهولة من خلال هذه الصفحة للحصول على أفضل صفقة.
+      </p>
+    </div>
+
+    <div>
+      <h3>أين يمكن شراء {data?.query || query} في {countryName}؟</h3>
+      <p>
+        يمكنك شراء {data?.query || query} في {countryName} من خلال المتاجر الإلكترونية المختلفة
+        مثل المتاجر المحلية والعالمية، مع إمكانية مقارنة الأسعار قبل الشراء.
+      </p>
+    </div>
+
+    <div>
+      <h3>هل يوجد عروض على {data?.query || query} في {countryName}؟</h3>
+      <p>
+        نعم، تتوفر عروض وخصومات على {data?.query || query} في {countryName} بشكل مستمر،
+        خاصة خلال المواسم والعروض الخاصة مثل الجمعة البيضاء.
+      </p>
+    </div>
+
+    <div>
+      <h3>هل الأسعار تتغير باستمرار؟</h3>
+      <p>
+        نعم، أسعار {data?.query || query} في {countryName} تتغير حسب التوفر والعروض،
+        لذلك يُفضل متابعة الأسعار بشكل مستمر للحصول على أفضل سعر.
+      </p>
+    </div>
+
+  </div>
+</section>
     </main>
   );
 }
