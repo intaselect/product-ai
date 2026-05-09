@@ -122,8 +122,9 @@ useEffect(() => {
     ae: [
       {
         title: "🔥 عروض الإمارات",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/ae",
+        price: "25 درهم",
+        image: "https://f.nooncdn.com/p/pzsku/Z7398083D99F0DE4A4F90Z/45/1741263201/1873c96b-385c-4e41-a768-b3740a527db6.jpg?width=800",
+        url: "https://www.noon.com/uae-ar/slogan-print-oversized-fit-jogger-with-slip-pocket/Z7398083D99F0DE4A4F90Z/p/?o=z7398083d99f0de4a4f90z-3&shareId=5145fb64-18f1-4295-a36a-a94de9cd46d2",
       },
       {
         title: "خصم الإمارات على اللابتوبات",
