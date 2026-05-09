@@ -70,6 +70,11 @@ useEffect(() => {
   // 🔥 Ads حسب الدولة
   const adsByCountry: any = {
     sa: [
+         {
+         title: "  ابل - ايفون 16 برو ماكس، 5 جي،6.9 بوصة، بسعة 256 جيجا، الوان متعددة ",
+        image: "https://cdn.salla.sa/XnEj/ec192eee-4b7c-450e-bb33-59760386b80b-1000x1000-2hFDNYNVi8WffASJvRTIOzmEb9AnZNRiTYHsOEUr.jpg",
+        url: "https://iblackstores.com/EXlWDyR",
+      },
       {
          title: "خصم السعودية على الإلكترونيات",
         image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
@@ -99,6 +104,11 @@ useEffect(() => {
         title: " لعبة سيارة ركوب للاطفال مع عجلة قيادة ومسند ظهر (اسود)",
         image: "https://m.media-amazon.com/images/I/61YTh19mDoL._AC_SY879_.jpg",
         url: "https://www.amazon.sa/%D9%84%D8%B9%D8%A8%D8%A9-%D8%B3%D9%8A%D8%A7%D8%B1%D8%A9-%D9%84%D9%84%D8%A7%D8%B7%D9%81%D8%A7%D9%84-%D9%82%D9%8A%D8%A7%D8%AF%D8%A9-%D9%88%D9%85%D8%B3%D9%86%D8%AF/dp/B0FDB74W9H?ref_=Oct_d_obs_d_26389385031_0&pd_rd_w=uVBxv&content-id=amzn1.sym.a03c59ad-4247-4645-9aa2-b2c6679c3cac&pf_rd_p=a03c59ad-4247-4645-9aa2-b2c6679c3cac&pf_rd_r=926MSE7C010T3MWBMJCP&pd_rd_wg=bfEz2&pd_rd_r=b81fb790-f337-4d42-932f-1365fd37c5bc&pd_rd_i=B0FDB74W9H&th=1",
+      },
+       {
+        title: " حقيبة ظهر FASHION عصرية مضادة للسرقة متعدد الالوان ",
+        image: "https://cdn.salla.sa/XnEj/b8c44af5-0acd-440d-a3e2-4ac202477e3a-1000x1000-7LbXb8CsyvHm6MlntIKOMfdbCG2hblrznHjoPPPL.jpg",
+        url: "https://iblackstores.com/DpeNvnY",
       },
     ],
     ae: [
