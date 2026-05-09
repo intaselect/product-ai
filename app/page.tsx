@@ -621,7 +621,8 @@ useEffect(() => {
 .adImage {
   width: 100%;
   height: 130px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
 }
   .adCard::before {
   content: "";
