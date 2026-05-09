@@ -6,8 +6,18 @@ function cleanText(text: string) {
     .trim()
     .normalize("NFKC")
     .replace(/[\u200E\u200F\u202A-\u202E]/g, "")
-    .replace(/[^\w\u0600-\u06FF\s-]/g, "")
-    .replace(/\s+/g, " ");
+    .replace(/[^\w\u0600-\u06FF\s]/g, "")
+    .replace(/\s+/g, " ")
+    .split(" ")
+    .sort((a, b) => {
+      // نخلي الكلمات تبدأ بالحروف مش الأرقام
+      const isNumA = /^\d/.test(a);
+      const isNumB = /^\d/.test(b);
+      if (isNumA && !isNumB) return 1;
+      if (!isNumA && isNumB) return -1;
+      return 0;
+    })
+    .join(" ");
 }
 
 function makeSlug(query: string, country: string) {
