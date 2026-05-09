@@ -72,41 +72,49 @@ useEffect(() => {
     sa: [
          {
          title: "  ابل - ايفون 16 برو ماكس، 5 جي،6.9 بوصة، بسعة 256 جيجا، الوان متعددة ",
+          price: "4999 ريال",
         image: "https://cdn.salla.sa/XnEj/ec192eee-4b7c-450e-bb33-59760386b80b-1000x1000-2hFDNYNVi8WffASJvRTIOzmEb9AnZNRiTYHsOEUr.jpg",
         url: "https://iblackstores.com/EXlWDyR",
       },
       {
          title: "خصم السعودية على الإلكترونيات",
+          price: "199 ريال",
         image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
         url: "https://store-3.com/qGpOyXN",
       },
       {
         title: "هاتف M-HORSE M17 Pro Max بشريحة NFC",
+         price: "640 ريال",
         image: "https://f.nooncdn.com/p/pzsku/Z8624F7B143240BB93FE8Z/45/_/1776758597/0344f741-c522-4be7-a941-e224e31da88d.jpg?width=800",
         url: "https://www.noon.com/saudi-ar/m-horse-m17-pro-max-smartphone-with-nfc-6-6-hd-display-12gb-ram-256gb-storage-5000mah-battery-4g-lte-orange/Z8624F7B143240BB93FE8Z/p/?o=ec9dffd89856be8e&shareId=179b3563-6d3c-431c-b36a-8a6cb1575c5a",
       },
       {
         title: "  ايمالا بني فاتح ",
+         price: "65 ريال",
         image: "https://f.nooncdn.com/p/pzsku/Z790903813A6E938BD103Z/45/_/1774181456/fa477ac5-a671-4c72-b790-17db19878dc6.jpg?width=800",
         url: "https://www.noon.com/saudi-ar/aymala-lenses-milk-tea/Z790903813A6E938BD103Z/p/?o=bbfa478ebae78e7a&shareId=cd8114c0-34d4-407d-9537-ccf927cdeb15",
       },
       {
         title: " بروتين مصل الحليب بنسبة 100% من Gold Standard   ",
+         price: "390 ريال",
         image: "https://f.nooncdn.com/p/pzsku/ZFBF8D70FD73EB9D7E4D0Z/45/_/1772091006/411bfd34-493e-49b6-803c-09eff6e75bd6.jpg?width=800",
         url: "https://www.noon.com/saudi-ar/on-100-wgs-gf-french-van-creme-5lb/N53418656A/p/?o=ac6859087cfa841a&shareId=7e532f52-14c6-4a2b-999a-9af49f0a379c",
       },
       {
         title: "   باور بانك من إينيو 10000 مللي امبير بشحن 3 ساعات",
+         price: "79 ريال",
         image: "https://m.media-amazon.com/images/I/71z6XmCKqZL._AC_SX679_.jpg",
         url: "https://www.amazon.sa/%D8%A5%D9%8A%D9%86%D9%8A%D9%88-10000-%D8%AA%D8%A7%D9%8A%D8%A8-C-%D9%84%D9%84%D9%87%D9%88%D8%A7%D8%AA%D9%81-%D8%A7%D9%84%D8%AA%D8%A7%D8%A8%D9%84%D8%AA/dp/B08VD632WJ/ref=sr_1_5?dib=eyJ2IjoiMSJ9.GxmG0Lmdi9Wv3f3N9RcEJXyNm_qhs-zY6pktVC4nMgJc9uzzX14Yz_YOlTDocfa84V_z4QcifkplHCgkC8GF18cPT2gDmPpRZ9Kq_VceBPmxtloffa-WmDosxYBWr899W9oDIAM-VDFE_tjrU6BuQCNpvca4_rG7eD9iDKZRuO4JYLDYki2YYTtpfayIHj_mh27Vvzx5tnBBRf5G0W3MRdYfmY0RoTMgaZBgSTy0QjPcSLvbsQg4anXLHTXNJZCb25xmQSwg2t2PBNiX1B-OG8PDyYpJ2czPUAcYgrUZNgg.LOYzW8E-XwUq1j5jJPlnP6oWYgYuo4SC2BZySAC3txQ&dib_tag=se&keywords=power+bank&qid=1778353921&sr=8-5",
       },
       {
         title: " لعبة سيارة ركوب للاطفال مع عجلة قيادة ومسند ظهر (اسود)",
+         price: "52 ريال",
         image: "https://m.media-amazon.com/images/I/61YTh19mDoL._AC_SY879_.jpg",
         url: "https://www.amazon.sa/%D9%84%D8%B9%D8%A8%D8%A9-%D8%B3%D9%8A%D8%A7%D8%B1%D8%A9-%D9%84%D9%84%D8%A7%D8%B7%D9%81%D8%A7%D9%84-%D9%82%D9%8A%D8%A7%D8%AF%D8%A9-%D9%88%D9%85%D8%B3%D9%86%D8%AF/dp/B0FDB74W9H?ref_=Oct_d_obs_d_26389385031_0&pd_rd_w=uVBxv&content-id=amzn1.sym.a03c59ad-4247-4645-9aa2-b2c6679c3cac&pf_rd_p=a03c59ad-4247-4645-9aa2-b2c6679c3cac&pf_rd_r=926MSE7C010T3MWBMJCP&pd_rd_wg=bfEz2&pd_rd_r=b81fb790-f337-4d42-932f-1365fd37c5bc&pd_rd_i=B0FDB74W9H&th=1",
       },
        {
         title: " حقيبة ظهر FASHION عصرية مضادة للسرقة متعدد الالوان ",
+         price: "9 ريال",
         image: "https://cdn.salla.sa/XnEj/b8c44af5-0acd-440d-a3e2-4ac202477e3a-1000x1000-7LbXb8CsyvHm6MlntIKOMfdbCG2hblrznHjoPPPL.jpg",
         url: "https://iblackstores.com/DpeNvnY",
       },
@@ -293,11 +301,19 @@ useEffect(() => {
               rel="noopener noreferrer"
               className="adCard"
             >
-              <img src={ad.image} className="adImage" alt={ad.title} />
-              <div className="adInfo">
-                <div className="adTitle">{ad.title}</div>
-                <div className="adTag">إعلان</div>
-              </div>
+             <img src={ad.image} className="adImage" alt={ad.title} />
+
+<div className="adInfo">
+  <div className="adTitle">{ad.title}</div>
+
+  {ad.price && (
+    <div className="adPrice">{ad.price}</div>
+  )}
+
+  <div className="adFooter">
+    <span className="adTag">إعلان</span>
+  </div>
+</div>
             </a>
           ))}
         </div>
@@ -391,7 +407,12 @@ useEffect(() => {
   background: #212121;
   color: #ececec;
 }
-
+.adPrice {
+  color: #10a37f;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 4px;
+}
 /* 🔥 Title */
 .titleWithLogo {
   display: flex;
