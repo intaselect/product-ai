@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 
+
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
     .toLowerCase()
