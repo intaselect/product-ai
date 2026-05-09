@@ -150,7 +150,24 @@ useEffect(() => {
         image: "https://emiratespride.com/ae/wp-content/uploads/sites/10/2023/10/White-gift-set-scaled.webp",
         url: "https://emiratespride.com/ae/caballo-white-gift-set/?lang=ar",
       },
-      
+       {
+        title: "مجفف ومصفف متعدد الاستخدامات Airwrap Co-anda2x - مستقيم + مموج (وردي سيراميك / ذهب وردي)",
+        price: "2199 درهم",
+        image: "https://f.nooncdn.com/p/pnsku/N70270683V/45/_/1766474451/2107bb28-eebf-45bb-a921-730459a31860.jpg?width=800",
+        url: "https://www.noon.com/uae-ar/airwrap-co-anda2x-multi-styler-and-dryer-straight-wavy-ceramic-pink-rose-gold-ceramic-pink-rose-gold/N70270683V/p/?o=edae37f8bec648ab&shareId=d6641fc8-6fbe-45e0-bcb9-11c249f11047",
+      },
+      {
+        title: "جوغر بقصة واسعة مطبع بكتابةسماعة رأس كلاود II سلكية للألعاب بتصميم يغطي الأذن لأجهزة بلايستيشن 4 وبلايستيشن 5 وإكس بوكس ون وإكس بوكس سيريس إكس ونينتندو سويتش/ جهاز الكمبيوتر",
+        price: "178 درهم",
+        image: "https://f.nooncdn.com/p/pnsku/N16659460A/45/_/1766380489/5451288e-47f9-4bac-9a0f-8aba6f0ecce2.jpg?width=800",
+        url: "https://www.noon.com/uae-ar/cloud-ii-gaming-headset-for-pc-and-ps4-and-xbox-one-nintendo-switch-red-wired-black/N16659460A/p/?o=fc7125647a74078c&shareId=f16f063c-1e28-4b7b-b155-d8e17decbf58",
+      },
+      {
+        title: "جوغر بقصة واسعة مطبع بكتابةإصدار قرص وحدة تحكم PlayStation 5 Slim مع وحدة تحكم - موديل جديد 2023 (الإصدار الدولي)",
+        price: "2399 درهم",
+        image: "https://f.nooncdn.com/p/pnsku/N70022609V/45/_/1777031875/250d2a92-7d57-4cea-981a-a1cdb471e921.jpg?width=800",
+        url: "https://www.noon.com/uae-ar/playstation-5-slim-console-international-version-disc-version-with-controller-new-model-2023/N70022609V/p/?o=ea15ab4f06975d3f&shareId=3cff6abe-0cb8-4e84-8a99-c1d1eeb9fb0f",
+      },
    
     ],
     kw: [
