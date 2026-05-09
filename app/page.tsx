@@ -121,21 +121,25 @@ useEffect(() => {
     ],
     ae: [
       {
-        title: "🔥 عروض الإمارات",
+        title: "جوغر بقصة واسعة مطبع بكتابة",
         price: "25 درهم",
         image: "https://f.nooncdn.com/p/pzsku/Z7398083D99F0DE4A4F90Z/45/1741263201/1873c96b-385c-4e41-a768-b3740a527db6.jpg?width=800",
         url: "https://www.noon.com/uae-ar/slogan-print-oversized-fit-jogger-with-slip-pocket/Z7398083D99F0DE4A4F90Z/p/?o=z7398083d99f0de4a4f90z-3&shareId=5145fb64-18f1-4295-a36a-a94de9cd46d2",
       },
       {
-        title: "خصم الإمارات على اللابتوبات",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/ae-laptops",
+        title: " آيفون 16 برو ماكس من أبل (256 جيجابايت) مزود بخدمة فيس تايم لون تيتانيوم صحراوي إصدار الشرق الأوسط",
+        price: "4475 درهم",
+        image: "https://pimcdn.sharafdg.com/cdn-cgi/image/width=600,height=600,fit=pad,format=webp,quality=70/images/iphone_16_pro_max_desert_titanium_1?1761653713?g=0",
+        url: "https://uae.sharafdg.com/ar/product/apple-iphone-16-pro-max-256gb-desert-titanium/?promo=3525334&dg=false",
       },
       {
-        title: "أفضل منتجات الإمارات",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/ae-products",
+        title: "جوغر بقصة واسعة مطبع بكتابةانكر باور بانك، شاحن محمول فائق السرعة 25,000 مللي أمبير في الساعة 165 واط لأجهزة اللابتوب المزدوجة، حزمة بطارية شحن سريع مع كيبلات مدمجة وقابلة للسحب، لسلسلة آيفون 17/16، سامسونج، وأكثر",
+        price: "329 درهم",
+        image: "https://m.media-amazon.com/images/I/61CxDvB+76L._AC_SY300_SX300_QL70_ML2_.jpg",
+        url: "https://www.amazon.ae/%D8%A7%D9%86%D9%83%D8%B1-%D8%A7%D9%84%D8%B3%D8%B1%D8%B9%D8%A9-%D8%A7%D9%84%D9%84%D8%A7%D8%A8%D8%AA%D9%88%D8%A8-%D8%A7%D9%84%D9%85%D8%B2%D8%AF%D9%88%D8%AC%D8%A9%D8%8C-%D8%B3%D8%A7%D9%85%D8%B3%D9%88%D9%86%D8%AC%D8%8C/dp/B0DCBB2YTR/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.lHbLA0UqdkQK2AP6m8d-pL5ENGUW-5GkP6kbZEca9gszZnrR3Nei8Hvt7Gbl9dTs7HodzTfnTKtOrZ1z9QpPEOGOgv8ZkSM3vwlDDWTJe_dQzn1WaLNjJZrKQU6usYGnYy3MQHGjcB-t3Q7renBAHG9pCJVEnY6D38se1Pmraj56MQxiDywOIjvhtmt_Oe70HdFRtHnttLMQNZu4e-1fRCCqAL-1OuyuCeDRY5ftinfcUrBkWes4NeNiMunvBBw_TDRgQVnEPh5SnbmLonj-OwLEy7GS8ZGhUIH3EKTp-kw.gCKCJB5np1v1yeef7XSC7s09slT3U3wel6Skow5_le8&dib_tag=se&keywords=power%2Bbank&qid=1778356027&sr=8-1-spons&aref=d1K7xJs6Ow&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1",
       },
+      
+   
     ],
     kw: [
       {
