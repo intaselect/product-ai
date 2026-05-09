@@ -186,7 +186,7 @@ useEffect(() => {
       {
         title: "Nintendo Switch 2 Console - Black",
         price: "159.900 دينار",
-        image: "hhttps://www.blink.com.kw/cdn/shop/files/Nintendo_Switch_2_Console_-_Black.jpg?v=1748353737&width=720",
+        image: "https://www.blink.com.kw/cdn/shop/files/ca16f863-76cc-4119-9742-646bcbbca066.jpg?v=1748414660&width=500",
         url: "https://www.blink.com.kw/products/nintendo-switch-2-console-black",
       },
       {
@@ -209,20 +209,47 @@ useEffect(() => {
       },
     ],
     qa: [
-      {
-        title: "🔥 عروض قطر",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/qa",
+       {
+        title: "Apple iPhone 17 Pro Max",
+        price: "5699 ريال قطري",
+        image: "https://www.jarir.com/cdn-cgi/image/fit=contain,width=380,height=380,quality=100,metadata=none/https://ak-asset.jarir.com/akeneo-prod/asset/f/6/1/6/f616275d795b31c691907e198bc253ad9eda247c_666736.jpg",
+        url: "https://www.jarir.com/sa-en/apple-iphone-17-pro-max-smartphones-jpm1725.html?childSku=666736",
       },
       {
-        title: "خصم قطر على الإلكترونيات",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/qa-electronics",
+        title: "كاميرا روبوت EBO SE FamilyBot من Enabot / دقة 1080P / مع بث مباشر و تنبيهات حركة / تحكم من الجوال",
+        price: "519 ريال قطري",
+        image: "https://d1auy89oi7zwzb.cloudfront.net/media/catalog/product/a17637e5-9703-4cf4-8978-f55f6c0534d5",
+        url: "https://nologystore.com/ar/products/enabot-ebo-se",
       },
       {
-        title: "أفضل منتجات قطر",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/qa-products",
+        title: "كينوود شواية كهربائية صحية معدنية أتش جي أم 80, لون فضي",
+        price: "359 ريال قطري",
+        image: "https://fnac.qa/media/catalog/product/t/e/te0185611-1.jpg?width=700&height=560&canvas=700,560&quality=80&bg-color=255,255,255&fit=bounds",
+        url: "https://fnac.qa/arabic/kenwood-grill-hgm80-000ss-2000-watts-high-power-for-quick-heating.html",
+      },
+      {
+        title: "ديلونجي ماكينة تحضير القهوة الباردة لا سبيسياليستا أرتي إيفو غي سي9255, لون معدني",
+        price: "2429 ريال قطري",
+        image: "https://fnac.qa/media/catalog/product/T/E/TE0211864-1.jpg?width=700&height=560&canvas=700,560&quality=80&bg-color=255,255,255&fit=bounds",
+        url: "https://fnac.qa/arabic/delonghi-cold-brew-coffee-machine-la-specialista-arte-evo-with-cold-extraction-technology-ec9255-m-silver.html",
+      },
+      {
+        title: "عطر كلاسيك بلاك EDT للرجال 100ملليلتر",
+        price: "35.38 ريال قطري",
+        image: "https://f.nooncdn.com/p/pnsku/N11200839A/45/_/1767607727/222d1a49-e55a-4772-8720-6873aa564798.jpg?width=800",
+        url: "https://www.noon.com/qatar-ar/classic-black-edt-for-men-100ml/N11200839A/p/?o=ffcb8bcef1561cba&shareId=638e129d-9a0b-4853-b509-352fa76272a4",
+      },
+       {
+        title: "ميزان ذكي C1 بتقنية البلوتوث",
+        price: "58.38 ريال قطري",
+        image: "https://f.nooncdn.com/p/pnsku/N33949658A/45/_/1766380652/7fe14545-62bc-47e6-b330-0536b270d212.jpg?width=800",
+        url: "https://www.noon.com/qatar-ar/eufy-smart-scale-c1-with-bluetooth-body-fat-scale-wireless-digital-bathroom-scale-15-measurements-weight-body-fat-bmi-fitness-body-composition-analysis-black-lbs-kg/N33949658A/p/?o=f6f385c674ce061f&shareId=eb77f557-6cdb-4f53-be35-0fb137b028c1",
+      },
+       {
+        title: "ساعات ذكية للنساء والرجال، جهاز تتبع اللياقة البدنية على شكل دائري مقاس 1.43 بوصة",
+        price: "107.04 ريال قطري",
+        image: "https://f.nooncdn.com/p/pzsku/ZB95FA0B89C3312271FC5Z/45/_/1689304111/a6032ed6-5584-4f38-8db8-0df2445b03a2.jpg?width=800",
+        url: "https://www.noon.com/qatar-ar/smart-watches-for-women-men-answer-make-calls-1-43-round-fitness-tracker-smartwatch-with-heart-rate-monitor-sleep-ip68-waterproof-blood-oxygen-glucose-blood-pressure/ZB95FA0B89C3312271FC5Z/p/?o=zb95fa0b89c3312271fc5z-1&shareId=b1a680bd-d484-42e5-b6c2-4b402e75e95e",
       },
     ],
     bh: [
