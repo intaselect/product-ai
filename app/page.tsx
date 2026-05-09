@@ -91,9 +91,14 @@ useEffect(() => {
         url: "https://www.noon.com/saudi-ar/on-100-wgs-gf-french-van-creme-5lb/N53418656A/p/?o=ac6859087cfa841a&shareId=7e532f52-14c6-4a2b-999a-9af49f0a379c",
       },
       {
-        title: "خصم السعودية على الإلكترونيات",
-        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
-        url: "https://store-3.com/qGpOyXN",
+        title: "   باور بانك من إينيو 10000 مللي امبير بشحن 3 ساعات",
+        image: "https://m.media-amazon.com/images/I/71z6XmCKqZL._AC_SX679_.jpg",
+        url: "https://www.amazon.sa/%D8%A5%D9%8A%D9%86%D9%8A%D9%88-10000-%D8%AA%D8%A7%D9%8A%D8%A8-C-%D9%84%D9%84%D9%87%D9%88%D8%A7%D8%AA%D9%81-%D8%A7%D9%84%D8%AA%D8%A7%D8%A8%D9%84%D8%AA/dp/B08VD632WJ/ref=sr_1_5?dib=eyJ2IjoiMSJ9.GxmG0Lmdi9Wv3f3N9RcEJXyNm_qhs-zY6pktVC4nMgJc9uzzX14Yz_YOlTDocfa84V_z4QcifkplHCgkC8GF18cPT2gDmPpRZ9Kq_VceBPmxtloffa-WmDosxYBWr899W9oDIAM-VDFE_tjrU6BuQCNpvca4_rG7eD9iDKZRuO4JYLDYki2YYTtpfayIHj_mh27Vvzx5tnBBRf5G0W3MRdYfmY0RoTMgaZBgSTy0QjPcSLvbsQg4anXLHTXNJZCb25xmQSwg2t2PBNiX1B-OG8PDyYpJ2czPUAcYgrUZNgg.LOYzW8E-XwUq1j5jJPlnP6oWYgYuo4SC2BZySAC3txQ&dib_tag=se&keywords=power+bank&qid=1778353921&sr=8-5",
+      },
+      {
+        title: " لعبة سيارة ركوب للاطفال مع عجلة قيادة ومسند ظهر (اسود)",
+        image: "https://m.media-amazon.com/images/I/61YTh19mDoL._AC_SY879_.jpg",
+        url: "https://www.amazon.sa/%D9%84%D8%B9%D8%A8%D8%A9-%D8%B3%D9%8A%D8%A7%D8%B1%D8%A9-%D9%84%D9%84%D8%A7%D8%B7%D9%81%D8%A7%D9%84-%D9%82%D9%8A%D8%A7%D8%AF%D8%A9-%D9%88%D9%85%D8%B3%D9%86%D8%AF/dp/B0FDB74W9H?ref_=Oct_d_obs_d_26389385031_0&pd_rd_w=uVBxv&content-id=amzn1.sym.a03c59ad-4247-4645-9aa2-b2c6679c3cac&pf_rd_p=a03c59ad-4247-4645-9aa2-b2c6679c3cac&pf_rd_r=926MSE7C010T3MWBMJCP&pd_rd_wg=bfEz2&pd_rd_r=b81fb790-f337-4d42-932f-1365fd37c5bc&pd_rd_i=B0FDB74W9H&th=1",
       },
     ],
     ae: [
