@@ -172,16 +172,40 @@ useEffect(() => {
     ],
     kw: [
       {
-        title: "",
-        price: "25 دينار",
-        image: "https://f.nooncdn.com/p/pzsku/Z7398083D99F0DE4A4F90Z/45/1741263201/1873c96b-385c-4e41-a768-b3740a527db6.jpg?width=800",
-        url: "https://www.noon.com/uae-ar/slogan-print-oversized-fit-jogger-with-slip-pocket/Z7398083D99F0DE4A4F90Z/p/?o=z7398083d99f0de4a4f90z-3&shareId=5145fb64-18f1-4295-a36a-a94de9cd46d2",
+        title: "هودي واسع من صوف نادي الأطفال",
+        price: "9.05 دينار",
+        image: "https://f.nooncdn.com/p/pzsku/Z85EF322A6C8511C91CFAZ/45/_/1774982460/8c221dd8-085e-4d3c-be4f-2eedc303772c.jpg?width=800",
+        url: "https://www.noon.com/kuwait-ar/kids-nsw-club-fleece-oversized-hoodie/Z85EF322A6C8511C91CFAZ/p/?o=ade024beedf5d61e&shareId=5a41a8c3-8406-4d35-9ae9-c9482accc147",
       },
       {
         title: "أبل أيفون 15 128 جيجا (1 شريحة نانو + 1 شريحة الكترونية) - أسود",
         price: "199.99 دينار",
         image: "https://mrflex.best.com.kw/medias/1200Wx1200H-null?context=bWFzdGVyfGltYWdlc3w5OTg3NHxpbWFnZS9qcGVnfGFHUTFMMmc1TlM4eE16UXhNekF6TnpZd05EZzVOQzh4TWpBd1YzZ3hNakF3U0Y5dWRXeHN8ZDYxN2E4ZWU2Yjc2MWRkYmM4MzA3OTBkZDJiY2JhNzAzYzQ5OTllMDM3ZWJjNWQzMTZjZTExY2I1MzIyYWE5Nw",
         url: "https://best.com.kw/ar/product/IPH-15-128GB-BK-ES/Apple-iPhone-15-128GB-1-Nano-Sim---1-ESim----Black-",
+      },
+      {
+        title: "Nintendo Switch 2 Console - Black",
+        price: "159.900 دينار",
+        image: "hhttps://www.blink.com.kw/cdn/shop/files/Nintendo_Switch_2_Console_-_Black.jpg?v=1748353737&width=720",
+        url: "https://www.blink.com.kw/products/nintendo-switch-2-console-black",
+      },
+      {
+        title: "The Legend of Zelda: Breath of the Wild for Nintendo Switch",
+        price: "20.900 دينار",
+        image: "https://www.blink.com.kw/cdn/shop/files/TheLegendofZeldaBreathoftheWildGameforNintendoSwitch.jpg?v=1714218015&width=720",
+        url: "https://www.blink.com.kw/products/the-legend-of-zelda-breath-of-the-wild-game-for-nintendo-switch",
+      },
+      {
+        title: "آيفون 16 برو ماكس سعة 256 جيجابايت تيتانيوم صحراوي 5G مع فيس تايم - نسخة الشرق الأوسط",
+        price: "373.68 دينار",
+        image: "https://f.nooncdn.com/p/pnsku/N70105592V/45/_/1764242077/4f0a3f7d-0382-4715-9b34-9e6a5181c151.jpg?width=800",
+        url: "https://www.noon.com/kuwait-ar/iphone-16-pro-max-256gb-desert-titanium-5g-with-facetime-middle-east-version/N70105592V/p/?o=fb39500b277647ba&shareId=caa595b5-64ac-42e2-b507-916cd8a92faa",
+      },
+      {
+        title: "ساعة جالكسي ووتش ألترا 2025 47 مم (نسخة KSA) ساعة ذكية LTE، سعة 64 جيجابايت، هيكل تيتانيوم متين، تصميم مريح، زر سريع، مراقبة صحية مدعومة بالذكاء الاصطناعي",
+        price: "115.91 دينار",
+        image: "https://f.nooncdn.com/p/pzsku/Z6052E4EA21F11AED8370Z/45/_/1772091081/c063307d-7cc3-4b48-95fc-e4cb7ef2f88d.jpg?width=800",
+        url: "https://www.noon.com/kuwait-ar/galaxy-watch-ultra-2025-47mm-ksa-version-lte-smartwatch-64gb-storage-durable-titanium-casing-cushion-design-quick-button-al-powered-health-monitoring-titanium-blue-titanium-blue/N70189415V/p/?o=ee5ec472f4cc99ea&shareId=e737b9bc-b769-43ee-af73-f5d9fef8e515",
       },
     ],
     qa: [
