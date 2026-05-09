@@ -81,7 +81,7 @@ export default function LoginPage() {
         />
 
         <input
-          placeholder="رقم الهاتف"
+          placeholder="رقم الهاتف مع مفتاح الدولة"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           style={styles.input}

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { saveSearch } from "@/lib/saveSearch";
+import { supabase } from "@/lib/supabase";
 import PopularSearches from "@/app/components/PopularSearches";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
   const [country, setCountry] = useState("sa");
   const [menuOpen, setMenuOpen] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [user, setUser] = useState<any>(null);
 useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
@@ -48,6 +50,21 @@ useEffect(() => {
     clearInterval(interval);
     slider.removeEventListener("mouseenter", handleMouseEnter);
     slider.removeEventListener("mouseleave", handleMouseLeave);
+  };
+}, []);
+useEffect(() => {
+  supabase.auth.getUser().then(({ data }) => {
+    setUser(data?.user || null);
+  });
+
+  const { data: listener } = supabase.auth.onAuthStateChange(
+    (event, session) => {
+      setUser(session?.user || null);
+    }
+  );
+
+  return () => {
+    listener.subscription.unsubscribe();
   };
 }, []);
   // 🔥 Ads حسب الدولة
@@ -215,10 +232,27 @@ useEffect(() => {
     </button>
   </div>
 
+  {user ? (
+  <div className="menuItem" style={{ cursor: "default", opacity: 0.9 }}>
+    👤 {user.email.split("@")[0]}
+  </div>
+) : (
   <a href="/login" className="menuItem">تسجيل الدخول</a>
+)}
 <a href="/advertise" className="menuItem">أعلن معنا</a>
 <a href="/about" className="menuItem">عن الموقع</a>
 <a href="/contact" className="menuItem">تواصل معنا</a>
+{user && (
+  <button
+    className="menuItem"
+    onClick={async () => {
+      await supabase.auth.signOut();
+      setUser(null);
+    }}
+  >
+    تسجيل الخروج
+  </button>
+)}
 </aside>
       <main className="container">
        <section className="hero">
