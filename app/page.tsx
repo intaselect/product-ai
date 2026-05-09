@@ -76,9 +76,9 @@ useEffect(() => {
         url: "https://store-3.com/qGpOyXN",
       },
       {
-        title: "خصم السعودية على الإلكترونيات",
-        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
-        url: "https://store-3.com/qGpOyXN",
+        title: "هاتف M-HORSE M17 Pro Max بشريحة NFC",
+        image: "https://f.nooncdn.com/p/pzsku/Z8624F7B143240BB93FE8Z/45/_/1776758597/0344f741-c522-4be7-a941-e224e31da88d.jpg?width=800",
+        url: "https://www.noon.com/saudi-ar/m-horse-m17-pro-max-smartphone-with-nfc-6-6-hd-display-12gb-ram-256gb-storage-5000mah-battery-4g-lte-orange/Z8624F7B143240BB93FE8Z/p/?o=ec9dffd89856be8e&shareId=179b3563-6d3c-431c-b36a-8a6cb1575c5a",
       },
       {
         title: "خصم السعودية على الإلكترونيات",
