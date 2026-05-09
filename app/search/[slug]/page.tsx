@@ -30,29 +30,63 @@ async function getSearchData(slug: string) {
 
   return data;
 }
-
+const countryMap: any = {
+  sa: "السعودية",
+  ae: "الإمارات",
+  kw: "الكويت",
+  qa: "قطر",
+  bh: "البحرين",
+  eg: "مصر",
+};
 export async function generateMetadata({ params }: any) {
   const { slug } = await params;
+
   const clean = cleanSlug(slug);
 
+  const parts = clean.split("-");
+  const countryCode = parts.pop();
+  const query = parts.join(" ");
+
+  const countryMap: any = {
+    sa: "السعودية",
+    ae: "الإمارات",
+    kw: "الكويت",
+    qa: "قطر",
+    bh: "البحرين",
+    eg: "مصر",
+  };
+
+  const countryName = countryMap[countryCode || ""] || "السعودية";
+
   return {
-    title: `أفضل سعر ${clean.replace(/-/g, " ")} في السعودية والخليج`,
-    description: `قارن أسعار ${clean.replace(/-/g, " ")} في السعودية والخليج واعرف أفضل العروض والمتاجر.`,
+    title: `أفضل سعر ${query} في ${countryName}`,
+    description: `قارن أسعار ${query} في ${countryName} واعرف أفضل العروض والمتاجر المتاحة.`,
   };
 }
 
 export default async function Page({ params }: any) {
   const { slug } = await params;
+
   const clean = cleanSlug(slug);
   const data = await getSearchData(slug);
 
+  const parts = clean.split("-");
+  const countryCode = parts.pop();
+  const query = parts.join(" ");
+
+  const countryName = countryMap[countryCode || ""] || countryCode;
+
   return (
     <main style={{ padding: "40px", color: "white", background: "#212121", minHeight: "100vh" }}>
-      <h1>نتائج البحث عن: {data?.query || clean.replace(/-/g, " ")}</h1>
+      
+      <h1>أفضل سعر {query} في {countryName}</h1>
 
       <p>عدد مرات البحث: {data?.search_count || 0}</p>
 
-      <p>هذه صفحة مخصصة لتحسين ظهور البحث في جوجل.</p>
+      <p>
+        عروض {query} في {countryName} وأفضل أماكن الشراء والمتاجر المتاحة.
+      </p>
+
     </main>
   );
 }
