@@ -9,45 +9,50 @@ const supabase = createClient(
 );
 
 export default function LoginPage() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [code, setCode] = useState("");
-  const [step, setStep] = useState<"phone" | "code">("phone");
+  const [email, setEmail] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  async function sendCode() {
-    setLoading(true);
-    setMessage("");
-
-    const { error } = await supabase.auth.signInWithOtp({
-      phone,
-    });
-
-    if (error) {
-      setMessage(error.message);
-    } else {
-      setStep("code");
-      setMessage("تم إرسال كود التحقق إلى رقم الهاتف");
+  async function handleRegister() {
+    if (!firstName || !lastName || !phone || !email) {
+      setMessage("من فضلك املأ كل البيانات");
+      return;
     }
 
-    setLoading(false);
-  }
-
-  async function verifyCode() {
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.verifyOtp({
-      phone,
-      token: code,
-      type: "sms",
+    const { error: insertError } = await supabase.from("profiles").upsert(
+      {
+        first_name: firstName,
+        last_name: lastName,
+        phone,
+        email,
+      },
+      { onConflict: "email" }
+    );
+
+    if (insertError) {
+      setMessage(insertError.message);
+      setLoading(false);
+      return;
+    }
+
+    const { error: otpError } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: "https://www.bpschat.com",
+      },
     });
 
-    if (error) {
-      setMessage(error.message);
+    if (otpError) {
+      setMessage(otpError.message);
     } else {
-      setMessage("تم تسجيل الدخول بنجاح");
-      window.location.href = "/";
+      setMessage("تم إرسال رابط تسجيل الدخول إلى بريدك الإلكتروني");
     }
 
     setLoading(false);
@@ -58,38 +63,41 @@ export default function LoginPage() {
       <section style={styles.card}>
         <h1 style={styles.title}>تسجيل الدخول</h1>
         <p style={styles.subtitle}>
-          سجل دخولك باستخدام رقم الهاتف
+          سجل بياناتك وسيتم إرسال رابط الدخول على الإيميل
         </p>
 
-        {step === "phone" && (
-          <>
-            <input
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="+9665xxxxxxxx"
-              style={styles.input}
-            />
+        <input
+          placeholder="الاسم الأول"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          style={styles.input}
+        />
 
-            <button onClick={sendCode} disabled={loading} style={styles.button}>
-              {loading ? "جاري الإرسال..." : "إرسال كود التحقق"}
-            </button>
-          </>
-        )}
+        <input
+          placeholder="الاسم الثاني"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          style={styles.input}
+        />
 
-        {step === "code" && (
-          <>
-            <input
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="اكتب كود التحقق"
-              style={styles.input}
-            />
+        <input
+          placeholder="رقم الهاتف"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          style={styles.input}
+        />
 
-            <button onClick={verifyCode} disabled={loading} style={styles.button}>
-              {loading ? "جاري التحقق..." : "تأكيد الدخول"}
-            </button>
-          </>
-        )}
+        <input
+          placeholder="البريد الإلكتروني"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={styles.input}
+        />
+
+        <button onClick={handleRegister} disabled={loading} style={styles.button}>
+          {loading ? "جاري الإرسال..." : "تسجيل الدخول بالإيميل"}
+        </button>
 
         {message && <p style={styles.message}>{message}</p>}
 
@@ -113,7 +121,7 @@ const styles: any = {
   },
   card: {
     width: "100%",
-    maxWidth: "420px",
+    maxWidth: "440px",
     background: "#2b2b2b",
     border: "1px solid #444",
     borderRadius: "20px",
