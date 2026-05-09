@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
-
+import SeoSearchBar from "@/app/components/SeoSearchBar";
 
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
@@ -75,8 +75,12 @@ export default async function Page({ params }: any) {
 
   const products = await fetchRealProducts(query, countryCode);
 
-  return (
-    <main style={{ padding: "40px", color: "white", background: "#212121", minHeight: "100vh" }}>
+return (
+  <main style={{ color: "white", background: "#212121", minHeight: "100vh" }}>
+    
+    <SeoSearchBar />
+
+    <div style={{ padding: "40px" }}>
       <h1>أفضل سعر {data?.query || query} في {countryName}</h1>
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p>
@@ -228,7 +232,9 @@ export default async function Page({ params }: any) {
     </div>
 
   </div>
-</section>
-    </main>
-  );
+    </section>
+    </div>
+  </main>
+);
+  
 }
