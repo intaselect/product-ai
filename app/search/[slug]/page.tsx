@@ -107,20 +107,20 @@ export default async function Page({ params }: any) {
               background: "#2b2b2b",
             }}
           >
-            {product.image && (
-              <img
-                src={product.image}
-                alt={product.title || product.name || query}
-                style={{
-                  width: "90px",
-                  height: "90px",
-                  objectFit: "cover",
-                  borderRadius: "10px",
-                  background: "#fff",
-                }}
-              />
-            )}
-
+           {product.image && (
+  <img
+    src={product.image}
+    alt={`${product.title || product.name || query} - أفضل سعر في ${countryName}`}
+    loading="lazy"
+    style={{
+      width: "90px",
+      height: "90px",
+      objectFit: "cover",
+      borderRadius: "10px",
+      background: "#fff",
+    }}
+  />
+)}
             <div>
               <h3 style={{ margin: 0 }}>
                 {product.title || product.name || "منتج"}
