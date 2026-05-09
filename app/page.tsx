@@ -461,7 +461,7 @@ useEffect(() => {
 /* 🍔 Menu */
 .menuButton {
   position: fixed;
-  top: 18px;
+  top: 76px;
   left: 18px;
   z-index: 50;
   width: 42px;
@@ -473,7 +473,6 @@ useEffect(() => {
   font-size: 22px;
   cursor: pointer;
 }
-
 .menuButton:hover {
   background: #383838;
 }
@@ -535,7 +534,7 @@ useEffect(() => {
 /* 📱 Mobile */
 @media (max-width: 600px) {
   .menuButton {
-    top: 12px;
+    top: 70px;
     left: 12px;
     width: 40px;
     height: 40px;
