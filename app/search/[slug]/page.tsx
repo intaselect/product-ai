@@ -77,6 +77,35 @@ export default async function Page({ params }: any) {
   return (
     <main style={{ padding: "40px", color: "white", background: "#212121", minHeight: "100vh" }}>
       <h1>أفضل سعر {data?.query || query} في {countryName}</h1>
+      <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
+  <p>
+    إذا كنت تبحث عن أفضل سعر {data?.query || query} في {countryName}، فأنت في المكان الصحيح.
+    نوفر لك مقارنة شاملة لأحدث الأسعار والعروض من مختلف المتاجر.
+  </p>
+
+  <p>
+    يمكنك العثور على {data?.query || query} بأفضل الأسعار في {countryName} مع إمكانية مقارنة المنتجات
+    من حيث السعر، الجودة، والتقييمات قبل اتخاذ قرار الشراء.
+  </p>
+
+  <p>
+    Looking for the best price for {data?.query || query} in {countryName}?  
+    Compare deals, check prices, and find the best offers from trusted stores.
+  </p>
+</section>
+<section style={{ marginTop: "20px" }}>
+  <h2>كلمات مرتبطة بـ {data?.query || query}</h2>
+
+  <p style={{ lineHeight: "2" }}>
+    سعر {data?.query || query} في {countryName} - 
+    عروض {data?.query || query} - 
+    شراء {data?.query || query} - 
+    {data?.query || query} مستعمل - 
+    {data?.query || query} جديد - 
+    best price {data?.query || query} - 
+    {data?.query || query} price today
+  </p>
+</section>
 
       <p>عدد مرات البحث: {data?.search_count || 0}</p>
 
