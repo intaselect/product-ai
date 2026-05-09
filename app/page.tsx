@@ -81,14 +81,14 @@ useEffect(() => {
         url: "https://www.noon.com/saudi-ar/m-horse-m17-pro-max-smartphone-with-nfc-6-6-hd-display-12gb-ram-256gb-storage-5000mah-battery-4g-lte-orange/Z8624F7B143240BB93FE8Z/p/?o=ec9dffd89856be8e&shareId=179b3563-6d3c-431c-b36a-8a6cb1575c5a",
       },
       {
-        title: "خصم السعودية على الإلكترونيات",
-        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
-        url: "https://store-3.com/qGpOyXN",
+        title: "  ايمالا بني فاتح ",
+        image: "https://f.nooncdn.com/p/pzsku/Z790903813A6E938BD103Z/45/_/1774181456/fa477ac5-a671-4c72-b790-17db19878dc6.jpg?width=800",
+        url: "https://www.noon.com/saudi-ar/aymala-lenses-milk-tea/Z790903813A6E938BD103Z/p/?o=bbfa478ebae78e7a&shareId=cd8114c0-34d4-407d-9537-ccf927cdeb15",
       },
       {
-        title: "خصم السعودية على الإلكترونيات",
-        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
-        url: "https://store-3.com/qGpOyXN",
+        title: " بروتين مصل الحليب بنسبة 100% من Gold Standard   ",
+        image: "https://f.nooncdn.com/p/pzsku/ZFBF8D70FD73EB9D7E4D0Z/45/_/1772091006/411bfd34-493e-49b6-803c-09eff6e75bd6.jpg?width=800",
+        url: "https://www.noon.com/saudi-ar/on-100-wgs-gf-french-van-creme-5lb/N53418656A/p/?o=ac6859087cfa841a&shareId=7e532f52-14c6-4a2b-999a-9af49f0a379c",
       },
       {
         title: "خصم السعودية على الإلكترونيات",
