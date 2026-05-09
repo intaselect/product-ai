@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { fetchRealProducts } from "@/lib/fetchRealProducts";
 
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
@@ -66,8 +67,12 @@ export async function generateMetadata({ params }: any) {
 
 export default async function Page({ params }: any) {
   const { slug } = await params;
-  const { query, countryName } = parseSlug(slug);
+
+  const { query, countryCode, countryName } = parseSlug(slug);
+
   const data = await getSearchData(slug);
+
+  const products = await fetchRealProducts(query, countryCode);
 
   return (
     <main style={{ padding: "40px", color: "white", background: "#212121", minHeight: "100vh" }}>
@@ -78,6 +83,59 @@ export default async function Page({ params }: any) {
       <p>
         عروض {data?.query || query} في {countryName} وأفضل أماكن الشراء والمتاجر المتاحة.
       </p>
+
+      <h2 style={{ marginTop: "30px" }}>أفضل المنتجات المتاحة</h2>
+
+      <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
+        {products?.slice(0, 20).map((product: any, index: number) => (
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              gap: "14px",
+              padding: "16px",
+              border: "1px solid #444",
+              borderRadius: "14px",
+              background: "#2b2b2b",
+            }}
+          >
+            {product.image && (
+              <img
+                src={product.image}
+                alt={product.title || product.name || query}
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  objectFit: "cover",
+                  borderRadius: "10px",
+                  background: "#fff",
+                }}
+              />
+            )}
+
+            <div>
+              <h3 style={{ margin: 0 }}>
+                {product.title || product.name || "منتج"}
+              </h3>
+
+              <p style={{ margin: "8px 0" }}>
+                {product.price || product.priceText || ""}
+              </p>
+
+              {product.link && (
+                <a
+                  href={product.link}
+                  target="_blank"
+                  rel="nofollow sponsored noopener noreferrer"
+                  style={{ color: "#10a37f" }}
+                >
+                  عرض المنتج
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </main>
   );
 }
