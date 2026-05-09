@@ -157,7 +157,7 @@ useEffect(() => {
         url: "https://www.noon.com/uae-ar/airwrap-co-anda2x-multi-styler-and-dryer-straight-wavy-ceramic-pink-rose-gold-ceramic-pink-rose-gold/N70270683V/p/?o=edae37f8bec648ab&shareId=d6641fc8-6fbe-45e0-bcb9-11c249f11047",
       },
       {
-        title: "جوغر بقصة واسعة مطبع بكتابةسماعة رأس كلاود II سلكية للألعاب بتصميم يغطي الأذن لأجهزة بلايستيشن 4 وبلايستيشن 5 وإكس بوكس ون وإكس بوكس سيريس إكس ونينتندو سويتش/ جهاز الكمبيوتر",
+        title: "سماعة رأس كلاود II سلكية للألعاب بتصميم يغطي الأذن لأجهزة بلايستيشن 4 وبلايستيشن 5 وإكس بوكس ون وإكس بوكس سيريس إكس ونينتندو سويتش/ جهاز الكمبيوتر",
         price: "178 درهم",
         image: "https://f.nooncdn.com/p/pnsku/N16659460A/45/_/1766380489/5451288e-47f9-4bac-9a0f-8aba6f0ecce2.jpg?width=800",
         url: "https://www.noon.com/uae-ar/cloud-ii-gaming-headset-for-pc-and-ps4-and-xbox-one-nintendo-switch-red-wired-black/N16659460A/p/?o=fc7125647a74078c&shareId=f16f063c-1e28-4b7b-b155-d8e17decbf58",
@@ -172,19 +172,16 @@ useEffect(() => {
     ],
     kw: [
       {
-        title: "🔥 عروض الكويت",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/kw",
+        title: "",
+        price: "25 دينار",
+        image: "https://f.nooncdn.com/p/pzsku/Z7398083D99F0DE4A4F90Z/45/1741263201/1873c96b-385c-4e41-a768-b3740a527db6.jpg?width=800",
+        url: "https://www.noon.com/uae-ar/slogan-print-oversized-fit-jogger-with-slip-pocket/Z7398083D99F0DE4A4F90Z/p/?o=z7398083d99f0de4a4f90z-3&shareId=5145fb64-18f1-4295-a36a-a94de9cd46d2",
       },
       {
-        title: "خصم الكويت على الموبايلات",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/kw-mobiles",
-      },
-      {
-        title: "أفضل منتجات الكويت",
-        image: "https://via.placeholder.com/300x200",
-        url: "https://example.com/kw-products",
+        title: "أبل أيفون 15 128 جيجا (1 شريحة نانو + 1 شريحة الكترونية) - أسود",
+        price: "199.99 دينار",
+        image: "https://mrflex.best.com.kw/medias/1200Wx1200H-null?context=bWFzdGVyfGltYWdlc3w5OTg3NHxpbWFnZS9qcGVnfGFHUTFMMmc1TlM4eE16UXhNekF6TnpZd05EZzVOQzh4TWpBd1YzZ3hNakF3U0Y5dWRXeHN8ZDYxN2E4ZWU2Yjc2MWRkYmM4MzA3OTBkZDJiY2JhNzAzYzQ5OTllMDM3ZWJjNWQzMTZjZTExY2I1MzIyYWE5Nw",
+        url: "https://best.com.kw/ar/product/IPH-15-128GB-BK-ES/Apple-iPhone-15-128GB-1-Nano-Sim---1-ESim----Black-",
       },
     ],
     qa: [
