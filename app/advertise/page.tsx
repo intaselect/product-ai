@@ -23,7 +23,7 @@ export default function AdvertisePage() {
         <h1 style={styles.title}>اعلن معنا</h1>
 
         <p style={styles.desc}>
-          اعرض منتجاتك أمام آلاف المستخدمين الباحثين عن الشراء يوميًا في السعودية والإمارات ومصر.
+          اعرض منتجاتك أمام آلاف المستخدمين الباحثين عن الشراء يوميًا في السعودية والإمارات ومصر والكويت والبحرين وقطر .. تظهر الاعلانات بحسب دولنك فقط.
         </p>
 
         {/* 💰 المميزات */}
@@ -80,7 +80,7 @@ export default function AdvertisePage() {
 
         {/* 📱 واتساب */}
         <a
-          href="https://wa.me/201000000000"
+          href="https://wa.me/00966564911912"
           target="_blank"
           style={styles.whatsapp}
         >
