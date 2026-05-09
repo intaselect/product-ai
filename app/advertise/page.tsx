@@ -8,15 +8,20 @@ export default function AdvertisePage() {
   const [message, setMessage] = useState("");
   const [done, setDone] = useState(false);
 
-  function handleSubmit(e: any) {
-    e.preventDefault();
+ function handleSubmit(e: any) {
+  e.preventDefault();
 
-    // حاليا بنعرض نجاح فقط
-    setDone(true);
+  const text = `طلب إعلان جديد من BPS Chat:
+الاسم: ${name}
+رقم الهاتف: ${phone}
+تفاصيل الإعلان: ${message}`;
 
-    // تقدر بعدين تبعت لـ API أو واتساب
-  }
+  const whatsappNumber = "966564911912"; // غيّر ده لرقمك بدون +
 
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+
+  window.open(url, "_blank");
+}
   return (
     <main style={styles.page}>
       <section style={styles.container}>
@@ -80,7 +85,7 @@ export default function AdvertisePage() {
 
         {/* 📱 واتساب */}
         <a
-          href="https://wa.me/00966564911912"
+          href="https://wa.me/966564911912"
           target="_blank"
           style={styles.whatsapp}
         >
