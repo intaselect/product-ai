@@ -145,6 +145,20 @@ export default async function Page({ params }: any) {
         ))}
       </div>
       <section style={{ marginTop: "40px" }}>
+        <section style={{ marginTop: "40px" }}>
+  <h2>عمليات بحث شائعة عن {data?.query || query} في {countryName}</h2>
+
+  <ul style={{ marginTop: "16px", lineHeight: "2" }}>
+    <li>سعر {data?.query || query} في {countryName}</li>
+    <li>أفضل عروض {data?.query || query} في {countryName}</li>
+    <li>أرخص {data?.query || query} في {countryName}</li>
+    <li>{data?.query || query} جديد ومستعمل في {countryName}</li>
+    <li>مقارنة أسعار {data?.query || query} في {countryName}</li>
+    <li>{data?.query || query} أونلاين في {countryName}</li>
+    <li>{data?.query || query} price in {countryName}</li>
+    <li>best price {data?.query || query} in {countryName}</li>
+  </ul>
+</section>
   <h2>
     أسئلة شائعة عن {data?.query || query} في {countryName}
   </h2>
