@@ -11,7 +11,7 @@ export async function GET() {
     .from("search_terms")
     .select("query, country, slug, search_count")
     .order("search_count", { ascending: false })
-    .limit(30);
+    .limit(300);
 
   if (error) {
     console.error("Popular searches error:", error);
