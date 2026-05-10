@@ -74,10 +74,50 @@ export default async function Page({ params }: any) {
   const data = await getSearchData(slug);
 
   const products = await fetchRealProducts(query, countryCode);
+  const schema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: `${data?.query || query}`,
+  description: `قارن أسعار ${data?.query || query} في ${countryName} واعرف أفضل العروض.`,
+  brand: {
+    "@type": "Brand",
+    name: "BPS Chat",
+  },
+  offers:
+    products?.slice(0, 5).map((product: any) => ({
+      "@type": "Offer",
+      price:
+        product.price ||
+        String(product.priceText || "").replace(/[^\d.]/g, ""),
+      priceCurrency:
+        countryCode === "sa"
+          ? "SAR"
+          : countryCode === "ae"
+          ? "AED"
+          : countryCode === "kw"
+          ? "KWD"
+          : countryCode === "qa"
+          ? "QAR"
+          : countryCode === "bh"
+          ? "BHD"
+          : "EGP",
+      availability: "https://schema.org/InStock",
+      url: product.url || product.link || "",
+      seller: {
+        "@type": "Organization",
+        name: product.source || "Store",
+      },
+    })) || [],
+};
 
 return (
   <main style={{ color: "white", background: "#212121", minHeight: "100vh" }}>
-    
+    <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(schema),
+  }}
+/>
     <SeoSearchBar />
 
     <div style={{ padding: "40px" }}>
