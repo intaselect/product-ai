@@ -60,10 +60,10 @@ export async function generateMetadata({ params }: any) {
   const { slug } = await params;
   const { query, countryName } = parseSlug(slug);
 
-  return {
-    title: `أفضل سعر ${query} في ${countryName}`,
-    description: `قارن أسعار ${query} في ${countryName} واعرف أفضل العروض والمتاجر المتاحة.`,
-  };
+ return {
+  title: `${query} في ${countryName} | مقارنة أسعار وعروض | BPS Chat`,
+  description: `ابحث عن ${query} في ${countryName} وقارن الأسعار والعروض من المتاجر المختلفة بسهولة عبر BPS Chat.`,
+};
 }
 
 export default async function Page({ params }: any) {
