@@ -19,35 +19,24 @@ export type Product = {
 };
 
 export function parsePrice(value: unknown): number | null {
-  if (value === null || value === undefined) return null;
+  if (!value) return null;
 
   if (typeof value === "number") {
-    return Number.isFinite(value) && value > 0 ? value : null;
+    return value > 0 ? value : null;
   }
 
-  const original = String(value);
-
-  const hasCurrency =
-    /EGP/i.test(original) ||
-    /جنيه/i.test(original) ||
-    /ج\.?م/i.test(original);
-
-  if (!hasCurrency) return null;
-
-  const cleaned = original.replace(/,/g, "");
+  const cleaned = String(value).replace(/,/g, "");
   const matches = cleaned.match(/\d+(?:\.\d+)?/g);
 
   if (!matches) return null;
 
-  const prices = matches
-    .map((n) => Number(n))
-    .filter((n) => Number.isFinite(n) && n >= 1000 && n <= 300000);
+  const price = Number(matches[0]);
 
-  if (prices.length === 0) return null;
+  // نطاق منطقي لمصر
+  if (price < 50 || price > 500000) return null;
 
-  return prices[0];
+  return price;
 }
-
 export function normalizeProduct(item: RawProduct): Product | null {
   const title = item.title || item.name;
   const link = item.link || item.url;

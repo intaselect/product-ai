@@ -284,10 +284,10 @@ useEffect(() => {
         url: "https://www.noon.com/bahrain-ar/carlinkit-led-carplay-android-13-4gb-64gb-8gb-128gb-smart-systems-ambient-aibox-qcm6225-wireless-android-auto-wireless-carplay-youtube-netflix-4g-lte-for-98-cars-mazda-toyota-hyundai-audi/Z891D0581C939C62F1C31Z/p/?o=z891d0581c939c62f1c31z-1&shareId=3d36fd60-cb01-408b-ac70-cff1698f1d7f",
       },
       {
-        title: "",
-        price: "120 دينار بحريني",
-        image: "",
-        url: "",
+        title: "HUAWEI MateBook D Laptop",
+        price: "299.99 دينار بحريني",
+        image: "https://www.jarir.com/cdn-cgi/image/fit=contain,width=380,height=380,quality=100,metadata=none/https://ak-asset.jarir.com/akeneo-prod/asset/7/b/f/c/7bfce0a92fc9c40f887f32d5fc68795458b3c2f5_674467.jpg",
+        url: "https://www.jarir.com/bh-en/huawei-matebook-d-laptops-jpm1620.html?childSku=674467&_gl=1%2a1pugrzk%2a_up%2aMQ..%2a_ga%2aNDIyOTcxNDAzLjE3Nzg0MDYzNjY.%2a_ga_738MLQYL5R%2aczE3Nzg0MDYzNjQkbzEkZzAkdDE3Nzg0MDYzNjQkajYwJGwwJGgw",
       },
     ],
     eg: [
