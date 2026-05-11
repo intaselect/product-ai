@@ -15,6 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.bpschat.com"),
+
   title: "BPS Chat | أفضل محرك بحث منتجات في السعودية والخليج",
   description:
     "ابحث عن أفضل المنتجات والأسعار في السعودية، الإمارات، الكويت، قطر، البحرين ومصر بسهولة.",
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
     "منتجات مصر",
     "BPS Chat",
   ],
+
   openGraph: {
     title: "BPS Chat | أفضل محرك بحث منتجات",
     description:
@@ -35,14 +38,22 @@ export const metadata: Metadata = {
     siteName: "BPS Chat",
     images: [
       {
-        url: "/logo-icon.png",
-        width: 512,
-        height: 512,
-        alt: "BPS Chat Logo",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "BPS Chat - Best Product Search",
       },
     ],
     locale: "ar_AR",
     type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "BPS Chat | أفضل محرك بحث منتجات",
+    description:
+      "ابحث عن المنتجات وقارن الأسعار حسب الدولة بسهولة من خلال BPS Chat.",
+    images: ["/og-image.png"],
   },
 };
 
