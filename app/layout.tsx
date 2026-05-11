@@ -29,7 +29,11 @@ export const metadata: Metadata = {
     "منتجات مصر",
     "BPS Chat",
   ],
-
+icons: {
+  icon: "/og-image.png",
+  shortcut: "/og-image.png",
+  apple: "/og-image.png",
+},
   openGraph: {
     title: "BPS Chat | أفضل محرك بحث منتجات",
     description:
