@@ -216,32 +216,6 @@ return (
                 </a>
               )}
             </div>
-            <div>
-  <h3 style={{ margin: 0 }}>
-    {product.title || product.name || "منتج"}
-  </h3>
-
-  <p style={{ margin: "8px 0" }}>
-    {product.priceText || product.price || "السعر غير متوفر"}
-  </p>
-
-  {product.source && (
-    <div style={{ fontSize: "12px", color: "#aaa" }}>
-      {product.source}
-    </div>
-  )}
-
-  {(product.url || product.link) && (
-    <a
-      href={product.url || product.link}
-      target="_blank"
-      rel="nofollow sponsored noopener noreferrer"
-      style={{ color: "#10a37f" }}
-    >
-      عرض المنتج
-    </a>
-  )}
-</div>
           </div>
         ))}
       </div>
