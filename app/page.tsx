@@ -706,8 +706,9 @@ useEffect(() => {
 /* 📱 Mobile */
 @media (max-width: 600px) {
   .menuButton {
-    top: 18px;
-    left: 12px;
+    top: 78px;
+    right: 14px;
+    left: auto;
     width: 40px;
     height: 40px;
   }
