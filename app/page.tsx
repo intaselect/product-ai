@@ -695,10 +695,11 @@ useEffect(() => {
   padding: 13px 12px;
   margin-bottom: 8px;
   border-radius: 12px;
-  color: #ececec;
+
+  color: #ffffff !important;
+
   text-decoration: none;
 }
-
 .menuItem:hover {
   background: #2f2f2f;
 }
