@@ -29,20 +29,16 @@ export default function Navbar({ user }: { user?: any }) {
           )}
         </nav>
 
-        {/* 📱 زرار الموبايل */}
-        <button onClick={() => setOpen(!open)} style={styles.menuBtn}>
-          ☰
-        </button>
+       {false && (
+  <button onClick={() => setOpen(!open)} style={styles.menuBtn}>
+    ☰
+  </button>
+)}
       </div>
 
       {/* 📱 القائمة في الموبايل */}
-      {open && (
-        <div style={styles.mobileMenu}>
-          <Link href="/">الرئيسية</Link>
-          <Link href="/advertise">🚀 أعلن معنا</Link>
-          <Link href="/about">عن الموقع</Link>
-          <Link href="/contact">تواصل</Link>
-          <Link href="/login">تسجيل الدخول</Link>
+      {false && open && (
+  <div style={styles.mobileMenu}>
         </div>
       )}
     </header>
