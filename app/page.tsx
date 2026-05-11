@@ -706,11 +706,16 @@ useEffect(() => {
 /* 📱 Mobile */
 @media (max-width: 600px) {
   .menuButton {
-    top: 70px;
+    top: 18px;
     left: 12px;
     width: 40px;
     height: 40px;
   }
+
+  .menuItem {
+    color: #fff !important;
+  }
+}
 
   .sidebar {
     width: 82%;
