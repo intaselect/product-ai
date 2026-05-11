@@ -76,12 +76,7 @@ useEffect(() => {
         image: "https://cdn.salla.sa/XnEj/ec192eee-4b7c-450e-bb33-59760386b80b-1000x1000-2hFDNYNVi8WffASJvRTIOzmEb9AnZNRiTYHsOEUr.jpg",
         url: "https://iblackstores.com/EXlWDyR",
       },
-      {
-         title: "خصم السعودية على الإلكترونيات",
-          price: "199 ريال",
-        image: "https://cdn.salla.sa/GpOOa/0ca44fd0-a8b3-495b-94da-d0729acca047-1000x750-oQfz8hc466b562etmzyz1w7g2Dco3FjqK2hrAcXC.png",
-        url: "https://store-3.com/qGpOyXN",
-      },
+      
       {
         title: "هاتف M-HORSE M17 Pro Max بشريحة NFC",
          price: "640 ريال",
