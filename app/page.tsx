@@ -708,7 +708,6 @@ useEffect(() => {
   .menuButton {
     display: none;
   }
-}
 
   .sidebar {
     width: 82%;
@@ -718,8 +717,12 @@ useEffect(() => {
   .sidebar.open {
     left: 0;
   }
-}
 
+  .sidebar a,
+  .sidebar .menuItem {
+    color: #ffffff !important;
+  }
+}
 /* 🧾 Text */
 .title {
   font-size: 32px;
