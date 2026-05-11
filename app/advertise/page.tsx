@@ -28,7 +28,7 @@ export default function AdvertisePage() {
 نوع الباقة: ${packageType}
 تفاصيل الإعلان: ${message}`;
 
-    const whatsappNumber = "966564911912";
+    const whatsappNumber = "966549330606";
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
   }
@@ -139,7 +139,7 @@ export default function AdvertisePage() {
         </form>
 
         <a
-          href="https://wa.me/966564911912"
+          href="https://wa.me/966549330606"
           target="_blank"
           style={styles.whatsapp}
         >

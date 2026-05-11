@@ -13,7 +13,7 @@ export default function ContactPage() {
 الاسم: ${name}
 الرسالة: ${message}`;
 
-    const whatsappNumber = "966564911912"; // غيّر الرقم لرقمك بدون +
+    const whatsappNumber = "966549330606"; // غيّر الرقم لرقمك بدون +
 
     window.open(
       `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`,
