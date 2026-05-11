@@ -703,18 +703,9 @@ useEffect(() => {
   background: #2f2f2f;
 }
 
-/* 📱 Mobile */
 @media (max-width: 600px) {
   .menuButton {
-    top: 78px;
-    right: 14px;
-    left: auto;
-    width: 40px;
-    height: 40px;
-  }
-
-  .menuItem {
-    color: #fff !important;
+    display: none;
   }
 }
 
