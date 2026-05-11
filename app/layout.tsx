@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     "BPS Chat",
   ],
 icons: {
-  icon: "/og-image.png",
-  shortcut: "/og-image.png",
+  icon: "/favicon.ico",
+  shortcut: "/favicon.ico",
   apple: "/og-image.png",
 },
   openGraph: {
