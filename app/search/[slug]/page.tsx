@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
+import PopularSearches from "@/app/components/PopularSearches";
 
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
@@ -300,6 +301,7 @@ return (
   </div>
     </section>
     </div>
+    <PopularSearches />
   </main>
 );
   
