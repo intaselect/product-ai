@@ -505,12 +505,15 @@ useEffect(() => {
         </section>
 
         <section className="results">
-          {loading && (
-            <div className="loadingCard">
-              <div className="dot" />
-              <span>جاري البحث عن أفضل النتائج...</span>
-            </div>
-          )}
+  {loading && (
+    <div className="aiLoading">
+      <div className="aiSpinner"></div>
+
+      <p className="aiText">
+        جاري تحليل المنتجات بالذكاء الاصطناعي...
+      </p>
+    </div>
+  )}
 
           {!loading && results.length === 0 && (
             <p className="empty">ابدأ البحث أو جرّب اسم منتج آخر</p>
@@ -958,9 +961,19 @@ useEffect(() => {
   padding: 10px;
   background: rgba(40,40,40,0.72);
   backdrop-filter: blur(8px);
-
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px;
   margin-bottom: 10px;
+
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0,255,200,0.35);
+  box-shadow:
+    0 0 18px rgba(0,255,200,0.18),
+    0 10px 30px rgba(0,0,0,0.25);
 }
 .image {
   width: 80px;
@@ -1016,7 +1029,7 @@ useEffect(() => {
 
   filter: blur(35px);
 
-  opacity: 0.5;
+  opacity: 0.22;
 
   animation: brainPulse 6s ease-in-out infinite;
 
@@ -1036,7 +1049,7 @@ useEffect(() => {
 
   background-size: 50px 50px;
 
-  opacity: 0.5;
+  opacity: 0.22;
 
   animation: gridMove 20s linear infinite;
 }
@@ -1134,6 +1147,90 @@ useEffect(() => {
     transform: scale(1.8);
   }
 }
+  .aiLoading {
+  margin-top: 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  animation: fadeIn 0.4s ease;
+}
+
+.aiSpinner {
+  width: 80px;
+  height: 80px;
+
+  border-radius: 50%;
+
+  border: 2px solid rgba(255,255,255,0.08);
+  border-top: 2px solid #00ffd0;
+
+  box-shadow:
+    0 0 20px rgba(0,255,208,0.35),
+    inset 0 0 20px rgba(0,255,208,0.15);
+
+  animation:
+    spinAI 1s linear infinite,
+    pulseAI 2s ease-in-out infinite;
+}
+
+.aiText {
+  color: #cfcfcf;
+  font-size: 15px;
+  letter-spacing: 1px;
+
+  animation: textGlow 2s ease-in-out infinite;
+}
+
+@keyframes spinAI {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseAI {
+
+  0%,100% {
+    box-shadow:
+      0 0 20px rgba(0,255,208,0.25),
+      inset 0 0 20px rgba(0,255,208,0.1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 45px rgba(0,255,208,0.5),
+      inset 0 0 30px rgba(0,255,208,0.25);
+  }
+}
+
+@keyframes textGlow {
+
+  0%,100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 `}</style>
     </div>
