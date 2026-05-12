@@ -828,6 +828,7 @@ useEffect(() => {
   border-radius: 999px;
 }
 .adCard {
+z-index: 3;
   min-width: 230px;
   background: rgba(40,40,40,0.72);
   backdrop-filter: blur(8px);
@@ -861,19 +862,22 @@ useEffect(() => {
   left: -100%;
   width: 100%;
   height: 100%;
+
+  pointer-events: none;
+
   background: linear-gradient(
     120deg,
     transparent,
     rgba(255, 255, 255, 0.15),
     transparent
   );
+
   transition: 0.6s;
 }
 
 .adCard:hover::before {
   left: 100%;
 }
-
 .adInfo {
   padding: 10px;
 }
