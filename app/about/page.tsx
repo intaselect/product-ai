@@ -103,7 +103,7 @@ export default function AboutPage() {
       <a href="/" style={styles.homeLink}>
         الرجوع للرئيسية
       </a>
-      <style jsx global>{`
+      <style>{`
   @keyframes brainPulse {
     0%,100% {
       transform: translateX(-50%) scale(1);
