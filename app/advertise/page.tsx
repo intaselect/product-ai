@@ -35,6 +35,24 @@ export default function AdvertisePage() {
 
   return (
     <main style={styles.page}>
+      <div style={styles.aiBackground}>
+  <div style={styles.brainCore}></div>
+  <div style={styles.aiGrid}></div>
+
+  <div style={styles.particles}>
+    {Array.from({ length: 35 }).map((_, i) => (
+      <span
+        key={i}
+        style={{
+          ...styles.particle,
+          top: `${(i * 23) % 100}%`,
+          left: `${(i * 37) % 100}%`,
+          animationDelay: `${i * 0.2}s`,
+        }}
+      />
+    ))}
+  </div>
+</div>
       <section style={styles.container}>
         <h1 style={styles.title}>اعلن معنا</h1>
 
@@ -150,21 +168,62 @@ export default function AdvertisePage() {
           الرجوع للرئيسية
         </a>
       </section>
+      <style>{`
+  @keyframes brainPulse {
+    0%,100% {
+      transform: translateX(-50%) scale(1);
+      opacity: 0.22;
+    }
+
+    50% {
+      transform: translateX(-50%) scale(1.06);
+      opacity: 0.42;
+    }
+  }
+
+  @keyframes gridMove {
+    from {
+      background-position: 0 0;
+    }
+
+    to {
+      background-position: 120px 120px;
+    }
+  }
+
+  @keyframes floatParticle {
+    0%,100% {
+      transform: translateY(0px) scale(1);
+      opacity: 0.3;
+    }
+
+    50% {
+      transform: translateY(-25px) scale(1.8);
+      opacity: 1;
+    }
+  }
+`}</style>
     </main>
   );
 }
 
 const styles: any = {
   page: {
-    minHeight: "100vh",
-    background: "#212121",
-    color: "#fff",
-    padding: "40px 16px",
-    direction: "rtl",
-  },
+  minHeight: "100vh",
+  background:
+    "radial-gradient(circle at top, rgba(0,255,200,0.08), transparent 30%), radial-gradient(circle at right, rgba(0,180,255,0.07), transparent 25%), #0b0f14",
+  color: "#fff",
+  padding: "40px 16px",
+  direction: "rtl",
+  overflowX: "hidden",
+  position: "relative",
+  zIndex: 1,
+},
   container: {
     maxWidth: "950px",
     margin: "auto",
+    position: "relative",
+zIndex: 2,
   },
   title: {
     textAlign: "center",
@@ -177,13 +236,23 @@ const styles: any = {
     marginBottom: "30px",
     lineHeight: "1.8",
   },
-  box: {
-    background: "#2b2b2b",
-    padding: "18px",
-    borderRadius: "14px",
-    marginBottom: "20px",
-    border: "1px solid #3a3a3a",
-  },
+ box: {
+  background: "rgba(40,40,40,0.72)",
+  backdropFilter: "blur(8px)",
+  border: "1px solid rgba(255,255,255,0.06)",
+
+  padding: "18px",
+
+  borderRadius: "18px",
+
+  marginBottom: "20px",
+
+  transition: "all 0.25s ease",
+
+  position: "relative",
+
+  overflow: "hidden",
+},
   h2: {
     marginBottom: "12px",
     fontSize: "20px",
@@ -193,23 +262,46 @@ const styles: any = {
     paddingRight: "20px",
   },
   pricingBox: {
-    background: "#2b2b2b",
-    padding: "20px",
-    borderRadius: "14px",
-    marginBottom: "20px",
-    border: "1px solid #3a3a3a",
-  },
+  background: "rgba(40,40,40,0.72)",
+  backdropFilter: "blur(8px)",
+  border: "1px solid rgba(255,255,255,0.06)",
+
+  padding: "20px",
+
+  borderRadius: "18px",
+
+  marginBottom: "20px",
+
+  transition: "all 0.25s ease",
+
+  position: "relative",
+
+  overflow: "hidden",
+},
   cards: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
     gap: "14px",
   },
   card: {
-    background: "#1f1f1f",
-    padding: "16px",
-    borderRadius: "14px",
-    border: "1px solid #444",
-  },
+  background: "rgba(20,20,20,0.75)",
+
+  backdropFilter: "blur(8px)",
+
+  padding: "16px",
+
+  borderRadius: "18px",
+
+  border: "1px solid rgba(255,255,255,0.06)",
+
+  transition: "all 0.25s ease",
+
+  cursor: "pointer",
+
+  position: "relative",
+
+  overflow: "hidden",
+},
   country: {
     marginBottom: "12px",
     color: "#10a37f",
@@ -220,11 +312,20 @@ const styles: any = {
     marginBottom: "8px",
   },
   form: {
-    background: "#2b2b2b",
-    padding: "20px",
-    borderRadius: "14px",
-    border: "1px solid #3a3a3a",
-  },
+  background: "rgba(40,40,40,0.72)",
+
+  backdropFilter: "blur(8px)",
+
+  padding: "20px",
+
+  borderRadius: "18px",
+
+  border: "1px solid rgba(255,255,255,0.06)",
+
+  position: "relative",
+
+  overflow: "hidden",
+},
   input: {
     width: "100%",
     padding: "13px",
@@ -271,4 +372,60 @@ const styles: any = {
     textAlign: "center",
     color: "#10a37f",
   },
+  aiBackground: {
+  position: "fixed",
+  inset: 0,
+  zIndex: 0,
+  overflow: "hidden",
+  pointerEvents: "none",
+},
+
+brainCore: {
+  position: "absolute",
+  top: "10%",
+  left: "50%",
+  transform: "translateX(-50%)",
+  width: "700px",
+  height: "450px",
+  borderRadius: "50%",
+  background: `
+    radial-gradient(circle at 30% 40%, rgba(0,255,200,1), transparent 10%),
+    radial-gradient(circle at 50% 50%, rgba(0,180,255,0.9), transparent 12%),
+    radial-gradient(circle at 70% 45%, rgba(16,163,127,1), transparent 10%),
+    radial-gradient(circle at 45% 70%, rgba(0,220,255,0.9), transparent 8%)
+  `,
+  filter: "blur(35px)",
+  opacity: 0.22,
+  animation: "brainPulse 6s ease-in-out infinite",
+},
+
+aiGrid: {
+  position: "absolute",
+  inset: 0,
+  backgroundImage: `
+    linear-gradient(rgba(0,255,200,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,200,0.08) 1px, transparent 1px)
+  `,
+  backgroundSize: "50px 50px",
+  opacity: 0.22,
+  animation: "gridMove 20s linear infinite",
+},
+
+particles: {
+  position: "absolute",
+  inset: 0,
+},
+
+particle: {
+  position: "absolute",
+  width: "5px",
+  height: "5px",
+  borderRadius: "50%",
+  background: "#00f7ff",
+
+  boxShadow:
+    "0 0 8px #00f7ff, 0 0 18px #00f7ff, 0 0 35px rgba(0,247,255,0.8)",
+
+  animation: "floatParticle 8s ease-in-out infinite",
+},
 };
