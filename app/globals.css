@@ -75,8 +75,8 @@ body {
   left: -999px;
   top: -999px;
 
-  width: 210px;
-height: 210px;
+  width: 170px;
+height: 170px;
   border-radius: 50%;
   pointer-events: none;
 
@@ -87,7 +87,7 @@ height: 210px;
     transparent 70%
   );
 
-  filter: blur(35px);
+  filter: blur(28px);
 animation: mouseGlowPulse 2.4s ease-in-out infinite;
   transform: translate(-50%, -50%);
   z-index: 9999;
