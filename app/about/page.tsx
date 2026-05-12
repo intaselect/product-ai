@@ -1,6 +1,24 @@
 export default function AboutPage() {
   return (
     <main style={styles.page}>
+      <div style={styles.aiBackground}>
+  <div style={styles.brainCore}></div>
+  <div style={styles.aiGrid}></div>
+
+  <div style={styles.particles}>
+    {Array.from({ length: 35 }).map((_, i) => (
+      <span
+        key={i}
+        style={{
+          ...styles.particle,
+          top: `${(i * 23) % 100}%`,
+          left: `${(i * 37) % 100}%`,
+          animationDelay: `${i * 0.2}s`,
+        }}
+      />
+    ))}
+  </div>
+</div>
       <section style={styles.hero}>
         <div style={styles.badge}>BPS Chat</div>
 
@@ -92,7 +110,11 @@ export default function AboutPage() {
 const styles: any = {
   page: {
     minHeight: "100vh",
-    background: "#212121",
+    background:
+  "radial-gradient(circle at top, rgba(0,255,200,0.08), transparent 30%), radial-gradient(circle at right, rgba(0,180,255,0.07), transparent 25%), #0b0f14",
+overflowX: "hidden",
+position: "relative",
+zIndex: 1,
     color: "#fff",
     padding: "50px 16px",
     direction: "rtl",
@@ -139,8 +161,13 @@ const styles: any = {
     gap: "16px",
   },
   card: {
-    background: "#2b2b2b",
-    border: "1px solid #444",
+    background: "rgba(40,40,40,0.72)",
+backdropFilter: "blur(8px)",
+border: "1px solid rgba(255,255,255,0.06)",
+transition: "all 0.25s ease",
+cursor: "pointer",
+overflow: "hidden",
+position: "relative",
     borderRadius: "18px",
     padding: "20px",
     lineHeight: "1.8",
@@ -148,8 +175,9 @@ const styles: any = {
   section: {
     maxWidth: "900px",
     margin: "0 auto 22px",
-    background: "#2b2b2b",
-    border: "1px solid #444",
+   background: "rgba(40,40,40,0.72)",
+backdropFilter: "blur(8px)",
+border: "1px solid rgba(255,255,255,0.06)",
     borderRadius: "18px",
     padding: "22px",
     lineHeight: "2",
@@ -175,4 +203,55 @@ const styles: any = {
     textDecoration: "none",
     fontWeight: "bold",
   },
+  aiBackground: {
+  position: "fixed",
+  inset: 0,
+  zIndex: 0,
+  overflow: "hidden",
+  pointerEvents: "none",
+},
+
+brainCore: {
+  position: "absolute",
+  top: "10%",
+  left: "50%",
+  transform: "translateX(-50%)",
+  width: "700px",
+  height: "450px",
+  borderRadius: "50%",
+  background: `
+    radial-gradient(circle at 30% 40%, rgba(0,255,200,1), transparent 10%),
+    radial-gradient(circle at 50% 50%, rgba(0,180,255,0.9), transparent 12%),
+    radial-gradient(circle at 70% 45%, rgba(16,163,127,1), transparent 10%),
+    radial-gradient(circle at 45% 70%, rgba(0,220,255,0.9), transparent 8%)
+  `,
+  filter: "blur(35px)",
+  opacity: 0.22,
+},
+
+aiGrid: {
+  position: "absolute",
+  inset: 0,
+  backgroundImage: `
+    linear-gradient(rgba(0,255,200,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,200,0.08) 1px, transparent 1px)
+  `,
+  backgroundSize: "50px 50px",
+  opacity: 0.22,
+},
+
+particles: {
+  position: "absolute",
+  inset: 0,
+},
+
+particle: {
+  position: "absolute",
+  width: "5px",
+  height: "5px",
+  borderRadius: "50%",
+  background: "#00f7ff",
+  boxShadow:
+    "0 0 8px #00f7ff, 0 0 18px #00f7ff, 0 0 35px rgba(0,247,255,0.8)",
+},
 };
