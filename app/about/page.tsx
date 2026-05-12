@@ -103,6 +103,41 @@ export default function AboutPage() {
       <a href="/" style={styles.homeLink}>
         الرجوع للرئيسية
       </a>
+      <style jsx global>{`
+  @keyframes brainPulse {
+    0%,100% {
+      transform: translateX(-50%) scale(1);
+      opacity: 0.22;
+    }
+
+    50% {
+      transform: translateX(-50%) scale(1.06);
+      opacity: 0.42;
+    }
+  }
+
+  @keyframes gridMove {
+    from {
+      background-position: 0 0;
+    }
+
+    to {
+      background-position: 120px 120px;
+    }
+  }
+
+  @keyframes floatParticle {
+    0%,100% {
+      transform: translateY(0px) scale(1);
+      opacity: 0.3;
+    }
+
+    50% {
+      transform: translateY(-25px) scale(1.8);
+      opacity: 1;
+    }
+  }
+`}</style>
     </main>
   );
 }
@@ -227,6 +262,7 @@ brainCore: {
   `,
   filter: "blur(35px)",
   opacity: 0.22,
+  animation: "brainPulse 6s ease-in-out infinite",
 },
 
 aiGrid: {
@@ -238,6 +274,7 @@ aiGrid: {
   `,
   backgroundSize: "50px 50px",
   opacity: 0.22,
+  animation: "gridMove 20s linear infinite",
 },
 
 particles: {
@@ -253,5 +290,7 @@ particle: {
   background: "#00f7ff",
   boxShadow:
     "0 0 8px #00f7ff, 0 0 18px #00f7ff, 0 0 35px rgba(0,247,255,0.8)",
+    animation: "floatParticle 8s ease-in-out infinite",
 },
+
 };
