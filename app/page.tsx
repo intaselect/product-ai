@@ -650,6 +650,44 @@ useEffect(() => {
   position: relative;
   z-index: 3;
 }
+  .hero::before {
+  content: "";
+  position: absolute;
+
+  top: -120px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 900px;
+  height: 500px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0,255,200,0.18),
+      rgba(0,180,255,0.10),
+      transparent 70%
+    );
+
+  filter: blur(40px);
+
+  z-index: -1;
+
+  animation: heroGlow 6s ease-in-out infinite;
+}
+  @keyframes heroGlow {
+
+  0%,100% {
+    opacity: 0.5;
+    transform: translateX(-50%) scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+  }
+}
 
 .badge {
   background: #2f2f2f;
@@ -1004,20 +1042,23 @@ useEffect(() => {
 /* ✨ particles */
 .particles span {
   position: absolute;
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
 
   border-radius: 50%;
 
-  background: #10f5d0;
+  background: #00f7ff;
 
   box-shadow:
-    0 0 12px #10f5d0,
-    0 0 24px #10f5d0;
+    0 0 8px #00f7ff,
+    0 0 18px #00f7ff,
+    0 0 35px rgba(0,247,255,0.8);
 
-  opacity: 0.4;
+  opacity: 0.7;
 
-  animation: floatParticle 8s ease-in-out infinite;
+  animation:
+    floatParticle 8s ease-in-out infinite,
+    particleGlow 2.5s ease-in-out infinite;
 }
 
 .particles span:nth-child(odd) {
@@ -1078,6 +1119,20 @@ useEffect(() => {
     transform: translateY(-25px) scale(1.8);
     opacity: 1;
   }
+}
+
+@keyframes particleGlow {
+
+  0%,100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.8);
+  }
+}
 }
 `}</style>
     </div>
