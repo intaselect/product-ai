@@ -510,7 +510,7 @@ useEffect(() => {
       <div className="aiSpinner"></div>
 
       <p className="aiText">
-        جاري تحليل المنتجات بالذكاء الاصطناعي...
+        جاري الحصول على أفضل نتائج ...
       </p>
     </div>
   )}
