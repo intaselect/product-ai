@@ -67,6 +67,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const glowScript = `
+document.addEventListener("mousemove", (e) => {
+  const glow = document.querySelector(".mouseGlow");
+
+  if (!glow) return;
+
+  glow.style.left = e.clientX + "px";
+  glow.style.top = e.clientY + "px";
+});
+`;
   return (
     <html
       lang="en"
@@ -80,11 +90,13 @@ export default function RootLayout({
         ></script>
       </head>
 
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col mouseGlowBody">
         <Navbar />
+        <div className="mouseGlow"></div>
         {children}
         <Analytics />
         <SpeedInsights />
+        <script dangerouslySetInnerHTML={{ __html: glowScript }} />
       </body>
     </html>
   );
