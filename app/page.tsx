@@ -829,21 +829,23 @@ useEffect(() => {
 }
 .adCard {
   min-width: 230px;
-  background: #2f2f2f;
+  background: rgba(40,40,40,0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 16px;
   overflow: hidden;
   text-decoration: none;
   color: white;
   position: relative;
   transition: all 0.25s ease;
-  border: 1px solid #3a3a3a;
 }
 
-/* ✨ hover احترافي */
 .adCard:hover {
   transform: translateY(-6px) scale(1.02);
-  border-color: #10a37f;
-  box-shadow: 0 10px 30px rgba(16, 163, 127, 0.2);
+  border-color: rgba(0,255,200,0.35);
+  box-shadow:
+    0 0 22px rgba(0,255,200,0.20),
+    0 12px 32px rgba(0,0,0,0.28);
 }
 
 .adImage {
