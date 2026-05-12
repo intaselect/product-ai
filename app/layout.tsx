@@ -1,3 +1,4 @@
+import Script from "next/script";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -67,16 +68,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const glowScript = `
-document.addEventListener("mousemove", (e) => {
-  const glow = document.querySelector(".mouseGlow");
 
-  if (!glow) return;
-
-  glow.style.left = e.clientX + "px";
-  glow.style.top = e.clientY + "px";
-});
-`;
   return (
     <html
       lang="en"
@@ -96,7 +88,18 @@ document.addEventListener("mousemove", (e) => {
         {children}
         <Analytics />
         <SpeedInsights />
-        <script dangerouslySetInnerHTML={{ __html: glowScript }} />
+        <Script id="mouse-glow" strategy="afterInteractive">
+  {`
+    document.addEventListener("mousemove", (e) => {
+      const glow = document.querySelector(".mouseGlow");
+
+      if (!glow) return;
+
+      glow.style.left = e.clientX + "px";
+      glow.style.top = e.clientY + "px";
+    });
+  `}
+</Script>
       </body>
     </html>
   );
