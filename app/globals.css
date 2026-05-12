@@ -75,8 +75,8 @@ body {
   left: -999px;
   top: -999px;
 
-  width: 320px;
-  height: 320px;
+  width: 210px;
+height: 210px;
   border-radius: 50%;
   pointer-events: none;
 
@@ -87,7 +87,8 @@ body {
     transparent 70%
   );
 
-  filter: blur(45px);
+  filter: blur(35px);
+animation: mouseGlowPulse 2.4s ease-in-out infinite;
   transform: translate(-50%, -50%);
   z-index: 9999;
   mix-blend-mode: screen;
@@ -95,6 +96,17 @@ body {
   transition:
     left 0.08s linear,
     top 0.08s linear;
+}
+@keyframes mouseGlowPulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
 }
 .mouseGlowBody {
   position: relative;
