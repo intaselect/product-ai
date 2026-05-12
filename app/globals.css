@@ -72,32 +72,29 @@ body {
 }
 .mouseGlow {
   position: fixed;
-left: -999px;
-top: -999px;
+  left: -999px;
+  top: -999px;
+
   width: 320px;
   height: 320px;
-
   border-radius: 50%;
-
   pointer-events: none;
 
-  background:
-    radial-gradient(
-      circle,
-      rgba(0,255,200,0.16),
-      rgba(0,180,255,0.08),
-      transparent 70%
-    );
+  background: radial-gradient(
+    circle,
+    rgba(0,255,200,0.22),
+    rgba(0,180,255,0.12),
+    transparent 70%
+  );
 
   filter: blur(45px);
-
   transform: translate(-50%, -50%);
-
-  z-index: 0;
+  z-index: 9999;
+  mix-blend-mode: screen;
 
   transition:
-    left 0.12s linear,
-    top 0.12s linear;
+    left 0.08s linear,
+    top 0.08s linear;
 }
 .mouseGlowBody {
   position: relative;
