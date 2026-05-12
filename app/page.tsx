@@ -665,7 +665,7 @@ useEffect(() => {
   background:
     radial-gradient(
       circle,
-      rgba(0,255,200,0.18),
+      rgba(0,255,200,0.28),
       rgba(0,180,255,0.10),
       transparent 70%
     );
@@ -679,7 +679,7 @@ useEffect(() => {
   @keyframes heroGlow {
 
   0%,100% {
-    opacity: 0.5;
+    opacity: 0.22;
     transform: translateX(-50%) scale(1);
   }
 
@@ -956,11 +956,12 @@ useEffect(() => {
   display: flex;
   gap: 10px;
   padding: 10px;
-  background: #2f2f2f;
+  background: rgba(40,40,40,0.72);
+  backdrop-filter: blur(8px);
+
   border-radius: 12px;
   margin-bottom: 10px;
 }
-
 .image {
   width: 80px;
   height: 80px;
