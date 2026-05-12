@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { saveSearch } from "@/lib/saveSearch";
 import { supabase } from "@/lib/supabase";
 import PopularSearches from "@/app/components/PopularSearches";
+import type React from "react";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -372,6 +373,27 @@ useEffect(() => {
 
   return (
     <div className="page">
+    {/* AI Animated Background */}
+  <div className="aiBackground">
+    <div className="brainCore"></div>
+
+    <div className="grid"></div>
+
+    <div className="particles">
+      {Array.from({ length: 35 }).map((_, i) => (
+        <span
+  key={i}
+  style={
+    {
+      "--i": i,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+    } as React.CSSProperties
+  }
+/>
+      ))}
+    </div>
+  </div>
       <button className="menuButton" onClick={() => setMenuOpen(true)}>
   ☰
 </button>
@@ -535,8 +557,15 @@ useEffect(() => {
 <style jsx>{`
 .page {
   min-height: 100vh;
-  background: #212121;
+  background:
+    radial-gradient(circle at top, rgba(0,255,200,0.08), transparent 30%),
+    radial-gradient(circle at right, rgba(0,180,255,0.07), transparent 25%),
+    #0b0f14;
+
   color: #ececec;
+
+  position: relative;
+  overflow-x: hidden;
 }
 .adPrice {
   color: #10a37f;
@@ -608,13 +637,18 @@ useEffect(() => {
 
 /* 📦 Container */
 .container {
+  position: relative;
+  z-index: 2;
+
   max-width: 900px;
   margin: auto;
   padding: 40px 16px;
 }
-
 .hero {
   text-align: center;
+
+  position: relative;
+  z-index: 3;
 }
 
 .badge {
@@ -913,6 +947,137 @@ useEffect(() => {
 
 .empty {
   text-align: center;
+}
+  /* 🤖 AI BACKGROUND */
+
+.aiBackground {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 🧠 Brain glow */
+.brainCore {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 450px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(circle at 30% 40%, rgba(0,255,200,1), transparent 10%),
+    radial-gradient(circle at 50% 50%, rgba(0,180,255,0.9), transparent 12%),
+    radial-gradient(circle at 70% 45%, rgba(16,163,127,1), transparent 10%),
+    radial-gradient(circle at 45% 70%, rgba(0,220,255,0.9), transparent 8%);
+
+  filter: blur(35px);
+
+  opacity: 0.5;
+
+  animation: brainPulse 6s ease-in-out infinite;
+
+  box-shadow:
+    0 0 120px rgba(0,255,200,0.35),
+    0 0 220px rgba(0,180,255,0.25);
+}
+
+/* 🌐 Grid */
+.grid {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(rgba(0,255,200,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,200,0.08) 1px, transparent 1px);
+
+  background-size: 50px 50px;
+
+  opacity: 0.5;
+
+  animation: gridMove 20s linear infinite;
+}
+/* ✨ particles */
+.particles span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: #10f5d0;
+
+  box-shadow:
+    0 0 12px #10f5d0,
+    0 0 24px #10f5d0;
+
+  opacity: 0.4;
+
+  animation: floatParticle 8s ease-in-out infinite;
+}
+
+.particles span:nth-child(odd) {
+  background: #00bfff;
+
+  box-shadow:
+    0 0 12px #00bfff,
+    0 0 24px #00bfff;
+}
+
+/* 📍 positions */
+
+.particles span:nth-child(1){top:10%;left:15%;}
+.particles span:nth-child(2){top:18%;left:75%;}
+.particles span:nth-child(3){top:35%;left:22%;}
+.particles span:nth-child(4){top:42%;left:82%;}
+.particles span:nth-child(5){top:58%;left:12%;}
+.particles span:nth-child(6){top:66%;left:72%;}
+.particles span:nth-child(7){top:78%;left:30%;}
+.particles span:nth-child(8){top:84%;left:55%;}
+
+.particles span:nth-child(n) {
+  animation-delay: calc(var(--i) * 0.2s);
+}
+
+/* ✨ animations */
+
+@keyframes brainPulse {
+  0%,100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.22;
+  }
+
+  50% {
+    transform: translateX(-50%) scale(1.06);
+    opacity: 0.42;
+  }
+}
+
+@keyframes gridMove {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 120px 120px;
+  }
+}
+
+@keyframes floatParticle {
+
+  0%,100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: translateY(-25px) scale(1.8);
+    opacity: 1;
+  }
 }
 `}</style>
     </div>
