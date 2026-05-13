@@ -76,6 +76,44 @@ export default async function Page({ params }: any) {
   const data = await getSearchData(slug);
 
   const products = await fetchRealProducts(query, countryCode);
+  const validProducts = (products || []).filter((p: any) => p.price || p.priceText);
+
+function getPriceNumber(product: any) {
+  const raw = String(product.price || product.priceText || "");
+  const num = Number(raw.replace(/[^\d.]/g, ""));
+  return isNaN(num) ? null : num;
+}
+
+const productsWithPrices = validProducts
+  .map((p: any) => ({
+    ...p,
+    numericPrice: getPriceNumber(p),
+    storeName: p.source || "متجر إلكتروني",
+  }))
+  .filter((p: any) => p.numericPrice);
+
+const cheapestProduct = [...productsWithPrices].sort(
+  (a: any, b: any) => a.numericPrice - b.numericPrice
+)[0];
+
+const stores = Array.from(
+  new Set(productsWithPrices.map((p: any) => p.storeName))
+).slice(0, 5);
+
+const storeSummary = stores
+  .map((store: any) => {
+    const storeProducts = productsWithPrices.filter((p: any) => p.storeName === store);
+    const cheapestInStore = [...storeProducts].sort(
+  (a: any, b: any) => a.numericPrice - b.numericPrice
+)[0];
+
+    return {
+      store,
+      price: cheapestInStore?.priceText || cheapestInStore?.price,
+      title: cheapestInStore?.title || cheapestInStore?.name,
+    };
+  })
+  .filter((x: any) => x.price);
   const schema = {
   "@context": "https://schema.org",
   "@type": "Product",
@@ -135,18 +173,38 @@ return (
       <h1>أفضل سعر {data?.query || query} في {countryName}</h1>
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p>
-    إذا كنت تبحث عن أفضل سعر {data?.query || query} في {countryName}، فأنت في المكان الصحيح.
-    نوفر لك مقارنة شاملة لأحدث الأسعار والعروض من مختلف المتاجر.
-  </p>
+  يعرض لك BPS Chat تحليلًا مباشرًا لأسعار {data?.query || query} في {countryName}
+  من متاجر مثل {storeSummary.slice(0,2).map(s => s.store).join(" و ")}
+  لمساعدتك في مقارنة الأسعار واختيار أفضل عرض بسهولة.
+</p>
+
+  {cheapestProduct ? (
+    <p>
+      أفضل سعر ظاهر حاليًا لـ {data?.query || query} في {countryName}
+      هو حوالي {cheapestProduct.priceText || cheapestProduct.price}
+      من {cheapestProduct.source || "أحد المتاجر"}، وذلك حسب النتائج المتاحة وقت البحث.
+    </p>
+  ) : (
+    <p>
+      الأسعار قد تختلف حسب المتجر والتوفر والعروض الحالية، لذلك ننصح بمقارنة أكثر من نتيجة قبل الشراء.
+    </p>
+  )}
+
+  {storeSummary.length > 0 && (
+    <p>
+      من خلال النتائج الحالية، ظهرت عروض من{" "}
+      {storeSummary.map((item: any, index: number) => (
+        <span key={item.store}>
+          {item.store} بسعر يبدأ من {item.price}
+          {index < storeSummary.length - 1 ? "، " : "."}
+        </span>
+      ))}
+    </p>
+  )}
 
   <p>
-    يمكنك العثور على {data?.query || query} بأفضل الأسعار في {countryName} مع إمكانية مقارنة المنتجات
-    من حيث السعر، الجودة، والتقييمات قبل اتخاذ قرار الشراء.
-  </p>
-
-  <p>
-    Looking for the best price for {data?.query || query} in {countryName}?  
-    Compare deals, check prices, and find the best offers from trusted stores.
+    هذه الصفحة تساعدك على معرفة سعر {data?.query || query} في {countryName}
+    ومقارنة العروض من حيث السعر، المتجر، والتوفر قبل اتخاذ قرار الشراء.
   </p>
 </section>
 <section style={{ marginTop: "20px" }}>
