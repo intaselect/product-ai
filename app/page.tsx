@@ -418,6 +418,8 @@ useEffect(() => {
 <a href="/advertise" className="menuItem">أعلن معنا</a>
 <a href="/about" className="menuItem">عن الموقع</a>
 <a href="/contact" className="menuItem">تواصل معنا</a>
+<a href="/privacy" className="menuItem">سياسة الخصوصية</a>
+<a href="/terms" className="menuItem">الشروط والأحكام</a>
 {user && (
   <button
     className="menuItem"

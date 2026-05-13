@@ -21,6 +21,8 @@ export default function Navbar({ user }: { user?: any }) {
           <Link href="/advertise" style={styles.adBtn}>🚀 أعلن معنا</Link>
           <Link href="/about">عن الموقع</Link>
           <Link href="/contact">تواصل</Link>
+          <Link href="/privacy">سياسة الخصوصية</Link>
+<Link href="/terms">الشروط</Link>
 
           {user ? (
             <span>👤 {user.first_name}</span>
