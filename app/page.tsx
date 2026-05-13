@@ -415,7 +415,9 @@ useEffect(() => {
 ) : (
   <a href="/login" className="menuItem">تسجيل الدخول</a>
 )}
-<a href="/advertise" className="menuItem">أعلن معنا</a>
+<a href="/advertise" className="menuItem sidebarAdvertiseGlow">
+  🚀 أعلن معنا
+</a>
 <a href="/about" className="menuItem">عن الموقع</a>
 <a href="/contact" className="menuItem">تواصل معنا</a>
 <a href="/privacy" className="menuItem">سياسة الخصوصية</a>
@@ -775,12 +777,34 @@ useEffect(() => {
 .menuItem:hover {
   background: #2f2f2f;
 }
+  .sidebarAdvertiseGlow {
+  color: #fff !important;
+  background: rgba(16, 163, 127, 0.18);
+  border: 1px solid rgba(0,255,200,0.25);
 
-@media (max-width: 600px) {
-  .menuButton {
-    display: none;
+  animation: sidebarAdPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes sidebarAdPulse {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 6px rgba(16,163,127,0.25),
+      0 0 12px rgba(0,255,200,0.10);
   }
 
+  50% {
+    transform: scale(1.05);
+    box-shadow:
+      0 0 18px rgba(16,163,127,0.60),
+      0 0 40px rgba(0,255,200,0.35);
+  }
+}
+@media (max-width: 600px) {
+  .menuButton {
+    display: block;
+  }
+}
   .sidebar {
     width: 82%;
     left: -85%;
