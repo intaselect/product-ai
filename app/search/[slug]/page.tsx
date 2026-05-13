@@ -99,6 +99,13 @@ function getStoreName(product: any) {
 
   return "متجر إلكتروني";
 }
+const currency =
+  countryCode === "sa" ? "ريال" :
+  countryCode === "ae" ? "درهم" :
+  countryCode === "kw" ? "دينار" :
+  countryCode === "qa" ? "ريال" :
+  countryCode === "bh" ? "دينار" :
+  "جنيه";
 const productsWithPrices = validProducts
   .map((p: any) => ({
     ...p,
@@ -107,10 +114,19 @@ const productsWithPrices = validProducts
   }))
   .filter((p: any) => p.numericPrice);
 
+
 const cheapestProduct = [...productsWithPrices].sort(
   (a: any, b: any) => a.numericPrice - b.numericPrice
 )[0];
 
+const highestProduct = [...productsWithPrices].sort(
+  (a: any, b: any) => b.numericPrice - a.numericPrice
+)[0];
+
+const priceDiff = highestProduct && cheapestProduct
+  ? highestProduct.numericPrice - cheapestProduct.numericPrice
+  : null;
+const bestStore = cheapestProduct?.storeName;
 const stores = Array.from(
   new Set(productsWithPrices.map((p: any) => p.storeName))
 ).slice(0, 5);
@@ -194,23 +210,31 @@ return (
   : "متاجر مختلفة"}
   لمساعدتك في مقارنة الأسعار واختيار أفضل عرض بسهولة.
 </p>
+{cheapestProduct ? (
+  <>
+    <p>
+      أفضل سعر حاليًا لـ {data?.query || query} في {countryName}
+      هو {cheapestProduct.priceText || cheapestProduct.price}
+      من متجر {cheapestProduct.storeName}.
+    </p>
 
-  {cheapestProduct ? (
-    <p>
-      أفضل سعر ظاهر حاليًا لـ {data?.query || query} في {countryName}
-      هو حوالي {cheapestProduct.priceText || cheapestProduct.price}
-     من {cheapestProduct.storeName}، وذلك حسب النتائج المتاحة وقت البحث.
-    </p>
-  ) : (
-    <p>
-      الأسعار قد تختلف حسب المتجر والتوفر والعروض الحالية، لذلك ننصح بمقارنة أكثر من نتيجة قبل الشراء.
-    </p>
-  )}
+    {priceDiff && (
+  <p>
+   يمكن أن يصل الفرق بين أعلى وأقل سعر إلى حوالي {priceDiff.toLocaleString()} {currency}،
+مما يجعل المقارنة بين المتاجر أمرًا مهمًا قبل الشراء.
+  </p>
+)}
+  </>
+) : (
+  <p>
+    الأسعار قد تختلف حسب المتجر والتوفر والعروض الحالية، لذلك ننصح بمقارنة أكثر من نتيجة قبل الشراء.
+  </p>
+)}
 
   {storeSummary.length > 0 && (
     <p>
       من خلال النتائج الحالية، ظهرت عروض من{" "}
-      {storeSummary.map((item: any, index: number) => (
+      {storeSummary.slice(0,3).map((item: any, index: number) => (
         <span key={item.store}>
           {item.store} بسعر يبدأ من {item.price}
           {index < storeSummary.length - 1 ? "، " : "."}
