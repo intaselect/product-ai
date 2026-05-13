@@ -212,14 +212,15 @@ return (
       <h1>أفضل سعر {data?.query || query} في {countryName}</h1>
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p dir="rtl">
-  يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا لأسعار{" "}
- <strong>{data?.query || query}</strong> في {countryName}، وذلك من خلال تحليل أحدث الأسعار والعروض من متاجر موثوقة مثل{" "}
+  يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا ومحدثًا لأسعار{" "}
+  <strong>{data?.query || query}</strong> في {countryName}،
+  مع مقارنة أفضل العروض من متاجر موثوقة مثل{" "}
   <span dir="ltr">
     {storeSummary.length > 0
       ? storeSummary.slice(0, 2).map((s: any) => s.store).join(" و ")
       : "متاجر مختلفة"}
   </span>
-  ، لمساعدتك في مقارنة الأسعار واختيار أفضل عرض بسهولة.
+  ، لمساعدتك في اختيار أفضل سعر بسهولة.
 </p>
 {cheapestProduct ? (
   <>
@@ -270,6 +271,9 @@ return (
     هذه الصفحة تساعدك على معرفة سعر {data?.query || query} في {countryName}
     ومقارنة العروض من حيث السعر، المتجر، والتوفر قبل اتخاذ قرار الشراء.
   </p>
+  <p>
+  يتم تحديث الأسعار بشكل دوري بناءً على أحدث البيانات من المتاجر المختلفة لضمان عرض معلومات دقيقة وحديثة.
+</p>
 </section>
 <section style={{ marginTop: "20px" }}>
   <h2>كلمات مرتبطة بـ {data?.query || query}</h2>
