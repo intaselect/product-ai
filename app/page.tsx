@@ -804,7 +804,7 @@ useEffect(() => {
   .menuButton {
     display: block;
   }
-}
+
   .sidebar {
     width: 82%;
     left: -85%;
