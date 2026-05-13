@@ -87,15 +87,23 @@ function getStoreName(product: any) {
   const raw = String(product.source || product.store || product.merchant || product.seller || "");
   const url = String(product.url || product.link || "");
 
-  if (raw) return raw;
+  // تنظيف الاسم الأول
+  if (raw) {
+    if (raw.toLowerCase().includes("amazon")) return "Amazon";
+    if (raw.toLowerCase().includes("noon")) return "Noon";
+    if (raw.toLowerCase().includes("jumia")) return "Jumia";
+    if (raw.toLowerCase().includes("jarir")) return "Jarir";
+    if (raw.toLowerCase().includes("extra")) return "Extra";
 
+    return raw; // لو متجر تاني
+  }
+
+  // fallback من الرابط
   if (url.includes("amazon.")) return "Amazon";
   if (url.includes("noon.")) return "Noon";
   if (url.includes("jumia.")) return "Jumia";
   if (url.includes("jarir.")) return "Jarir";
   if (url.includes("extra.")) return "Extra";
-  if (url.includes("noon")) return "Noon";
-  if (url.includes("amazon")) return "Amazon";
 
   return "متجر إلكتروني";
 }
@@ -126,7 +134,7 @@ const highestProduct = [...productsWithPrices].sort(
 const priceDiff = highestProduct && cheapestProduct
   ? highestProduct.numericPrice - cheapestProduct.numericPrice
   : null;
-const bestStore = cheapestProduct?.storeName;
+
 const stores = Array.from(
   new Set(productsWithPrices.map((p: any) => p.storeName))
 ).slice(0, 5);
@@ -205,7 +213,7 @@ return (
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p dir="rtl">
   يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا لأسعار{" "}
-  <strong>{data?.query || query}</strong> في {countryName}، وذلك من خلال عروض متاجر مثل{" "}
+ <strong>{data?.query || query}</strong> في {countryName}، وذلك من خلال تحليل أحدث الأسعار والعروض من متاجر موثوقة مثل{" "}
   <span dir="ltr">
     {storeSummary.length > 0
       ? storeSummary.slice(0, 2).map((s: any) => s.store).join(" و ")
@@ -217,23 +225,31 @@ return (
   <>
     <p>
       أفضل سعر حاليًا لـ {data?.query || query} في {countryName}
-      هو {cheapestProduct.priceText || cheapestProduct.price}
+      هو <span dir="ltr">{cheapestProduct.priceText || cheapestProduct.price}</span>
       من متجر {cheapestProduct.storeName}.
     </p>
 
     {priceDiff && (
-  <p>
-  يمكن أن يصل الفرق بين أعلى وأقل سعر إلى حوالي{" "}
-<span dir="ltr">{priceDiff.toLocaleString()} {currency}</span>،
-  </p>
-)}
+      <p>
+        يمكن أن يصل الفرق بين أعلى وأقل سعر إلى حوالي{" "}
+        <span dir="ltr">{priceDiff.toLocaleString()} {currency}</span>،
+        مما يجعل المقارنة بين المتاجر أمرًا مهمًا قبل الشراء.
+      </p>
+    )}
+
+    {highestProduct && (
+      <p>
+        يعتبر السعر الحالي من متجر {cheapestProduct.storeName} من بين الأفضل في السوق،
+        خاصة مقارنة بأعلى سعر والذي يصل إلى{" "}
+        <span dir="ltr">{highestProduct.priceText || highestProduct.price}</span>.
+      </p>
+    )}
   </>
 ) : (
   <p>
     الأسعار قد تختلف حسب المتجر والتوفر والعروض الحالية، لذلك ننصح بمقارنة أكثر من نتيجة قبل الشراء.
   </p>
 )}
-
  {storeSummary.length > 0 && (
   <div style={{ marginTop: "14px" }}>
     <p>من خلال النتائج الحالية، ظهرت عروض من عدة متاجر، منها:</p>
@@ -241,9 +257,10 @@ return (
     <ul style={{ lineHeight: "2", marginTop: "8px", paddingRight: "22px" }}>
       {storeSummary.slice(0, 5).map((item: any) => (
         <li key={item.store}>
-          <strong>{item.store}</strong>: السعر يبدأ من{" "}
-          <span dir="ltr">{item.price}</span>
-        </li>
+  <strong>{item.store}</strong>:
+  السعر يبدأ من{" "}
+  <span dir="ltr">{item.price}</span>
+</li>
       ))}
     </ul>
   </div>
