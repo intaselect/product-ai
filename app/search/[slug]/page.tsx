@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
+export const revalidate = 300;
 
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
@@ -117,7 +118,7 @@ return (
     <div className="brainCore"></div>
     <div className="grid"></div>
     <div className="particles">
-      {Array.from({ length: 35 }).map((_, i) => (
+      {Array.from({ length: 12 }).map((_, i) => (
         <span key={i} style={{ "--i": i } as any}></span>
       ))}
     </div>
@@ -192,7 +193,7 @@ return (
     style={{
       width: "90px",
       height: "90px",
-      objectFit: "cover",
+      objectFit: "contain",
       borderRadius: "10px",
       background: "#fff",
     }}
@@ -309,7 +310,7 @@ overflow: hidden;
   }
 
   .seoProductCard:hover {
-  transform: translateY(-5px) scale(1.01);
+ transform: translateY(-2px);
 
   border-color: rgba(0,255,200,0.45);
 
