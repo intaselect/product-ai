@@ -83,12 +83,27 @@ function getPriceNumber(product: any) {
   const num = Number(raw.replace(/[^\d.]/g, ""));
   return isNaN(num) ? null : num;
 }
+function getStoreName(product: any) {
+  const raw = String(product.source || product.store || product.merchant || product.seller || "");
+  const url = String(product.url || product.link || "");
 
+  if (raw) return raw;
+
+  if (url.includes("amazon.")) return "Amazon";
+  if (url.includes("noon.")) return "Noon";
+  if (url.includes("jumia.")) return "Jumia";
+  if (url.includes("jarir.")) return "Jarir";
+  if (url.includes("extra.")) return "Extra";
+  if (url.includes("noon")) return "Noon";
+  if (url.includes("amazon")) return "Amazon";
+
+  return "متجر إلكتروني";
+}
 const productsWithPrices = validProducts
   .map((p: any) => ({
     ...p,
     numericPrice: getPriceNumber(p),
-    storeName: p.source || "متجر إلكتروني",
+   storeName: getStoreName(p),
   }))
   .filter((p: any) => p.numericPrice);
 
@@ -174,7 +189,9 @@ return (
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p>
   يعرض لك BPS Chat تحليلًا مباشرًا لأسعار {data?.query || query} في {countryName}
-  من متاجر مثل {storeSummary.slice(0,2).map(s => s.store).join(" و ")}
+  من متاجر مثل {storeSummary.length > 0
+  ? storeSummary.slice(0,2).map(s => s.store).join(" و ")
+  : "متاجر مختلفة"}
   لمساعدتك في مقارنة الأسعار واختيار أفضل عرض بسهولة.
 </p>
 
@@ -182,7 +199,7 @@ return (
     <p>
       أفضل سعر ظاهر حاليًا لـ {data?.query || query} في {countryName}
       هو حوالي {cheapestProduct.priceText || cheapestProduct.price}
-      من {cheapestProduct.source || "أحد المتاجر"}، وذلك حسب النتائج المتاحة وقت البحث.
+     من {cheapestProduct.storeName}، وذلك حسب النتائج المتاحة وقت البحث.
     </p>
   ) : (
     <p>
@@ -264,6 +281,9 @@ return (
 
               <p style={{ margin: "8px 0" }}>
   {product.priceText || product.price || "السعر غير متوفر"}
+</p>
+<p style={{ margin: "4px 0", color: "#aaa", fontSize: "14px" }}>
+  المتجر: {getStoreName(product)}
 </p>
 
 {(product.url || product.link) && (
