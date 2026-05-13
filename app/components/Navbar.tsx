@@ -18,7 +18,9 @@ export default function Navbar({ user }: { user?: any }) {
         {/* 🖥️ القائمة الكبيرة */}
         <nav style={styles.navDesktop}>
           <Link href="/">الرئيسية</Link>
-          <Link href="/advertise" style={styles.adBtn}>🚀 أعلن معنا</Link>
+          <Link href="/advertise" style={styles.adBtn} className="adBtnHover">
+  🚀 أعلن معنا
+</Link>
           <Link href="/about">عن الموقع</Link>
           <Link href="/contact">تواصل</Link>
           <Link href="/privacy">سياسة الخصوصية</Link>
@@ -43,6 +45,26 @@ export default function Navbar({ user }: { user?: any }) {
   <div style={styles.mobileMenu}>
         </div>
       )}
+      <style>{`
+  @keyframes advertisePulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow:
+        0 0 10px rgba(16, 163, 127, 0.35),
+        0 0 22px rgba(0, 255, 200, 0.12);
+    }
+
+    50% {
+      transform: scale(1.06);
+      box-shadow:
+        0 0 18px rgba(16, 163, 127, 0.65),
+        0 0 45px rgba(0, 255, 200, 0.35);
+    }
+  }
+    .adBtnHover:hover {
+  transform: scale(1.1);
+}
+`}</style>
     </header>
   );
 }
@@ -73,11 +95,19 @@ const styles: any = {
     color: "#ccc",
   },
   adBtn: {
-    background: "#10a37f",
-    padding: "6px 12px",
-    borderRadius: "8px",
-    color: "#fff",
-  },
+  background: "#10a37f",
+  padding: "8px 14px",
+  borderRadius: "10px",
+  color: "#fff",
+  textDecoration: "none",
+  fontWeight: "bold",
+  transition: "all 0.3s ease",
+
+  boxShadow:
+    "0 0 12px rgba(16, 163, 127, 0.45), 0 0 28px rgba(0, 255, 200, 0.18)",
+
+  animation: "advertisePulse 2.2s ease-in-out infinite",
+},
   menuBtn: {
     display: "none",
     fontSize: "22px",
