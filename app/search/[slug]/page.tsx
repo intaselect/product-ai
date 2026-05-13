@@ -313,17 +313,17 @@ return (
 >
           {(product.image || product.thumbnail) && (
   <img
-    src={product.image || product.thumbnail}
-    alt={`${product.title || product.name || query} - أفضل سعر في ${countryName}`}
-    loading="lazy"
-    style={{
-      width: "90px",
-      height: "90px",
-      objectFit: "contain",
-      borderRadius: "10px",
-      background: "#fff",
-    }}
-  />
+  src={product.image || product.thumbnail}
+  width={90}
+  height={90}
+  alt={`${product.title || product.name || query} - أفضل سعر في ${countryName}`}
+  loading="lazy"
+  style={{
+    objectFit: "contain",
+    borderRadius: "10px",
+    background: "#fff",
+  }}
+/>
 )}
             <div>
               <h3 style={{ margin: 0 }}>
