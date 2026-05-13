@@ -203,12 +203,15 @@ return (
     <div style={{ padding: "40px" }}>
       <h1>أفضل سعر {data?.query || query} في {countryName}</h1>
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
-  <p>
-  يعرض لك BPS Chat تحليلًا مباشرًا لأسعار {data?.query || query} في {countryName}
-  من متاجر مثل {storeSummary.length > 0
-  ? storeSummary.slice(0,2).map(s => s.store).join(" و ")
-  : "متاجر مختلفة"}
-  لمساعدتك في مقارنة الأسعار واختيار أفضل عرض بسهولة.
+  <p dir="rtl">
+  يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا لأسعار{" "}
+  <strong>{data?.query || query}</strong> في {countryName}، وذلك من خلال عروض متاجر مثل{" "}
+  <span dir="ltr">
+    {storeSummary.length > 0
+      ? storeSummary.slice(0, 2).map((s: any) => s.store).join(" و ")
+      : "متاجر مختلفة"}
+  </span>
+  ، لمساعدتك في مقارنة الأسعار واختيار أفضل عرض بسهولة.
 </p>
 {cheapestProduct ? (
   <>
@@ -220,8 +223,8 @@ return (
 
     {priceDiff && (
   <p>
-   يمكن أن يصل الفرق بين أعلى وأقل سعر إلى حوالي {priceDiff.toLocaleString()} {currency}،
-مما يجعل المقارنة بين المتاجر أمرًا مهمًا قبل الشراء.
+  يمكن أن يصل الفرق بين أعلى وأقل سعر إلى حوالي{" "}
+<span dir="ltr">{priceDiff.toLocaleString()} {currency}</span>،
   </p>
 )}
   </>
@@ -231,17 +234,20 @@ return (
   </p>
 )}
 
-  {storeSummary.length > 0 && (
-    <p>
-      من خلال النتائج الحالية، ظهرت عروض من{" "}
-      {storeSummary.slice(0,3).map((item: any, index: number) => (
-        <span key={item.store}>
-          {item.store} بسعر يبدأ من {item.price}
-          {index < storeSummary.length - 1 ? "، " : "."}
-        </span>
+ {storeSummary.length > 0 && (
+  <div style={{ marginTop: "14px" }}>
+    <p>من خلال النتائج الحالية، ظهرت عروض من عدة متاجر، منها:</p>
+
+    <ul style={{ lineHeight: "2", marginTop: "8px", paddingRight: "22px" }}>
+      {storeSummary.slice(0, 5).map((item: any) => (
+        <li key={item.store}>
+          <strong>{item.store}</strong>: السعر يبدأ من{" "}
+          <span dir="ltr">{item.price}</span>
+        </li>
       ))}
-    </p>
-  )}
+    </ul>
+  </div>
+)}
 
   <p>
     هذه الصفحة تساعدك على معرفة سعر {data?.query || query} في {countryName}
