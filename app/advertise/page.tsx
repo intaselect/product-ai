@@ -21,7 +21,7 @@ export default function AdvertisePage() {
   function handleSubmit(e: any) {
     e.preventDefault();
 
-    const text = `طلب إعلان جديد من BPS Chat:
+    const text = `طلب إعلان جديد من BPS Chat (بي بي اس شات):
 الاسم: ${name}
 رقم الهاتف: ${phone}
 الدولة المستهدفة: ${country}
@@ -54,15 +54,21 @@ export default function AdvertisePage() {
   </div>
 </div>
       <section style={styles.container}>
-        <h1 style={styles.title}>اعلن معنا</h1>
+        <h1 style={styles.title}>
+  اعلن معنا في BPS Chat (بي بي اس شات)
+</h1>
 
         <p style={styles.desc}>
-          اعرض منتجاتك أمام مستخدمين يبحثون عن الشراء في السعودية والإمارات والكويت وقطر والبحرين ومصر.
-          الإعلان يظهر حسب الدولة المناسبة لعملائك.
-        </p>
+  اعرض منتجاتك أمام مستخدمين يبحثون عن الشراء عبر
+  <strong> BPS Chat (بي بي اس شات) </strong>
+  في السعودية والإمارات والكويت وقطر والبحرين ومصر.
+  الإعلان يظهر حسب الدولة المناسبة لعملائك ويصل لعملاء جاهزين للشراء.
+</p>
 
         <div style={styles.box}>
-          <h2 style={styles.h2}>لماذا الإعلان معنا؟</h2>
+          <h2 style={styles.h2}>
+  لماذا الإعلان في BPS Chat (بي بي اس شات)؟
+</h2>
           <ul style={styles.list}>
             <li>🚀 وصول لعملاء جاهزين للشراء</li>
             <li>🌍 استهداف حسب الدولة</li>

@@ -402,7 +402,10 @@ useEffect(() => {
 
 <aside className={`sidebar ${menuOpen ? "open" : ""}`}>
   <div className="sidebarHeader">
-    <strong>BPS Chat</strong>
+    <strong>
+  BPS Chat
+  <span className="arabicName">بي بي اس شات</span>
+</strong>
     <button className="closeButton" onClick={() => setMenuOpen(false)}>
       ×
     </button>
@@ -580,6 +583,7 @@ useEffect(() => {
   position: relative;
   overflow-x: hidden;
 }
+  
   .arabicName {
   display: block;
   width: 100%;

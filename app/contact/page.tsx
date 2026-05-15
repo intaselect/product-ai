@@ -9,7 +9,7 @@ export default function ContactPage() {
   function handleWhatsapp(e: any) {
     e.preventDefault();
 
-    const text = `رسالة تواصل جديدة من BPS Chat:
+    const text = `رسالة تواصل جديدة من BPS Chat (بي بي اس شات):
 الاسم: ${name}
 الرسالة: ${message}`;
 
@@ -24,14 +24,19 @@ export default function ContactPage() {
   return (
     <main style={styles.page}>
       <section style={styles.card}>
-        <div style={styles.badge}>BPS Chat Support</div>
+        <div style={styles.badge}>
+  BPS Chat Support - بي بي اس شات
+</div>
 
         <h1 style={styles.title}>تواصل معنا</h1>
-
+<h1 style={styles.title}>
+  تواصل معنا في BPS Chat (بي بي اس شات)
+</h1>
         <p style={styles.desc}>
-          عندك سؤال، اقتراح، مشكلة في البحث، أو طلب تعاون؟ يسعدنا تواصلك معنا.
-        </p>
-
+  عندك سؤال، اقتراح، مشكلة في البحث، أو طلب تعاون؟
+  يسعدنا تواصلك مع <strong>BPS Chat (بي بي اس شات)</strong>.
+  نحن هنا لمساعدتك وتقديم أفضل تجربة بحث ومقارنة أسعار.
+</p>
         <div style={styles.infoBox}>
           <p>📧 البريد الإلكتروني: support@bpschat.com</p>
           <p>⏱️ نحاول الرد في أقرب وقت ممكن</p>

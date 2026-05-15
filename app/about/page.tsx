@@ -20,16 +20,20 @@ export default function AboutPage() {
   </div>
 </div>
       <section style={styles.hero}>
-        <div style={styles.badge}>BPS Chat</div>
+        <div style={styles.badge}>
+  BPS Chat
+  <div className="arabicNameSmall">بي بي اس شات</div>
+</div>
 
         <h1 style={styles.title}>
-          عن BPS Chat — محرك بحث ذكي لمقارنة أسعار المنتجات
+          عن BPS Chat (بي بي اس شات) — محرك بحث ذكي لمقارنة أسعار المنتجات
         </h1>
 
         <p style={styles.subtitle}>
-          BPS Chat يساعد المستخدمين في البحث عن المنتجات ومقارنة الأسعار حسب الدولة،
-          مع صفحات مخصصة للعروض والمنتجات في السعودية والإمارات ومصر والكويت وقطر والبحرين.
-        </p>
+  <strong>BPS Chat (بي بي اس شات)</strong> يساعد المستخدمين في البحث عن المنتجات
+  ومقارنة الأسعار حسب الدولة، مع صفحات مخصصة للعروض والمنتجات في السعودية
+  والإمارات ومصر والكويت وقطر والبحرين.
+</p>
 
         <a href="/" style={styles.mainButton}>
           ابدأ البحث الآن
@@ -74,9 +78,9 @@ export default function AboutPage() {
       <section style={styles.section}>
         <h2>رؤيتنا</h2>
         <p>
-          نطمح أن يكون BPS Chat واحدًا من أفضل مواقع البحث عن المنتجات ومقارنة الأسعار
-          في الشرق الأوسط، مع تجربة استخدام بسيطة تشبه المحادثة وتناسب المستخدم العربي.
-        </p>
+  نطمح أن يكون <strong>BPS Chat (بي بي اس شات)</strong> واحدًا من أفضل مواقع البحث عن المنتجات
+  ومقارنة الأسعار في الشرق الأوسط، مع تجربة استخدام بسيطة تشبه المحادثة وتناسب المستخدم العربي.
+</p>
       </section>
 
       <section style={styles.section}>
@@ -94,10 +98,10 @@ export default function AboutPage() {
       <section style={styles.section}>
         <h2>كلمات بحث مرتبطة</h2>
         <p style={styles.tags}>
-          مقارنة أسعار المنتجات - أفضل سعر في السعودية - عروض الإمارات - أسعار الموبايلات -
-          أسعار اللابتوبات - بحث منتجات بالذكاء الاصطناعي - product search - price comparison -
-          shopping search engine - BPS Chat
-        </p>
+  مقارنة أسعار المنتجات - أفضل سعر في السعودية - عروض الإمارات - أسعار الموبايلات -
+  أسعار اللابتوبات - بحث منتجات بالذكاء الاصطناعي - product search - price comparison -
+  shopping search engine - BPS Chat - بي بي اس شات
+</p>
       </section>
 
       <a href="/" style={styles.homeLink}>
