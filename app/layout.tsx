@@ -49,11 +49,11 @@ export const metadata: Metadata = {
     "عروض الخليج",
   ],
 
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/og-image.png",
-  },
+icons: {
+  icon: "/favicon-v2.ico",
+  shortcut: "/favicon-v2.ico",
+  apple: "/og-image.png",
+},
 
   openGraph: {
     title: "BPS Chat | بي بي اس شات - قارن الأسعار ووفر فلوسك",
