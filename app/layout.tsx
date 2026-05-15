@@ -58,23 +58,23 @@ icons: {
   apple: "/og-image.png",
 },
 
-  openGraph: {
-    title: "BPS Chat | بي بي اس شات - قارن الأسعار ووفر فلوسك",
-    description:
-      "بي بي اس شات (BPS Chat) يساعدك تبحث عن المنتجات وتقارن الأسعار بين المتاجر في السعودية والخليج ومصر بسهولة.",
-    url: "https://www.bpschat.com",
-    siteName: "BPS Chat | بي بي اس شات",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "BPS Chat - بي بي اس شات",
-      },
-    ],
-    locale: "ar_AR",
-    type: "website",
-  },
+ openGraph: {
+  title: "BPS Chat | بي بي اس شات - قارن الأسعار ووفر فلوسك",
+  description:
+    "بي بي اس شات (BPS Chat) يساعدك تبحث عن المنتجات وتقارن الأسعار بين المتاجر في السعودية والخليج ومصر بسهولة.",
+  url: "https://www.bpschat.com",
+  siteName: "BPS Chat | بي بي اس شات",
+  images: [
+    {
+      url: "https://www.bpschat.com/og-image.png",
+      width: 1200,
+      height: 630,
+      alt: "BPS Chat - بي بي اس شات",
+    },
+  ],
+  locale: "ar_AR",
+  type: "website",
+},
 
 
  twitter: {
@@ -82,7 +82,7 @@ icons: {
   title: "BPS Chat | بي بي اس شات - أفضل محرك بحث منتجات",
   description:
     "بي بي اس شات (BPS Chat) يساعدك تقارن الأسعار حسب الدولة بسهولة.",
-  images: ["/og-image.png"],
+  images: ["https://www.bpschat.com/og-image.png"],
 },
 };
 
