@@ -437,13 +437,19 @@ useEffect(() => {
       <main className="container">
        <section className="hero">
   
-  <div className="badge">Best Product Search AI www.bps.com</div>
+  <div className="badge">BPS Chat | بي بي اس شات</div>
   <h1 className="titleWithLogo">
   <img src="/logo-icon.png" className="inlineLogo leftLogo" />
+
   <span className="typingText">
-    best Product Search chat V:1.1.6
+    BPS Chat
   </span>
+
   <img src="/logo-icon.png" className="inlineLogo rightLogo" />
+
+  <span className="arabicName">
+    بي بي اس شات
+  </span>
 </h1>
   <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 </section>
@@ -573,6 +579,14 @@ useEffect(() => {
 
   position: relative;
   overflow-x: hidden;
+}
+  .arabicName {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 6px;
 }
 .adPrice {
   color: #10a37f;

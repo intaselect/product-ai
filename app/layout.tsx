@@ -1,4 +1,4 @@
-import Script from "next/script";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -19,48 +19,68 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.bpschat.com"),
 
-  title: "BPS Chat | أفضل محرك بحث منتجات في السعودية والخليج",
+  title: "BPS Chat | بي بي اس شات - أفضل محرك بحث منتجات ومقارنة أسعار",
   description:
-    "ابحث عن أفضل المنتجات والأسعار في السعودية، الإمارات، الكويت، قطر، البحرين ومصر بسهولة.",
+    "بي بي اس شات (BPS Chat) هو موقع لمقارنة أسعار المنتجات في السعودية، الإمارات، الكويت، قطر، البحرين ومصر. ابحث عن أي منتج وقارن بين المتاجر ووفر فلوسك.",
+
   keywords: [
-    "بحث منتجات",
+    "BPS Chat",
+    "بي بي اس شات",
+    "بي بي اس",
+    "بي بي اس شات موقع",
+    "bpschat",
+    "bps chat",
+    "موقع بي بي اس شات",
     "مقارنة أسعار",
+    "مقارنة اسعار",
+    "مقارنة أسعار المنتجات",
+    "بحث منتجات",
+    "محرك بحث منتجات",
     "أفضل أسعار",
+    "وفر فلوسك",
+    "قارن بين المتاجر",
     "منتجات السعودية",
     "منتجات الإمارات",
+    "منتجات الكويت",
+    "منتجات قطر",
+    "منتجات البحرين",
     "منتجات مصر",
-    "BPS Chat",
+    "عروض السعودية",
+    "عروض الخليج",
   ],
-icons: {
-  icon: "/favicon.ico",
-  shortcut: "/favicon.ico",
-  apple: "/og-image.png",
-},
+
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/og-image.png",
+  },
+
   openGraph: {
-    title: "BPS Chat | أفضل محرك بحث منتجات",
+    title: "BPS Chat | بي بي اس شات - قارن الأسعار ووفر فلوسك",
     description:
-      "ابحث عن المنتجات وقارن الأسعار حسب الدولة بسهولة من خلال BPS Chat.",
+      "بي بي اس شات (BPS Chat) يساعدك تبحث عن المنتجات وتقارن الأسعار بين المتاجر في السعودية والخليج ومصر بسهولة.",
     url: "https://www.bpschat.com",
-    siteName: "BPS Chat",
+    siteName: "BPS Chat | بي بي اس شات",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "BPS Chat - Best Product Search",
+        alt: "BPS Chat - بي بي اس شات",
       },
     ],
     locale: "ar_AR",
     type: "website",
   },
 
-  twitter: {
-    card: "summary_large_image",
-    title: "BPS Chat | أفضل محرك بحث منتجات",
-    description:
-      "ابحث عن المنتجات وقارن الأسعار حسب الدولة بسهولة من خلال BPS Chat.",
-    images: ["/og-image.png"],
-  },
+
+ twitter: {
+  card: "summary_large_image",
+  title: "BPS Chat | بي بي اس شات - أفضل محرك بحث منتجات",
+  description:
+    "بي بي اس شات (BPS Chat) يساعدك تقارن الأسعار حسب الدولة بسهولة.",
+  images: ["/og-image.png"],
+},
 };
 
 export default function RootLayout({
@@ -71,35 +91,37 @@ export default function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang="ar"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4886224668719787"
-          crossOrigin="anonymous"
-        ></script>
-      </head>
+  <script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4886224668719787"
+    crossOrigin="anonymous"
+  ></script>
 
-      <body className="min-h-full flex flex-col mouseGlowBody">
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "BPS Chat",
+        alternateName: "بي بي اس شات",
+        url: "https://www.bpschat.com",
+      }),
+    }}
+  />
+</head>
+
+      <body className="min-h-full flex flex-col">
         <Navbar />
-        <div className="mouseGlow"></div>
+        
         {children}
         <Analytics />
         <SpeedInsights />
-        <Script id="mouse-glow" strategy="afterInteractive">
-  {`
-    document.addEventListener("mousemove", (e) => {
-      const glow = document.querySelector(".mouseGlow");
-
-      if (!glow) return;
-
-      glow.style.left = e.clientX + "px";
-      glow.style.top = e.clientY + "px";
-    });
-  `}
-</Script>
+        
       </body>
     </html>
   );

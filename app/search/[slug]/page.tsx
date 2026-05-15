@@ -63,8 +63,8 @@ export async function generateMetadata({ params }: any) {
   const { query, countryName } = parseSlug(slug);
 
  return {
-  title: `${query} في ${countryName} | مقارنة أسعار وعروض | BPS Chat`,
-  description: `ابحث عن ${query} في ${countryName} وقارن الأسعار والعروض من المتاجر المختلفة بسهولة عبر BPS Chat.`,
+  title: `${query} في ${countryName} | مقارنة أسعار وعروض | BPS Chat | بي بي اس شات`,
+  description: `ابحث عن ${query} في ${countryName} وقارن الأسعار والعروض بسهولة عبر بي بي اس شات (BPS Chat) أفضل موقع لمقارنة الأسعار.`,
 };
 }
 
@@ -209,7 +209,15 @@ return (
     <SeoSearchBar />
 
     <div style={{ padding: "40px" }}>
-      <h1>أفضل سعر {data?.query || query} في {countryName}</h1>
+      <h1>
+  أفضل سعر {data?.query || query} في {countryName} عبر BPS Chat (بي بي اس شات)
+</h1>
+<p>
+  موقع <strong>BPS Chat (بي بي اس شات)</strong> هو أفضل موقع لمقارنة أسعار المنتجات
+  في {countryName}، حيث يمكنك البحث عن <strong>{data?.query || query}</strong>
+  ومعرفة أرخص سعر من بين عدة متاجر مثل أمازون ونون وجوميا بسهولة.
+  قارن بين الأسعار، اختار الأفضل، ووفّر فلوسك قبل الشراء.
+</p>
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p dir="rtl">
   يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا ومحدثًا لأسعار{" "}
@@ -275,6 +283,7 @@ return (
   يتم تحديث الأسعار بشكل دوري بناءً على أحدث البيانات من المتاجر المختلفة لضمان عرض معلومات دقيقة وحديثة.
 </p>
 </section>
+
 <section style={{ marginTop: "20px" }}>
   <h2>كلمات مرتبطة بـ {data?.query || query}</h2>
 
