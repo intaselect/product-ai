@@ -441,19 +441,21 @@ useEffect(() => {
        <section className="hero">
   
   <div className="badge">BPS Chat | بي بي اس شات</div>
+  <div className="brandTitleBlock">
   <h1 className="titleWithLogo">
-  <img src="/logo-icon.png" className="inlineLogo leftLogo" />
+    <img src="/logo-icon.png" className="inlineLogo leftLogo" />
 
-  <span className="typingText">
-    BPS Chat
-  </span>
+    <span className="typingText">
+      BPS Chat
+    </span>
 
-  <img src="/logo-icon.png" className="inlineLogo rightLogo" />
+    <img src="/logo-icon.png" className="inlineLogo rightLogo" />
+  </h1>
 
-  <span className="arabicName">
+  <div className="arabicBrandName">
     بي بي اس شات
-  </span>
-</h1>
+  </div>
+</div>
   <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 </section>
 
@@ -583,7 +585,23 @@ useEffect(() => {
   position: relative;
   overflow-x: hidden;
 }
-  
+  .brandTitleBlock {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.arabicBrandName {
+  display: block;
+  text-align: center;
+  font-size: 18px; /* 👈 بدل 22 */
+  font-weight: 600; /* 👈 أخف شوية */
+  color: #cfcfcf; /* 👈 أهدى */
+  opacity: 0.9;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(0,255,200,0.15);
+
+}
   .arabicName {
   display: block;
   width: 100%;
@@ -603,18 +621,20 @@ useEffect(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  font-size: 30px;
-  margin: 10px 0;
+  gap: 14px;
+  font-size: 34px;
+  margin: 10px 0 0;
 }
   /* ✍️ Typing (مظبوط من غير ما يبوّظ العرض) */
 .typingText {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  
+
   padding-right: 5px;
-  animation: typing 2.5s steps(30, end) forwards, blink 0.8s infinite;
+  max-width: 100%;
+
+  animation: typing 2.5s steps(30, end) forwards;
 }
 
 @keyframes typing {
@@ -622,9 +642,7 @@ useEffect(() => {
   to { width: 100% }
 }
 
-@keyframes blink {
-  50% { border-color: transparent }
-}
+
 /* 🤖 Logo base */
 .inlineLogo {
   width: 38px;
