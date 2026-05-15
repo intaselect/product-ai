@@ -19,6 +19,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.bpschat.com"),
 
+  alternates: {
+    canonical: "https://www.bpschat.com",
+  },
+
   title: "BPS Chat | بي بي اس شات - أفضل محرك بحث منتجات ومقارنة أسعار",
   description:
     "بي بي اس شات (BPS Chat) هو موقع لمقارنة أسعار المنتجات في السعودية، الإمارات، الكويت، قطر، البحرين ومصر. ابحث عن أي منتج وقارن بين المتاجر ووفر فلوسك.",
@@ -48,7 +52,6 @@ export const metadata: Metadata = {
     "عروض السعودية",
     "عروض الخليج",
   ],
-
 icons: {
   icon: "/favicon-v2.ico",
   shortcut: "/favicon-v2.ico",
