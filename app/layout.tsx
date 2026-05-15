@@ -102,17 +102,33 @@ export default function RootLayout({
   ></script>
 
   <script
-    type="application/ld+json"
-    dangerouslySetInnerHTML={{
-      __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: "BPS Chat",
-        alternateName: "بي بي اس شات",
-        url: "https://www.bpschat.com",
-      }),
-    }}
-  />
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.bpschat.com/#organization",
+          name: "BPS Chat",
+          alternateName: "بي بي اس شات",
+          url: "https://www.bpschat.com",
+          logo: "https://www.bpschat.com/logo-icon.png",
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.bpschat.com/#website",
+          name: "BPS Chat",
+          alternateName: "بي بي اس شات",
+          url: "https://www.bpschat.com",
+          publisher: {
+            "@id": "https://www.bpschat.com/#organization",
+          },
+        },
+      ],
+    }),
+  }}
+/>
 </head>
 
       <body className="min-h-full flex flex-col">
