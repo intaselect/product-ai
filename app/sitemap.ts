@@ -8,15 +8,42 @@ export default async function sitemap() {
 
   // صفحات ثابتة
   const staticPages = [
-    {
-      url: "https://www.bpschat.com",
-      lastModified: new Date(),
-    },
-    { url: "https://www.bpschat.com/login" },
-    { url: "https://www.bpschat.com/advertise" },
-    { url: "https://www.bpschat.com/about" },
-    { url: "https://www.bpschat.com/contact" },
-  ];
+  { url: "https://www.bpschat.com", lastModified: new Date() },
+
+  // صفحات الموقع
+  { url: "https://www.bpschat.com/about" },
+  { url: "https://www.bpschat.com/contact" },
+  { url: "https://www.bpschat.com/advertise" },
+
+  // صفحات SEO الأساسية
+  { url: "https://www.bpschat.com/bps-chat" },
+  { url: "https://www.bpschat.com/is-bps-chat-safe" },
+  { url: "https://www.bpschat.com/is-bps-chat-free" },
+  { url: "https://www.bpschat.com/how-bps-chat-works" },
+  { url: "https://www.bpschat.com/bps-vs-google" },
+  { url: "https://www.bpschat.com/bps-vs-amazon" },
+  { url: "https://www.bpschat.com/bps-vs-noon" },
+{ url: "https://www.bpschat.com/bps-vs-jumia" },
+
+  // صفحات المنتجات
+  { url: "https://www.bpschat.com/iphone-price-comparison" },
+  { url: "https://www.bpschat.com/samsung-price-comparison" },
+  { url: "https://www.bpschat.com/laptop-price-comparison" },
+  { url: "https://www.bpschat.com/perfume-price-comparison" },
+
+  // صفحات قوية
+  { url: "https://www.bpschat.com/compare-prices-online" },
+  { url: "https://www.bpschat.com/best-price-online" },
+  { url: "https://www.bpschat.com/cheapest-products" },
+
+  // صفحات الدول
+  { url: "https://www.bpschat.com/saudi-product-price-comparison" },
+  { url: "https://www.bpschat.com/uae-product-price-comparison" },
+  { url: "https://www.bpschat.com/qatar-product-price-comparison" },
+  { url: "https://www.bpschat.com/kuwait-product-price-comparison" },
+  { url: "https://www.bpschat.com/bahrain-product-price-comparison" },
+  { url: "https://www.bpschat.com/egypt-product-price-comparison" },
+];
 
   // نجيب السلاج من الداتا بيز
   const { data } = await supabase
