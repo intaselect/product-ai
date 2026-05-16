@@ -23,6 +23,7 @@ export default function Footer() {
         <Link href="/samsung-price-comparison">مقارنة أسعار Samsung</Link>
         <Link href="/perfume-price-comparison">مقارنة أسعار العطور</Link>
         <Link href="/cheapest-products">أرخص المنتجات</Link>
+        <Link href="/best-price-online">أفضل سعر أونلاين</Link>
         
         </div>
       </div>
