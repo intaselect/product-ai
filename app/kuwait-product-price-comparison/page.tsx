@@ -4,39 +4,37 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 
 export const metadata: Metadata = {
-  title: "مقارنة أسعار المنتجات في مصر | أفضل سعر وعروض مصر",
+  title: "مقارنة أسعار المنتجات في الكويت | أفضل سعر وعروض الكويت",
   description:
-    "قارن أسعار المنتجات في مصر عبر BPS Chat واعرف أفضل سعر للايفون، سامسونج، اللابتوبات، العطور، الشاشات والأجهزة المنزلية بين Amazon.eg وJumia وNoon Egypt وCarrefour وB.TECH وRaya و2B.",
+    "قارن أسعار المنتجات في الكويت عبر BPS Chat واعرف أفضل سعر للايفون، سامسونج، اللابتوبات، العطور، السماعات، الشاشات والأجهزة المنزلية بين Xcite وBest Al-Yousifi وLulu وCarrefour.",
   keywords: [
-    "مقارنة أسعار مصر",
-    "مقارنة اسعار المنتجات في مصر",
-    "أفضل سعر في مصر",
-    "أرخص سعر في مصر",
-    "أسعار الموبايلات في مصر",
-    "سعر ايفون في مصر",
-    "سعر سامسونج في مصر",
-    "سعر لابتوب في مصر",
-    "عروض جوميا",
-    "عروض أمازون مصر",
-    "عروض نون مصر",
-    "عروض كارفور مصر",
-    "عروض بي تك",
-    "عروض راية",
-    "2B Egypt",
-    "BTECH Egypt",
-    "Raya Egypt",
-    "Amazon.eg",
-    "Jumia Egypt",
-    "Noon Egypt",
-    "Carrefour Egypt",
-    "price comparison Egypt",
-    "best price Egypt",
+    "مقارنة أسعار الكويت",
+    "مقارنة اسعار المنتجات في الكويت",
+    "أفضل سعر في الكويت",
+    "أرخص سعر في الكويت",
+    "عروض الكويت",
+    "عروض Xcite الكويت",
+    "عروض الغانم",
+    "عروض Best Al Yousifi",
+    "عروض لولو الكويت",
+    "عروض كارفور الكويت",
+    "سعر ايفون في الكويت",
+    "سعر سامسونج في الكويت",
+    "سعر لابتوب في الكويت",
+    "عروض عطور في الكويت",
+    "Kuwait price comparison",
+    "best price Kuwait",
+    "compare prices Kuwait",
+    "Xcite Kuwait",
+    "Best Al-Yousifi Kuwait",
+    "Lulu Kuwait",
+    "Carrefour Kuwait",
     "BPS Chat",
     "بي بي اس شات",
   ],
 };
 
-export default function EgyptProductPriceComparisonPage() {
+export default function KuwaitProductPriceComparisonPage() {
   return (
     <main className="seoPage">
       <SeoSearchBar />
@@ -45,21 +43,22 @@ export default function EgyptProductPriceComparisonPage() {
         <div className="badge">BPS Chat | بي بي اس شات</div>
 
         <h1>
-          مقارنة أسعار المنتجات في مصر
-          <span>اعرف أفضل سعر وعروض مصر قبل الشراء</span>
+          مقارنة أسعار المنتجات في الكويت
+          <span>اعرف أفضل سعر وعروض الكويت قبل الشراء</span>
         </h1>
 
         <p>
-          لو بتبحث عن <strong>سعر ايفون في مصر</strong> أو{" "}
-          <strong>أسعار الموبايلات في مصر</strong> أو{" "}
-          <strong>أفضل سعر لابتوب في مصر</strong>، استخدم{" "}
-          <strong>BPS Chat (بي بي اس شات)</strong> لمقارنة الأسعار بين متاجر مصر
-          مثل Amazon.eg وJumia وNoon Egypt وCarrefour وB.TECH وRaya و2B.
+          لو بتبحث عن <strong>سعر ايفون في الكويت</strong> أو{" "}
+          <strong>سعر سامسونج في الكويت</strong> أو{" "}
+          <strong>أفضل سعر لابتوب في الكويت</strong>، استخدم{" "}
+          <strong>BPS Chat (بي بي اس شات)</strong> لمقارنة الأسعار بين متاجر
+          الكويت مثل Xcite وBest Al-Yousifi وLulu وCarrefour بدل الاعتماد على متجر
+          واحد فقط.
         </p>
 
         <div className="ctaBox">
           <Link href="/" className="primaryBtn">
-            ابحث عن أفضل سعر في مصر
+            ابحث عن أفضل سعر في الكويت
           </Link>
           <Link href="/compare-prices-online" className="secondaryBtn">
             مقارنة الأسعار أونلاين
@@ -68,21 +67,21 @@ export default function EgyptProductPriceComparisonPage() {
       </section>
 
       <section className="content" dir="rtl">
-        <h2>لماذا تستخدم BPS Chat لمقارنة الأسعار في مصر؟</h2>
+        <h2>لماذا تستخدم BPS Chat لمقارنة الأسعار في الكويت؟</h2>
 
         <p>
-          السوق المصري فيه متاجر كثيرة وأسعار متغيرة جدًا، ونفس المنتج ممكن يظهر
-          بسعر مختلف في Amazon.eg أو Jumia أو Noon Egypt أو Carrefour أو B.TECH
-          أو Raya أو 2B. لذلك مقارنة الأسعار قبل الشراء تساعدك تعرف أفضل سعر،
+          السوق الكويتي فيه متاجر إلكترونيات وأجهزة قوية، ونفس المنتج ممكن يظهر
+          بسعر مختلف بين Xcite أو Best Al-Yousifi أو Lulu أو Carrefour أو متاجر
+          إلكترونية محلية. لذلك مقارنة الأسعار قبل الشراء تساعدك تعرف أفضل سعر،
           أرخص عرض، والمتجر المناسب حسب المنتج والتوفر والشحن والضمان.
         </p>
 
         <div className="cardsGrid">
           <div className="infoCard">
-            <h3>قارن بين متاجر مصر</h3>
+            <h3>قارن بين متاجر الكويت</h3>
             <p>
-              ابحث مرة واحدة وشاهد نتائج من متاجر مثل Amazon.eg وJumia وNoon
-              وCarrefour وB.TECH وRaya و2B حسب المنتج.
+              ابحث مرة واحدة وشاهد نتائج من متاجر مثل Xcite وBest Al-Yousifi
+              وLulu وCarrefour حسب المنتج.
             </p>
           </div>
 
@@ -95,51 +94,50 @@ export default function EgyptProductPriceComparisonPage() {
           </div>
 
           <div className="infoCard">
-            <h3>منتجات كثيرة في مصر</h3>
+            <h3>منتجات كثيرة في الكويت</h3>
             <p>
-              موبايلات، ايفون، سامسونج، لابتوبات، عطور، شاشات، أجهزة منزلية،
-              سماعات واكسسوارات.
+              ايفون، سامسونج، لابتوب، عطور، سماعات، شاشات، بلايستيشن، أجهزة
+              منزلية واكسسوارات.
             </p>
           </div>
         </div>
 
-        <h2>أكثر المنتجات بحثًا في مصر</h2>
+        <h2>أكثر المنتجات بحثًا في الكويت</h2>
 
         <div className="quickLinks">
-          <Link href="/search/ايفون-15-eg">سعر ايفون 15 في مصر</Link>
-          <Link href="/search/ايفون-16-pro-max-eg">سعر ايفون 16 Pro Max في مصر</Link>
-          <Link href="/search/galaxy-s24-ultra-eg">سعر Galaxy S24 Ultra في مصر</Link>
-          <Link href="/search/سامسونج-eg">أسعار سامسونج في مصر</Link>
-          <Link href="/search/موبايل-eg">أسعار الموبايلات في مصر</Link>
-          <Link href="/search/لابتوب-eg">سعر لابتوب في مصر</Link>
-          <Link href="/search/عطور-eg">عروض عطور في مصر</Link>
-          <Link href="/search/شاشات-eg">أسعار الشاشات في مصر</Link>
-          <Link href="/search/غسالة-eg">سعر غسالة في مصر</Link>
-          <Link href="/search/ثلاجة-eg">سعر ثلاجة في مصر</Link>
+          <Link href="/search/ايفون-15-kw">سعر ايفون 15 في الكويت</Link>
+          <Link href="/search/ايفون-16-pro-max-kw">سعر ايفون 16 Pro Max في الكويت</Link>
+          <Link href="/search/galaxy-s24-ultra-kw">سعر Galaxy S24 Ultra في الكويت</Link>
+          <Link href="/search/سامسونج-kw">أسعار سامسونج في الكويت</Link>
+          <Link href="/search/لابتوب-kw">سعر لابتوب في الكويت</Link>
+          <Link href="/search/airpods-kw">سعر AirPods في الكويت</Link>
+          <Link href="/search/عطور-kw">عروض عطور في الكويت</Link>
+          <Link href="/search/شاشات-kw">عروض الشاشات في الكويت</Link>
+          <Link href="/search/playstation-kw">سعر PlayStation في الكويت</Link>
         </div>
 
-        <h2>كلمات بحث قوية عن عروض مصر</h2>
+        <h2>كلمات بحث قوية عن عروض الكويت</h2>
 
         <p>
-          كثير من المستخدمين يبحثون عن: عروض مصر، عروض جوميا، عروض أمازون مصر،
-          عروض نون مصر، عروض كارفور مصر، عروض بي تك، عروض راية، أرخص سعر في مصر،
-          أفضل سعر في مصر، أسعار الموبايلات في مصر، سعر ايفون في مصر، سعر
-          سامسونج في مصر، سعر لابتوب في مصر، عروض الأجهزة الكهربائية، عروض
-          الشاشات، وعروض الإلكترونيات في مصر.
+          كثير من المستخدمين يبحثون عن: عروض الكويت، عروض Xcite الكويت، عروض
+          الغانم، عروض Best Al-Yousifi، عروض لولو الكويت، عروض كارفور الكويت،
+          أفضل سعر في الكويت، أرخص سعر في الكويت، سعر ايفون في الكويت، سعر
+          سامسونج في الكويت، سعر لابتوب في الكويت، عروض الإلكترونيات الكويت،
+          عروض الجوالات الكويت، Kuwait deals، Kuwait offers، compare prices
+          Kuwait وbest price Kuwait.
         </p>
 
         <div className="quickLinks">
-          <Link href="/search/عروض-جوميا-eg">عروض جوميا</Link>
-          <Link href="/search/عروض-امازون-مصر-eg">عروض أمازون مصر</Link>
-          <Link href="/search/عروض-نون-مصر-eg">عروض نون مصر</Link>
-          <Link href="/search/عروض-كارفور-مصر-eg">عروض كارفور مصر</Link>
-          <Link href="/search/عروض-بي-تك-eg">عروض بي تك</Link>
-          <Link href="/search/عروض-راية-eg">عروض راية</Link>
-          <Link href="/search/ارخص-سعر-eg">أرخص سعر في مصر</Link>
-          <Link href="/search/افضل-سعر-eg">أفضل سعر في مصر</Link>
+          <Link href="/search/عروض-xcite-kw">عروض Xcite الكويت</Link>
+          <Link href="/search/عروض-الغانم-kw">عروض الغانم</Link>
+          <Link href="/search/عروض-best-alyousifi-kw">عروض Best Al-Yousifi</Link>
+          <Link href="/search/عروض-لولو-الكويت-kw">عروض لولو الكويت</Link>
+          <Link href="/search/عروض-كارفور-الكويت-kw">عروض كارفور الكويت</Link>
+          <Link href="/search/ارخص-سعر-kw">أرخص سعر في الكويت</Link>
+          <Link href="/search/افضل-سعر-kw">أفضل سعر في الكويت</Link>
         </div>
 
-        <h2>متاجر مصر التي قد تظهر في نتائج المقارنة</h2>
+        <h2>متاجر الكويت التي قد تظهر في نتائج المقارنة</h2>
 
         <div className="tableWrap">
           <table>
@@ -152,45 +150,35 @@ export default function EgyptProductPriceComparisonPage() {
             </thead>
             <tbody>
               <tr>
-                <td>Amazon.eg</td>
-                <td>موبايلات، ايفون، سامسونج، سماعات، أجهزة منزلية</td>
-                <td>عروض أمازون مصر، Amazon Egypt offers، Amazon.eg</td>
+                <td>Xcite Kuwait</td>
+                <td>موبايلات، لابتوبات، شاشات، أجهزة منزلية، ألعاب</td>
+                <td>عروض Xcite الكويت، عروض الغانم، Xcite Kuwait deals</td>
               </tr>
               <tr>
-                <td>Jumia Egypt</td>
-                <td>موبايلات، ملابس، عطور، أجهزة، منتجات متنوعة</td>
-                <td>عروض جوميا، Jumia Egypt، Jumia deals</td>
+                <td>Best Al-Yousifi</td>
+                <td>إلكترونيات، أجهزة منزلية، لابتوبات، موبايلات، عطور</td>
+                <td>عروض Best Al-Yousifi، عروض اليوسفي، Best Kuwait offers</td>
               </tr>
               <tr>
-                <td>Noon Egypt</td>
-                <td>إلكترونيات، موبايلات، عطور، منتجات يومية</td>
-                <td>عروض نون مصر، Noon Egypt offers</td>
+                <td>Lulu Kuwait</td>
+                <td>منتجات يومية، أجهزة، إلكترونيات، عروض متنوعة</td>
+                <td>عروض لولو الكويت، Lulu Kuwait deals</td>
               </tr>
               <tr>
-                <td>Carrefour Egypt</td>
-                <td>أجهزة منزلية، شاشات، منتجات يومية، إلكترونيات</td>
-                <td>عروض كارفور مصر، Carrefour Egypt offers</td>
+                <td>Carrefour Kuwait</td>
+                <td>أجهزة منزلية، إلكترونيات، منتجات يومية</td>
+                <td>عروض كارفور الكويت، Carrefour Kuwait offers</td>
               </tr>
               <tr>
-                <td>B.TECH</td>
-                <td>أجهزة كهربائية، شاشات، موبايلات، لابتوبات</td>
-                <td>عروض بي تك، BTECH Egypt، B.TECH offers</td>
-              </tr>
-              <tr>
-                <td>Raya</td>
-                <td>موبايلات، لابتوبات، أجهزة منزلية، إلكترونيات</td>
-                <td>عروض راية، Raya Shop، Raya Egypt</td>
-              </tr>
-              <tr>
-                <td>2B Egypt</td>
-                <td>لابتوبات، كمبيوتر، اكسسوارات، شاشات، إلكترونيات</td>
-                <td>2B Egypt laptop، عروض 2B، سعر لابتوب 2B</td>
+                <td>متاجر إلكترونية محلية</td>
+                <td>جوالات، عطور، سماعات، اكسسوارات، منتجات منزلية</td>
+                <td>أفضل سعر الكويت، أرخص سعر الكويت، عروض الكويت اليوم</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <h2>مقارنة أسعار حسب نوع المنتج في مصر</h2>
+        <h2>مقارنة أسعار حسب نوع المنتج في الكويت</h2>
 
         <div className="tableWrap">
           <table>
@@ -204,39 +192,39 @@ export default function EgyptProductPriceComparisonPage() {
             <tbody>
               <tr>
                 <td>iPhone</td>
-                <td>سعر ايفون 15 في مصر، سعر ايفون 16، ايفون تقسيط</td>
+                <td>سعر ايفون 15 في الكويت، iPhone 16 Pro Max Kuwait</td>
                 <td>مقارنة أسعار iPhone</td>
               </tr>
               <tr>
                 <td>Samsung</td>
-                <td>سعر سامسونج في مصر، Galaxy A55، Galaxy S24 Ultra</td>
+                <td>Galaxy S24 Ultra، Galaxy A55، عروض سامسونج الكويت</td>
                 <td>مقارنة أسعار Samsung</td>
               </tr>
               <tr>
                 <td>Laptop</td>
-                <td>HP، Dell، Lenovo، MacBook، لابتوب للدراسة أو الشغل</td>
+                <td>HP، Dell، Lenovo، MacBook، Gaming Laptop Kuwait</td>
                 <td>مقارنة أسعار Laptop</td>
               </tr>
               <tr>
-                <td>Appliances</td>
-                <td>غسالة، ثلاجة، تكييف، شاشة، بوتاجاز، ميكروويف</td>
-                <td>أفضل سعر أونلاين</td>
-              </tr>
-              <tr>
                 <td>Perfume</td>
-                <td>عطور رجالي، عطور نسائي، عطور أصلية، عروض عطور</td>
+                <td>عطور رجالي، عطور نسائي، Perfume Kuwait</td>
                 <td>مقارنة أسعار العطور</td>
               </tr>
               <tr>
                 <td>Electronics</td>
-                <td>سماعات، شاشات، PlayStation، شواحن، باور بانك</td>
+                <td>سماعات، شاشات، PlayStation، شواحن، AirPods</td>
                 <td>مقارنة الأسعار أونلاين</td>
+              </tr>
+              <tr>
+                <td>Home Appliances</td>
+                <td>غسالة، ثلاجة، تكييف، مكيف، أجهزة منزلية</td>
+                <td>أفضل سعر أونلاين</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <h2>هل BPS Chat يبيع المنتجات في مصر؟</h2>
+        <h2>هل BPS Chat يبيع المنتجات في الكويت؟</h2>
 
         <p>
           لا. BPS Chat ليس متجرًا ولا يبيع المنتجات مباشرة. الموقع يساعدك على
@@ -245,15 +233,15 @@ export default function EgyptProductPriceComparisonPage() {
           الشراء.
         </p>
 
-        <h2>نصائح قبل الشراء أونلاين في مصر</h2>
+        <h2>نصائح قبل الشراء أونلاين في الكويت</h2>
 
         <ul>
           <li>قارن السعر بين أكثر من متجر قبل الشراء.</li>
-          <li>راجع السعر النهائي بعد الشحن أو مصاريف التقسيط إن وجدت.</li>
-          <li>تأكد من الضمان المحلي خصوصًا في الموبايلات والأجهزة الكهربائية.</li>
-          <li>راجع التوفر ومدة التوصيل داخل محافظتك.</li>
-          <li>قارن بين عروض جوميا وأمازون ونون وبي تك وراية قبل القرار.</li>
-          <li>لا تعتمد على أول عرض؛ ممكن تلاقي سعر أفضل في متجر آخر.</li>
+          <li>راجع السعر النهائي بعد الشحن والرسوم إن وجدت.</li>
+          <li>تأكد من التوفر ومدة التوصيل داخل الكويت.</li>
+          <li>راجع الضمان وسياسة الاسترجاع.</li>
+          <li>قارن بين عروض Xcite وBest Al-Yousifi وLulu وCarrefour.</li>
+          <li>لا تعتمد على أول عرض؛ قد تجد سعرًا أفضل في متجر آخر.</li>
         </ul>
 
         <h2>روابط مهمة داخل BPS Chat</h2>
@@ -262,6 +250,7 @@ export default function EgyptProductPriceComparisonPage() {
           <Link href="/saudi-product-price-comparison">مقارنة أسعار السعودية</Link>
           <Link href="/uae-product-price-comparison">مقارنة أسعار الإمارات</Link>
           <Link href="/qatar-product-price-comparison">مقارنة أسعار قطر</Link>
+          <Link href="/egypt-product-price-comparison">مقارنة أسعار مصر</Link>
           <Link href="/iphone-price-comparison">مقارنة أسعار iPhone</Link>
           <Link href="/samsung-price-comparison">مقارنة أسعار Samsung</Link>
           <Link href="/laptop-price-comparison">مقارنة أسعار Laptop</Link>
@@ -271,10 +260,10 @@ export default function EgyptProductPriceComparisonPage() {
         </div>
 
         <div className="finalCta">
-          <h2>ابدأ مقارنة أسعار مصر الآن</h2>
+          <h2>ابدأ مقارنة أسعار الكويت الآن</h2>
           <p>
-            اكتب اسم المنتج الذي تبحث عنه، واختر مصر، وشاهد النتائج بدل الاعتماد
-            على متجر واحد فقط.
+            اكتب اسم المنتج الذي تبحث عنه، واختر الكويت، وشاهد النتائج بدل
+            الاعتماد على متجر واحد فقط.
           </p>
 
           <Link href="/" className="primaryBtn">
