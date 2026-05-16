@@ -24,6 +24,7 @@ export default function Footer() {
         <Link href="/perfume-price-comparison">مقارنة أسعار العطور</Link>
         <Link href="/cheapest-products">أرخص المنتجات</Link>
         <Link href="/best-price-online">أفضل سعر أونلاين</Link>
+        <Link href="/compare-prices-online">مقارنة الأسعار أونلاين</Link>
         
         </div>
       </div>
