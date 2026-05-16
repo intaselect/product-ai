@@ -22,6 +22,7 @@ export default function Footer() {
         <Link href="/iphone-price-comparison">مقارنة أسعار iPhone</Link>
         <Link href="/samsung-price-comparison">مقارنة أسعار Samsung</Link>
         <Link href="/perfume-price-comparison">مقارنة أسعار العطور</Link>
+        <Link href="/cheapest-products">أرخص المنتجات</Link>
         
         </div>
       </div>
