@@ -27,6 +27,7 @@ export default function Footer() {
         <Link href="/compare-prices-online">مقارنة الأسعار أونلاين</Link>
         <Link href="/saudi-product-price-comparison">مقارنة أسعار السعودية</Link>
         <Link href="/uae-product-price-comparison">مقارنة أسعار الإمارات</Link>
+        <Link href="/qatar-product-price-comparison">مقارنة أسعار قطر</Link>
         
         </div>
       </div>
