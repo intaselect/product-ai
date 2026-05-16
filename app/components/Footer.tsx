@@ -16,6 +16,11 @@ export default function Footer() {
           <Link href="/how-bps-chat-works">كيف يعمل؟</Link>
           <Link href="/bps-vs-google">BPS vs Google</Link>
           <Link href="/bps-vs-amazon">BPS vs Amazon</Link>
+          <Link href="/bps-vs-noon">BPS vs Noon</Link> 👈 جديد
+
+  <Link href="/bps-vs-jumia">BPS vs Jumia</Link> 👈 هنعملها دلوقتي
+        <Link href="/iphone-price-comparison">مقارنة أسعار iPhone</Link>
+        <Link href="/samsung-price-comparison">مقارنة أسعار Samsung</Link>
         </div>
       </div>
 
