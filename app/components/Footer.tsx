@@ -25,6 +25,7 @@ export default function Footer() {
         <Link href="/cheapest-products">أرخص المنتجات</Link>
         <Link href="/best-price-online">أفضل سعر أونلاين</Link>
         <Link href="/compare-prices-online">مقارنة الأسعار أونلاين</Link>
+        <Link href="/saudi-product-price-comparison">مقارنة أسعار السعودية</Link>
         
         </div>
       </div>
