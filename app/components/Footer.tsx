@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="footerContainer">
-        <div className="footerBrand">
+    <footer className="footer" dir="rtl">
+      <div className="footerInner">
+        <div>
           <h3>BPS Chat</h3>
           <p>محرك بحث ومقارنة أسعار المنتجات في السعودية والخليج ومصر</p>
         </div>
@@ -19,54 +19,54 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="footerBottom">
-        © {new Date().getFullYear()} BPS Chat - جميع الحقوق محفوظة
-      </div>
-
       <style>{`
-  .footer {
-    margin-top: 60px;
-    background: rgba(15,15,15,0.9);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding: 40px 20px 20px;
+        .footer {
+          width: 100%;
+          background: #111;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          padding: 18px 16px;
+          margin-top: 0;
+          color: white;
+        }
 
-    position: sticky;
-    bottom: 0;
-  }
-
-        .footerContainer {
+        .footerInner {
           max-width: 1100px;
           margin: 0 auto;
           display: flex;
+          align-items: center;
           justify-content: space-between;
-          gap: 30px;
+          gap: 16px;
           flex-wrap: wrap;
         }
 
-        .footerBrand h3 {
-          margin-bottom: 10px;
+        .footer h3 {
+          margin: 0 0 4px;
+          font-size: 18px;
+          color: #10a37f;
         }
 
-        .footerBrand p {
+        .footer p {
+          margin: 0;
           color: #aaa;
-          max-width: 300px;
-          line-height: 1.8;
+          font-size: 14px;
+          line-height: 1.7;
         }
 
         .footerLinks {
           display: flex;
           flex-wrap: wrap;
-          gap: 12px;
+          gap: 8px;
         }
 
         .footerLinks a {
           background: #2f2f2f;
           border: 1px solid #444;
           color: #fff;
-          padding: 8px 12px;
+          padding: 7px 10px;
           border-radius: 999px;
           text-decoration: none;
-          font-size: 14px;
+          font-size: 13px;
+          white-space: nowrap;
         }
 
         .footerLinks a:hover {
@@ -74,11 +74,19 @@ export default function Footer() {
           color: #10a37f;
         }
 
-        .footerBottom {
-          text-align: center;
-          margin-top: 30px;
-          color: #777;
-          font-size: 14px;
+        @media (max-width: 700px) {
+          .footer {
+            padding: 16px 12px;
+          }
+
+          .footerInner {
+            justify-content: center;
+            text-align: center;
+          }
+
+          .footerLinks {
+            justify-content: center;
+          }
         }
       `}</style>
     </footer>

@@ -135,15 +135,18 @@ export default function RootLayout({
 />
 </head>
 
-      <body className="min-h-full flex flex-col">
-        <Navbar />
-        
-        {children}
-        <Analytics />
-        <SpeedInsights />
-        <Footer />
-        
-      </body>
+      <body className="min-h-screen flex flex-col">
+  <Navbar />
+
+  <div className="flex-1">
+    {children}
+  </div>
+
+  <Footer />
+
+  <Analytics />
+  <SpeedInsights />
+</body>
     </html>
   );
 }
