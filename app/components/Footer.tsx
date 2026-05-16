@@ -30,6 +30,7 @@ export default function Footer() {
         <Link href="/qatar-product-price-comparison">مقارنة أسعار قطر</Link>
         <Link href="/egypt-product-price-comparison">مقارنة أسعار مصر</Link>
         <Link href="/kuwait-product-price-comparison">مقارنة أسعار الكويت</Link>
+        <Link href="/bahrain-product-price-comparison">مقارنة أسعار البحرين</Link>
         
 
         </div>
