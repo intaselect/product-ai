@@ -105,7 +105,7 @@ export default function RootLayout({
     crossOrigin="anonymous"
   ></script>
 
-  <script
+ <script
   type="application/ld+json"
   dangerouslySetInnerHTML={{
     __html: JSON.stringify({
@@ -115,9 +115,17 @@ export default function RootLayout({
           "@type": "Organization",
           "@id": "https://www.bpschat.com/#organization",
           name: "BPS Chat",
-          alternateName: "بي بي اس شات",
+          alternateName: ["بي بي اس شات", "bpschat", "BPSChat"],
           url: "https://www.bpschat.com",
-          logo: "https://www.bpschat.com/logo-icon.png",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://www.bpschat.com/logo-icon.png",
+            width: 512,
+            height: 512,
+          },
+          image: "https://www.bpschat.com/og-image.png",
+          description:
+            "BPS Chat | بي بي اس شات هو محرك بحث لمقارنة أسعار المنتجات في السعودية والإمارات والكويت وقطر والبحرين ومصر.",
         },
         {
           "@type": "WebSite",
@@ -127,6 +135,11 @@ export default function RootLayout({
           url: "https://www.bpschat.com",
           publisher: {
             "@id": "https://www.bpschat.com/#organization",
+          },
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://www.bpschat.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string",
           },
         },
       ],
