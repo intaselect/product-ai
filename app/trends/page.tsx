@@ -5,25 +5,24 @@ import PopularSearches from "@/app/components/PopularSearches";
 
 export const metadata: Metadata = {
   title:
-    "المنتجات الأكثر بحثًا اليوم | ترندات السعودية ومصر والخليج | BPS Chat",
+    "المنتجات الأكثر بحثًا اليوم | ترندات المنتجات في السعودية ومصر والخليج | BPS Chat",
   description:
-    "تابع المنتجات الأكثر بحثًا اليوم في السعودية ومصر والإمارات والكويت وقطر والبحرين مع BPS Chat بي بي اس شات: موبايلات، لابتوبات، عطور، إلكترونيات، عروض نون وأمازون وجوميا وجرير واكسترا.",
+    "صفحة ترندات المنتجات من BPS Chat بي بي اس شات: اكتشف أكثر المنتجات بحثًا في السعودية ومصر والإمارات والكويت وقطر والبحرين، وقارن أسعار ايفون وسامسونج ولابتوب وعطور وPS5 وعروض نون وأمازون وجوميا وجرير واكسترا.",
   keywords: [
-    "المنتجات الأكثر بحثًا",
+    "المنتجات الأكثر بحثًا اليوم",
     "ترندات المنتجات",
-    "ترندات المنتجات اليوم",
+    "منتجات ترند",
+    "أكثر المنتجات بحثا",
+    "أكثر المنتجات مبيعا",
     "ترندات السعودية",
     "ترندات مصر",
     "ترندات الإمارات",
     "ترندات الكويت",
     "ترندات قطر",
     "ترندات البحرين",
-    "أكثر المنتجات بحثا",
-    "أكثر المنتجات مبيعا",
-    "منتجات رائجة",
-    "منتجات ترند",
-    "سعر ايفون اليوم",
-    "عروض سامسونج",
+    "سعر ايفون",
+    "سعر سامسونج",
+    "سعر لابتوب",
     "عروض نون",
     "عروض أمازون",
     "عروض جوميا",
@@ -42,75 +41,204 @@ const countries = [
     code: "sa",
     href: "/saudi-product-price-comparison",
     stores:
-      "Noon Saudi، Amazon.sa، Jarir، Extra، Carrefour Saudi، Lulu Saudi، SACO، Namshi",
+      "Noon Saudi، Amazon.sa، Jarir، Extra، Carrefour Saudi، Lulu Saudi، SACO، Namshi، Nice One، Golden Scent",
+    trends: [
+      "سعر iPhone 16 Pro Max في السعودية",
+      "سعر iPhone 15 في السعودية",
+      "Samsung Galaxy S25 Ultra السعودية",
+      "عروض نون السعودية",
+      "عروض أمازون السعودية",
+      "عروض جرير",
+      "عروض اكسترا",
+      "AirPods Pro السعودية",
+      "PS5 السعودية",
+      "MacBook Air السعودية",
+      "لابتوب HP السعودية",
+      "عطور رجالي السعودية",
+      "Apple Watch السعودية",
+      "سماعات بلوتوث السعودية",
+      "شاشة سامسونج السعودية",
+      "قلاية هوائية السعودية",
+      "باور بانك السعودية",
+      "عروض كارفور السعودية",
+    ],
   },
   {
     name: "مصر",
     code: "eg",
     href: "/egypt-product-price-comparison",
     stores:
-      "Jumia Egypt، Amazon.eg، Noon Egypt، Carrefour Egypt، B.TECH، Raya، 2B، Dream 2000",
+      "Jumia Egypt، Amazon.eg، Noon Egypt، Carrefour Egypt، B.TECH، Raya، 2B، Dream 2000، Tradeline، Samsung Egypt",
+    trends: [
+      "سعر ايفون في مصر",
+      "سعر Samsung في مصر",
+      "سعر Oppo في مصر",
+      "سعر Xiaomi في مصر",
+      "سعر Realme في مصر",
+      "عروض جوميا",
+      "عروض أمازون مصر",
+      "عروض نون مصر",
+      "لابتوب HP في مصر",
+      "سعر PS5 في مصر",
+      "AirPods في مصر",
+      "عطور في مصر",
+      "شاشة LG في مصر",
+      "غسالة في مصر",
+      "تكييف في مصر",
+      "باور بانك في مصر",
+      "تابلت أطفال في مصر",
+      "قلاية هوائية في مصر",
+    ],
   },
   {
     name: "الإمارات",
     code: "ae",
     href: "/uae-product-price-comparison",
     stores:
-      "Noon UAE، Amazon.ae، Carrefour UAE، Sharaf DG، Lulu UAE، Jumbo، Emax، Namshi",
+      "Noon UAE، Amazon.ae، Carrefour UAE، Sharaf DG، Lulu UAE، Jumbo، Emax، Virgin Megastore، Namshi، Ounass",
+    trends: [
+      "iPhone 16 Pro Max UAE price",
+      "Samsung Galaxy UAE",
+      "Noon UAE deals",
+      "Amazon UAE offers",
+      "MacBook UAE",
+      "AirPods UAE",
+      "PS5 UAE",
+      "Apple Watch UAE",
+      "Sharaf DG offers",
+      "Carrefour UAE offers",
+      "Dyson Airwrap UAE",
+      "Perfume UAE",
+      "Gaming laptop UAE",
+      "Power bank UAE",
+      "Smart watch UAE",
+      "iPad UAE",
+      "Nike shoes UAE",
+      "Samsung TV UAE",
+    ],
   },
   {
     name: "الكويت",
     code: "kw",
     href: "/kuwait-product-price-comparison",
     stores:
-      "Xcite Kuwait، Best Al-Yousifi، Noon Kuwait، Lulu Kuwait، Carrefour Kuwait، Taw9eel، Blink، Eureka",
+      "Xcite Kuwait، Best Al-Yousifi، Noon Kuwait، Lulu Kuwait، Carrefour Kuwait، Taw9eel، Blink، Eureka، Jarir Kuwait",
+    trends: [
+      "عروض Xcite الكويت",
+      "iPhone Kuwait price",
+      "Samsung Kuwait",
+      "Lulu Kuwait offers",
+      "Jarir Kuwait",
+      "PS5 Kuwait",
+      "AirPods Kuwait",
+      "MacBook Kuwait",
+      "Apple Watch Kuwait",
+      "Laptop Kuwait",
+      "Perfume Kuwait",
+      "Power bank Kuwait",
+      "Smart watch Kuwait",
+      "Samsung TV Kuwait",
+      "Gaming laptop Kuwait",
+      "Nintendo Switch Kuwait",
+      "Noon Kuwait offers",
+      "Carrefour Kuwait offers",
+    ],
   },
   {
     name: "قطر",
     code: "qa",
     href: "/qatar-product-price-comparison",
     stores:
-      "Carrefour Qatar، Lulu Qatar، Noon Qatar، Jarir Qatar، Virgin Megastore، Al Anees، Starlink، Safari",
+      "Carrefour Qatar، Lulu Qatar، Noon Qatar، Jarir Qatar، Virgin Megastore Qatar، Al Anees، Starlink، Safari Hypermarket",
+    trends: [
+      "iPhone Qatar price",
+      "Samsung Qatar",
+      "Carrefour Qatar offers",
+      "Lulu Qatar offers",
+      "Jarir Qatar",
+      "Al Anees Qatar",
+      "PS5 Qatar",
+      "MacBook Qatar",
+      "AirPods Qatar",
+      "Apple Watch Qatar",
+      "Laptop Qatar",
+      "Perfume Qatar",
+      "Power bank Qatar",
+      "Smart watch Qatar",
+      "Samsung TV Qatar",
+      "Gaming laptop Qatar",
+      "Noon Qatar offers",
+      "iPad Qatar",
+    ],
   },
   {
     name: "البحرين",
     code: "bh",
     href: "/bahrain-product-price-comparison",
     stores:
-      "Sharaf DG Bahrain، eXtra Bahrain، Lulu Bahrain، Carrefour Bahrain، Noon Bahrain، Virgin Megastore، Ashrafs",
+      "Sharaf DG Bahrain، eXtra Bahrain، Lulu Bahrain، Carrefour Bahrain، Noon Bahrain، Virgin Megastore Bahrain، Ashrafs، Ansar Gallery",
+    trends: [
+      "iPhone Bahrain price",
+      "Samsung Bahrain",
+      "Sharaf DG Bahrain",
+      "eXtra Bahrain offers",
+      "Lulu Bahrain offers",
+      "Carrefour Bahrain",
+      "PS5 Bahrain",
+      "AirPods Bahrain",
+      "MacBook Bahrain",
+      "Apple Watch Bahrain",
+      "Laptop Bahrain",
+      "Perfume Bahrain",
+      "Power bank Bahrain",
+      "Smart watch Bahrain",
+      "Samsung TV Bahrain",
+      "Gaming laptop Bahrain",
+      "Noon Bahrain offers",
+      "Bluetooth headphones Bahrain",
+    ],
   },
 ];
 
-const seoCategories = [
+const sections = [
   {
     title: "ترندات الموبايلات والجوالات",
+    description:
+      "أكثر عمليات البحث عن المنتجات تدور حول أسعار الموبايلات والجوالات، خصوصًا iPhone وSamsung وXiaomi وOppo وHonor وHuawei.",
     keywords: [
-      "iPhone 17 Pro Max",
       "iPhone 16 Pro Max",
+      "iPhone 15",
       "Samsung Galaxy S25 Ultra",
-      "Xiaomi",
+      "Samsung A55",
+      "Xiaomi Redmi",
       "Oppo Reno",
       "Honor",
-      "Infinix",
-      "Realme",
       "Huawei",
+      "Realme",
+      "Infinix",
     ],
   },
   {
     title: "ترندات اللابتوبات والكمبيوتر",
+    description:
+      "كلمات مثل سعر لابتوب، أفضل لابتوب للدراسة، Gaming Laptop، MacBook وHP Laptop من أهم كلمات البحث في الخليج ومصر.",
     keywords: [
-      "MacBook",
+      "MacBook Air",
+      "MacBook Pro",
       "HP Laptop",
       "Dell Laptop",
       "Lenovo Laptop",
       "Asus Laptop",
+      "Acer Laptop",
       "Gaming Laptop",
-      "RTX",
+      "RTX Laptop",
       "Monitor",
     ],
   },
   {
     title: "ترندات العطور والجمال",
+    description:
+      "العطور ومنتجات الجمال من أقوى المنتجات بحثًا في السعودية والإمارات والكويت وقطر والبحرين ومصر.",
     keywords: [
       "عطور رجالي",
       "عطور نسائي",
@@ -120,12 +248,16 @@ const seoCategories = [
       "YSL",
       "Golden Scent",
       "Nice One",
+      "Sephora",
+      "عود وبخور",
     ],
   },
   {
     title: "ترندات الإلكترونيات والقيمنق",
+    description:
+      "الناس تبحث يوميًا عن AirPods وApple Watch وPS5 وNintendo Switch وسماعات وPower Bank ومنتجات القيمنق.",
     keywords: [
-      "AirPods",
+      "AirPods Pro",
       "Apple Watch",
       "PS5",
       "PlayStation 5",
@@ -133,39 +265,53 @@ const seoCategories = [
       "Smart Watch",
       "Power Bank",
       "Bluetooth Speaker",
+      "Gaming Headset",
+      "iPad",
     ],
   },
+  {
+    title: "ترندات الأجهزة المنزلية",
+    description:
+      "الشاشات والغسالات والثلاجات والتكييف والقلايات الهوائية وماكينات القهوة من المنتجات التي يبحث عنها المستخدم قبل الشراء.",
+    keywords: [
+      "شاشة سامسونج",
+      "شاشة LG",
+      "غسالة LG",
+      "ثلاجة سامسونج",
+      "تكييف",
+      "Air Fryer",
+      "Coffee Machine",
+      "Vacuum Cleaner",
+      "Microwave",
+      "Dyson",
+    ],
+  },
+];
+
+const stores = [
+  "Noon",
+  "Amazon",
+  "Jumia",
+  "Jarir",
+  "Extra",
+  "Carrefour",
+  "Xcite",
+  "Sharaf DG",
+  "Lulu",
+  "B.TECH",
+  "Raya",
+  "2B",
+  "Best Al-Yousifi",
+  "Virgin Megastore",
+  "Namshi",
+  "Golden Scent",
 ];
 
 function searchHref(query: string, code: string) {
   return `/search/${encodeURIComponent(query)}-${code}`;
 }
 
-async function getCountryTrends(code: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.bpschat.com";
-
-  try {
-    const res = await fetch(`${baseUrl}/api/trends?country=${code}&hours=24`, {
-      next: { revalidate: 60 * 60 * 3 },
-    });
-
-    if (!res.ok) return [];
-
-    const data = await res.json();
-    return data.trends || [];
-  } catch {
-    return [];
-  }
-}
-
-export default async function TrendsPage() {
-  const trendResults = await Promise.all(
-    countries.map(async (country) => ({
-      ...country,
-      trends: await getCountryTrends(country.code),
-    }))
-  );
-
+export default function TrendsPage() {
   return (
     <main className="seoPage">
       <SeoSearchBar />
@@ -175,17 +321,16 @@ export default async function TrendsPage() {
 
         <h1>
           المنتجات الأكثر بحثًا اليوم
-          <span>ترندات حقيقية للمنتجات في السعودية ومصر والإمارات والخليج</span>
+          <span>ترندات المنتجات في السعودية ومصر والإمارات والكويت وقطر والبحرين</span>
         </h1>
 
         <p>
-          صفحة <strong>المنتجات الأكثر بحثًا</strong> في{" "}
-          <strong>BPS Chat</strong> أو <strong>بي بي اس شات</strong> تجمع بين
-          بيانات الترندات الحقيقية من Google Trends عبر API، وبين محتوى SEO قوي
-          يساعد المستخدم يعرف المنتجات الرائجة اليوم في السعودية، مصر، الإمارات،
-          الكويت، قطر والبحرين، ثم يضغط على أي ترند للبحث عن أفضل سعر ومقارنة
-          المتاجر مثل نون، أمازون، جوميا، جرير، اكسترا، كارفور، Xcite وSharaf
-          DG.
+          صفحة <strong>ترندات المنتجات</strong> في <strong>BPS Chat</strong> أو{" "}
+          <strong>بي بي اس شات</strong> تساعدك تكتشف أهم كلمات البحث والمنتجات
+          الرائجة التي يبحث عنها المستخدمون قبل الشراء: أسعار ايفون، سامسونج،
+          لابتوب، عطور، سماعات، PS5، أجهزة منزلية، عروض نون، عروض أمازون، عروض
+          جوميا، جرير، اكسترا، كارفور، Xcite وSharaf DG في السعودية ومصر
+          والإمارات والكويت وقطر والبحرين.
         </p>
 
         <div className="ctaBox">
@@ -205,22 +350,52 @@ export default async function TrendsPage() {
       </section>
 
       <section className="content" dir="rtl">
-        <h2>🔥 ترندات حقيقية الآن حسب الدولة</h2>
+        <section className="introBox">
+          <h2>ما فائدة صفحة الترندات في BPS Chat؟</h2>
+          <p>
+            بدل ما تبحث عشوائيًا، هذه الصفحة تجمع لك كلمات ترند ومنتجات يبحث
+            عنها الناس كثيرًا، وكل كلمة تتحول إلى رابط بحث داخل BPS Chat لمقارنة
+            الأسعار والعروض. الهدف إنك تبدأ من المنتج الرائج ثم تنتقل مباشرة إلى
+            مقارنة الأسعار بين المتاجر والدول.
+          </p>
 
-        <p>
-          هذا الجزء يستخدم API لجلب الترندات، ثم يحول كل كلمة رائجة إلى رابط بحث
-          مباشر داخل BPS Chat. يعني الترند مش مجرد كلمة، لكنه بوابة لصفحة مقارنة
-          أسعار حقيقية داخل الموقع.
-        </p>
+          <div className="cardsGrid">
+            <div className="infoCard">
+              <h3>ترندات حسب الدولة</h3>
+              <p>
+                السعودية، مصر، الإمارات، الكويت، قطر والبحرين، وكل دولة لها
+                متاجر وكلمات بحث مختلفة.
+              </p>
+            </div>
 
-        {trendResults.map((country) => (
-          <section key={country.code} className="countryBlock liveTrendsBlock">
+            <div className="infoCard">
+              <h3>ترندات حسب المنتج</h3>
+              <p>
+                iPhone، Samsung، Laptop، AirPods، PS5، Perfume، أجهزة منزلية
+                ومنتجات يومية.
+              </p>
+            </div>
+
+            <div className="infoCard">
+              <h3>ترند يتحول لبحث</h3>
+              <p>
+                كل رابط يفتح صفحة بحث داخل BPS Chat حتى تقارن السعر بدل قراءة
+                معلومة فقط.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <h2>🔥 المنتجات والكلمات الأكثر بحثًا حسب الدولة</h2>
+
+        {countries.map((country) => (
+          <section key={country.code} className="countryBlock">
             <div className="countryHeader">
               <div>
-                <h2>🔥 ترندات {country.name} الآن</h2>
+                <h2>ترندات المنتجات في {country.name}</h2>
                 <p>
-                  اضغط على أي ترند للبحث عنه داخل BPS Chat ومقارنة الأسعار
-                  والعروض بين المتاجر في {country.name}.
+                  هذه أهم كلمات بحث ومنتجات رائجة يمكن استخدامها للبحث عن أفضل
+                  سعر ومقارنة العروض في {country.name} عبر BPS Chat.
                 </p>
               </div>
 
@@ -230,139 +405,42 @@ export default async function TrendsPage() {
             </div>
 
             <div className="miniPanel">
-              <strong>متاجر مهمة:</strong>
+              <strong>متاجر مهمة في {country.name}:</strong>
               <span>{country.stores}</span>
             </div>
 
             <div className="trendList">
-              {country.trends.length === 0 ? (
-                <p>لا توجد ترندات واضحة حاليًا لهذه الدولة.</p>
-              ) : (
-                country.trends.map((item: any, index: number) => {
-                  const title = typeof item === "string" ? item : item.title;
-                  const traffic = typeof item === "string" ? "" : item.traffic;
+              {country.trends.map((trend, index) => (
+                <Link
+                  key={`${country.code}-${trend}`}
+                  href={searchHref(trend, country.code)}
+                  className="liveTrendRow"
+                >
+                  <span className="trendNumber">#{index + 1}</span>
 
-                  return (
-                    <Link
-                      key={`${country.code}-${title}-${index}`}
-                      href={searchHref(title, country.code)}
-                      className="liveTrendRow"
-                    >
-                      <span className="trendNumber">#{index + 1}</span>
+                  <div className="trendText">
+                    <strong>{trend}</strong>
+                    <small>
+                      اضغط للبحث عن {trend} ومقارنة الأسعار في {country.name}
+                    </small>
+                  </div>
 
-                      <div className="trendText">
-                        <strong>{title}</strong>
-                        <small>
-                          ابحث عن {title} في {country.name}
-                          {traffic ? ` • ${traffic}` : ""}
-                        </small>
-                      </div>
-
-                      <span className="searchNow">بحث ↗</span>
-                    </Link>
-                  );
-                })
-              )}
-            </div>
-          </section>
-        ))}
-
-        <h2>لماذا ترندات المنتجات مهمة؟</h2>
-
-        <p>
-          الترندات تساعدك تعرف الناس بتبحث عن إيه الآن: سعر ايفون، عروض سامسونج،
-          أرخص لابتوب، عطور نون، عروض جوميا، PS5، AirPods، شاشات، أجهزة منزلية
-          ومنتجات كثيرة. لذلك BPS Chat يجمع نية البحث مع مقارنة الأسعار حتى
-          تقدر تنتقل من الترند مباشرة إلى صفحة بحث حقيقية داخل الموقع.
-        </p>
-
-        <div className="cardsGrid">
-          <div className="infoCard">
-            <h3>ترند حسب الدولة</h3>
-            <p>
-              تابع المنتجات الأكثر بحثًا في السعودية، مصر، الإمارات، الكويت،
-              قطر والبحرين.
-            </p>
-          </div>
-
-          <div className="infoCard">
-            <h3>ترند حسب المتجر</h3>
-            <p>
-              اربط الترندات بعروض نون وأمازون وجوميا وجرير واكسترا وكارفور
-              وXcite وSharaf DG.
-            </p>
-          </div>
-
-          <div className="infoCard">
-            <h3>ترند يتحول لبحث</h3>
-            <p>
-              كل كلمة ترند تفتح بحث داخل BPS Chat لمقارنة الأسعار والعروض بدل
-              الاكتفاء بمعلومة عامة.
-            </p>
-          </div>
-        </div>
-
-        <h2>ترندات المنتجات حسب الدولة</h2>
-
-        {trendResults.map((country) => (
-          <section key={`grid-${country.code}`} className="countryBlock">
-            <div className="countryHeader">
-              <div>
-                <h2>المنتجات الأكثر بحثًا في {country.name}</h2>
-                <p>
-                  ترندات {country.name} تساعدك تتابع المنتجات والعروض التي يبحث
-                  عنها الناس الآن، ثم تقارن السعر داخل BPS Chat.
-                </p>
-              </div>
-
-              <Link href={country.href} className="countryBtn">
-                مقارنة أسعار {country.name}
-              </Link>
-            </div>
-
-            <div className="miniPanel">
-              <strong>متاجر مهمة:</strong>
-              <span>{country.stores}</span>
-            </div>
-
-            <div className="trendGrid">
-              {country.trends.length === 0 ? (
-                <p>لا توجد ترندات منتجات واضحة حاليًا لهذه الدولة.</p>
-              ) : (
-                country.trends.map((item: any, index: number) => {
-                  const title = typeof item === "string" ? item : item.title;
-
-                  return (
-                    <Link
-                      key={`card-${country.code}-${title}-${index}`}
-                      href={searchHref(title, country.code)}
-                      className="trendCard"
-                    >
-                      <strong>🔥 {title}</strong>
-                      <small>
-                        ابحث عن أفضل سعر {title} في {country.name}
-                      </small>
-                    </Link>
-                  );
-                })
-              )}
+                  <span className="searchNow">بحث ↗</span>
+                </Link>
+              ))}
             </div>
           </section>
         ))}
 
         <h2>ترندات حسب نوع المنتج</h2>
 
-        {seoCategories.map((category) => (
-          <section key={category.title} className="categoryBlock">
-            <h2>{category.title}</h2>
-
-            <p>
-              استخدم BPS Chat لمتابعة {category.title} ومقارنة الأسعار بين
-              المتاجر في السعودية ومصر والإمارات والكويت وقطر والبحرين.
-            </p>
+        {sections.map((section) => (
+          <section key={section.title} className="categoryBlock">
+            <h2>{section.title}</h2>
+            <p>{section.description}</p>
 
             <div className="productGrid">
-              {category.keywords.map((keyword) => (
+              {section.keywords.map((keyword) => (
                 <div key={keyword} className="productCard">
                   <strong>{keyword}</strong>
 
@@ -382,6 +460,32 @@ export default async function TrendsPage() {
           </section>
         ))}
 
+        <h2>ترندات حسب المتجر</h2>
+
+        <p>
+          بعض المستخدمين لا يبحثون عن المنتج فقط، بل يبحثون عن المنتج داخل متجر
+          معين مثل عروض نون، عروض أمازون، عروض جوميا، عروض جرير، عروض اكسترا،
+          عروض كارفور، عروض Xcite أو عروض Sharaf DG.
+        </p>
+
+        <div className="storeGrid">
+          {stores.map((store) => (
+            <div key={store} className="storeCard">
+              <strong>{store}</strong>
+              <div className="countryMiniLinks">
+                {countries.map((country) => (
+                  <Link
+                    key={`${store}-${country.code}`}
+                    href={searchHref(`عروض ${store}`, country.code)}
+                  >
+                    {country.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
         <h2>جدول سريع لأهم الترندات والمتاجر</h2>
 
         <div className="tableWrap">
@@ -389,7 +493,7 @@ export default async function TrendsPage() {
             <thead>
               <tr>
                 <th>الدولة</th>
-                <th>أمثلة ترندات منتجات</th>
+                <th>منتجات وكلمات ترند</th>
                 <th>متاجر مهمة للمقارنة</th>
               </tr>
             </thead>
@@ -398,9 +502,7 @@ export default async function TrendsPage() {
               {countries.map((country) => (
                 <tr key={`table-${country.code}`}>
                   <td>{country.name}</td>
-                  <td>
-                    iPhone، Samsung، Laptop، AirPods، PS5، Perfume، عروض اليوم
-                  </td>
+                  <td>{country.trends.slice(0, 8).join("، ")}</td>
                   <td>{country.stores}</td>
                 </tr>
               ))}
@@ -408,13 +510,13 @@ export default async function TrendsPage() {
           </table>
         </div>
 
-        <h2>كيف تستفيد من ترندات BPS Chat؟</h2>
+        <h2>كيف تستخدم ترندات BPS Chat؟</h2>
 
         <p>
-          عندما ترى منتجًا متصدرًا للبحث، اضغط عليه وافتح صفحة المقارنة. جرّب
-          صيغ بحث مثل: سعر المنتج، عروض المنتج، أرخص سعر، اسم المنتج مع الدولة،
-          أو اسم المنتج مع المتجر. مثال: “سعر ايفون في السعودية”، “عروض جوميا
-          مصر”، “MacBook UAE”، “عروض Xcite الكويت”، “Samsung Qatar price”.
+          اختر الدولة، ثم اضغط على المنتج أو الكلمة الرائجة. سيأخذك BPS Chat إلى
+          صفحة بحث داخلية تساعدك على مقارنة الأسعار والعروض. جرّب صيغ بحث مختلفة
+          مثل: سعر المنتج، عروض المنتج، أرخص سعر، اسم المنتج مع اسم الدولة، أو
+          اسم المنتج مع اسم المتجر.
         </p>
 
         <h2>روابط مهمة داخل بي بي اس شات</h2>
@@ -427,13 +529,20 @@ export default async function TrendsPage() {
           <Link href="/compare-prices-online">مقارنة الأسعار أونلاين</Link>
           <Link href="/best-price-online">أفضل سعر أونلاين</Link>
           <Link href="/cheapest-products">أرخص المنتجات</Link>
+          <Link href="/smart-search">البحث الذكي حسب الميزانية</Link>
+          <Link href="/seller-tools">أدوات البائع</Link>
+          <Link href="/iphone-price-comparison">مقارنة أسعار iPhone</Link>
+          <Link href="/samsung-price-comparison">مقارنة أسعار Samsung</Link>
+          <Link href="/laptop-price-comparison">مقارنة أسعار Laptop</Link>
+          <Link href="/perfume-price-comparison">مقارنة أسعار العطور</Link>
         </div>
 
         <div className="finalCta">
           <h2>ابدأ من الترند ثم قارن السعر</h2>
           <p>
-            استخدم الترندات لمعرفة المنتجات التي يبحث عنها الناس اليوم، ثم ابحث
-            داخل BPS Chat لمقارنة الأسعار والعروض بين المتاجر قبل الشراء.
+            استخدم هذه الصفحة لاكتشاف المنتجات والكلمات الأكثر بحثًا، ثم انتقل
+            إلى BPS Chat لمقارنة الأسعار والعروض في السعودية ومصر والإمارات
+            والكويت وقطر والبحرين.
           </p>
 
           <Link href="/" className="primaryBtn">
@@ -486,7 +595,7 @@ export default async function TrendsPage() {
         }
 
         .hero p {
-          max-width: 880px;
+          max-width: 900px;
           margin: 0 auto;
           color: #e8e8e8;
           font-size: 18px;
@@ -553,16 +662,12 @@ export default async function TrendsPage() {
           color: #e8e8e8;
         }
 
-        .cardsGrid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 16px;
-          margin-top: 18px;
-        }
-
+        .introBox,
         .infoCard,
         .countryBlock,
-        .categoryBlock {
+        .categoryBlock,
+        .storeCard,
+        .productCard {
           background: rgba(40,40,40,0.62);
           border: 1px solid rgba(255,255,255,0.08);
           border-radius: 18px;
@@ -575,11 +680,11 @@ export default async function TrendsPage() {
           margin-top: 28px;
         }
 
-        .liveTrendsBlock {
-          border-color: rgba(249,115,22,0.25);
-          box-shadow:
-            0 0 25px rgba(249,115,22,0.08),
-            0 0 25px rgba(16,163,127,0.08);
+        .cardsGrid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 16px;
+          margin-top: 18px;
         }
 
         .countryHeader {
@@ -669,8 +774,8 @@ export default async function TrendsPage() {
         }
 
         .quickLinks,
-        .trendGrid,
-        .productGrid {
+        .productGrid,
+        .storeGrid {
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
@@ -686,27 +791,16 @@ export default async function TrendsPage() {
           text-decoration: none;
         }
 
-        .trendCard,
-        .productCard {
+        .productCard,
+        .storeCard {
           width: calc(25% - 9px);
-          background: #2f2f2f;
-          border: 1px solid #444;
-          border-radius: 18px;
-          padding: 14px;
-          text-decoration: none;
-          color: white;
         }
 
-        .trendCard strong,
-        .productCard strong {
+        .productCard strong,
+        .storeCard strong {
           display: block;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
           color: #fff;
-        }
-
-        .trendCard small {
-          color: #aaa;
-          line-height: 1.5;
         }
 
         .countryMiniLinks {
@@ -725,8 +819,8 @@ export default async function TrendsPage() {
         }
 
         .quickLinks a:hover,
-        .trendCard:hover,
         .productCard:hover,
+        .storeCard:hover,
         .countryMiniLinks a:hover,
         .countryBtn:hover {
           border-color: #10a37f;
@@ -777,8 +871,8 @@ export default async function TrendsPage() {
         }
 
         @media (max-width: 1000px) {
-          .trendCard,
-          .productCard {
+          .productCard,
+          .storeCard {
             width: calc(33.333% - 8px);
           }
         }
@@ -788,8 +882,8 @@ export default async function TrendsPage() {
             grid-template-columns: 1fr;
           }
 
-          .trendCard,
-          .productCard {
+          .productCard,
+          .storeCard {
             width: calc(50% - 6px);
           }
 
@@ -813,8 +907,8 @@ export default async function TrendsPage() {
         }
 
         @media (max-width: 520px) {
-          .trendCard,
-          .productCard {
+          .productCard,
+          .storeCard {
             width: 100%;
           }
         }

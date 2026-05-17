@@ -424,9 +424,7 @@ useEffect(() => {
 <a href="/smart-search" className="menuItem sidebarSmartGlow">
   ⚡ البحث الذكي
 </a>
-<a href="/trends" className="menuItem sidebarTrendsGlow">
-  🔥 ترندات المنتجات
-</a>
+
 <a href="/seller-tools" className="menuItem sidebarSellerGlow">
   📝 أدوات البائع
 </a>
@@ -606,29 +604,6 @@ useEffect(() => {
   .brandTitleBlock {
   text-align: center;
   margin: 10px 0;
-}
-  .sidebarTrendsGlow {
-  color: #fff !important;
-  background: linear-gradient(135deg, rgba(249,115,22,0.25), rgba(16,163,127,0.15));
-  border: 1px solid rgba(249,115,22,0.4);
-
-  animation: trendsPulse 2.5s ease-in-out infinite;
-}
-
-@keyframes trendsPulse {
-  0%,100% {
-    transform: scale(1);
-    box-shadow:
-      0 0 8px rgba(249,115,22,0.3),
-      0 0 18px rgba(16,163,127,0.15);
-  }
-
-  50% {
-    transform: scale(1.06);
-    box-shadow:
-      0 0 22px rgba(249,115,22,0.7),
-      0 0 45px rgba(16,163,127,0.25);
-  }
 }
 
 .arabicBrandName {
