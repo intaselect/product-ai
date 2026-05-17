@@ -19,6 +19,7 @@ export default function Footer() {
           <Link href="/bps-vs-noon">BPS vs Noon</Link> 
           <Link href="/laptop-price-comparison">مقارنة أسعار Laptop</Link>
           <Link href="/products/iphone-15">سعر iPhone 15</Link>
+          <Link href="/products/iphone-16-17">أسعار iPhone 16 و iPhone 17</Link>
 <Link href="/bps-vs-jumia">BPS vs Jumia</Link> 
         <Link href="/iphone-price-comparison">مقارنة أسعار iPhone</Link>
         <Link href="/samsung-price-comparison">مقارنة أسعار Samsung</Link>
