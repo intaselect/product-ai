@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   keywords: [
     "المنتجات الأكثر بحثًا",
     "ترندات المنتجات",
+    "ترندات المنتجات اليوم",
     "ترندات السعودية",
     "ترندات مصر",
     "ترندات الإمارات",
@@ -19,9 +20,16 @@ export const metadata: Metadata = {
     "ترندات البحرين",
     "أكثر المنتجات بحثا",
     "أكثر المنتجات مبيعا",
+    "منتجات رائجة",
+    "منتجات ترند",
+    "سعر ايفون اليوم",
+    "عروض سامسونج",
     "عروض نون",
     "عروض أمازون",
     "عروض جوميا",
+    "عروض جرير",
+    "عروض اكسترا",
+    "عروض كارفور",
     "مقارنة أسعار",
     "BPS Chat",
     "بي بي اس شات",
@@ -78,6 +86,7 @@ const seoCategories = [
     title: "ترندات الموبايلات والجوالات",
     keywords: [
       "iPhone 17 Pro Max",
+      "iPhone 16 Pro Max",
       "Samsung Galaxy S25 Ultra",
       "Xiaomi",
       "Oppo Reno",
@@ -137,7 +146,7 @@ async function getCountryTrends(code: string) {
 
   try {
     const res = await fetch(`${baseUrl}/api/trends?country=${code}&hours=24`, {
-      next: { revalidate: 60 * 60 * 6 },
+      next: { revalidate: 60 * 60 * 3 },
     });
 
     if (!res.ok) return [];
@@ -166,14 +175,15 @@ export default async function TrendsPage() {
 
         <h1>
           المنتجات الأكثر بحثًا اليوم
-          <span>ترندات المنتجات في السعودية ومصر والإمارات والخليج</span>
+          <span>ترندات حقيقية للمنتجات في السعودية ومصر والإمارات والخليج</span>
         </h1>
 
         <p>
           صفحة <strong>المنتجات الأكثر بحثًا</strong> في{" "}
-          <strong>BPS Chat</strong> أو <strong>بي بي اس شات</strong> تساعدك
-          تتابع ترندات البحث عن المنتجات والعروض في السعودية، مصر، الإمارات،
-          الكويت، قطر والبحرين. اضغط على أي ترند للبحث عن أفضل سعر ومقارنة
+          <strong>BPS Chat</strong> أو <strong>بي بي اس شات</strong> تجمع بين
+          بيانات الترندات الحقيقية من Google Trends عبر API، وبين محتوى SEO قوي
+          يساعد المستخدم يعرف المنتجات الرائجة اليوم في السعودية، مصر، الإمارات،
+          الكويت، قطر والبحرين، ثم يضغط على أي ترند للبحث عن أفضل سعر ومقارنة
           المتاجر مثل نون، أمازون، جوميا، جرير، اكسترا، كارفور، Xcite وSharaf
           DG.
         </p>
@@ -195,6 +205,68 @@ export default async function TrendsPage() {
       </section>
 
       <section className="content" dir="rtl">
+        <h2>🔥 ترندات حقيقية الآن حسب الدولة</h2>
+
+        <p>
+          هذا الجزء يستخدم API لجلب الترندات، ثم يحول كل كلمة رائجة إلى رابط بحث
+          مباشر داخل BPS Chat. يعني الترند مش مجرد كلمة، لكنه بوابة لصفحة مقارنة
+          أسعار حقيقية داخل الموقع.
+        </p>
+
+        {trendResults.map((country) => (
+          <section key={country.code} className="countryBlock liveTrendsBlock">
+            <div className="countryHeader">
+              <div>
+                <h2>🔥 ترندات {country.name} الآن</h2>
+                <p>
+                  اضغط على أي ترند للبحث عنه داخل BPS Chat ومقارنة الأسعار
+                  والعروض بين المتاجر في {country.name}.
+                </p>
+              </div>
+
+              <Link href={country.href} className="countryBtn">
+                مقارنة أسعار {country.name}
+              </Link>
+            </div>
+
+            <div className="miniPanel">
+              <strong>متاجر مهمة:</strong>
+              <span>{country.stores}</span>
+            </div>
+
+            <div className="trendList">
+              {country.trends.length === 0 ? (
+                <p>لا توجد ترندات واضحة حاليًا لهذه الدولة.</p>
+              ) : (
+                country.trends.map((item: any, index: number) => {
+                  const title = typeof item === "string" ? item : item.title;
+                  const traffic = typeof item === "string" ? "" : item.traffic;
+
+                  return (
+                    <Link
+                      key={`${country.code}-${title}-${index}`}
+                      href={searchHref(title, country.code)}
+                      className="liveTrendRow"
+                    >
+                      <span className="trendNumber">#{index + 1}</span>
+
+                      <div className="trendText">
+                        <strong>{title}</strong>
+                        <small>
+                          ابحث عن {title} في {country.name}
+                          {traffic ? ` • ${traffic}` : ""}
+                        </small>
+                      </div>
+
+                      <span className="searchNow">بحث ↗</span>
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          </section>
+        ))}
+
         <h2>لماذا ترندات المنتجات مهمة؟</h2>
 
         <p>
@@ -233,7 +305,7 @@ export default async function TrendsPage() {
         <h2>ترندات المنتجات حسب الدولة</h2>
 
         {trendResults.map((country) => (
-          <section key={country.code} className="countryBlock">
+          <section key={`grid-${country.code}`} className="countryBlock">
             <div className="countryHeader">
               <div>
                 <h2>المنتجات الأكثر بحثًا في {country.name}</h2>
@@ -262,7 +334,7 @@ export default async function TrendsPage() {
 
                   return (
                     <Link
-                      key={`${country.code}-${title}-${index}`}
+                      key={`card-${country.code}-${title}-${index}`}
                       href={searchHref(title, country.code)}
                       className="trendCard"
                     >
@@ -503,6 +575,13 @@ export default async function TrendsPage() {
           margin-top: 28px;
         }
 
+        .liveTrendsBlock {
+          border-color: rgba(249,115,22,0.25);
+          box-shadow:
+            0 0 25px rgba(249,115,22,0.08),
+            0 0 25px rgba(16,163,127,0.08);
+        }
+
         .countryHeader {
           display: flex;
           justify-content: space-between;
@@ -530,6 +609,63 @@ export default async function TrendsPage() {
 
         .miniPanel strong {
           color: #7fffe0;
+        }
+
+        .trendList {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 18px;
+        }
+
+        .liveTrendRow {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          background: #2f2f2f;
+          border: 1px solid #444;
+          color: white;
+          padding: 13px 14px;
+          border-radius: 16px;
+          text-decoration: none;
+          transition: all 0.25s ease;
+        }
+
+        .liveTrendRow:hover {
+          border-color: #10a37f;
+          transform: translateY(-2px);
+          box-shadow: 0 0 20px rgba(16,163,127,0.16);
+        }
+
+        .trendNumber {
+          background: linear-gradient(135deg, #f97316, #10a37f);
+          color: white;
+          min-width: 44px;
+          height: 34px;
+          border-radius: 999px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 900;
+        }
+
+        .trendText strong {
+          display: block;
+          font-size: 16px;
+          margin-bottom: 3px;
+          color: white;
+        }
+
+        .trendText small {
+          color: #aaa;
+          line-height: 1.6;
+        }
+
+        .searchNow {
+          margin-inline-start: auto;
+          color: #7fffe0;
+          white-space: nowrap;
+          font-weight: 800;
         }
 
         .quickLinks,
@@ -663,6 +799,16 @@ export default async function TrendsPage() {
 
           h1 span {
             font-size: 19px;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .liveTrendRow {
+            align-items: flex-start;
+          }
+
+          .searchNow {
+            display: none;
           }
         }
 

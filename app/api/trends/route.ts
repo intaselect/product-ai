@@ -9,121 +9,26 @@ const countryConfig: Record<string, { geo: string; name: string }> = {
   bh: { geo: "BH", name: "البحرين" },
 };
 
-const productKeywords = [
-  "iphone",
-  "ايفون",
-  "samsung",
-  "سامسونج",
-  "galaxy",
-  "xiaomi",
-  "شاومي",
-  "oppo",
-  "reno",
-  "honor",
-  "هواوي",
-  "huawei",
-  "infinix",
-  "realme",
-  "laptop",
-  "لاب توب",
-  "macbook",
-  "hp",
-  "dell",
-  "lenovo",
-  "asus",
-  "acer",
-  "ps5",
-  "playstation",
-  "بلايستيشن",
-  "airpods",
-  "سماعة",
-  "headphones",
-  "watch",
-  "ساعة",
-  "perfume",
-  "عطر",
-  "عطور",
-  "noon",
-  "نون",
-  "amazon",
-  "أمازون",
-  "jumia",
-  "جوميا",
-  "jarir",
-  "جرير",
-  "extra",
-  "اكسترا",
-  "carrefour",
-  "كارفور",
-  "xcite",
-  "sharaf",
-  "lulu",
+const productWords = [
+  "iphone", "ايفون", "samsung", "سامسونج", "galaxy", "xiaomi", "شاومي",
+  "oppo", "honor", "huawei", "realme", "infinix", "laptop", "لاب توب",
+  "macbook", "hp", "dell", "lenovo", "asus", "acer", "airpods", "سماعة",
+  "watch", "ساعة", "ps5", "playstation", "بلايستيشن", "perfume", "عطر",
+  "عطور", "noon", "نون", "amazon", "أمازون", "jumia", "جوميا", "jarir",
+  "جرير", "extra", "اكسترا", "carrefour", "كارفور", "xcite", "sharaf", "lulu",
+  "عروض", "خصومات", "سعر",
 ];
 
 const fallbackTrends: Record<string, string[]> = {
-  sa: [
-    "iPhone 17 Pro Max",
-    "Samsung Galaxy S25 Ultra",
-    "عروض نون السعودية",
-    "عروض جرير",
-    "لابتوب HP",
-    "AirPods",
-    "عطور رجالي",
-    "PS5",
-  ],
-  ae: [
-    "iPhone price UAE",
-    "Samsung Galaxy UAE",
-    "Noon UAE offers",
-    "Amazon UAE deals",
-    "Sharaf DG offers",
-    "Carrefour UAE offers",
-    "MacBook UAE",
-    "AirPods UAE",
-  ],
-  eg: [
-    "سعر ايفون في مصر",
-    "سعر سامسونج في مصر",
-    "عروض جوميا",
-    "عروض أمازون مصر",
-    "عروض نون مصر",
-    "لابتوب HP في مصر",
-    "سعر PS5 في مصر",
-    "عطور في مصر",
-  ],
-  kw: [
-    "عروض Xcite الكويت",
-    "iPhone Kuwait price",
-    "Samsung Kuwait",
-    "Lulu Kuwait offers",
-    "Jarir Kuwait",
-    "Best Al-Yousifi offers",
-    "PS5 Kuwait",
-    "عطور الكويت",
-  ],
-  qa: [
-    "iPhone Qatar price",
-    "Samsung Qatar",
-    "Carrefour Qatar offers",
-    "Lulu Qatar offers",
-    "Jarir Qatar",
-    "Al Anees Qatar",
-    "PS5 Qatar",
-    "MacBook Qatar",
-  ],
-  bh: [
-    "iPhone Bahrain price",
-    "Samsung Bahrain",
-    "Sharaf DG Bahrain",
-    "eXtra Bahrain offers",
-    "Lulu Bahrain offers",
-    "Carrefour Bahrain",
-    "PS5 Bahrain",
-    "AirPods Bahrain",
-  ],
+  sa: ["iPhone 16 Pro Max", "Samsung Galaxy S25 Ultra", "عروض نون السعودية", "عروض جرير", "AirPods", "PS5", "عطور رجالي", "لابتوب HP"],
+  ae: ["iPhone price UAE", "Noon UAE deals", "Amazon UAE offers", "Samsung UAE", "MacBook UAE", "AirPods UAE", "Sharaf DG offers", "PS5 UAE"],
+  eg: ["سعر ايفون في مصر", "عروض جوميا", "عروض أمازون مصر", "Samsung A series", "لابتوب HP في مصر", "سعر PS5 في مصر", "عروض نون مصر", "عطور في مصر"],
+  kw: ["عروض Xcite الكويت", "iPhone Kuwait price", "Samsung Kuwait", "Lulu Kuwait offers", "Jarir Kuwait", "PS5 Kuwait", "AirPods Kuwait", "عطور الكويت"],
+  qa: ["iPhone Qatar price", "Samsung Qatar", "Carrefour Qatar offers", "Lulu Qatar offers", "Jarir Qatar", "Al Anees Qatar", "PS5 Qatar", "MacBook Qatar"],
+  bh: ["iPhone Bahrain price", "Samsung Bahrain", "Sharaf DG Bahrain", "eXtra Bahrain offers", "Lulu Bahrain offers", "Carrefour Bahrain", "PS5 Bahrain", "AirPods Bahrain"],
 };
 
-function normalizeTrendTitle(item: any): string {
+function getTitle(item: any) {
   if (typeof item === "string") return item;
 
   return (
@@ -133,63 +38,54 @@ function normalizeTrendTitle(item: any): string {
     item?.name ||
     item?.keyword ||
     item?.trend ||
+    item?.topic ||
     ""
-  )
-    .toString()
-    .replace(/\s+/g, " ")
-    .trim();
+  ).toString().replace(/\s+/g, " ").trim();
 }
 
-function extractTrends(data: any) {
-  const possibleLists = [
-    data?.trending_searches,
-    data?.trending_now,
-    data?.daily_searches,
-    data?.searches,
-    data?.results,
-  ];
+function findLists(obj: any): any[] {
+  const lists: any[] = [];
 
-  const list = possibleLists.find((x) => Array.isArray(x)) || [];
+  function walk(value: any) {
+    if (!value) return;
 
-  return list
-    .map((item: any) => {
-      const title = normalizeTrendTitle(item);
+    if (Array.isArray(value)) {
+      if (value.length && value.some((x) => getTitle(x))) {
+        lists.push(value);
+      }
 
-      return {
-        title,
-        traffic:
-          item?.traffic ||
-          item?.search_volume ||
-          item?.volume ||
-          item?.formatted_traffic ||
-          "",
-      };
-    })
-    .filter((item: any) => item.title);
+      value.forEach(walk);
+      return;
+    }
+
+    if (typeof value === "object") {
+      Object.values(value).forEach(walk);
+    }
+  }
+
+  walk(obj);
+  return lists.flat();
 }
 
-function isProductTrend(title: string) {
+function isProductLike(title: string) {
   const lower = title.toLowerCase();
-
-  return productKeywords.some((word) => lower.includes(word.toLowerCase()));
+  return productWords.some((word) => lower.includes(word.toLowerCase()));
 }
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-
     const country = searchParams.get("country") || "sa";
     const hours = searchParams.get("hours") || "24";
 
     const cfg = countryConfig[country] || countryConfig.sa;
-
     const apiKey = process.env.SERPAPI_API_KEY || process.env.SERPAPI_KEY;
 
     if (!apiKey) {
       return NextResponse.json({
         country,
         countryName: cfg.name,
-        trends: fallbackTrends[country] || fallbackTrends.sa,
+        trends: fallbackTrends[country].map((title) => ({ title, traffic: "" })),
         source: "fallback",
       });
     }
@@ -201,41 +97,49 @@ export async function GET(req: Request) {
     url.searchParams.set("api_key", apiKey);
 
     const res = await fetch(url.toString(), {
-      next: { revalidate: 60 * 60 * 6 },
+      next: { revalidate: 60 * 60 * 3 },
     });
 
     if (!res.ok) {
       return NextResponse.json({
         country,
         countryName: cfg.name,
-        trends: fallbackTrends[country] || fallbackTrends.sa,
+        trends: fallbackTrends[country].map((title) => ({ title, traffic: "" })),
         source: "fallback",
       });
     }
 
     const data = await res.json();
 
-    const realTrends = extractTrends(data)
-      .filter((item: any) => isProductTrend(item.title))
-      .slice(0, 20);
+    const all = findLists(data)
+      .map((item: any) => ({
+        title: getTitle(item),
+        traffic:
+          item?.traffic ||
+          item?.search_volume ||
+          item?.volume ||
+          item?.formatted_traffic ||
+          item?.trend_breakdown?.[0] ||
+          "",
+      }))
+      .filter((item) => item.title);
 
-    const trends =
-      realTrends.length > 0
-        ? realTrends
-        : (fallbackTrends[country] || fallbackTrends.sa).map((title) => ({
-            title,
-            traffic: "",
-          }));
+    const productTrends = all.filter((item) => isProductLike(item.title));
+
+    const finalTrends = (productTrends.length ? productTrends : all)
+      .filter((item, index, arr) => arr.findIndex((x) => x.title === item.title) === index)
+      .slice(0, 12);
 
     return NextResponse.json({
       country,
       countryName: cfg.name,
-      trends,
-      source: realTrends.length > 0 ? "serpapi" : "fallback",
+      trends:
+        finalTrends.length > 0
+          ? finalTrends
+          : fallbackTrends[country].map((title) => ({ title, traffic: "" })),
+      source: finalTrends.length > 0 ? "serpapi" : "fallback",
     });
-  } catch (error) {
-    console.error("Trends route error:", error);
-
+  } catch {
     return NextResponse.json({
       trends: fallbackTrends.sa.map((title) => ({ title, traffic: "" })),
       source: "fallback",
