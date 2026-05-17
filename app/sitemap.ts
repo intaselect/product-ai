@@ -35,6 +35,11 @@ export default async function sitemap() {
   { url: "https://www.bpschat.com/compare-prices-online" },
   { url: "https://www.bpschat.com/best-price-online" },
   { url: "https://www.bpschat.com/cheapest-products" },
+  { url: "https://www.bpschat.com/best-price-websites-saudi" },
+{ url: "https://www.bpschat.com/save-money-online-shopping" },
+{ url: "https://www.bpschat.com/best-online-stores-egypt-gulf" },
+{ url: "https://www.bpschat.com/best-time-to-buy-online" },
+{ url: "https://www.bpschat.com/online-shopping-safety-guide" },
 
   // صفحات الدول
   { url: "https://www.bpschat.com/saudi-product-price-comparison" },
