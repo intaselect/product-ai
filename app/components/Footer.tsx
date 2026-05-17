@@ -34,6 +34,7 @@ export default function Footer() {
         <Link href="/best-price-websites-saudi">أفضل مواقع مقارنة الأسعار في السعودية</Link>
         <Link href="/save-money-online-shopping">وفر فلوسك عند الشراء أونلاين</Link>
         <Link href="/best-online-stores-egypt-gulf">أفضل المتاجر الإلكترونية</Link>
+        <Link href="/best-time-to-buy-online">أفضل وقت للشراء أونلاين</Link>
 
 
         </div>
