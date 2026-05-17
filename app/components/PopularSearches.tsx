@@ -29,7 +29,7 @@ export default function PopularSearches() {
       </div>
 
       <div className="popularSlider">
-        {searches.slice(0, 50).map((item, index) => (
+        {searches.slice(0, 200).map((item, index) => (
           <a key={index} href={`/search/${item.slug}`} className="popularItem">
             {item.query} - {item.country}
           </a>
