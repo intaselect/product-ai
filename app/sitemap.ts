@@ -55,6 +55,7 @@ export default async function sitemap() {
   { url: "https://www.bpschat.com/products/iphone-15" },
   { url: "https://www.bpschat.com/products/iphone-16-17" },
   { url: "https://www.bpschat.com/products/apple-airpods" },
+  { url: "https://www.bpschat.com/best-smartphones-2026" },
 ];
 
   // نجيب السلاج من الداتا بيز
