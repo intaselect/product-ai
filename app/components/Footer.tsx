@@ -45,6 +45,7 @@ export default function Footer() {
         <Link href="/categories">دليل الأقسام والمنتجات</Link>
         <Link href="/brands">دليل الماركات</Link>
         <Link href="/deals">العروض والخصومات</Link>
+        <Link href="/smart-search">البحث الذكي حسب الميزانية</Link>
 
 
         </div>
