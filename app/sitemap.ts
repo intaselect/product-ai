@@ -40,6 +40,7 @@ export default async function sitemap() {
 { url: "https://www.bpschat.com/best-online-stores-egypt-gulf" },
 { url: "https://www.bpschat.com/best-time-to-buy-online" },
 { url: "https://www.bpschat.com/online-shopping-safety-guide" },
+{ url: "https://www.bpschat.com/stores" },
 
   // صفحات الدول
   { url: "https://www.bpschat.com/saudi-product-price-comparison" },

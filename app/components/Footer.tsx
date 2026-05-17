@@ -36,6 +36,7 @@ export default function Footer() {
         <Link href="/best-online-stores-egypt-gulf">أفضل المتاجر الإلكترونية</Link>
         <Link href="/best-time-to-buy-online">أفضل وقت للشراء أونلاين</Link>
         <Link href="/online-shopping-safety-guide">دليل الشراء الآمن أونلاين</Link>
+        <Link href="/stores">دليل المتاجر</Link>
 
 
         </div>
