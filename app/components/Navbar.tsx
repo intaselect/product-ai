@@ -25,6 +25,7 @@ export default function Navbar({ user }: { user?: any }) {
           <Link href="/contact">تواصل</Link>
           <Link href="/privacy">سياسة الخصوصية</Link>
 <Link href="/terms">الشروط</Link>
+<Link href="/seller-tools">📝 أدوات البائع</Link>
 <Link href="/smart-search" style={styles.smartBtn} className="smartBtnHover">
   ⚡ البحث الذكي
 </Link>

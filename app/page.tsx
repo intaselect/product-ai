@@ -424,10 +424,14 @@ useEffect(() => {
 <a href="/smart-search" className="menuItem sidebarSmartGlow">
   ⚡ البحث الذكي
 </a>
+<a href="/seller-tools" className="menuItem sidebarSellerGlow">
+  📝 أدوات البائع
+</a>
 <a href="/about" className="menuItem">عن الموقع</a>
 <a href="/contact" className="menuItem">تواصل معنا</a>
 <a href="/privacy" className="menuItem">سياسة الخصوصية</a>
 <a href="/terms" className="menuItem">الشروط والأحكام</a>
+
 {user && (
   <button
     className="menuItem"
@@ -1375,6 +1379,29 @@ z-index: 3;
   .smartSearchPromo {
     flex-direction: column;
     text-align: center;
+  }
+}
+  .sidebarSellerGlow {
+  color: #fff !important;
+  background: linear-gradient(135deg, rgba(16,163,127,0.2), rgba(0,180,255,0.12));
+  border: 1px solid rgba(16,163,127,0.35);
+
+  animation: sellerPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes sellerPulse {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 8px rgba(16,163,127,0.3),
+      0 0 18px rgba(0,180,255,0.15);
+  }
+
+  50% {
+    transform: scale(1.06);
+    box-shadow:
+      0 0 22px rgba(16,163,127,0.7),
+      0 0 45px rgba(0,180,255,0.25);
   }
 }
 `}</style>
