@@ -22,6 +22,7 @@ export default function Footer() {
           <Link href="/products/iphone-16-17">أسعار iPhone 16 و iPhone 17</Link>
           <Link href="/products/apple-airpods">أسعار Apple AirPods</Link>
           <Link href="/best-smartphones-2026">أفضل الموبايلات 2026</Link>
+          <Link href="/what-is-bpschat">ما هو BPS Chat؟</Link>
 <Link href="/bps-vs-jumia">BPS vs Jumia</Link> 
         <Link href="/iphone-price-comparison">مقارنة أسعار iPhone</Link>
         <Link href="/samsung-price-comparison">مقارنة أسعار Samsung</Link>
