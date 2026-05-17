@@ -25,6 +25,9 @@ export default function Navbar({ user }: { user?: any }) {
           <Link href="/contact">تواصل</Link>
           <Link href="/privacy">سياسة الخصوصية</Link>
 <Link href="/terms">الشروط</Link>
+<Link href="/smart-search" style={styles.smartBtn} className="smartBtnHover">
+  ⚡ البحث الذكي
+</Link>
 
           {user ? (
             <span>👤 {user.first_name}</span>
@@ -62,6 +65,9 @@ export default function Navbar({ user }: { user?: any }) {
     }
   }
     .adBtnHover:hover {
+  transform: scale(1.1);
+}
+  .smartBtnHover:hover {
   transform: scale(1.1);
 }
 `}</style>
@@ -122,4 +128,15 @@ const styles: any = {
     gap: "10px",
     background: "#212121",
   },
+  smartBtn: {
+  background: "linear-gradient(135deg, #2563eb, #10a37f)",
+  padding: "8px 14px",
+  borderRadius: "10px",
+  color: "#fff",
+  textDecoration: "none",
+  fontWeight: "bold",
+  transition: "all 0.3s ease",
+  boxShadow:
+    "0 0 12px rgba(37, 99, 235, 0.45), 0 0 28px rgba(16, 163, 127, 0.18)",
+},
 };

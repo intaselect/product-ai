@@ -421,6 +421,9 @@ useEffect(() => {
 <a href="/advertise" className="menuItem sidebarAdvertiseGlow">
   🚀 أعلن معنا
 </a>
+<a href="/smart-search" className="menuItem sidebarSmartGlow">
+  ⚡ البحث الذكي
+</a>
 <a href="/about" className="menuItem">عن الموقع</a>
 <a href="/contact" className="menuItem">تواصل معنا</a>
 <a href="/privacy" className="menuItem">سياسة الخصوصية</a>
@@ -518,6 +521,14 @@ useEffect(() => {
             </button>
           </div>
         </section>
+        <section className="smartSearchPromo">
+  <div>
+    <strong>⚡ البحث الذكي حسب الميزانية</strong>
+    <p>اختار المنتج والدولة والميزانية، وخلّي BPS Chat يرشح لك نتائج مناسبة.</p>
+  </div>
+
+  <a href="/smart-search">جرّب البحث الذكي</a>
+</section>
 
         <section className="results">
   {loading && (
@@ -819,6 +830,28 @@ useEffect(() => {
   border: 1px solid rgba(0,255,200,0.25);
 
   animation: sidebarAdPulse 2.2s ease-in-out infinite;
+}
+  .sidebarSmartGlow {
+  color: #fff !important;
+  background: rgba(37, 99, 235, 0.18);
+  border: 1px solid rgba(0,180,255,0.35);
+  animation: sidebarSmartPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes sidebarSmartPulse {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 6px rgba(37,99,235,0.25),
+      0 0 12px rgba(0,180,255,0.12);
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow:
+      0 0 18px rgba(37,99,235,0.60),
+      0 0 40px rgba(0,180,255,0.35);
+  }
 }
 
 @keyframes sidebarAdPulse {
@@ -1298,6 +1331,50 @@ z-index: 3;
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+  .smartSearchPromo {
+  margin: 18px auto 10px;
+  padding: 16px;
+  max-width: 650px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top, rgba(37,99,235,0.18), transparent 60%),
+    rgba(255,255,255,0.06);
+  border: 1px solid rgba(0,180,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 0 28px rgba(0,180,255,0.12);
+}
+
+.smartSearchPromo strong {
+  color: #fff;
+  font-size: 17px;
+}
+
+.smartSearchPromo p {
+  margin: 6px 0 0;
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.smartSearchPromo a {
+  background: linear-gradient(135deg, #2563eb, #10a37f);
+  color: white;
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 11px 15px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+  .smartSearchPromo {
+    flex-direction: column;
+    text-align: center;
   }
 }
 `}</style>
