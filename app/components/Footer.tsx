@@ -39,6 +39,7 @@ export default function Footer() {
         <Link href="/stores">دليل المتاجر</Link>
         <Link href="/categories">دليل الأقسام والمنتجات</Link>
         <Link href="/brands">دليل الماركات</Link>
+        <Link href="/deals">العروض والخصومات</Link>
 
 
         </div>
