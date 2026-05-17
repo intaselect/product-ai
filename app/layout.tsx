@@ -130,7 +130,7 @@ export default function RootLayout({
             "https://www.facebook.com/bpschat",
             "https://www.instagram.com/bpschat",
             "https://www.tiktok.com/@bpschat",
-            "https://www.youtube.com/@bpschat"
+            "https://www.youtube.com/watch?v=fyAa0yQWUoU"
           ],
         },
         {
