@@ -29,6 +29,9 @@ export default function Navbar({ user }: { user?: any }) {
 <Link href="/smart-search" style={styles.smartBtn} className="smartBtnHover">
   ⚡ البحث الذكي
 </Link>
+<Link href="/trends" style={styles.trendsBtn} className="trendsBtnHover">
+  🔥 ترندات المنتجات
+</Link>
 
           {user ? (
             <span>👤 {user.first_name}</span>
@@ -50,6 +53,7 @@ export default function Navbar({ user }: { user?: any }) {
         </div>
       )}
       <style>{`
+      
   @keyframes advertisePulse {
     0%, 100% {
       transform: scale(1);
@@ -66,6 +70,9 @@ export default function Navbar({ user }: { user?: any }) {
     }
   }
     .adBtnHover:hover {
+  transform: scale(1.1);
+}
+  .trendsBtnHover:hover {
   transform: scale(1.1);
 }
   .smartBtnHover:hover {
@@ -90,6 +97,17 @@ const styles: any = {
     alignItems: "center",
     padding: "10px 20px",
   },
+  trendsBtn: {
+  background: "linear-gradient(135deg, #f97316, #10a37f)",
+  padding: "8px 14px",
+  borderRadius: "10px",
+  color: "#fff",
+  textDecoration: "none",
+  fontWeight: "bold",
+  transition: "all 0.3s ease",
+  boxShadow:
+    "0 0 12px rgba(249, 115, 22, 0.45), 0 0 28px rgba(16, 163, 127, 0.18)",
+},
   logo: {
     fontWeight: "bold",
     fontSize: "18px",
