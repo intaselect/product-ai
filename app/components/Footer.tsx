@@ -31,8 +31,14 @@ export default function Footer() {
         <Link href="/egypt-product-price-comparison">مقارنة أسعار مصر</Link>
         <Link href="/kuwait-product-price-comparison">مقارنة أسعار الكويت</Link>
         <Link href="/bahrain-product-price-comparison">مقارنة أسعار البحرين</Link>
-        
 
+
+        </div>
+        <div className="socialLinks">
+          <a href="https://www.facebook.com/bpschat" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href="https://www.instagram.com/bpschat" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.tiktok.com/@bpschat" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <a href="https://www.youtube.com/@bpschat" target="_blank" rel="noopener noreferrer">YouTube</a>
         </div>
       </div>
 
@@ -105,7 +111,28 @@ export default function Footer() {
             justify-content: center;
           }
         }
+          .socialLinks {
+          display: flex;
+          gap: 12px;
+          margin-top: 10px;
+        }
+
+        .socialLinks a {
+          background: #2f2f2f;
+          border: 1px solid #444;
+          padding: 6px 12px;
+          border-radius: 999px;
+          color: #fff;
+          text-decoration: none;
+          font-size: 13px;
+        }
+
+        .socialLinks a:hover {
+          border-color: #10a37f;
+          color: #10a37f;
+        }
       `}</style>
+      
     </footer>
   );
 }

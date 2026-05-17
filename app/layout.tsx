@@ -126,6 +126,12 @@ export default function RootLayout({
           image: "https://www.bpschat.com/og-image.png",
           description:
             "BPS Chat | بي بي اس شات هو محرك بحث لمقارنة أسعار المنتجات في السعودية والإمارات والكويت وقطر والبحرين ومصر.",
+          sameAs: [
+            "https://www.facebook.com/bpschat",
+            "https://www.instagram.com/bpschat",
+            "https://www.tiktok.com/@bpschat",
+            "https://www.youtube.com/@bpschat"
+          ],
         },
         {
           "@type": "WebSite",
