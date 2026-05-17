@@ -41,6 +41,7 @@ export default async function sitemap() {
 { url: "https://www.bpschat.com/best-time-to-buy-online" },
 { url: "https://www.bpschat.com/online-shopping-safety-guide" },
 { url: "https://www.bpschat.com/stores" },
+{ url: "https://www.bpschat.com/categories" },
 
   // صفحات الدول
   { url: "https://www.bpschat.com/saudi-product-price-comparison" },
