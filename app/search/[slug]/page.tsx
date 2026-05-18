@@ -269,17 +269,6 @@ return (
 
 <h2 style={{ marginTop: "30px" }}>أفضل عروض {data?.query || query}</h2>
 
-{/* 🎥 الفيديو هنا */}
-<div style={{ marginTop: "30px", marginBottom: "20px" }}>
-  <h3 style={{ marginBottom: "12px" }}>🎥 فيديو مقارنة الأسعار</h3>
-
-  <VideoPreview
-    query={data?.query || query}
-    countryName={countryName}
-    products={products}
-  />
-</div>
-
       <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
         {products?.slice(0, 20).map((product: any, index: number) => (
          <div
@@ -326,6 +315,15 @@ return (
           </div>
         ))}
       </div>
+      <div style={{ marginTop: "40px", marginBottom: "30px" }}>
+  <h2>🎥 فيديو مقارنة الأسعار</h2>
+
+  <VideoPreview
+    query={data?.query || query}
+    countryName={countryName}
+    products={products}
+  />
+</div>
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p dir="rtl">
   يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا ومحدثًا لأسعار{" "}
