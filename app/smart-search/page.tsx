@@ -3,6 +3,7 @@ import Link from "next/link";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
+import { headers } from "next/headers";
 
 export const revalidate = 86400; // يوم
 
@@ -109,13 +110,25 @@ export default async function SmartSearchPage({ searchParams }: any) {
         .filter(Boolean)
         .join(" ")
     : "";
-    const apiQuery = hasSearch
-  ? [product, usage, extra].filter(Boolean).join(" ")
-  : "";
+    const apiQuery = hasSearch ? product : "";
 
-  const rawProducts = hasSearch
-  ? await fetchRealProducts(apiQuery, country)
-  : [];
+ let rawProducts: any[] = [];
+
+if (hasSearch) {
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+
+  const isBot =
+    userAgent.toLowerCase().includes("bot") ||
+    userAgent.toLowerCase().includes("crawl") ||
+    userAgent.toLowerCase().includes("spider") ||
+    userAgent.toLowerCase().includes("google") ||
+    userAgent.toLowerCase().includes("bing");
+
+  if (!isBot) {
+    rawProducts = await fetchRealProducts(apiQuery, country);
+  }
+}
 
   const minPrice = budget ? Math.floor(budget * countryData.minFactor) : 0;
   const maxPrice = budget ? Math.ceil(budget * countryData.maxFactor) : 0;
@@ -278,9 +291,15 @@ const finalProducts =
               </p>
             )}
 
-            <Link href={searchHref(query, country)} className="secondaryBtn">
-              افتح صفحة البحث الكاملة
-            </Link>
+            <Link
+  href={searchHref(
+    `${product} في ${countryData.name} اقل من ${budget} ${countryData.currency}`,
+    country
+  )}
+  className="secondaryBtn"
+>
+  افتح صفحة بحث SEO كاملة
+</Link>
           </div>
 
           <div className="productsGrid">
@@ -332,22 +351,54 @@ const finalProducts =
 
           <h2>روابط بحث سريعة</h2>
 
-          <div className="quickLinks">
-            <Link href={searchHref(`أفضل ${product} بسعر ${budget}`, country)}>
-              أفضل {product} بسعر {budget}
-            </Link>
-            <Link href={searchHref(`أرخص ${product}`, country)}>
-              أرخص {product}
-            </Link>
-            <Link href={searchHref(`عروض ${product}`, country)}>
-              عروض {product}
-            </Link>
-            {usage && (
-              <Link href={searchHref(`أفضل ${product} لـ ${usage}`, country)}>
-                أفضل {product} لـ {usage}
-              </Link>
-            )}
-          </div>
+         <div className="quickLinks">
+  <Link
+    href={searchHref(
+      `${product} في ${countryData.name} اقل من ${budget} ${countryData.currency}`,
+      country
+    )}
+  >
+    {product} أقل من {budget} {countryData.currency}
+  </Link>
+
+  <Link
+    href={searchHref(
+      `أفضل ${product} في ${countryData.name} بسعر ${budget} ${countryData.currency}`,
+      country
+    )}
+  >
+    أفضل {product} بسعر {budget}
+  </Link>
+
+  <Link
+    href={searchHref(
+      `أرخص ${product} في ${countryData.name}`,
+      country
+    )}
+  >
+    أرخص {product} في {countryData.name}
+  </Link>
+
+  <Link
+    href={searchHref(
+      `عروض ${product} في ${countryData.name}`,
+      country
+    )}
+  >
+    عروض {product}
+  </Link>
+
+  {usage && (
+    <Link
+      href={searchHref(
+        `أفضل ${product} لـ ${usage} في ${countryData.name} اقل من ${budget} ${countryData.currency}`,
+        country
+      )}
+    >
+      أفضل {product} لـ {usage}
+    </Link>
+  )}
+</div>
         </section>
       )}
 
