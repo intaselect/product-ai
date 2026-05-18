@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@remotion/bundler": "^4.0.462",
     "@remotion/player": "^4.0.462",
+    "@remotion/renderer": "^4.0.462",
     "@supabase/supabase-js": "^2.105.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",

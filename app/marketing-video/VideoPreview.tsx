@@ -47,7 +47,9 @@ export default function VideoPreview({
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = "bpschat-marketing-video.webm";
+      a.download = `${query}-${countryName}-bpschat.webm`
+  .replace(/\s+/g, "-")
+  .replace(/[^\w\u0600-\u06FF.-]/g, "");
       a.click();
 
       URL.revokeObjectURL(url);
