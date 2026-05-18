@@ -31,7 +31,7 @@ export default function MarketingVideo({
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const shown = products.slice(0, 3);
+  const shown = products.slice(0, 10);
 
   const titleScale = spring({
     frame,
@@ -119,16 +119,16 @@ export default function MarketingVideo({
             textShadow: "0 0 28px rgba(0,220,255,0.45)",
           }}
         >
-          بتشتري {query} في {countryName}؟
+         تبحث عن أفضل سعر لـ {query}؟
         </h1>
 
         <p style={{ fontSize: 36, color: "#d8eaff", marginTop: 18 }}>
-          استنى قبل ما تدفع… قارن بالذكاء الاصطناعي 👀
+         قارن الأسعار في السعودية، الإمارات، الكويت، قطر، البحرين ومصر 👀
         </p>
       </div>
 
       {/* Product cards */}
-      <div style={{ marginTop: 42 }}>
+      <div style={{ marginTop: 18 }}>
         {shown.map((p, i) => {
           const cardSpring = spring({
             frame: frame - 25 - i * 12,
@@ -157,8 +157,8 @@ export default function MarketingVideo({
                   ? "2px solid rgba(0,220,255,0.72)"
                   : "1px solid rgba(255,255,255,0.16)",
                 borderRadius: 30,
-                padding: 24,
-                marginBottom: 20,
+                padding: 18,
+                marginBottom: 14,
                 boxShadow: isFirst
                   ? "0 0 44px rgba(0,220,255,0.34)"
                   : "0 0 26px rgba(255,255,255,0.08)",
@@ -169,8 +169,8 @@ export default function MarketingVideo({
                   src={p.image || p.thumbnail}
                   alt={p.title || p.name || "Product"}
                   style={{
-                    width: 135,
-                    height: 135,
+                    width: 105,
+                    height: 105,
                     objectFit: "contain",
                     borderRadius: 22,
                     background: "white",
@@ -208,7 +208,7 @@ export default function MarketingVideo({
 
                 <div
                   style={{
-                    fontSize: 42,
+                    fontSize: 34,
                     marginTop: 10,
                     fontWeight: "bold",
                     color: "#ffffff",
@@ -227,7 +227,7 @@ export default function MarketingVideo({
       <div
         style={{
           position: "absolute",
-          bottom: 55,
+          bottom: 28,
           left: 60,
           right: 60,
           textAlign: "center",
