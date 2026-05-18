@@ -180,9 +180,12 @@ const finalProducts =
     __html: `
       document.addEventListener("DOMContentLoaded", function () {
         var form = document.getElementById("smartSearchForm");
+        var overlay = document.getElementById("smartLoadingOverlay");
+
         if (form) {
           form.addEventListener("submit", function () {
             form.classList.add("loading");
+            if (overlay) overlay.classList.add("show");
           });
         }
       });
@@ -191,7 +194,17 @@ const finalProducts =
 />
 
       <SeoSearchBar />
-
+<div id="smartLoadingOverlay" className="smartLoadingOverlay">
+  <div className="aiLoaderBox">
+    <div className="aiOrbit">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <strong>🤖 جاري تحليل المنتجات</strong>
+    <p>بنقارن النتائج حسب الدولة والميزانية...</p>
+  </div>
+</div>
       <section className="hero" dir="rtl">
         <div className="badge">BPS Chat Smart Search</div>
 
@@ -648,6 +661,69 @@ const finalProducts =
 @keyframes pulseAi {
   0%, 100% { opacity: 0.65; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.04); }
+}
+  .smartLoadingOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  place-items: center;
+  background: rgba(5, 10, 14, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.smartLoadingOverlay.show {
+  display: grid;
+}
+
+.aiLoaderBox {
+  width: min(90%, 360px);
+  text-align: center;
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(0,255,200,0.25);
+  box-shadow: 0 0 45px rgba(0,255,200,0.22);
+}
+
+.aiOrbit {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(16,163,127,0.35);
+  animation: spinAi 1.2s linear infinite;
+}
+
+.aiOrbit span {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #18d6a3;
+  box-shadow: 0 0 18px #18d6a3;
+}
+
+.aiOrbit span:nth-child(1) { top: -6px; left: 38px; }
+.aiOrbit span:nth-child(2) { right: -6px; top: 38px; background: #00e5ff; }
+.aiOrbit span:nth-child(3) { bottom: -6px; left: 38px; background: #7c3aed; }
+
+.aiLoaderBox strong {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.aiLoaderBox p {
+  margin: 0;
+  font-size: 14px;
+  color: #b8c7d9;
+}
+
+@keyframes spinAi {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
         @media (max-width: 800px) {
           .smartForm {
