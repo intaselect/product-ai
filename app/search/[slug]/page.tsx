@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
+import VideoPreview from "@/app/marketing-video/VideoPreview";
 export const revalidate = 43200; // 12 ساعة
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
@@ -237,6 +238,22 @@ return (
     __html: JSON.stringify(schema),
   }}
 />
+
+
+{/* 🎥 Video Schema */}
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: `أفضل سعر ${data?.query || query} في ${countryName}`,
+      description: `فيديو مقارنة أسعار ${data?.query || query} في ${countryName}`,
+      thumbnailUrl: "https://bpschat.com/og-image.png",
+      uploadDate: new Date().toISOString(),
+    }),
+  }}
+/>
     <SeoSearchBar />
 
     <div style={{ padding: "40px" }}>
@@ -251,6 +268,17 @@ return (
 </p>
 
 <h2 style={{ marginTop: "30px" }}>أفضل عروض {data?.query || query}</h2>
+
+{/* 🎥 الفيديو هنا */}
+<div style={{ marginTop: "30px", marginBottom: "20px" }}>
+  <h3 style={{ marginBottom: "12px" }}>🎥 فيديو مقارنة الأسعار</h3>
+
+  <VideoPreview
+    query={data?.query || query}
+    countryName={countryName}
+    products={products}
+  />
+</div>
 
       <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
         {products?.slice(0, 20).map((product: any, index: number) => (
