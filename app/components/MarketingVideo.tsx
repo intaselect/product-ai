@@ -28,9 +28,11 @@ export default function MarketingVideo({
   const frame = useCurrentFrame();
 
   const shown = products.slice(0, 18);
-  const scrollY = interpolate(frame, [0, 540], [0, -900], {
+  const scrollY = Math.round(
+  interpolate(frame, [0, 540], [0, -900], {
     extrapolateRight: "clamp",
-  });
+  })
+);
 
   const pulse = interpolate(Math.sin(frame / 10), [-1, 1], [0.45, 1]);
 
@@ -129,11 +131,12 @@ export default function MarketingVideo({
           zIndex: 3,
         }}
       >
-        <div
-          style={{
-            transform: `translateY(${scrollY}px)`,
-          }}
-        >
+       <div
+  style={{
+    transform: `translate3d(0, ${scrollY}px, 0)`,
+    willChange: "transform",
+  }}
+>
           {shown.map((p, i) => {
             const isFirst = i === 0;
             const img = p.image || p.thumbnail;
@@ -145,6 +148,7 @@ export default function MarketingVideo({
               <div
                 key={i}
                 style={{
+                    
                   display: "flex",
                   alignItems: "center",
                   gap: 22,
