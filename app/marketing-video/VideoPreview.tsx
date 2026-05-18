@@ -28,7 +28,7 @@ export default function VideoPreview({
 
         <Player
           component={MarketingVideo}
-          durationInFrames={360}
+          durationInFrames={600}
           fps={30}
           compositionWidth={1080}
           compositionHeight={1920}
