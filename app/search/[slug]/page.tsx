@@ -249,6 +249,55 @@ return (
   ومعرفة أرخص سعر من بين عدة متاجر مثل أمازون ونون وجوميا بسهولة.
   قارن بين الأسعار، اختار الأفضل، ووفّر فلوسك قبل الشراء.
 </p>
+
+<h2 style={{ marginTop: "30px" }}>أفضل عروض {data?.query || query}</h2>
+
+      <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
+        {products?.slice(0, 20).map((product: any, index: number) => (
+         <div
+  key={index}
+  className="seoProductCard"
+>
+          {(product.image || product.thumbnail) && (
+  <img
+  src={product.image || product.thumbnail}
+  width={90}
+  height={90}
+  alt={`${product.title || product.name || query} - أفضل سعر في ${countryName}`}
+  loading="lazy"
+  style={{
+    objectFit: "contain",
+    borderRadius: "10px",
+    background: "#fff",
+  }}
+/>
+)}
+            <div>
+              <h3 style={{ margin: 0 }}>
+                {product.title || product.name || "منتج"}
+              </h3>
+
+              <p style={{ margin: "8px 0" }}>
+  {product.priceText || product.price || "السعر غير متوفر"}
+</p>
+<p style={{ margin: "4px 0", color: "#aaa", fontSize: "14px" }}>
+  المتجر: {getStoreName(product)}
+</p>
+
+{(product.url || product.link) && (
+  <a
+    href={product.url || product.link}
+                  target="_blank"
+                  rel="nofollow sponsored noopener noreferrer"
+                  style={{ color: "#10a37f" }}
+                >
+                  عرض المنتج
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p dir="rtl">
   يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا ومحدثًا لأسعار{" "}
@@ -343,54 +392,6 @@ return (
   يمكنك من خلال هذه الصفحة معرفة أحدث الأسعار ومقارنة المنتجات بسهولة.
 </p>
 
-<h2 style={{ marginTop: "30px" }}>أفضل عروض {data?.query || query}</h2>
-
-      <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
-        {products?.slice(0, 20).map((product: any, index: number) => (
-         <div
-  key={index}
-  className="seoProductCard"
->
-          {(product.image || product.thumbnail) && (
-  <img
-  src={product.image || product.thumbnail}
-  width={90}
-  height={90}
-  alt={`${product.title || product.name || query} - أفضل سعر في ${countryName}`}
-  loading="lazy"
-  style={{
-    objectFit: "contain",
-    borderRadius: "10px",
-    background: "#fff",
-  }}
-/>
-)}
-            <div>
-              <h3 style={{ margin: 0 }}>
-                {product.title || product.name || "منتج"}
-              </h3>
-
-              <p style={{ margin: "8px 0" }}>
-  {product.priceText || product.price || "السعر غير متوفر"}
-</p>
-<p style={{ margin: "4px 0", color: "#aaa", fontSize: "14px" }}>
-  المتجر: {getStoreName(product)}
-</p>
-
-{(product.url || product.link) && (
-  <a
-    href={product.url || product.link}
-                  target="_blank"
-                  rel="nofollow sponsored noopener noreferrer"
-                  style={{ color: "#10a37f" }}
-                >
-                  عرض المنتج
-                </a>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
       <section style={{ marginTop: "40px" }}>
         <section style={{ marginTop: "40px" }}>
   <h2>عمليات بحث شائعة عن {data?.query || query} في {countryName}</h2>
