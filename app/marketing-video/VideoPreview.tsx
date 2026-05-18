@@ -16,17 +16,17 @@ export default function VideoPreview({
   const playerRef = useRef<PlayerRef>(null);
 
   const handleDownload = async () => {
-    const canvas = document.querySelector("canvas") as HTMLCanvasElement | null;
-
-    if (!canvas) {
-      alert("مش لاقي الفيديو للتسجيل. لو الزر مش اشتغل، هنستخدم طريقة تسجيل الشاشة أو تصدير محلي.");
-      return;
-    }
+  try {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: {
+        frameRate: 30,
+      },
+      audio: false,
+    });
 
     playerRef.current?.seekTo(0);
     playerRef.current?.play();
 
-    const stream = canvas.captureStream(30);
     const recorder = new MediaRecorder(stream, {
       mimeType: "video/webm",
     });
@@ -40,12 +40,14 @@ export default function VideoPreview({
     recorder.onstop = () => {
       playerRef.current?.pause();
 
+      stream.getTracks().forEach((track) => track.stop());
+
       const blob = new Blob(chunks, { type: "video/webm" });
       const url = URL.createObjectURL(blob);
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = "bpschat-video.webm";
+      a.download = "bpschat-marketing-video.webm";
       a.click();
 
       URL.revokeObjectURL(url);
@@ -56,7 +58,10 @@ export default function VideoPreview({
     setTimeout(() => {
       recorder.stop();
     }, 20000);
-  };
+  } catch (error) {
+    alert("تم إلغاء التسجيل أو المتصفح لا يدعم تسجيل الشاشة");
+  }
+};
 
   return (
     <main
