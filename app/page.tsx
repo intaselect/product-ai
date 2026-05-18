@@ -992,14 +992,21 @@ z-index: 3;
   color: #10a37f;
 }
 
-/* 🔥 Composer */
 .composer {
   position: sticky;
   top: 0;
-  background: #212121;
-  padding: 10px 0;
-}
 
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 22px;
+
+  padding: 20px;
+  margin-top: 20px;
+
+  box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+}
 .select {
   display: block;
   margin: auto;
@@ -1010,27 +1017,36 @@ z-index: 3;
   color: white;
 }
 
-/* 🔥 SEARCH (FINAL FIX) */
 .searchBox {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: center;
+
   width: 100%;
   max-width: 600px;
   margin: 15px auto;
-}
 
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  padding: 6px;
+}
 .input {
   flex: 1;
   height: 46px;
   padding: 0 14px;
+
   border-radius: 14px;
-  background: #2f2f2f;
-  border: 1px solid #444;
+
+  background: transparent; /* 🔥 أهم تعديل */
+  border: none;            /* 🔥 أهم تعديل */
+
   color: white;
   outline: none;
-  font-size: 14px;
+  font-size: 15px;
+}
+
+.input::placeholder {
+  color: #9fb3c8;
 }
 
 .input::placeholder {
@@ -1043,19 +1059,37 @@ z-index: 3;
 
 .button {
   height: 46px;
-  background: #10a37f;
+
+  background: linear-gradient(135deg, #10a37f, #18d6a3);
   border: none;
+
   padding: 0 18px;
   border-radius: 14px;
-  color: white;
-  font-weight: 600;
+
+  color: #06110e;
+  font-weight: 900;
+
   cursor: pointer;
 }
 
+
+.button:hover {
+  filter: brightness(1.1);
+}
 .button:hover {
   background: #0e8f6e;
 }
+.composer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
 
+  background:
+    radial-gradient(circle at top, rgba(16,163,127,0.15), transparent 60%);
+
+  border-radius: 22px;
+  z-index: -1;
+}
 /* 📦 Results */
 .results {
   margin-top: 20px;
