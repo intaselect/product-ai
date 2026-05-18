@@ -109,9 +109,12 @@ export default async function SmartSearchPage({ searchParams }: any) {
         .filter(Boolean)
         .join(" ")
     : "";
+    const apiQuery = hasSearch
+  ? [product, usage, extra].filter(Boolean).join(" ")
+  : "";
 
   const rawProducts = hasSearch
-  ? await fetchRealProducts(query, country)
+  ? await fetchRealProducts(apiQuery, country)
   : [];
 
   const minPrice = budget ? Math.floor(budget * countryData.minFactor) : 0;
@@ -128,8 +131,16 @@ export default async function SmartSearchPage({ searchParams }: any) {
     (p: any) => p.numericPrice && p.numericPrice >= minPrice && p.numericPrice <= maxPrice
   );
 
-  const finalProducts =
-    filteredProducts.length > 0 ? filteredProducts : productsWithPrice.slice(0, 12);
+  const sortedByBudget = [...productsWithPrice].sort((a: any, b: any) => {
+  const da = a.numericPrice ? Math.abs(a.numericPrice - budget) : 999999999;
+  const db = b.numericPrice ? Math.abs(b.numericPrice - budget) : 999999999;
+  return da - db;
+});
+
+const finalProducts =
+  filteredProducts.length >= 6
+    ? filteredProducts.slice(0, 18)
+    : sortedByBudget.slice(0, 18);
 
   const schema = {
     "@context": "https://schema.org",
@@ -151,6 +162,20 @@ export default async function SmartSearchPage({ searchParams }: any) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
+      <script
+  dangerouslySetInnerHTML={{
+    __html: `
+      document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("smartSearchForm");
+        if (form) {
+          form.addEventListener("submit", function () {
+            form.classList.add("loading");
+          });
+        }
+      });
+    `,
+  }}
+/>
 
       <SeoSearchBar />
 
@@ -168,7 +193,7 @@ export default async function SmartSearchPage({ searchParams }: any) {
           الكويت، قطر والبحرين بدون ما تغيّر نظام البحث الأساسي في الموقع.
         </p>
 
-        <form className="smartForm" action="/smart-search" method="get">
+        <form id="smartSearchForm" className="smartForm" action="/smart-search" method="get">
           <div className="field">
             <label>المنتج</label>
             <input
@@ -221,7 +246,10 @@ export default async function SmartSearchPage({ searchParams }: any) {
             />
           </div>
 
-          <button type="submit">اعرض المنتجات المناسبة</button>
+          <button type="submit" className="smartSubmit">
+  <span className="normalText">اعرض المنتجات المناسبة</span>
+  <span className="loadingText">🤖 جاري تحليل المنتجات...</span>
+</button>
         </form>
       </section>
 
@@ -536,7 +564,40 @@ export default async function SmartSearchPage({ searchParams }: any) {
           border-color: #10a37f;
           color: #10a37f;
         }
+.smartSubmit {
+  position: relative;
+  overflow: hidden;
+}
 
+.loadingText {
+  display: none;
+}
+
+.smartForm.loading .normalText {
+  display: none;
+}
+
+.smartForm.loading .loadingText {
+  display: inline-block;
+  animation: pulseAi 1s infinite ease-in-out;
+}
+
+.smartForm.loading .smartSubmit {
+  pointer-events: none;
+  background: linear-gradient(135deg, #10a37f, #00e5ff, #7c3aed);
+  background-size: 220% 220%;
+  animation: aiGradient 1.4s infinite linear;
+}
+
+@keyframes aiGradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+@keyframes pulseAi {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
         @media (max-width: 800px) {
           .smartForm {
             grid-template-columns: 1fr;
