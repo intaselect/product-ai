@@ -4,7 +4,7 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 
-export const revalidate = 300;
+export const revalidate = 86400; // يوم
 
 export const metadata: Metadata = {
   title: "Smart Search | ابحث حسب الميزانية والاستخدام | BPS Chat",
@@ -110,7 +110,9 @@ export default async function SmartSearchPage({ searchParams }: any) {
         .join(" ")
     : "";
 
-  const rawProducts = hasSearch ? await fetchRealProducts(query, country) : [];
+  const rawProducts = hasSearch
+  ? await fetchRealProducts(query, country)
+  : [];
 
   const minPrice = budget ? Math.floor(budget * countryData.minFactor) : 0;
   const maxPrice = budget ? Math.ceil(budget * countryData.maxFactor) : 0;
