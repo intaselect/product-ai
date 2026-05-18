@@ -187,7 +187,14 @@ const finalProducts =
             form.classList.add("loading");
             if (overlay) overlay.classList.add("show");
           });
+          
         }
+          var seoLinks = document.querySelectorAll(".seoLoadingLink");
+seoLinks.forEach(function (link) {
+  link.addEventListener("click", function () {
+    if (overlay) overlay.classList.add("show");
+  });
+});
       });
     `,
   }}
@@ -309,9 +316,9 @@ const finalProducts =
     `${product} في ${countryData.name} اقل من ${budget} ${countryData.currency}`,
     country
   )}
-  className="secondaryBtn"
+  className="secondaryBtn seoLoadingLink"
 >
-  افتح صفحة بحث SEO كاملة
+ تصفح كامل المنتجات في الصفحة الكاملة
 </Link>
           </div>
 
