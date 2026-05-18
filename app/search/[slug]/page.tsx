@@ -2,8 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
-export const revalidate = 300;
-
+export const revalidate = 43200; // 12 ساعة
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
     .toLowerCase()
@@ -13,7 +12,10 @@ function cleanSlug(slug: string) {
     .replace(/[^\w\u0600-\u06FF\s-]/g, "")
     .replace(/\s+/g, "-");
 }
-
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 const countryMap: any = {
   sa: "السعودية",
   ae: "الإمارات",
@@ -75,7 +77,36 @@ export default async function Page({ params }: any) {
 
   const data = await getSearchData(slug);
 
-  const products = await fetchRealProducts(query, countryCode);
+  let products: any[] = [];
+
+// نحاول نجيب من الكاش الأول
+const { data: cached } = await supabase
+  .from("product_cache")
+  .select("results")
+  .eq("cache_key", `${countryCode}:${query.toLowerCase().trim()}`)
+  .maybeSingle();
+
+if (cached?.results?.length) {
+  console.log("✅ SLUG CACHE HIT");
+  products = cached.results;
+} else {
+  console.log("🔥 SLUG FETCH FROM API");
+
+  const fresh = await fetchRealProducts(query, countryCode);
+  products = fresh;
+
+  // نحفظ في الكاش
+  await supabase.from("product_cache").upsert({
+    cache_key: `${countryCode}:${query.toLowerCase().trim()}`,
+    query: query.toLowerCase().trim(),
+    country: countryCode,
+    results: fresh,
+    updated_at: new Date().toISOString(),
+    expires_at: new Date(
+      Date.now() + 10 * 24 * 60 * 60 * 1000 // 10 أيام
+    ).toISOString(),
+  });
+}
   const validProducts = (products || []).filter((p: any) => p.price || p.priceText);
 
 function getPriceNumber(product: any) {
