@@ -40,7 +40,7 @@ export default function MarketingVideo({
   });
 
   const glowPulse = interpolate(
-    Math.sin(frame / 10),
+    Math.sin(frame / 6),
     [-1, 1],
     [0.35, 0.9]
   );
