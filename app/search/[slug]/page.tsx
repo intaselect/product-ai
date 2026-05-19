@@ -83,10 +83,22 @@ export default async function Page({ params }: any) {
   let products: any[] = [];
 
 // نحاول نجيب من الكاش الأول
+function cleanCacheText(text: string) {
+  return String(text || "")
+    .toLowerCase()
+    .trim()
+    .normalize("NFKC")
+    .replace(/[\u200E\u200F\u202A-\u202E]/g, "")
+    .replace(/[^\w\u0600-\u06FF\s]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+const cacheKey = `${countryCode}:${cleanCacheText(query)}`;
+
 const { data: cached } = await supabase
   .from("product_cache")
   .select("results")
-  .eq("cache_key", `${countryCode}:${query.toLowerCase().trim()}`)
+  .eq("cache_key", cacheKey)
   .maybeSingle();
 
 if (cached?.results?.length) {
@@ -95,20 +107,26 @@ if (cached?.results?.length) {
 } else {
   console.log("🔥 SLUG FETCH FROM API");
 
+  try {
   const fresh = await fetchRealProducts(query, countryCode);
-  products = fresh;
+  products = fresh || [];
 
-  // نحفظ في الكاش
-  await supabase.from("product_cache").upsert({
-    cache_key: `${countryCode}:${query.toLowerCase().trim()}`,
-    query: query.toLowerCase().trim(),
-    country: countryCode,
-    results: fresh,
-    updated_at: new Date().toISOString(),
-    expires_at: new Date(
-      Date.now() + 10 * 24 * 60 * 60 * 1000 // 10 أيام
-    ).toISOString(),
-  });
+  if (products.length > 0) {
+    await supabase.from("product_cache").upsert({
+      cache_key: cacheKey,
+      query: cleanCacheText(query),
+      country: countryCode,
+      results: products,
+      updated_at: new Date().toISOString(),
+      expires_at: new Date(
+        Date.now() + 10 * 24 * 60 * 60 * 1000
+      ).toISOString(),
+    });
+  }
+} catch (e) {
+  console.log("❌ SLUG API FAILED");
+  products = [];
+}
 }
   const validProducts = (products || []).filter((p: any) => p.price || p.priceText);
 
