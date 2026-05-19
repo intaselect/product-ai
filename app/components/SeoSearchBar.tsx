@@ -104,7 +104,7 @@ export default function SeoSearchBar() {
         .seoButton {
           height: 52px;
           border: none;
-          padding: 0 27px;
+          padding: 0 26px;
           border-radius: 18px;
           color: white;
           font-weight: 800;
