@@ -4,6 +4,7 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 import { headers } from "next/headers";
+import { createClient } from "@supabase/supabase-js";
 
 export const revalidate = 86400; // يوم
 
@@ -55,6 +56,38 @@ const usages = [
   "أفضل قيمة مقابل السعر",
   "استخدام يومي",
 ];
+const CACHE_DAYS = 10;
+const DAILY_LIMIT = 10;
+const MINUTE_LIMIT = 5;
+
+function getSupabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
+
+function cleanCacheText(text: string) {
+  return String(text || "")
+    .toLowerCase()
+    .trim()
+    .normalize("NFKC")
+    .replace(/[\u200E\u200F\u202A-\u202E]/g, "")
+    .replace(/[^\w\u0600-\u06FF\s]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function makeCacheKey(query: string, country: string) {
+  return `${String(country || "sa").toLowerCase().trim()}:${cleanCacheText(query)}`;
+}
+
+function getClientIP(headersList: Headers) {
+  return (
+    headersList.get("x-forwarded-for")?.split(",")[0] ||
+    headersList.get("x-real-ip") ||
+    "unknown"
+  );
+}
 
 function parsePrice(product: any) {
   const raw = String(product.price || product.priceText || "");
@@ -112,11 +145,14 @@ export default async function SmartSearchPage({ searchParams }: any) {
     : "";
     const apiQuery = hasSearch ? product : "";
 
- let rawProducts: any[] = [];
+let rawProducts: any[] = [];
+let remainingSearches = DAILY_LIMIT;
+let limitMessage = "";
 
 if (hasSearch) {
   const headersList = await headers();
   const userAgent = headersList.get("user-agent") || "";
+  const ip = getClientIP(headersList);
 
   const isBot =
     userAgent.toLowerCase().includes("bot") ||
@@ -126,7 +162,84 @@ if (hasSearch) {
     userAgent.toLowerCase().includes("bing");
 
   if (!isBot) {
+    const supabase = getSupabaseAdmin();
+    const cacheKey = makeCacheKey(apiQuery, country);
+    const now = new Date().toISOString();
+
+    const { data: cached } = await supabase
+      .from("product_cache")
+      .select("results")
+      .eq("cache_key", cacheKey)
+      .gt("expires_at", now)
+      .maybeSingle();
+
+   if (cached?.results?.length) {
+  rawProducts = cached.results;
+
+  // ✅ الكاش لا يتحسب من الحد، لكن نعرض العداد الحقيقي
+  const today = new Date().toISOString().slice(0, 10);
+
+  const { count: dailyCount } = await supabase
+    .from("search_rate_limits")
+    .select("*", { count: "exact", head: true })
+    .eq("ip", ip)
+    .eq("day", today);
+
+  remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
+} else {
+  const today = new Date().toISOString().slice(0, 10);
+  const minuteBucket = new Date().toISOString().slice(0, 16);
+
+  const { count: dailyCount } = await supabase
+    .from("search_rate_limits")
+    .select("*", { count: "exact", head: true })
+    .eq("ip", ip)
+    .eq("day", today);
+
+  const { count: minuteCount } = await supabase
+    .from("search_rate_limits")
+    .select("*", { count: "exact", head: true })
+    .eq("ip", ip)
+    .eq("minute_bucket", minuteBucket);
+
+  remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
+
+  if ((dailyCount || 0) >= DAILY_LIMIT) {
+    limitMessage =
+      "لقد وصلت للحد اليومي 10 عمليات بحث جديدة، جرّب غدًا أو استخدم نتائج الكاش.";
+  } else if ((minuteCount || 0) >= MINUTE_LIMIT) {
+    limitMessage = "طلبات سريعة جدًا، استنى دقيقة وجرب تاني.";
+  } else {
     rawProducts = await fetchRealProducts(apiQuery, country);
+
+    await supabase.from("search_rate_limits").insert({
+      ip,
+      day: today,
+      minute_bucket: minuteBucket,
+      query: apiQuery,
+      country,
+    });
+
+    remainingSearches = Math.max(
+      0,
+      DAILY_LIMIT - ((dailyCount || 0) + 1)
+    );
+
+    if (Array.isArray(rawProducts) && rawProducts.length > 0) {
+      await supabase.from("product_cache").upsert(
+        {
+          cache_key: cacheKey,
+          query: cleanCacheText(apiQuery),
+          country,
+          results: rawProducts,
+          updated_at: now,
+          expires_at: new Date(
+            Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
+          ).toISOString(),
+        },
+        { onConflict: "cache_key" }
+      );
+    }
   }
 }
 
@@ -284,6 +397,15 @@ seoLinks.forEach(function (link) {
   <span className="loadingText">🤖 جاري تحليل المنتجات...</span>
 </button>
         </form>
+        <div className={`smartCounter ${remainingSearches <= 3 ? "danger" : ""}`}>
+  المتبقي اليوم: {remainingSearches} / 10 بحث جديد
+</div>
+
+{limitMessage && (
+  <div className="smartLimitError">
+    {limitMessage}
+  </div>
+)}
       </section>
 
       {hasSearch && (
@@ -458,7 +580,39 @@ seoLinks.forEach(function (link) {
           margin: 0 auto;
           padding: 42px 18px;
         }
+.smartCounter {
+  margin: 14px auto 0;
+  width: fit-content;
+  padding: 9px 14px;
+  border-radius: 14px;
+  color: #00ffd0;
+  font-size: 14px;
+  font-weight: 900;
+  background: linear-gradient(135deg, rgba(0,255,200,0.15), rgba(0,180,255,0.15));
+  border: 1px solid rgba(0,255,200,0.3);
+  box-shadow:
+    0 0 12px rgba(0,255,200,0.25),
+    inset 0 0 6px rgba(0,255,200,0.08);
+}
 
+.smartCounter.danger {
+  color: #ff4d4d;
+  border-color: rgba(255,0,0,0.4);
+  box-shadow:
+    0 0 12px rgba(255,0,0,0.3),
+    inset 0 0 6px rgba(255,0,0,0.1);
+}
+
+.smartLimitError {
+  margin: 14px auto 0;
+  max-width: 620px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  color: #ffb3b3;
+  text-align: center;
+  background: rgba(255,0,0,0.10);
+  border: 1px solid rgba(255,80,80,0.35);
+}
         .badge {
           display: inline-flex;
           padding: 8px 14px;
