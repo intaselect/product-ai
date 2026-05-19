@@ -43,6 +43,20 @@ export async function POST(req) {
     const supabase = getSupabaseAdmin();
     const cacheKey = makeCacheKey(cleanQuery, cleanCountry);
     const now = new Date().toISOString();
+    const DAILY_LIMIT = 10;
+const MINUTE_LIMIT = 5;
+
+const ip = getClientIP(req);
+const today = new Date().toISOString().slice(0, 10);
+const minuteBucket = new Date().toISOString().slice(0, 16);
+
+const { count: dailyCount } = await supabase
+  .from("search_rate_limits")
+  .select("*", { count: "exact", head: true })
+  .eq("ip", ip)
+  .eq("day", today);
+
+const remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
 
     const { data: cached, error: cacheError } = await supabase
       .from("product_cache")
@@ -54,25 +68,15 @@ export async function POST(req) {
     if (!cacheError && cached?.results?.length) {
       console.log("✅ CACHE HIT:", cacheKey);
 
-      return Response.json({
-        value: cached.results,
-        cache: "hit",
-      });
+     return Response.json({
+  value: cached.results,
+  cache: "hit",
+  remainingSearches,
+  limit: DAILY_LIMIT,
+});
     }
 
     console.log("⚠️ CACHE MISS:", cacheKey);
-const ip = getClientIP(req);
-const today = new Date().toISOString().slice(0, 10);
-
-// 🔥 check عدد البحث اليومي
-const { count: dailyCount } = await supabase
-  .from("search_rate_limits")
-  .select("*", { count: "exact", head: true })
-  .eq("ip", ip)
-  .eq("day", today);
-
-// 🔥 check الضغط في الدقيقة
-const minuteBucket = new Date().toISOString().slice(0, 16); // yyyy-mm-ddThh:mm
 
 const { count: minuteCount } = await supabase
   .from("search_rate_limits")
@@ -81,20 +85,24 @@ const { count: minuteCount } = await supabase
   .eq("minute_bucket", minuteBucket);
 
 // 🚫 لو بوت
-if ((dailyCount || 0) >= 10) {
-  return Response.json({
-    value: [],
-    message: "تم الوصول للحد اليومي للبحث، حاول لاحقًا",
-    blocked: true,
-  });
+if ((dailyCount || 0) >= DAILY_LIMIT) {
+ return Response.json({
+  value: [],
+  message: "لقد وصلت للحد اليومي 10 عمليات بحث جديدة، جرّب غدًا أو استخدم نتائج الكاش.",
+  blocked: true,
+  remainingSearches: 0,
+  limit: DAILY_LIMIT,
+});
 }
 
-if ((minuteCount || 0) >= 5) {
+if ((minuteCount || 0) >= MINUTE_LIMIT) {
   return Response.json({
-    value: [],
-    message: "عدد طلبات كبير جدًا، حاول بعد دقيقة",
-    blocked: true,
-  });
+  value: [],
+  message: "طلبات سريعة جدًا، استنى دقيقة وجرب تاني.",
+  blocked: true,
+  remainingSearches,
+  limit: DAILY_LIMIT,
+});
 }
     const results = await fetchRealProducts(cleanQuery, cleanCountry);
     // ✅ نسجل الطلب
@@ -105,7 +113,10 @@ await supabase.from("search_rate_limits").insert({
   query: cleanQuery,
   country: cleanCountry,
 });
-
+const remainingAfterSearch = Math.max(
+  0,
+  DAILY_LIMIT - ((dailyCount || 0) + 1)
+);
     if (Array.isArray(results) && results.length > 0) {
       const expiresAt = new Date(
         Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
@@ -131,9 +142,11 @@ await supabase.from("search_rate_limits").insert({
     }
 
     return Response.json({
-      value: results,
-      cache: "miss",
-    });
+  value: results,
+  cache: "miss",
+  remainingSearches: remainingAfterSearch,
+  limit: DAILY_LIMIT,
+});
   } catch (err) {
     return Response.json(
       { error: "Search failed", details: err.message },

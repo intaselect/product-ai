@@ -14,6 +14,7 @@ export default function Home() {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [remainingSearches, setRemainingSearches] = useState(10);
 useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
@@ -360,6 +361,9 @@ useEffect(() => {
     });
 
     const data = await res.json();
+    if (typeof data.remainingSearches === "number") {
+  setRemainingSearches(data.remainingSearches);
+}
     if (data.blocked) {
   setErrorMessage(data.message);
   setLoading(false);
@@ -538,6 +542,9 @@ useEffect(() => {
             <button onClick={handleSearch} className="button" disabled={loading}>
               {loading ? "..." : "بحث"}
             </button>
+            <div className="searchCounter">
+  المتبقي اليوم: {remainingSearches} / 10 بحث جديد
+</div>
           </div>
         </section>
         <section className="smartSearchPromo">
@@ -614,6 +621,15 @@ useEffect(() => {
 
   position: relative;
   overflow-x: hidden;
+}
+  .searchCounter {
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #00ffd0;
+  opacity: 0.9;
+  text-shadow: 0 0 12px rgba(0,255,200,0.35);
 }
   .dailyLimitNotice {
   margin-bottom: 12px;
