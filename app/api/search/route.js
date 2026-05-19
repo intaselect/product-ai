@@ -3,7 +3,13 @@ import { saveSearch } from "@/lib/saveSearch";
 import { createClient } from "@supabase/supabase-js";
 
 const CACHE_DAYS = 10;
-
+function getClientIP(req) {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0] ||
+    req.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
 function cleanCacheText(text) {
   return String(text || "")
     .toLowerCase()
@@ -55,8 +61,50 @@ export async function POST(req) {
     }
 
     console.log("⚠️ CACHE MISS:", cacheKey);
+const ip = getClientIP(req);
+const today = new Date().toISOString().slice(0, 10);
 
+// 🔥 check عدد البحث اليومي
+const { count: dailyCount } = await supabase
+  .from("search_rate_limits")
+  .select("*", { count: "exact", head: true })
+  .eq("ip", ip)
+  .eq("day", today);
+
+// 🔥 check الضغط في الدقيقة
+const minuteBucket = new Date().toISOString().slice(0, 16); // yyyy-mm-ddThh:mm
+
+const { count: minuteCount } = await supabase
+  .from("search_rate_limits")
+  .select("*", { count: "exact", head: true })
+  .eq("ip", ip)
+  .eq("minute_bucket", minuteBucket);
+
+// 🚫 لو بوت
+if ((dailyCount || 0) >= 10) {
+  return Response.json({
+    value: [],
+    message: "تم الوصول للحد اليومي للبحث، حاول لاحقًا",
+    blocked: true,
+  });
+}
+
+if ((minuteCount || 0) >= 5) {
+  return Response.json({
+    value: [],
+    message: "عدد طلبات كبير جدًا، حاول بعد دقيقة",
+    blocked: true,
+  });
+}
     const results = await fetchRealProducts(cleanQuery, cleanCountry);
+    // ✅ نسجل الطلب
+await supabase.from("search_rate_limits").insert({
+  ip,
+  day: today,
+  minute_bucket: minuteBucket,
+  query: cleanQuery,
+  country: cleanCountry,
+});
 
     if (Array.isArray(results) && results.length > 0) {
       const expiresAt = new Date(
@@ -91,5 +139,6 @@ export async function POST(req) {
       { error: "Search failed", details: err.message },
       { status: 500 }
     );
+    
   }
 }
