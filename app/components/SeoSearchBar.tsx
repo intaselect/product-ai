@@ -20,6 +20,13 @@ export default function SeoSearchBar() {
   return (
     <section className="seoSearch" dir="rtl">
       <div className="seoSearchInner">
+        <div className="aiLimitNotice">
+  <span className="aiLimitIcon">✦</span>
+  <span>
+    لحماية جودة النتائج، كل مستخدم له <strong>10 عمليات بحث جديدة يوميًا</strong>
+    والنتائج الموجودة في الكاش متاحة بدون حد.
+  </span>
+</div>
         <select
           value={country}
           onChange={(e) => setCountry(e.target.value)}
@@ -63,7 +70,40 @@ export default function SeoSearchBar() {
           max-width: 760px;
           margin: 0 auto;
         }
+.aiLimitNotice {
+  max-width: 620px;
+  margin: 0 auto 14px;
+  padding: 11px 14px;
+  border-radius: 18px;
+  color: #d7fff4;
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
+  background:
+    linear-gradient(135deg, rgba(16,163,127,0.18), rgba(0,180,255,0.10)),
+    rgba(255,255,255,0.05);
+  border: 1px solid rgba(0,255,200,0.22);
+  box-shadow:
+    0 0 22px rgba(0,255,200,0.10),
+    inset 0 0 18px rgba(255,255,255,0.03);
+}
 
+.aiLimitIcon {
+  display: inline-flex;
+  margin-left: 8px;
+  color: #00ffd0;
+  text-shadow: 0 0 12px rgba(0,255,200,0.8);
+  animation: aiLimitPulse 1.8s ease-in-out infinite;
+}
+
+.aiLimitNotice strong {
+  color: #00ffd0;
+}
+
+@keyframes aiLimitPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
         .seoSelect {
           display: block;
           margin: 0 auto 14px;

@@ -13,6 +13,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<any>(null);
+  const [errorMessage, setErrorMessage] = useState("");
 useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
@@ -359,10 +360,16 @@ useEffect(() => {
     });
 
     const data = await res.json();
+    if (data.blocked) {
+  setErrorMessage(data.message);
+  setLoading(false);
+  return;
+}
 
     console.log("API RESULT:", data);
 
     setResults(data?.value || data?.products || data || []);
+    setErrorMessage("");
   } catch (err) {
     console.error("Search error:", err);
     setResults([]);
@@ -495,6 +502,11 @@ useEffect(() => {
         </div>
 
         <section className="composer">
+          {errorMessage && (
+  <div className="aiErrorBox">
+    {errorMessage}
+  </div>
+)}
           <select
             value={country}
             onChange={(e) => setCountry(e.target.value)}
@@ -605,7 +617,34 @@ useEffect(() => {
   text-align: center;
   margin: 10px 0;
 }
+.aiErrorBox {
+  margin: 12px auto;
+  padding: 12px 16px;
+  max-width: 500px;
 
+  border-radius: 16px;
+
+  background:
+    linear-gradient(135deg, rgba(255,0,0,0.18), rgba(255,100,100,0.08)),
+    rgba(255,255,255,0.05);
+
+  border: 1px solid rgba(255,80,80,0.35);
+
+  color: #ffb3b3;
+  text-align: center;
+  font-size: 14px;
+
+  box-shadow:
+    0 0 18px rgba(255,80,80,0.15),
+    inset 0 0 12px rgba(255,255,255,0.04);
+
+  animation: errorGlow 2s ease-in-out infinite;
+}
+
+@keyframes errorGlow {
+  0%,100% { opacity: 0.7 }
+  50% { opacity: 1 }
+}
 .arabicBrandName {
   display: block;
   text-align: center;
