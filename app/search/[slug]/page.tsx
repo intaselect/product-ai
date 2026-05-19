@@ -224,6 +224,7 @@ const storeSummary = stores
 
 return (
   <main className="seoPage">
+    <SidebarMenu />
   <div className="aiBackground">
     <div className="brainCore"></div>
     <div className="grid"></div>
@@ -233,7 +234,7 @@ return (
       ))}
     </div>
   </div>
-    <SidebarMenu />
+    
     <script
   type="application/ld+json"
   dangerouslySetInnerHTML={{
