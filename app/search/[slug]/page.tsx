@@ -320,19 +320,6 @@ return (
     شارك نتائج البحث
   </button>
 </a>
-  style={{
-    padding: "14px 24px",
-    borderRadius: 14,
-    border: "none",
-    cursor: "pointer",
-    fontWeight: "bold",
-    background: "linear-gradient(135deg, #00d4ff, #00ffa6)",
-    color: "#000",
-    fontSize: "16px",
-  }}
->
-  🔗 شارك نتائج البحث
-</button>
 </div>
 
       <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
