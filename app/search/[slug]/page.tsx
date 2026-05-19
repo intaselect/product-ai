@@ -223,8 +223,10 @@ const storeSummary = stores
 };
 
 return (
-  <main className="seoPage">
+  <>
     <SidebarMenu />
+
+    <main className="seoPage">
   <div className="aiBackground">
     <div className="brainCore"></div>
     <div className="grid"></div>
@@ -618,7 +620,8 @@ overflow: hidden;
     50% { opacity: 1; transform: scale(1.8); }
   }
 `}</style>
-  </main>
+     </main>
+  </>
 );
   
 }
