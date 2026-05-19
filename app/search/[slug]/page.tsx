@@ -304,26 +304,26 @@ return (
     شاهد مقارنة الأسعار في فيديو 👇
   </p>
 
-  <a
-  href={`/api/slug-video?query=${encodeURIComponent(
-    data?.query || query
-  )}&country=${countryCode}`}
+ <button
+  onClick={() => {
+    const el = document.getElementById("share-section");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }}
+  style={{
+    padding: "14px 24px",
+    borderRadius: 14,
+    border: "none",
+    cursor: "pointer",
+    fontWeight: "bold",
+    background: "linear-gradient(135deg, #00d4ff, #00ffa6)",
+    color: "#000",
+    fontSize: "16px",
+  }}
 >
-  <button
-    style={{
-      padding: "14px 24px",
-      borderRadius: 14,
-      border: "none",
-      cursor: "pointer",
-      fontWeight: "bold",
-      background: "linear-gradient(135deg, #00d4ff, #00ffa6)",
-      color: "#000",
-      fontSize: "16px",
-    }}
-  >
-    ⬇️ تحميل فيديو مقارنة الأسعار
-  </button>
-</a>
+  🔗 شارك نتائج البحث
+</button>
 </div>
 
       <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
