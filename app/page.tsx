@@ -1545,6 +1545,69 @@ z-index: 3;
       0 0 45px rgba(0,180,255,0.25);
   }
 }
+  @media (max-width: 600px) {
+  .composer {
+    padding: 16px 12px;
+    margin: 16px 10px 0;
+    border-radius: 20px;
+  }
+
+  .dailyLimitNotice {
+    font-size: 11px;
+    line-height: 1.7;
+    padding: 9px 10px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+
+  .searchBox {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .input {
+    width: 100%;
+    height: 44px;
+    text-align: right;
+    font-size: 14px;
+  }
+
+  .searchActions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+
+  .button {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+  }
+
+  .searchCounter {
+    min-width: 56px;
+    height: 44px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border-radius: 13px;
+    white-space: nowrap;
+  }
+
+  .aiErrorBox {
+    max-width: 100%;
+    font-size: 12px;
+    line-height: 1.7;
+    padding: 10px 12px;
+    margin: 10px auto 12px;
+  }
+}
 `}</style>
     </div>
   );
