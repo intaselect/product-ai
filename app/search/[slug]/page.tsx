@@ -3,6 +3,7 @@ import { fetchRealProducts } from "@/lib/fetchRealProducts";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import VideoPreview from "@/app/marketing-video/VideoPreview";
+import SidebarMenu from "@/app/components/SidebarMenu";
 export const revalidate = 43200; // 12 ساعة
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
@@ -232,6 +233,7 @@ return (
       ))}
     </div>
   </div>
+    <SidebarMenu />
     <script
   type="application/ld+json"
   dangerouslySetInnerHTML={{
