@@ -67,10 +67,35 @@ export async function generateMetadata({ params }: any) {
   const { slug } = await params;
   const { query, countryName } = parseSlug(slug);
 
- return {
-  title: `${query} في ${countryName} | مقارنة أسعار وعروض | BPS Chat | بي بي اس شات`,
-  description: `ابحث عن ${query} في ${countryName} وقارن الأسعار والعروض بسهولة عبر بي بي اس شات (BPS Chat) أفضل موقع لمقارنة الأسعار.`,
-};
+  const imageUrl = `https://www.bpschat.com/api/slug-og?slug=${encodeURIComponent(slug)}`;
+
+  return {
+    title: `${query} في ${countryName} | مقارنة أسعار وعروض | BPS Chat | بي بي اس شات`,
+    description: `ابحث عن ${query} في ${countryName} وقارن الأسعار والعروض بسهولة عبر بي بي اس شات (BPS Chat) أفضل موقع لمقارنة الأسعار.`,
+
+    openGraph: {
+      title: `${query} في ${countryName} | BPS Chat`,
+      description: `قارن أسعار ${query} في ${countryName} واعرف أفضل العروض.`,
+      url: `https://www.bpschat.com/search/${slug}`,
+      siteName: "BPS Chat",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `مقارنة أسعار ${query} في ${countryName}`,
+        },
+      ],
+      type: "website",
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: `${query} في ${countryName} | BPS Chat`,
+      description: `قارن أسعار ${query} في ${countryName} من BPS Chat.`,
+      images: [imageUrl],
+    },
+  };
 }
 
 export default async function Page({ params }: any) {
