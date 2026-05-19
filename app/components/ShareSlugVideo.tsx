@@ -61,7 +61,21 @@ ${pageUrl}`;
       console.log(e);
     }
   }
+function shareWhatsApp() {
+  window.open(
+    `https://wa.me/?text=${encodeURIComponent(text)}`,
+    "_blank"
+  );
+}
 
+function shareMessenger() {
+  window.open(
+    `https://www.facebook.com/dialog/send?link=${encodeURIComponent(
+      pageUrl
+    )}&app_id=YOUR_FACEBOOK_APP_ID&redirect_uri=${encodeURIComponent(pageUrl)}`,
+    "_blank"
+  );
+}
   return (
     <div className="shareBox">
       <h3>شارك فيديو المقارنة</h3>
@@ -74,6 +88,8 @@ ${pageUrl}`;
       <div className="shareButtons">
         <button onClick={shareFacebook}>Facebook</button>
         <button onClick={shareTwitter}>X / Twitter</button>
+       <button onClick={shareWhatsApp}>WhatsApp</button>
+<button onClick={nativeShare}>Messenger</button>
         <button onClick={nativeShare}>TikTok / Instagram / YouTube</button>
         <button onClick={copyPost}>نسخ نص البوست</button>
 
