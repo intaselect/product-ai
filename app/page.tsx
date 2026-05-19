@@ -519,7 +519,9 @@ useEffect(() => {
             <option value="bh">البحرين</option>
             <option value="eg">مصر</option>
           </select>
-
+<div className="dailyLimitNotice">
+  ⚡ لكل مستخدم 10 عمليات بحث يوميًا لضمان أفضل أداء للموقع
+</div>
           <div className="searchBox">
             <input
               placeholder="اكتب اسم المنتج..."
@@ -612,6 +614,24 @@ useEffect(() => {
 
   position: relative;
   overflow-x: hidden;
+}
+  .dailyLimitNotice {
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #00ffd5;
+
+  background: linear-gradient(135deg, rgba(0,255,200,0.12), rgba(0,180,255,0.12));
+  border: 1px solid rgba(0,255,200,0.25);
+
+  padding: 10px 14px;
+  border-radius: 999px;
+
+  box-shadow:
+    0 0 12px rgba(0,255,200,0.2),
+    inset 0 0 10px rgba(0,255,200,0.05);
+
+  backdrop-filter: blur(6px);
 }
   .brandTitleBlock {
   text-align: center;
