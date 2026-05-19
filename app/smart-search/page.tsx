@@ -173,72 +173,73 @@ if (hasSearch) {
       .gt("expires_at", now)
       .maybeSingle();
 
-   if (cached?.results?.length) {
-  rawProducts = cached.results;
+    if (cached?.results?.length) {
+      rawProducts = cached.results;
 
-  // ✅ الكاش لا يتحسب من الحد، لكن نعرض العداد الحقيقي
-  const today = new Date().toISOString().slice(0, 10);
+      const today = new Date().toISOString().slice(0, 10);
 
-  const { count: dailyCount } = await supabase
-    .from("search_rate_limits")
-    .select("*", { count: "exact", head: true })
-    .eq("ip", ip)
-    .eq("day", today);
+      const { count: dailyCount } = await supabase
+        .from("search_rate_limits")
+        .select("*", { count: "exact", head: true })
+        .eq("ip", ip)
+        .eq("day", today);
 
-  remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
-} else {
-  const today = new Date().toISOString().slice(0, 10);
-  const minuteBucket = new Date().toISOString().slice(0, 16);
+      remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
+    } else {
+      const today = new Date().toISOString().slice(0, 10);
+      const minuteBucket = new Date().toISOString().slice(0, 16);
 
-  const { count: dailyCount } = await supabase
-    .from("search_rate_limits")
-    .select("*", { count: "exact", head: true })
-    .eq("ip", ip)
-    .eq("day", today);
+      const { count: dailyCount } = await supabase
+        .from("search_rate_limits")
+        .select("*", { count: "exact", head: true })
+        .eq("ip", ip)
+        .eq("day", today);
 
-  const { count: minuteCount } = await supabase
-    .from("search_rate_limits")
-    .select("*", { count: "exact", head: true })
-    .eq("ip", ip)
-    .eq("minute_bucket", minuteBucket);
+      const { count: minuteCount } = await supabase
+        .from("search_rate_limits")
+        .select("*", { count: "exact", head: true })
+        .eq("ip", ip)
+        .eq("minute_bucket", minuteBucket);
 
-  remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
+      remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
 
-  if ((dailyCount || 0) >= DAILY_LIMIT) {
-    limitMessage =
-      "لقد وصلت للحد اليومي 10 عمليات بحث جديدة، جرّب غدًا أو استخدم نتائج الكاش.";
-  } else if ((minuteCount || 0) >= MINUTE_LIMIT) {
-    limitMessage = "طلبات سريعة جدًا، استنى دقيقة وجرب تاني.";
-  } else {
-    rawProducts = await fetchRealProducts(apiQuery, country);
+      if ((dailyCount || 0) >= DAILY_LIMIT) {
+        limitMessage =
+          "لقد وصلت للحد اليومي 10 عمليات بحث جديدة، جرّب غدًا أو استخدم نتائج الكاش.";
+      } else if ((minuteCount || 0) >= MINUTE_LIMIT) {
+        limitMessage = "طلبات سريعة جدًا، استنى دقيقة وجرب تاني.";
+      } else {
+        rawProducts = await fetchRealProducts(apiQuery, country);
 
-    await supabase.from("search_rate_limits").insert({
-      ip,
-      day: today,
-      minute_bucket: minuteBucket,
-      query: apiQuery,
-      country,
-    });
-
-    remainingSearches = Math.max(
-      0,
-      DAILY_LIMIT - ((dailyCount || 0) + 1)
-    );
-
-    if (Array.isArray(rawProducts) && rawProducts.length > 0) {
-      await supabase.from("product_cache").upsert(
-        {
-          cache_key: cacheKey,
-          query: cleanCacheText(apiQuery),
+        await supabase.from("search_rate_limits").insert({
+          ip,
+          day: today,
+          minute_bucket: minuteBucket,
+          query: apiQuery,
           country,
-          results: rawProducts,
-          updated_at: now,
-          expires_at: new Date(
-            Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
-          ).toISOString(),
-        },
-        { onConflict: "cache_key" }
-      );
+        });
+
+        remainingSearches = Math.max(
+          0,
+          DAILY_LIMIT - ((dailyCount || 0) + 1)
+        );
+
+        if (Array.isArray(rawProducts) && rawProducts.length > 0) {
+          await supabase.from("product_cache").upsert(
+            {
+              cache_key: cacheKey,
+              query: cleanCacheText(apiQuery),
+              country,
+              results: rawProducts,
+              updated_at: now,
+              expires_at: new Date(
+                Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
+              ).toISOString(),
+            },
+            { onConflict: "cache_key" }
+          );
+        }
+      }
     }
   }
 }
@@ -886,20 +887,22 @@ seoLinks.forEach(function (link) {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-        @media (max-width: 800px) {
-          .smartForm {
-            grid-template-columns: 1fr;
-          }
 
-          .seoProductCard {
-            grid-template-columns: 82px 1fr;
-          }
+@media (max-width: 800px) {
+  .smartForm {
+    grid-template-columns: 1fr;
+  }
 
-          .seoProductCard img {
-            width: 82px;
-            height: 82px;
-          }
-        }
+  .seoProductCard {
+    grid-template-columns: 82px 1fr;
+  }
+
+  .seoProductCard img {
+    width: 82px;
+    height: 82px;
+  }
+}
+
       `}</style>
     </main>
   );
