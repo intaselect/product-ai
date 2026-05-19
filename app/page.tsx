@@ -539,11 +539,14 @@ useEffect(() => {
               className="input"
             />
 
-            <button onClick={handleSearch} className="button" disabled={loading}>
-              {loading ? "..." : "بحث"}
-            </button>
-            <div className="searchCounter">
-  المتبقي اليوم: {remainingSearches} / 10 بحث جديد
+          <div className="searchActions">
+  <button onClick={handleSearch} className="button" disabled={loading}>
+    {loading ? "..." : "بحث"}
+  </button>
+
+  <div className={`searchCounter ${remainingSearches <= 3 ? "danger" : ""}`}>
+    {remainingSearches} / 10
+  </div>
 </div>
           </div>
         </section>
@@ -622,15 +625,43 @@ useEffect(() => {
   position: relative;
   overflow-x: hidden;
 }
-  .searchCounter {
-  width: 100%;
-  text-align: center;
-  margin-top: 8px;
-  font-size: 13px;
-  color: #00ffd0;
-  opacity: 0.9;
-  text-shadow: 0 0 12px rgba(0,255,200,0.35);
+  .searchActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+ 
 }
+  
+
+.searchCounter {
+  min-width: 70px;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  background: linear-gradient(135deg, rgba(0,255,200,0.15), rgba(0,180,255,0.15));
+  border: 1px solid rgba(0,255,200,0.3);
+
+  color: #00ffd0;
+
+  box-shadow:
+    0 0 12px rgba(0,255,200,0.25),
+    inset 0 0 6px rgba(0,255,200,0.08);
+
+  backdrop-filter: blur(6px);
+}
+  .searchCounter.danger {
+  color: #ff4d4d;
+  border-color: rgba(255,0,0,0.4);
+  box-shadow:
+    0 0 12px rgba(255,0,0,0.3),
+    inset 0 0 6px rgba(255,0,0,0.1);
+}
+  
   .dailyLimitNotice {
   margin-bottom: 12px;
   text-align: center;
