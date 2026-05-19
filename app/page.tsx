@@ -1608,6 +1608,40 @@ z-index: 3;
     margin: 10px auto 12px;
   }
 }
+  @media (max-width: 600px) {
+  .searchBox {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .input {
+    width: 100%;
+    height: 46px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(0,255,200,0.22);
+    border-radius: 14px;
+    padding: 0 14px;
+    box-shadow:
+      inset 0 0 10px rgba(0,255,200,0.06),
+      0 0 10px rgba(0,255,200,0.08);
+  }
+
+  .input:focus {
+    border-color: rgba(0,255,200,0.55);
+    box-shadow:
+      0 0 0 3px rgba(0,255,200,0.12),
+      inset 0 0 10px rgba(0,255,200,0.08);
+  }
+
+  .searchActions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+}
 `}</style>
     </div>
   );
