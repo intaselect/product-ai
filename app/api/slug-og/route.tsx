@@ -10,6 +10,14 @@ export async function GET(req: Request) {
   const country = parts.pop() || "";
   const query = parts.join(" ");
 
+  // 🟢 نجيب المنتجات
+  const res = await fetch(
+    `https://www.bpschat.com/api/search?query=${encodeURIComponent(query)}&country=${country}`
+  );
+
+  const json = await res.json();
+  const products = (json?.value || []).slice(0, 3);
+
   return new ImageResponse(
     (
       <div
@@ -18,29 +26,64 @@ export async function GET(req: Request) {
           height: "630px",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "linear-gradient(135deg, #071311, #0b0f14)",
+          background: "#0b0f14",
           color: "white",
-          padding: "60px",
+          padding: "40px",
           fontFamily: "Arial",
-          direction: "rtl",
         }}
       >
-        <div style={{ fontSize: 44, fontWeight: 900, marginBottom: 24 }}>
+        {/* عنوان */}
+        <div style={{ fontSize: 42, fontWeight: 900 }}>
           BPS Chat | بي بي اس شات
         </div>
 
-        <div style={{ fontSize: 58, fontWeight: 900, textAlign: "center" }}>
+        <div style={{ fontSize: 52, marginTop: 20, fontWeight: 800 }}>
           مقارنة أسعار {query}
         </div>
 
-        <div style={{ fontSize: 34, marginTop: 24, color: "#00ffd0" }}>
-          عروض وأسعار في {country}
+        <div style={{ fontSize: 28, marginTop: 10, color: "#00ffd0" }}>
+          في {country}
         </div>
 
-        <div style={{ fontSize: 26, marginTop: 40, color: "#ccc" }}>
-          Amazon • Noon • Jumia • Jarir • Extra
+        {/* المنتجات */}
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            marginTop: "40px",
+          }}
+        >
+          {products.map((p: any, i: number) => (
+            <div
+              key={i}
+              style={{
+                width: "300px",
+                background: "#111",
+                borderRadius: "16px",
+                padding: "10px",
+              }}
+            >
+              <img
+                src={p.image || p.thumbnail}
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "contain",
+                  background: "#fff",
+                  borderRadius: "10px",
+                }}
+              />
+
+              <div
+                style={{
+                  fontSize: 20,
+                  marginTop: 10,
+                }}
+              >
+                {p.priceText || p.price}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     ),
