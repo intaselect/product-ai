@@ -8,7 +8,7 @@ export default function PopularSearches() {
   useEffect(() => {
     async function loadPopularSearches() {
       try {
-        const res = await fetch("/api/popular-searches");
+        const res = await fetch("/api/popular-searches", { cache: "no-store" });
         const data = await res.json();
         setSearches(data.searches || []);
       } catch (err) {
