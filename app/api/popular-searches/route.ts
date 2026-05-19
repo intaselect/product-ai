@@ -14,11 +14,11 @@ export async function GET() {
     .order("updated_at", { ascending: false })
     .limit(200);
 
-  // 🔥 الأكثر شيوعًا
+  // 🔥 الأكثر شيوعًا من الكاش برضو بدل search_terms
   const { data: popularData } = await supabase
-    .from("search_terms")
-    .select("query, country, search_count")
-    .order("search_count", { ascending: false })
+    .from("product_cache")
+    .select("query, country, updated_at")
+    .order("updated_at", { ascending: false })
     .limit(200);
 
   // 🔥 دمج الاتنين
@@ -44,7 +44,8 @@ export async function GET() {
       map.set(key, {
         query: item.query,
         country: item.country,
-        score: item.search_count || 0,
+        updated_at: item.updated_at,
+        score: 0,
       });
     }
   });
@@ -54,7 +55,10 @@ export async function GET() {
 
   // 🔥 ترتيب (الأحدث الأول)
   searches.sort((a: any, b: any) => {
-    return (b.updated_at || 0) - (a.updated_at || 0);
+    return (
+      new Date(b.updated_at || 0).getTime() -
+      new Date(a.updated_at || 0).getTime()
+    );
   });
 
   // 🔥 نعمل slug
