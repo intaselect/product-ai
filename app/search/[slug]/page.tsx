@@ -4,6 +4,7 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import VideoPreview from "@/app/marketing-video/VideoPreview";
 import SidebarMenu from "@/app/components/SidebarMenu";
+import ShareSlugVideo from "@/app/components/ShareSlugVideo";
 export const revalidate = 43200; // 12 ساعة
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
@@ -355,6 +356,12 @@ return (
     products={products}
   />
 </div>
+<ShareSlugVideo
+  query={data?.query || query}
+  countryName={countryName}
+  countryCode={countryCode}
+  slug={slug}
+/>
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p dir="rtl">
   يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا ومحدثًا لأسعار{" "}
