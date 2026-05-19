@@ -1,8 +1,10 @@
 import { bundle } from "@remotion/bundler";
 import { renderMedia, selectComposition } from "@remotion/renderer";
 import { createClient } from "@supabase/supabase-js";
-import { loadEnvConfig } from "@next/env";
+import nextEnv from "@next/env";
 import path from "path";
+
+const { loadEnvConfig } = nextEnv;
 
 loadEnvConfig(process.cwd());
 

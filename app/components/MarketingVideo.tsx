@@ -114,23 +114,41 @@ export default function MarketingVideo({
           أفضل أسعار {query}
         </h1>
 
-        <p style={{ fontSize: 30, color: "#d8eaff", marginTop: 12 }}>
-          منتجات ومتاجر من السعودية، الإمارات، الكويت، قطر، البحرين ومصر 👀
-        </p>
+       <div style={{ marginTop: 12 }}>
+  <div style={{ fontSize: 30, color: "#d8eaff" }}>
+    متاجر العالم بين إيديك بضغطة… اختار الأفضل
+  </div>
+
+  <div style={{ fontSize: 24, color: "#bfefff", marginTop: 8 }}>
+    السعودية 🇸🇦 | الإمارات 🇦🇪 | الكويت 🇰🇼 | قطر 🇶🇦 | البحرين 🇧🇭 | مصر 🇪🇬
+  </div>
+
+  <div
+    style={{
+      fontSize: 24,
+      color: "#ffffff",
+      marginTop: 8,
+      fontWeight: "bold",
+    }}
+  >
+    BPS Chat | بي بي اس شات
+  </div>
+</div>
       </div>
 
-      {/* Scrolling products */}
-      <div
-        style={{
-          position: "absolute",
-          top: 250,
-          left: 48,
-          right: 48,
-          bottom: 170,
-          overflow: "hidden",
-          zIndex: 3,
-        }}
-      >
+   
+{/* Scrolling products */}
+<div
+  style={{
+    position: "absolute",
+    top: 300,
+    left: 48,
+    right: 48,
+    bottom: 115,
+    overflow: "hidden",
+    zIndex: 3,
+  }}
+>
        <div
   style={{
     transform: `translate3d(0, ${scrollY}px, 0)`,
@@ -227,26 +245,28 @@ export default function MarketingVideo({
       </div>
 
       {/* Footer fixed */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 32,
-          left: 54,
-          right: 54,
-          textAlign: "center",
-          padding: 22,
-          borderRadius: 28,
-          background: "rgba(0,0,0,0.62)",
-          border: "1px solid rgba(255,255,255,0.18)",
-          boxShadow: "0 0 44px rgba(0,220,255,0.2)",
-          zIndex: 6,
-        }}
-      >
-        <div style={{ fontSize: 50, fontWeight: "bold" }}>BPS Chat</div>
-        <div style={{ fontSize: 30, color: "#d9f6ff", marginTop: 5 }}>
-          ابحث. قارن. وفر.
-        </div>
-        <div style={{ fontSize: 28, marginTop: 7 }}>bpschat.com</div>
+<div
+  style={{
+    position: "absolute",
+    bottom: 32,   // 👈 هنا
+    left: 54,
+    right: 54,
+    textAlign: "center",
+    padding: 22,  // 👈 وهنا
+    borderRadius: 28,
+    background: "rgba(0,0,0,0.62)",
+    border: "1px solid rgba(255,255,255,0.18)",
+    boxShadow: "0 0 44px rgba(0,220,255,0.2)",
+    zIndex: 6,
+  }}
+>
+        <div style={{ fontSize: 38, fontWeight: "bold" }}>BPS Chat</div>
+
+<div style={{ fontSize: 24, color: "#d9f6ff", marginTop: 3 }}>
+  ابحث. قارن. وفر.
+</div>
+
+<div style={{ fontSize: 22, marginTop: 4 }}>bpschat.com</div>
       </div>
     </AbsoluteFill>
   );
