@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Offer = {
   id: number;
@@ -12,13 +12,24 @@ type Offer = {
   country: string | null;
   status: "pending" | "approved" | "rejected";
   created_at: string;
+  user_id: string | null;
+  seller_email: string | null;
+};
+
+type Limit = {
+  user_id: string;
+  email: string | null;
+  max_offers: number;
+  created_at: string;
+  updated_at: string;
 };
 
 export default function CustomerOffersAdminPage() {
   const [secret, setSecret] = useState("");
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [limits, setLimits] = useState<Limit[]>([]);
   const [loading, setLoading] = useState(false);
-  const [actionLoading, setActionLoading] = useState<number | null>(null);
+  const [actionLoading, setActionLoading] = useState<string>("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -27,11 +38,17 @@ export default function CustomerOffersAdminPage() {
     setSecret(urlSecret);
 
     if (urlSecret) {
-      loadOffers(urlSecret);
+      loadData(urlSecret);
     }
   }, []);
 
-  async function loadOffers(adminSecret = secret) {
+  const limitMap = useMemo(() => {
+    const map = new Map<string, Limit>();
+    limits.forEach((limit) => map.set(limit.user_id, limit));
+    return map;
+  }, [limits]);
+
+  async function loadData(adminSecret = secret) {
     setLoading(true);
     setError("");
 
@@ -43,20 +60,24 @@ export default function CustomerOffersAdminPage() {
       const data = await res.json();
 
       if (!res.ok || !data.ok) {
-        setError(data.error || "حدث خطأ أثناء تحميل العروض");
+        setError(data.error || "حدث خطأ أثناء تحميل البيانات");
         return;
       }
 
       setOffers(data.offers || []);
+      setLimits(data.limits || []);
     } catch {
-      setError("حدث خطأ غير متوقع أثناء تحميل العروض");
+      setError("حدث خطأ غير متوقع أثناء تحميل البيانات");
     } finally {
       setLoading(false);
     }
   }
 
-  async function updateStatus(id: number, status: "approved" | "rejected" | "pending") {
-    setActionLoading(id);
+  async function updateStatus(
+    id: number,
+    status: "approved" | "rejected" | "pending"
+  ) {
+    setActionLoading(`status-${id}`);
     setError("");
 
     try {
@@ -67,7 +88,11 @@ export default function CustomerOffersAdminPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id, status }),
+          body: JSON.stringify({
+            action: "update_offer_status",
+            id,
+            status,
+          }),
         }
       );
 
@@ -79,14 +104,73 @@ export default function CustomerOffersAdminPage() {
       }
 
       setOffers((prev) =>
-        prev.map((offer) =>
-          offer.id === id ? { ...offer, status } : offer
-        )
+        prev.map((offer) => (offer.id === id ? { ...offer, status } : offer))
       );
     } catch {
       setError("حدث خطأ غير متوقع أثناء تحديث العرض");
     } finally {
-      setActionLoading(null);
+      setActionLoading("");
+    }
+  }
+
+  async function updateUserLimit(
+    user_id: string,
+    email: string,
+    max_offers: number
+  ) {
+    setActionLoading(`limit-${user_id}`);
+    setError("");
+
+    try {
+      const res = await fetch(
+        `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "update_user_limit",
+            user_id,
+            email,
+            max_offers,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setError(data.error || "حدث خطأ أثناء تحديث عدد العروض");
+        return;
+      }
+
+      setLimits((prev) => {
+        const exists = prev.some((limit) => limit.user_id === user_id);
+
+        if (exists) {
+          return prev.map((limit) =>
+            limit.user_id === user_id
+              ? { ...limit, max_offers, email, updated_at: new Date().toISOString() }
+              : limit
+          );
+        }
+
+        return [
+          ...prev,
+          {
+            user_id,
+            email,
+            max_offers,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+        ];
+      });
+    } catch {
+      setError("حدث خطأ غير متوقع أثناء تحديث عدد العروض");
+    } finally {
+      setActionLoading("");
     }
   }
 
@@ -94,7 +178,9 @@ export default function CustomerOffersAdminPage() {
     <main className="adminPage" dir="rtl">
       <section className="adminHero">
         <h1>إدارة عروض العملاء</h1>
-        <p>راجع العروض الجديدة ووافق عليها أو ارفضها قبل ظهورها للزوار.</p>
+        <p>
+          راجع العروض، وافق أو ارفض، وتحكم في عدد العروض المسموح بها لكل عميل.
+        </p>
 
         {!secret && (
           <div className="secretBox">
@@ -105,8 +191,8 @@ export default function CustomerOffersAdminPage() {
         )}
 
         {secret && (
-          <button onClick={() => loadOffers()} disabled={loading}>
-            {loading ? "جاري التحميل..." : "تحديث العروض"}
+          <button onClick={() => loadData()} disabled={loading}>
+            {loading ? "جاري التحميل..." : "تحديث البيانات"}
           </button>
         )}
 
@@ -114,98 +200,164 @@ export default function CustomerOffersAdminPage() {
       </section>
 
       <section className="offersGrid">
-        {offers.map((offer) => (
-          <article key={offer.id} className={`offerCard ${offer.status}`}>
-            <div className="imageBox">
-              <img src={offer.image_url} alt={offer.product_name} />
-            </div>
+        {offers.map((offer) => {
+          const userLimit =
+            offer.user_id && limitMap.get(offer.user_id)
+              ? limitMap.get(offer.user_id)
+              : null;
 
-            <div className="content">
-              <span className={`status ${offer.status}`}>
-                {offer.status === "pending"
-                  ? "قيد المراجعة"
-                  : offer.status === "approved"
-                  ? "موافق عليه"
-                  : "مرفوض"}
-              </span>
+          const sellerEmail =
+            offer.seller_email || userLimit?.email || "غير معروف";
 
-              <h2>{offer.product_name}</h2>
+          const maxOffers = userLimit?.max_offers || 1;
 
-              <p className="price">{offer.price}</p>
+          const userOffersCount = offer.user_id
+            ? offers.filter((item) => item.user_id === offer.user_id).length
+            : 0;
 
-              <p className="meta">
-                المتجر: {offer.store_name || "غير محدد"}
-              </p>
-
-              <p className="meta">
-                الدولة: {offer.country || "غير محدد"}
-              </p>
-
-              <a
-                href={offer.product_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="productLink"
-              >
-                فتح رابط المنتج
-              </a>
-
-              <div className="actions">
-                <button
-                  className="approve"
-                  disabled={actionLoading === offer.id}
-                  onClick={() => updateStatus(offer.id, "approved")}
-                >
-                  ✅ موافقة
-                </button>
-
-                <button
-                  className="reject"
-                  disabled={actionLoading === offer.id}
-                  onClick={() => updateStatus(offer.id, "rejected")}
-                >
-                  ❌ رفض
-                </button>
-
-                <button
-                  className="pending"
-                  disabled={actionLoading === offer.id}
-                  onClick={() => updateStatus(offer.id, "pending")}
-                >
-                  ↩️ Pending
-                </button>
+          return (
+            <article key={offer.id} className={`offerCard ${offer.status}`}>
+              <div className="imageBox">
+                <img src={offer.image_url} alt={offer.product_name} />
               </div>
-            </div>
-          </article>
-        ))}
+
+              <div className="content">
+                <span className={`status ${offer.status}`}>
+                  {offer.status === "pending"
+                    ? "قيد المراجعة"
+                    : offer.status === "approved"
+                    ? "موافق عليه"
+                    : "مرفوض"}
+                </span>
+
+                <h2>{offer.product_name}</h2>
+
+                <p className="price">{offer.price}</p>
+
+                <p className="meta">المتجر: {offer.store_name || "غير محدد"}</p>
+                <p className="meta">الدولة: {offer.country || "غير محدد"}</p>
+
+                <div className="sellerBox">
+                  <p>
+                    📧 العميل:
+                    <strong>{sellerEmail}</strong>
+                  </p>
+
+                  <p>
+                    📦 العروض:
+                    <strong>
+                      {userOffersCount} / {maxOffers}
+                    </strong>
+                  </p>
+
+                  {offer.user_id ? (
+                    <div className="limitControl">
+                      <input
+                        type="number"
+                        min={1}
+                        defaultValue={maxOffers}
+                        id={`limit-${offer.user_id}`}
+                      />
+
+                      <button
+                        disabled={actionLoading === `limit-${offer.user_id}`}
+                        onClick={() => {
+                          const input = document.getElementById(
+                            `limit-${offer.user_id}`
+                          ) as HTMLInputElement | null;
+
+                          const newLimit = Number(input?.value || 1);
+
+                          updateUserLimit(
+                            offer.user_id!,
+                            sellerEmail,
+                            newLimit
+                          );
+                        }}
+                      >
+                        {actionLoading === `limit-${offer.user_id}`
+                          ? "جاري..."
+                          : "تحديث العدد"}
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="oldOfferNote">
+                      عرض قديم قبل ربط تسجيل الدخول
+                    </p>
+                  )}
+                </div>
+
+                <a
+                  href={offer.product_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="productLink"
+                >
+                  فتح رابط المنتج
+                </a>
+
+                <div className="actions">
+                  <button
+                    className="approve"
+                    disabled={actionLoading === `status-${offer.id}`}
+                    onClick={() => updateStatus(offer.id, "approved")}
+                  >
+                    ✅ موافقة
+                  </button>
+
+                  <button
+                    className="reject"
+                    disabled={actionLoading === `status-${offer.id}`}
+                    onClick={() => updateStatus(offer.id, "rejected")}
+                  >
+                    ❌ رفض
+                  </button>
+
+                  <button
+                    className="pending"
+                    disabled={actionLoading === `status-${offer.id}`}
+                    onClick={() => updateStatus(offer.id, "pending")}
+                  >
+                    ↩️ Pending
+                  </button>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </section>
 
       <style>{`
         .adminPage {
           min-height: 100vh;
-          background: #151515;
+          background:
+            radial-gradient(circle at 20% 10%, rgba(34,197,94,0.14), transparent 28%),
+            radial-gradient(circle at 80% 15%, rgba(37,99,235,0.14), transparent 28%),
+            #151515;
           color: white;
-          padding: 40px 16px 80px;
+          padding: 36px 16px 80px;
         }
 
         .adminHero {
           max-width: 1100px;
-          margin: 0 auto 28px;
-          padding: 28px;
+          margin: 0 auto 26px;
+          padding: 26px;
           border-radius: 26px;
           background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(37,99,235,0.10));
           border: 1px solid rgba(255,255,255,0.08);
           text-align: center;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.35);
         }
 
         .adminHero h1 {
           margin: 0 0 10px;
-          font-size: 36px;
+          font-size: 34px;
         }
 
         .adminHero p {
           color: #d1d5db;
           margin-bottom: 18px;
+          line-height: 1.8;
         }
 
         .adminHero button {
@@ -216,6 +368,7 @@ export default function CustomerOffersAdminPage() {
           color: white;
           font-weight: 900;
           cursor: pointer;
+          box-shadow: 0 0 28px rgba(34,197,94,0.28);
         }
 
         .secretBox,
@@ -239,19 +392,31 @@ export default function CustomerOffersAdminPage() {
         }
 
         .offersGrid {
-          max-width: 1200px;
+          max-width: 1250px;
           margin: 0 auto;
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 20px;
+          grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+          gap: 22px;
         }
 
         .offerCard {
           overflow: hidden;
           border-radius: 24px;
-          background: #222;
+          background: linear-gradient(180deg, #222, #151515);
           border: 1px solid rgba(255,255,255,0.08);
           box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        }
+
+        .offerCard.pending {
+          border-color: rgba(234,179,8,0.45);
+        }
+
+        .offerCard.approved {
+          border-color: rgba(34,197,94,0.42);
+        }
+
+        .offerCard.rejected {
+          border-color: rgba(239,68,68,0.42);
         }
 
         .imageBox {
@@ -316,6 +481,60 @@ export default function CustomerOffersAdminPage() {
           margin: 6px 0;
         }
 
+        .sellerBox {
+          margin: 14px 0;
+          padding: 13px;
+          border-radius: 18px;
+          background: rgba(255,255,255,0.055);
+          border: 1px solid rgba(255,255,255,0.09);
+        }
+
+        .sellerBox p {
+          margin: 7px 0;
+          color: #d1d5db;
+          font-size: 13px;
+          line-height: 1.7;
+        }
+
+        .sellerBox strong {
+          display: block;
+          color: #bbf7d0;
+          margin-top: 4px;
+          word-break: break-all;
+        }
+
+        .limitControl {
+          display: grid;
+          grid-template-columns: 90px 1fr;
+          gap: 8px;
+          margin-top: 12px;
+        }
+
+        .limitControl input {
+          width: 100%;
+          border: 1px solid rgba(255,255,255,0.14);
+          background: #111;
+          color: white;
+          border-radius: 12px;
+          padding: 10px;
+          text-align: center;
+          font-weight: 900;
+        }
+
+        .limitControl button {
+          border: 0;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #16a34a, #2563eb);
+          color: white;
+          font-weight: 900;
+          cursor: pointer;
+        }
+
+        .oldOfferNote {
+          color: #fcd34d !important;
+          font-weight: 900;
+        }
+
         .productLink {
           display: block;
           margin: 14px 0;
@@ -355,9 +574,24 @@ export default function CustomerOffersAdminPage() {
           background: #ca8a04;
         }
 
-        .actions button:disabled {
+        .actions button:disabled,
+        .limitControl button:disabled {
           opacity: 0.6;
           cursor: not-allowed;
+        }
+
+        @media (max-width: 700px) {
+          .adminPage {
+            padding: 24px 12px 60px;
+          }
+
+          .offersGrid {
+            grid-template-columns: 1fr;
+          }
+
+          .adminHero h1 {
+            font-size: 28px;
+          }
         }
       `}</style>
     </main>
