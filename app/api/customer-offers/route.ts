@@ -4,9 +4,9 @@ import { createClient } from "@supabase/supabase-js";
 export const dynamic = "force-dynamic";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 export async function POST(req: Request) {
   try {
@@ -43,7 +43,11 @@ export async function POST(req: Request) {
     if (error) {
       console.error("CUSTOMER_OFFER_INSERT_ERROR:", error);
       return NextResponse.json(
-        { ok: false, error: "حدث خطأ أثناء إضافة العرض" },
+        {
+          ok: false,
+          error: "حدث خطأ أثناء إضافة العرض",
+          details: error.message,
+        },
         { status: 500 }
       );
     }
@@ -55,8 +59,12 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error("CUSTOMER_OFFER_API_ERROR:", error);
+
     return NextResponse.json(
-      { ok: false, error: "حدث خطأ غير متوقع" },
+      {
+        ok: false,
+        error: "حدث خطأ غير متوقع",
+      },
       { status: 500 }
     );
   }
