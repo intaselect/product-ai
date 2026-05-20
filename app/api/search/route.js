@@ -46,24 +46,27 @@ export async function POST(req) {
     const DAILY_LIMIT = 10;
 const MINUTE_LIMIT = 5;
 
-const ip = getClientIP(req);
-console.log("USER IP:", ip);
+const rawIp = getClientIP(req);
+const realIp = rawIp && rawIp !== "unknown" ? rawIp : null;
+const visitorId = req.headers.get("x-bps-visitor-id");
+
+const searchKey = realIp || (visitorId ? `visitor:${visitorId}` : "unknown");
+
+console.log("USER IP:", realIp || "unknown");
+console.log("SEARCH KEY:", searchKey);
 const today = new Date().toISOString().slice(0, 10);
 const minuteBucket = new Date().toISOString().slice(0, 16);
 
-const threeDaysAgo = new Date(
-  Date.now() - 3 * 24 * 60 * 60 * 1000
-).toISOString();
 const { count: dailyCount } = await supabase
-  .from("product_cache")
+  .from("search_rate_limits")
   .select("*", { count: "exact", head: true })
-  .eq("ip", ip)
-  .gte("created_at", threeDaysAgo);
+  .eq("ip", searchKey)
+  .eq("day", today);
 
 const HARD_BLOCK_LIMIT = 15;
 
 if ((dailyCount || 0) >= HARD_BLOCK_LIMIT) {
-  console.log("🚫 HARD BLOCKED IP:", ip);
+  console.log("🚫 HARD BLOCKED:", searchKey);
 
   return Response.json({
     value: [],
@@ -98,7 +101,7 @@ const remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
 const { count: minuteCount } = await supabase
   .from("search_rate_limits")
   .select("*", { count: "exact", head: true })
-  .eq("ip", ip)
+  .eq("ip", searchKey)
   .eq("minute_bucket", minuteBucket);
 
 // 🚫 لو بوت
@@ -123,10 +126,15 @@ if ((minuteCount || 0) >= MINUTE_LIMIT) {
 }
   let results = [];
 
-results = await fetchRealProducts(cleanQuery, cleanCountry, ip);
+if (searchKey === "unknown") {
+  console.log("🚫 BOT BLOCKED: no IP and no visitorId");
+  results = [];
+} else {
+  results = await fetchRealProducts(cleanQuery, cleanCountry, realIp || searchKey);
+}
     // ✅ نسجل الطلب
 await supabase.from("search_rate_limits").insert({
-  ip,
+  ip: searchKey,
   day: today,
   minute_bucket: minuteBucket,
   query: cleanQuery,
@@ -147,7 +155,7 @@ const remainingAfterSearch = Math.max(
   query: cleanCacheText(cleanQuery),
   country: cleanCountry,
   results,
-  ip,
+  ip: realIp || searchKey,
   updated_at: now,
   expires_at: expiresAt,
 },

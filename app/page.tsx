@@ -341,7 +341,16 @@ useEffect(() => {
   };
 
   const ads = adsByCountry[country] || [];
+function getVisitorId() {
+  let id = localStorage.getItem("bps_visitor_id");
 
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem("bps_visitor_id", id);
+  }
+
+  return id;
+}
   async function handleSearch() {
   if (loading) return;
 
@@ -351,9 +360,10 @@ useEffect(() => {
 
     const res = await fetch("/api/search", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+     headers: {
+  "Content-Type": "application/json",
+  "x-bps-visitor-id": getVisitorId(),
+},
       body: JSON.stringify({
         query: query.trim() === "" ? "*" : query,
         country: country,
