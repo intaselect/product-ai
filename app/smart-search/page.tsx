@@ -166,6 +166,10 @@ if (hasSearch) {
     const cacheKey = makeCacheKey(apiQuery, country);
     const now = new Date().toISOString();
 
+    const today = new Date().toISOString().slice(0, 10);
+    const todayStart = `${today}T00:00:00`;
+    const minuteBucket = new Date().toISOString().slice(0, 16);
+
     const { data: cached } = await supabase
       .from("product_cache")
       .select("results")
@@ -173,35 +177,22 @@ if (hasSearch) {
       .gt("expires_at", now)
       .maybeSingle();
 
+    const { count: dailyCount } = await supabase
+      .from("product_cache")
+      .select("*", { count: "exact", head: true })
+      .eq("ip", ip)
+      .gte("created_at", todayStart);
+
+    remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
+
     if (cached?.results?.length) {
       rawProducts = cached.results;
-
-      const today = new Date().toISOString().slice(0, 10);
-
-      const { count: dailyCount } = await supabase
-        .from("product_cache")
-        .select("*", { count: "exact", head: true })
-        .eq("ip", ip)
-        .eq("day", today);
-
-      remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
     } else {
-      const today = new Date().toISOString().slice(0, 10);
-      const minuteBucket = new Date().toISOString().slice(0, 16);
-
-      const { count: dailyCount } = await supabase
-        .from("product_cache")
-        .select("*", { count: "exact", head: true })
-        .eq("ip", ip)
-        .eq("day", today);
-
       const { count: minuteCount } = await supabase
-        .from("product_cache")
+        .from("search_rate_limits")
         .select("*", { count: "exact", head: true })
         .eq("ip", ip)
         .eq("minute_bucket", minuteBucket);
-
-      remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
 
       if ((dailyCount || 0) >= DAILY_LIMIT) {
         limitMessage =
@@ -211,28 +202,29 @@ if (hasSearch) {
       } else {
         rawProducts = await fetchRealProducts(apiQuery, country);
 
-        // ❌ مفيش insert هنا خلاص
-// احنا هنحسب من الكاش بس
+        await supabase.from("search_rate_limits").insert({
+          ip,
+          day: today,
+          minute_bucket: minuteBucket,
+          query: apiQuery,
+          country,
+        });
 
-        remainingSearches = Math.max(
-          0,
-          DAILY_LIMIT - ((dailyCount || 0) + 1)
-        );
+        remainingSearches = Math.max(0, DAILY_LIMIT - ((dailyCount || 0) + 1));
 
         if (Array.isArray(rawProducts) && rawProducts.length > 0) {
-         await supabase.from("product_cache").upsert(
-  {
-    cache_key: cacheKey,
-    query: cleanCacheText(apiQuery),
-    country,
-    results: rawProducts,
-    ip, // 🔥 مهم
-    created_at: now, // 🔥 مهم علشان العد اليومي
-    updated_at: now,
-    expires_at: new Date(
-      Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
-    ).toISOString(),
-  },
+          await supabase.from("product_cache").upsert(
+            {
+              cache_key: cacheKey,
+              query: cleanCacheText(apiQuery),
+              country,
+              results: rawProducts,
+              ip,
+              updated_at: now,
+              expires_at: new Date(
+                Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
+              ).toISOString(),
+            },
             { onConflict: "cache_key" }
           );
         }
@@ -240,7 +232,6 @@ if (hasSearch) {
     }
   }
 }
-
   const minPrice = budget ? Math.floor(budget * countryData.minFactor) : 0;
   const maxPrice = budget ? Math.ceil(budget * countryData.maxFactor) : 0;
 
