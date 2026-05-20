@@ -5,6 +5,9 @@ import PopularSearches from "@/app/components/PopularSearches";
 import VideoPreview from "@/app/marketing-video/VideoPreview";
 import SidebarMenu from "@/app/components/SidebarMenu";
 import ShareSlugVideo from "@/app/components/ShareSlugVideo";
+import { headers } from "next/headers";
+  
+
 export const revalidate = 43200; // 12 ساعة
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
@@ -108,20 +111,25 @@ if (cached?.results?.length) {
   console.log("🔥 SLUG FETCH FROM API");
 
   try {
-  const fresh = await fetchRealProducts(query, countryCode);
+    
+
+
+
+const fresh = await fetchRealProducts(query, countryCode, null);
   products = fresh || [];
 
   if (products.length > 0) {
-    await supabase.from("product_cache").upsert({
-      cache_key: cacheKey,
-      query: cleanCacheText(query),
-      country: countryCode,
-      results: products,
-      updated_at: new Date().toISOString(),
-      expires_at: new Date(
-        Date.now() + 10 * 24 * 60 * 60 * 1000
-      ).toISOString(),
-    });
+   await supabase.from("product_cache").upsert({
+  cache_key: cacheKey,
+  query: cleanCacheText(query),
+  country: countryCode,
+  results: products,
+  ip: "slug-page",
+  updated_at: new Date().toISOString(),
+  expires_at: new Date(
+    Date.now() + 10 * 24 * 60 * 60 * 1000
+  ).toISOString(),
+});
   }
 } catch (e) {
   console.log("❌ SLUG API FAILED");

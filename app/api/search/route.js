@@ -47,14 +47,17 @@ export async function POST(req) {
 const MINUTE_LIMIT = 5;
 
 const ip = getClientIP(req);
+console.log("USER IP:", ip);
 const today = new Date().toISOString().slice(0, 10);
 const minuteBucket = new Date().toISOString().slice(0, 16);
 
+const todayStart = `${today}T00:00:00`;
+
 const { count: dailyCount } = await supabase
-  .from("search_rate_limits")
+  .from("product_cache")
   .select("*", { count: "exact", head: true })
   .eq("ip", ip)
-  .eq("day", today);
+  .gte("created_at", todayStart);
 
 const remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
 
@@ -104,7 +107,7 @@ if ((minuteCount || 0) >= MINUTE_LIMIT) {
   limit: DAILY_LIMIT,
 });
 }
-    const results = await fetchRealProducts(cleanQuery, cleanCountry);
+    const results = await fetchRealProducts(cleanQuery, cleanCountry, ip);
     // ✅ نسجل الطلب
 await supabase.from("search_rate_limits").insert({
   ip,
@@ -115,7 +118,7 @@ await supabase.from("search_rate_limits").insert({
 });
 const remainingAfterSearch = Math.max(
   0,
-  DAILY_LIMIT - ((dailyCount || 0) + 1)
+  DAILY_LIMIT - ((dailyCount || 0) + (Array.isArray(results) && results.length > 0 ? 1 : 0))
 );
     if (Array.isArray(results) && results.length > 0) {
       const expiresAt = new Date(
@@ -124,13 +127,14 @@ const remainingAfterSearch = Math.max(
 
       const { error: upsertError } = await supabase.from("product_cache").upsert(
         {
-          cache_key: cacheKey,
-          query: cleanCacheText(cleanQuery),
-          country: cleanCountry,
-          results,
-          updated_at: now,
-          expires_at: expiresAt,
-        },
+  cache_key: cacheKey,
+  query: cleanCacheText(cleanQuery),
+  country: cleanCountry,
+  results,
+  ip,
+  updated_at: now,
+  expires_at: expiresAt,
+},
         { onConflict: "cache_key" }
       );
 
