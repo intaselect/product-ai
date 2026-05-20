@@ -128,6 +128,7 @@ export default async function SmartSearchPage({ searchParams }: any) {
   const budget = Number(params?.budget || 0);
   const usage = String(params?.usage || "").trim();
   const extra = String(params?.extra || "").trim();
+  const visitorId = String(params?.visitorId || "").trim();
 
   const countryData = countries[country] || countries.sa;
 
@@ -153,6 +154,8 @@ if (hasSearch) {
   const headersList = await headers();
   const userAgent = headersList.get("user-agent") || "";
   const ip = getClientIP(headersList);
+  const realIp = ip && ip !== "unknown" ? ip : null;
+const searchKey = realIp || (visitorId ? `visitor:${visitorId}` : "unknown");
 
   const isBot =
     userAgent.toLowerCase().includes("bot") ||
@@ -180,7 +183,7 @@ if (hasSearch) {
     const { count: dailyCount } = await supabase
       .from("product_cache")
       .select("*", { count: "exact", head: true })
-      .eq("ip", ip)
+      .eq("ip", searchKey)
       .gte("created_at", todayStart);
 
     remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
@@ -191,7 +194,7 @@ if (hasSearch) {
       const { count: minuteCount } = await supabase
         .from("search_rate_limits")
         .select("*", { count: "exact", head: true })
-        .eq("ip", ip)
+        .eq("ip", searchKey)
         .eq("minute_bucket", minuteBucket);
 
       if ((dailyCount || 0) >= DAILY_LIMIT) {
@@ -200,10 +203,14 @@ if (hasSearch) {
       } else if ((minuteCount || 0) >= MINUTE_LIMIT) {
         limitMessage = "طلبات سريعة جدًا، استنى دقيقة وجرب تاني.";
       } else {
-        rawProducts = await fetchRealProducts(apiQuery, country);
+       if (searchKey === "unknown") {
+  limitMessage = "طلب غير موثوق. افتح الصفحة من الموقع وجرب مرة أخرى.";
+} else {
+  rawProducts = await fetchRealProducts(apiQuery, country);
+}
 
         await supabase.from("search_rate_limits").insert({
-          ip,
+          ip: searchKey,
           day: today,
           minute_bucket: minuteBucket,
           query: apiQuery,
@@ -219,7 +226,7 @@ if (hasSearch) {
               query: cleanCacheText(apiQuery),
               country,
               results: rawProducts,
-              ip,
+              ip: realIp || searchKey,
               updated_at: now,
               expires_at: new Date(
                 Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
@@ -281,6 +288,15 @@ const finalProducts =
   dangerouslySetInnerHTML={{
     __html: `
       document.addEventListener("DOMContentLoaded", function () {
+      var visitorInput = document.getElementById("smartVisitorId");
+if (visitorInput) {
+  var id = localStorage.getItem("bps_visitor_id");
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem("bps_visitor_id", id);
+  }
+  visitorInput.value = id;
+}
         var form = document.getElementById("smartSearchForm");
         var overlay = document.getElementById("smartLoadingOverlay");
 
@@ -329,6 +345,7 @@ seoLinks.forEach(function (link) {
         </p>
 
         <form id="smartSearchForm" className="smartForm" action="/smart-search" method="get">
+        <input type="hidden" name="visitorId" id="smartVisitorId" />
           <div className="field">
             <label>المنتج</label>
             <input
