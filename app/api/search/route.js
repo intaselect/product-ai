@@ -144,11 +144,7 @@ if ((minuteCount || 0) >= MINUTE_LIMIT) {
 }
    let results = [];
 
-if (ip === "unknown") {
-  console.log("🚫 Blocking SerpAPI fetch for unknown IP");
-} else {
-  results = await fetchRealProducts(cleanQuery, cleanCountry, ip);
-}
+results = await fetchRealProducts(cleanQuery, cleanCountry, ip);
     // ✅ نسجل الطلب
 await supabase.from("search_rate_limits").insert({
   ip,
