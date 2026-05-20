@@ -121,7 +121,13 @@ if ((minuteCount || 0) >= MINUTE_LIMIT) {
   limit: DAILY_LIMIT,
 });
 }
-    const results = await fetchRealProducts(cleanQuery, cleanCountry, ip);
+   let results = [];
+
+if (ip === "unknown") {
+  console.log("🚫 Blocking SerpAPI fetch for unknown IP");
+} else {
+  results = await fetchRealProducts(cleanQuery, cleanCountry, ip);
+}
     // ✅ نسجل الطلب
 await supabase.from("search_rate_limits").insert({
   ip,
@@ -145,7 +151,7 @@ const remainingAfterSearch = Math.max(
   query: cleanCacheText(cleanQuery),
   country: cleanCountry,
   results,
-  ip,
+  ip: ip && ip !== "unknown" ? ip : null,
   updated_at: now,
   expires_at: expiresAt,
 },
