@@ -51,16 +51,30 @@ console.log("USER IP:", ip);
 const today = new Date().toISOString().slice(0, 10);
 const minuteBucket = new Date().toISOString().slice(0, 16);
 
-const todayStart = `${today}T00:00:00`;
-
+const threeDaysAgo = new Date(
+  Date.now() - 3 * 24 * 60 * 60 * 1000
+).toISOString();
 const { count: dailyCount } = await supabase
   .from("product_cache")
   .select("*", { count: "exact", head: true })
   .eq("ip", ip)
-  .gte("created_at", todayStart);
+  .gte("created_at", threeDaysAgo);
+
+const HARD_BLOCK_LIMIT = 15;
+
+if ((dailyCount || 0) >= HARD_BLOCK_LIMIT) {
+  console.log("🚫 HARD BLOCKED IP:", ip);
+
+  return Response.json({
+    value: [],
+    message: "تم حظر هذا المستخدم بسبب استخدام مفرط.",
+    blocked: true,
+    remainingSearches: 0,
+    limit: DAILY_LIMIT,
+  });
+}
 
 const remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
-
     const { data: cached, error: cacheError } = await supabase
       .from("product_cache")
       .select("results")
