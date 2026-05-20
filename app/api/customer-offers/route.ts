@@ -8,15 +8,6 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-function isValidUrl(value: string) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -31,13 +22,6 @@ export async function POST(req: Request) {
     if (!product_name || !price || !image_url || !product_url) {
       return NextResponse.json(
         { ok: false, error: "الاسم والسعر والصورة والرابط مطلوبين" },
-        { status: 400 }
-      );
-    }
-
-    if (!isValidUrl(image_url) || !isValidUrl(product_url)) {
-      return NextResponse.json(
-        { ok: false, error: "رابط الصورة أو رابط المنتج غير صحيح" },
         { status: 400 }
       );
     }
