@@ -123,8 +123,10 @@ const realIp =
   headersList.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
   headersList.get("x-real-ip") ||
   "unknown";
-const fresh = await fetchRealProducts(query, countryCode);
-  products = fresh || [];
+//const fresh = await fetchRealProducts(query, countryCode);
+console.log("🚫 SLUG PAGE BLOCKED FROM SERPAPI");
+products = [];
+  //products = fresh || [];
 
   if (products.length > 0) {
    await supabase.from("product_cache").upsert({
