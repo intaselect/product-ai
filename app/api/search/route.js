@@ -140,7 +140,7 @@ const remainingAfterSearch = Math.max(
   0,
   DAILY_LIMIT - ((dailyCount || 0) + (Array.isArray(results) && results.length > 0 ? 1 : 0))
 );
-    if (Array.isArray(results) && results.length > 0) {
+    if (Array.isArray(results)) {
       const expiresAt = new Date(
         Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
       ).toISOString();
