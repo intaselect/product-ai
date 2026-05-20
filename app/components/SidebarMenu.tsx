@@ -68,6 +68,10 @@ export default function SidebarMenu() {
         <a href="/seller-tools" className="menuItem sidebarSellerGlow">
           📝 أدوات البائع
         </a>
+        <a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
+  🛒 متجر العملاء
+  <span className="subText">بيع واشتري</span>
+</a>
 
         <a href="/about" className="menuItem">عن الموقع</a>
         <a href="/contact" className="menuItem">تواصل معنا</a>
@@ -114,7 +118,41 @@ export default function SidebarMenu() {
 
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
+.sidebarCustomerStoreGlow {
+  position: relative;
+  background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(59,130,246,0.15));
+  border: 1px solid rgba(34,197,94,0.35);
+  color: #fff;
+  font-weight: 900;
+  overflow: hidden;
+}
 
+.sidebarCustomerStoreGlow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(120deg, transparent, rgba(34,197,94,0.6), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebarCustomerStoreGlow:hover::before {
+  opacity: 1;
+}
+
+.sidebarCustomerStoreGlow:hover {
+  transform: translateX(-4px);
+  box-shadow: 0 0 25px rgba(34,197,94,0.35);
+}
+
+/* النص الصغير */
+.subText {
+  display: block;
+  font-size: 11px;
+  color: #cfcfcf;
+  margin-top: 3px;
+  font-weight: 600;
+}
         .menuButton:hover {
           background: #383838;
         }

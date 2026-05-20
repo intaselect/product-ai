@@ -439,6 +439,10 @@ useEffect(() => {
 <a href="/seller-tools" className="menuItem sidebarSellerGlow">
   📝 أدوات البائع
 </a>
+<a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
+  🛒 متجر عملاء بي بي اس
+  <span className="subText">بيع واشتري</span>
+</a>
 <a href="/about" className="menuItem">عن الموقع</a>
 <a href="/contact" className="menuItem">تواصل معنا</a>
 <a href="/privacy" className="menuItem">سياسة الخصوصية</a>
@@ -633,7 +637,44 @@ useEffect(() => {
  
 }
   
+.sidebarCustomerStoreGlow {
+  position: relative;
+  background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(59,130,246,0.15));
+  border: 1px solid rgba(34,197,94,0.35);
+  color: #fff;
+  font-weight: 900;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
 
+/* glow متحرك */
+.sidebarCustomerStoreGlow::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(120deg, transparent, rgba(34,197,94,0.6), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebarCustomerStoreGlow:hover::after {
+  opacity: 1;
+}
+
+/* hover حركة */
+.sidebarCustomerStoreGlow:hover {
+  transform: translateX(-5px) scale(1.02);
+  box-shadow: 0 0 28px rgba(34,197,94,0.35);
+}
+
+/* النص الصغير */
+.subText {
+  display: block;
+  font-size: 11px;
+  color: #cfcfcf;
+  margin-top: 3px;
+  font-weight: 600;
+}
 .searchCounter {
   min-width: 70px;
   text-align: center;
