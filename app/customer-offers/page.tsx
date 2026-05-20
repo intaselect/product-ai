@@ -163,399 +163,434 @@ export default async function CustomerOffersPage() {
         </section>
       )}
 
-      <style>{`
-        .customerOffersPage {
-          min-height: 100vh;
-          background:
-            radial-gradient(circle at 20% 10%, rgba(34,197,94,0.18), transparent 30%),
-            radial-gradient(circle at 80% 15%, rgba(59,130,246,0.16), transparent 28%),
-            linear-gradient(180deg, #181818 0%, #212121 45%, #111 100%);
-          color: #fff;
-          padding: 46px 16px 80px;
-          overflow: hidden;
-        }
+     <style>{`
+  .customerOffersPage {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 18% 8%, rgba(34,197,94,0.16), transparent 26%),
+      radial-gradient(circle at 84% 10%, rgba(59,130,246,0.14), transparent 24%),
+      linear-gradient(180deg, #171717 0%, #212121 45%, #101010 100%);
+    color: #fff;
+    padding: 16px 16px 70px;
+    overflow-x: hidden;
+  }
 
-        .hero {
-          position: relative;
-          max-width: 1150px;
-          margin: 0 auto 34px;
-          text-align: center;
-          padding: 56px 18px 36px;
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 34px;
-          background: rgba(255,255,255,0.035);
-          box-shadow: 0 25px 80px rgba(0,0,0,0.35);
-          backdrop-filter: blur(12px);
-          overflow: hidden;
-        }
+  .hero {
+    position: relative;
+    max-width: 1080px;
+    margin: 0 auto 16px;
+    text-align: center;
+    padding: 22px 16px 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 26px;
+    background: rgba(255,255,255,0.035);
+    box-shadow: 0 18px 55px rgba(0,0,0,0.32);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+  }
 
-        .aiGlow {
-          position: absolute;
-          width: 260px;
-          height: 260px;
-          border-radius: 999px;
-          filter: blur(55px);
-          opacity: 0.35;
-          animation: floatGlow 6s ease-in-out infinite alternate;
-        }
+  .aiGlow {
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    border-radius: 999px;
+    filter: blur(52px);
+    opacity: 0.32;
+    animation: floatGlow 6s ease-in-out infinite alternate;
+  }
 
-        .aiGlowOne {
-          background: #22c55e;
-          top: -100px;
-          right: -70px;
-        }
+  .aiGlowOne {
+    background: #22c55e;
+    top: -120px;
+    right: -55px;
+  }
 
-        .aiGlowTwo {
-          background: #3b82f6;
-          bottom: -110px;
-          left: -80px;
-          animation-delay: 1.5s;
-        }
+  .aiGlowTwo {
+    background: #3b82f6;
+    bottom: -125px;
+    left: -55px;
+    animation-delay: 1.4s;
+  }
 
-        @keyframes floatGlow {
-          from { transform: translateY(0) scale(1); }
-          to { transform: translateY(22px) scale(1.12); }
-        }
+  @keyframes floatGlow {
+    from { transform: translateY(0) scale(1); }
+    to { transform: translateY(18px) scale(1.1); }
+  }
 
-        .badge {
-          position: relative;
-          z-index: 2;
-          display: inline-flex;
-          padding: 10px 18px;
-          border-radius: 999px;
-          background: rgba(34,197,94,0.12);
-          border: 1px solid rgba(34,197,94,0.35);
-          color: #bbf7d0;
-          font-size: 14px;
-          font-weight: 800;
-          margin-bottom: 18px;
-        }
+  .badge {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.32);
+    color: #bbf7d0;
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
 
-        .hero h1 {
-          position: relative;
-          z-index: 2;
-          max-width: 850px;
-          margin: 0 auto;
-          font-size: clamp(34px, 5vw, 64px);
-          line-height: 1.18;
-          font-weight: 950;
-          letter-spacing: -1px;
-        }
+  .hero h1 {
+    position: relative;
+    z-index: 2;
+    max-width: 850px;
+    margin: 0 auto;
+    font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.15;
+    font-weight: 950;
+    letter-spacing: -0.5px;
+  }
 
-        .hero h1 span {
-          background: linear-gradient(135deg, #22c55e, #60a5fa, #fff);
-          -webkit-background-clip: text;
-          color: transparent;
-        }
+  .hero h1 span {
+    background: linear-gradient(135deg, #22c55e, #60a5fa, #fff);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
 
-        .hero p {
-          position: relative;
-          z-index: 2;
-          max-width: 760px;
-          margin: 18px auto 0;
-          color: #d6d6d6;
-          font-size: 18px;
-          line-height: 1.9;
-        }
+  .hero p {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+    margin: 9px auto 0;
+    color: #d6d6d6;
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
 
-        .heroActions {
-          position: relative;
-          z-index: 2;
-          display: flex;
-          justify-content: center;
-          gap: 14px;
-          flex-wrap: wrap;
-          margin-top: 28px;
-        }
+  .heroActions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
 
-        .primaryBtn,
-        .secondaryBtn,
-        .buyBtn,
-        .emptyBox a {
-          text-decoration: none;
-          transition: all .25s ease;
-        }
+  .primaryBtn,
+  .secondaryBtn,
+  .buyBtn,
+  .emptyBox a {
+    text-decoration: none;
+    transition: all .25s ease;
+  }
 
-        .primaryBtn {
-          padding: 14px 26px;
-          border-radius: 999px;
-          background: linear-gradient(135deg, #16a34a, #22c55e);
-          color: white;
-          font-weight: 900;
-          box-shadow: 0 0 28px rgba(34,197,94,0.38);
-        }
+  .primaryBtn {
+    padding: 11px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white;
+    font-weight: 950;
+    box-shadow: 0 0 24px rgba(34,197,94,0.36);
+  }
 
-        .primaryBtn:hover {
-          transform: translateY(-3px) scale(1.03);
-          box-shadow: 0 0 42px rgba(34,197,94,0.6);
-        }
+  .primaryBtn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 38px rgba(34,197,94,0.58);
+  }
 
-        .secondaryBtn {
-          padding: 14px 24px;
-          border-radius: 999px;
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.12);
-          color: #fff;
-          font-weight: 800;
-        }
+  .secondaryBtn {
+    padding: 11px 20px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    font-weight: 850;
+  }
 
-        .secondaryBtn:hover {
-          background: rgba(255,255,255,0.14);
-          transform: translateY(-3px);
-        }
+  .secondaryBtn:hover {
+    background: rgba(255,255,255,0.14);
+    transform: translateY(-3px);
+  }
 
-        .stats {
-          position: relative;
-          z-index: 2;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
-          max-width: 650px;
-          margin: 32px auto 0;
-        }
+  .stats {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-width: 560px;
+    margin: 16px auto 0;
+  }
 
-        .stats div {
-          padding: 16px;
-          border-radius: 20px;
-          background: rgba(0,0,0,0.25);
-          border: 1px solid rgba(255,255,255,0.08);
-        }
+  .stats div {
+    padding: 10px 12px;
+    border-radius: 17px;
+    background: rgba(0,0,0,0.26);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
 
-        .stats strong {
-          display: block;
-          font-size: 24px;
-          color: #86efac;
-        }
+  .stats strong {
+    display: block;
+    font-size: 21px;
+    color: #86efac;
+  }
 
-        .stats span {
-          display: block;
-          margin-top: 5px;
-          color: #cfcfcf;
-          font-size: 13px;
-        }
+  .stats span {
+    display: block;
+    margin-top: 3px;
+    color: #cfcfcf;
+    font-size: 12px;
+  }
 
-        .seoBox {
-          max-width: 1150px;
-          margin: 0 auto 28px;
-          padding: 24px;
-          border-radius: 26px;
-          background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
-          border: 1px solid rgba(255,255,255,0.08);
-        }
+  .seoBox {
+    max-width: 1080px;
+    margin: 0 auto 16px;
+    padding: 15px 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025));
+    border: 1px solid rgba(255,255,255,0.08);
+  }
 
-        .seoBox h2 {
-          margin: 0 0 10px;
-          font-size: 24px;
-        }
+  .seoBox h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+  }
 
-        .seoBox p {
-          margin: 0;
-          color: #d4d4d4;
-          line-height: 1.9;
-          font-size: 16px;
-        }
+  .seoBox p {
+    margin: 0;
+    color: #d4d4d4;
+    line-height: 1.75;
+    font-size: 14px;
+  }
 
-        .offersGrid {
-          max-width: 1150px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
-          gap: 22px;
-        }
+  .offersGrid {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+    gap: 18px;
+    align-items: stretch;
+  }
 
-        .offerCard {
-          position: relative;
-          overflow: hidden;
-          border-radius: 24px;
-          background: linear-gradient(180deg, #2b2b2b, #191919);
-          border: 1px solid rgba(255,255,255,0.09);
-          box-shadow: 0 18px 45px rgba(0,0,0,0.32);
-          transition: all .28s ease;
-        }
+  .offerCard {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    background: linear-gradient(180deg, #202020, #121212);
+    border: 1px solid rgba(255,255,255,0.09);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.34);
+    transition: all .28s ease;
+  }
 
-        .offerCard:before {
-          content: "";
-          position: absolute;
-          inset: -1px;
-          background: linear-gradient(135deg, transparent, rgba(34,197,94,0.38), transparent);
-          opacity: 0;
-          transition: opacity .28s ease;
-          pointer-events: none;
-        }
+  .offerCard:before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, transparent, rgba(34,197,94,0.4), transparent);
+    opacity: 0;
+    transition: opacity .28s ease;
+    pointer-events: none;
+  }
 
-        .offerCard:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 25px 70px rgba(0,0,0,0.48);
-          border-color: rgba(34,197,94,0.35);
-        }
+  .offerCard:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+    border-color: rgba(34,197,94,0.35);
+  }
 
-        .offerCard:hover:before {
-          opacity: 1;
-        }
+  .offerCard:hover:before {
+    opacity: 1;
+  }
 
-        .imageWrap {
-          position: relative;
-          height: 230px;
-          background:
-            radial-gradient(circle at center, rgba(255,255,255,0.09), transparent 60%),
-            #101010;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 18px;
-        }
+  .imageWrap {
+    position: relative;
+    height: 210px;
+    background:
+      radial-gradient(circle at center, rgba(255,255,255,0.09), transparent 62%),
+      #0e0e0e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
 
-        .imageWrap img {
-          max-width: 100%;
-          max-height: 100%;
-          object-fit: contain;
-          transition: transform .3s ease;
-          position: relative;
-          z-index: 2;
-        }
+  .imageWrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform .3s ease;
+    position: relative;
+    z-index: 2;
+  }
 
-        .offerCard:hover img {
-          transform: scale(1.08) rotate(-1deg);
-        }
+  .offerCard:hover img {
+    transform: scale(1.07) rotate(-1deg);
+  }
 
-        .floatingLabel {
-          position: absolute;
-          top: 14px;
-          right: 14px;
-          z-index: 3;
-          padding: 7px 12px;
-          border-radius: 999px;
-          background: rgba(34,197,94,0.16);
-          border: 1px solid rgba(34,197,94,0.35);
-          color: #bbf7d0;
-          font-size: 12px;
-          font-weight: 900;
-        }
+  .floatingLabel {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: rgba(34,197,94,0.16);
+    border: 1px solid rgba(34,197,94,0.35);
+    color: #bbf7d0;
+    font-size: 11px;
+    font-weight: 900;
+  }
 
-        .cardContent {
-          position: relative;
-          z-index: 2;
-          padding: 17px;
-        }
+  .cardContent {
+    position: relative;
+    z-index: 2;
+    padding: 15px;
+  }
 
-        .storeName {
-          color: #9ca3af;
-          font-size: 13px;
-          font-weight: 700;
-          margin: 0 0 8px;
-        }
+  .storeName {
+    color: #9ca3af;
+    font-size: 12.5px;
+    font-weight: 700;
+    margin: 0 0 7px;
+  }
 
-        .cardContent h2 {
-          font-size: 16px;
-          line-height: 1.65;
-          margin: 0 0 14px;
-          min-height: 52px;
-          color: #fff;
-        }
+  .cardContent h2 {
+    font-size: 15.5px;
+    line-height: 1.6;
+    margin: 0 0 12px;
+    min-height: 50px;
+    color: #fff;
+  }
 
-        .priceRow {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 10px;
-          margin-bottom: 15px;
-        }
+  .priceRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 13px;
+  }
 
-        .priceRow strong {
-          color: #22c55e;
-          font-size: 20px;
-          font-weight: 950;
-        }
+  .priceRow strong {
+    color: #22c55e;
+    font-size: 21px;
+    font-weight: 950;
+  }
 
-        .priceRow span {
-          font-size: 12px;
-          color: #d1fae5;
-          background: rgba(34,197,94,0.12);
-          border: 1px solid rgba(34,197,94,0.22);
-          padding: 5px 9px;
-          border-radius: 999px;
-        }
+  .priceRow span {
+    font-size: 11px;
+    color: #d1fae5;
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.22);
+    padding: 5px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
 
-        .buyBtn {
-          display: block;
-          text-align: center;
-          padding: 12px;
-          border-radius: 15px;
-          background: #fff;
-          color: #111;
-          font-weight: 950;
-        }
+  .buyBtn {
+    display: block;
+    text-align: center;
+    padding: 11px;
+    border-radius: 15px;
+    background: #fff;
+    color: #111;
+    font-weight: 950;
+  }
 
-        .buyBtn:hover {
-          background: #22c55e;
-          color: #fff;
-          transform: translateY(-2px);
-          box-shadow: 0 0 25px rgba(34,197,94,0.32);
-        }
+  .buyBtn:hover {
+    background: #22c55e;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(34,197,94,0.32);
+  }
 
-        .message,
-        .emptyBox {
-          max-width: 800px;
-          margin: 35px auto;
-          text-align: center;
-          border-radius: 28px;
-          padding: 36px 20px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.09);
-        }
+  .message,
+  .emptyBox {
+    max-width: 760px;
+    margin: 20px auto;
+    text-align: center;
+    border-radius: 24px;
+    padding: 28px 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+  }
 
-        .error {
-          color: #fecaca;
-          border-color: rgba(248,113,113,0.35);
-        }
+  .error {
+    color: #fecaca;
+    border-color: rgba(248,113,113,0.35);
+  }
 
-        .emptyIcon {
-          font-size: 48px;
-          margin-bottom: 12px;
-        }
+  .emptyIcon {
+    font-size: 44px;
+    margin-bottom: 10px;
+  }
 
-        .emptyBox h2 {
-          margin: 0 0 10px;
-          font-size: 26px;
-        }
+  .emptyBox h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+  }
 
-        .emptyBox p {
-          color: #cfcfcf;
-          margin-bottom: 20px;
-        }
+  .emptyBox p {
+    color: #cfcfcf;
+    margin-bottom: 18px;
+  }
 
-        .emptyBox a {
-          display: inline-block;
-          padding: 13px 25px;
-          border-radius: 999px;
-          background: linear-gradient(135deg, #16a34a, #22c55e);
-          color: white;
-          font-weight: 900;
-        }
+  .emptyBox a {
+    display: inline-block;
+    padding: 12px 23px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white;
+    font-weight: 900;
+  }
 
-        @media (max-width: 700px) {
-          .customerOffersPage {
-            padding-top: 26px;
-          }
+  @media (max-width: 700px) {
+    .customerOffersPage {
+      padding: 12px 12px 60px;
+    }
 
-          .hero {
-            padding: 38px 14px 26px;
-            border-radius: 26px;
-          }
+    .hero {
+      padding: 18px 12px 16px;
+      border-radius: 22px;
+    }
 
-          .hero p {
-            font-size: 15.5px;
-          }
+    .badge {
+      font-size: 11px;
+      margin-bottom: 7px;
+    }
 
-          .stats {
-            grid-template-columns: 1fr;
-          }
+    .hero p {
+      font-size: 13.5px;
+    }
 
-          .offersGrid {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
+    .stats {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+    }
+
+    .stats div {
+      padding: 8px 5px;
+      border-radius: 14px;
+    }
+
+    .stats strong {
+      font-size: 18px;
+    }
+
+    .stats span {
+      font-size: 10.5px;
+    }
+
+    .seoBox {
+      padding: 13px 14px;
+      border-radius: 18px;
+    }
+
+    .seoBox h2 {
+      font-size: 18px;
+    }
+
+    .offersGrid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .imageWrap {
+      height: 205px;
+    }
+  }
+`}</style>
     </main>
   );
 }
