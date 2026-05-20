@@ -121,7 +121,9 @@ if ((minuteCount || 0) >= MINUTE_LIMIT) {
   limit: DAILY_LIMIT,
 });
 }
-   ئ
+  let results = [];
+
+results = await fetchRealProducts(cleanQuery, cleanCountry, ip);
     // ✅ نسجل الطلب
 await supabase.from("search_rate_limits").insert({
   ip,
