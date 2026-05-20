@@ -51,6 +51,100 @@ export default function AddCustomerOfferPage() {
     }
   }
 
+  if (message) {
+    return (
+      <main className="addOfferPage" dir="rtl">
+        <section className="successCard">
+          <div className="successIcon">✅</div>
+
+          <h1>تم إرسال العرض بنجاح</h1>
+
+          <p>
+            شكرًا لك. تم استلام عرضك وسيظهر في متجر عملاء بي بي اس بعد المراجعة
+            والموافقة.
+          </p>
+
+          <div className="successActions">
+            <Link href="/customer-offers" className="successBtn">
+              مشاهدة متجر العملاء
+            </Link>
+
+            <Link href="/" className="homeBtn">
+              الرجوع للرئيسية
+            </Link>
+          </div>
+        </section>
+
+        <style>{`
+          .addOfferPage {
+            min-height: 100vh;
+            background:
+              radial-gradient(circle at 20% 10%, rgba(34,197,94,0.18), transparent 30%),
+              radial-gradient(circle at 80% 20%, rgba(37,99,235,0.18), transparent 30%),
+              linear-gradient(180deg, #181818 0%, #212121 55%, #111 100%);
+            color: white;
+            padding: 70px 16px;
+          }
+
+          .successCard {
+            max-width: 720px;
+            margin: 80px auto;
+            text-align: center;
+            padding: 45px 24px;
+            border-radius: 32px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(34,197,94,0.35);
+            box-shadow: 0 0 60px rgba(34,197,94,0.18);
+          }
+
+          .successIcon {
+            font-size: 64px;
+            margin-bottom: 18px;
+          }
+
+          .successCard h1 {
+            font-size: 36px;
+            margin: 0 0 14px;
+          }
+
+          .successCard p {
+            color: #d1d5db;
+            line-height: 1.9;
+            font-size: 17px;
+          }
+
+          .successActions {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+          }
+
+          .successBtn,
+          .homeBtn {
+            padding: 13px 22px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 900;
+          }
+
+          .successBtn {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
+            box-shadow: 0 0 30px rgba(34,197,94,0.35);
+          }
+
+          .homeBtn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.12);
+          }
+        `}</style>
+      </main>
+    );
+  }
+
   return (
     <main className="addOfferPage" dir="rtl">
       <section className="addHero">
@@ -82,11 +176,7 @@ export default function AddCustomerOfferPage() {
 
           <label>
             السعر *
-            <input
-              name="price"
-              required
-              placeholder="مثال: 2999 SAR"
-            />
+            <input name="price" required placeholder="مثال: 2999 SAR" />
           </label>
 
           <label>
@@ -94,7 +184,6 @@ export default function AddCustomerOfferPage() {
             <input
               name="image_url"
               required
-              type="url"
               placeholder="https://example.com/product-image.jpg"
             />
           </label>
@@ -104,17 +193,13 @@ export default function AddCustomerOfferPage() {
             <input
               name="product_url"
               required
-              type="url"
               placeholder="https://example.com/product"
             />
           </label>
 
           <label>
             اسم المتجر / البائع
-            <input
-              name="store_name"
-              placeholder="مثال: متجر أحمد للعروض"
-            />
+            <input name="store_name" placeholder="مثال: متجر أحمد للعروض" />
           </label>
 
           <label>
@@ -129,7 +214,6 @@ export default function AddCustomerOfferPage() {
             </select>
           </label>
 
-          {message && <div className="successMsg">{message}</div>}
           {error && <div className="errorMsg">{error}</div>}
 
           <button type="submit" disabled={loading}>
@@ -299,21 +383,11 @@ export default function AddCustomerOfferPage() {
           transform: none;
         }
 
-        .successMsg,
         .errorMsg {
           padding: 13px 15px;
           border-radius: 16px;
           font-weight: 800;
           line-height: 1.7;
-        }
-
-        .successMsg {
-          background: rgba(34,197,94,0.13);
-          border: 1px solid rgba(34,197,94,0.35);
-          color: #bbf7d0;
-        }
-
-        .errorMsg {
           background: rgba(239,68,68,0.13);
           border: 1px solid rgba(239,68,68,0.35);
           color: #fecaca;
