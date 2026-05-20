@@ -4,9 +4,9 @@ import { createClient } from "@supabase/supabase-js";
 export const dynamic = "force-dynamic";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function POST(req: Request) {
   try {
@@ -26,22 +26,18 @@ export async function POST(req: Request) {
       );
     }
 
-    const { data, error } = await supabase
-      .from("customer_offers")
-      .insert({
-        product_name,
-        price,
-        image_url,
-        product_url,
-        store_name: store_name || null,
-        country,
-        status: "pending",
-      })
-      .select("id")
-      .single();
+    const { error } = await supabase.from("customer_offers").insert({
+      product_name,
+      price,
+      image_url,
+      product_url,
+      store_name: store_name || null,
+      country,
+      status: "pending",
+    });
 
     if (error) {
-      console.error("CUSTOMER_OFFER_INSERT_ERROR:", error);
+      console.error("CUSTOMER_OFFER_INSERT_ERROR:", error.message);
       return NextResponse.json(
         {
           ok: false,
@@ -54,17 +50,13 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       ok: true,
-      id: data.id,
       message: "تم إرسال العرض بنجاح وسيظهر بعد المراجعة",
     });
   } catch (error) {
     console.error("CUSTOMER_OFFER_API_ERROR:", error);
 
     return NextResponse.json(
-      {
-        ok: false,
-        error: "حدث خطأ غير متوقع",
-      },
+      { ok: false, error: "حدث خطأ غير متوقع" },
       { status: 500 }
     );
   }
