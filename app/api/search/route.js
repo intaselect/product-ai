@@ -4,11 +4,17 @@ import { createClient } from "@supabase/supabase-js";
 
 const CACHE_DAYS = 10;
 function getClientIP(req) {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0] ||
-    req.headers.get("x-real-ip") ||
-    "unknown"
-  );
+  const xff = req.headers.get("x-forwarded-for");
+  const realIp = req.headers.get("x-real-ip");
+  const vercelIp = req.headers.get("x-vercel-forwarded-for");
+  const cfIp = req.headers.get("cf-connecting-ip");
+
+  if (xff) return xff.split(",")[0].trim();
+  if (vercelIp) return vercelIp.split(",")[0].trim();
+  if (realIp) return realIp;
+  if (cfIp) return cfIp;
+
+  return "unknown";
 }
 function cleanCacheText(text) {
   return String(text || "")
