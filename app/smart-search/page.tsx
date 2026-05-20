@@ -179,7 +179,7 @@ if (hasSearch) {
       const today = new Date().toISOString().slice(0, 10);
 
       const { count: dailyCount } = await supabase
-        .from("search_rate_limits")
+        .from("product_cache")
         .select("*", { count: "exact", head: true })
         .eq("ip", ip)
         .eq("day", today);
@@ -190,13 +190,13 @@ if (hasSearch) {
       const minuteBucket = new Date().toISOString().slice(0, 16);
 
       const { count: dailyCount } = await supabase
-        .from("search_rate_limits")
+        .from("product_cache")
         .select("*", { count: "exact", head: true })
         .eq("ip", ip)
         .eq("day", today);
 
       const { count: minuteCount } = await supabase
-        .from("search_rate_limits")
+        .from("product_cache")
         .select("*", { count: "exact", head: true })
         .eq("ip", ip)
         .eq("minute_bucket", minuteBucket);
@@ -211,13 +211,8 @@ if (hasSearch) {
       } else {
         rawProducts = await fetchRealProducts(apiQuery, country);
 
-        await supabase.from("search_rate_limits").insert({
-          ip,
-          day: today,
-          minute_bucket: minuteBucket,
-          query: apiQuery,
-          country,
-        });
+        // ❌ مفيش insert هنا خلاص
+// احنا هنحسب من الكاش بس
 
         remainingSearches = Math.max(
           0,
@@ -225,17 +220,19 @@ if (hasSearch) {
         );
 
         if (Array.isArray(rawProducts) && rawProducts.length > 0) {
-          await supabase.from("product_cache").upsert(
-            {
-              cache_key: cacheKey,
-              query: cleanCacheText(apiQuery),
-              country,
-              results: rawProducts,
-              updated_at: now,
-              expires_at: new Date(
-                Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
-              ).toISOString(),
-            },
+         await supabase.from("product_cache").upsert(
+  {
+    cache_key: cacheKey,
+    query: cleanCacheText(apiQuery),
+    country,
+    results: rawProducts,
+    ip, // 🔥 مهم
+    created_at: now, // 🔥 مهم علشان العد اليومي
+    updated_at: now,
+    expires_at: new Date(
+      Date.now() + CACHE_DAYS * 24 * 60 * 60 * 1000
+    ).toISOString(),
+  },
             { onConflict: "cache_key" }
           );
         }
