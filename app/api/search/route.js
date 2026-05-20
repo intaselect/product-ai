@@ -4,20 +4,9 @@ import { createClient } from "@supabase/supabase-js";
 
 const CACHE_DAYS = 10;
 function getClientIP(req) {
-  const forwardedFor = req.headers.get("x-forwarded-for");
-  const vercelForwardedFor = req.headers.get("x-vercel-forwarded-for");
-  const realIp = req.headers.get("x-real-ip");
-  const cfIp = req.headers.get("cf-connecting-ip");
-  const trueClientIp = req.headers.get("true-client-ip");
-  const clientIp = req.headers.get("x-client-ip");
-
   return (
-    forwardedFor?.split(",")[0]?.trim() ||
-    vercelForwardedFor?.split(",")[0]?.trim() ||
-    cfIp?.trim() ||
-    trueClientIp?.trim() ||
-    clientIp?.trim() ||
-    realIp?.trim() ||
+    req.headers.get("x-forwarded-for")?.split(",")[0] ||
+    req.headers.get("x-real-ip") ||
     "unknown"
   );
 }
@@ -94,25 +83,15 @@ const remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
       .maybeSingle();
 
     if (!cacheError && cached?.results?.length) {
-  console.log("✅ CACHE HIT:", cacheKey);
+      console.log("✅ CACHE HIT:", cacheKey);
 
-  if (ip && ip !== "unknown") {
-    await supabase
-      .from("product_cache")
-      .update({
-        ip,
-        updated_at: now,
-      })
-      .eq("cache_key", cacheKey);
-  }
-
-  return Response.json({
-    value: cached.results,
-    cache: "hit",
-    remainingSearches,
-    limit: DAILY_LIMIT,
-  });
-}
+     return Response.json({
+  value: cached.results,
+  cache: "hit",
+  remainingSearches,
+  limit: DAILY_LIMIT,
+});
+    }
 
     console.log("⚠️ CACHE MISS:", cacheKey);
 
@@ -142,9 +121,7 @@ if ((minuteCount || 0) >= MINUTE_LIMIT) {
   limit: DAILY_LIMIT,
 });
 }
-   let results = [];
-
-results = await fetchRealProducts(cleanQuery, cleanCountry, ip);
+   ئ
     // ✅ نسجل الطلب
 await supabase.from("search_rate_limits").insert({
   ip,
@@ -168,7 +145,7 @@ const remainingAfterSearch = Math.max(
   query: cleanCacheText(cleanQuery),
   country: cleanCountry,
   results,
-  ip: ip && ip !== "unknown" ? ip : null,
+  ip,
   updated_at: now,
   expires_at: expiresAt,
 },
