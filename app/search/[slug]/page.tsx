@@ -100,8 +100,9 @@ const cacheKey = `${countryCode}:${cleanCacheText(query)}`;
 
 const { data: cached } = await supabase
   .from("product_cache")
-  .select("results")
+  .select("results, expires_at")
   .eq("cache_key", cacheKey)
+  .gt("expires_at", new Date().toISOString())
   .maybeSingle();
 
 if (cached?.results?.length) {
@@ -115,7 +116,14 @@ if (cached?.results?.length) {
 
 
 
-const fresh = await fetchRealProducts(query, countryCode, null);
+const headersList = await headers();
+
+const realIp =
+  headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+  headersList.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
+  headersList.get("x-real-ip") ||
+  "unknown";
+const fresh = await fetchRealProducts(query, countryCode);
   products = fresh || [];
 
   if (products.length > 0) {
@@ -124,7 +132,7 @@ const fresh = await fetchRealProducts(query, countryCode, null);
   query: cleanCacheText(query),
   country: countryCode,
   results: products,
-  ip: "slug-page",
+  ip: realIp,
   updated_at: new Date().toISOString(),
   expires_at: new Date(
     Date.now() + 10 * 24 * 60 * 60 * 1000
