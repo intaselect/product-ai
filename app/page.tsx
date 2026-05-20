@@ -1642,6 +1642,20 @@ z-index: 3;
     gap: 8px;
   }
 }
+  @media (max-width: 600px) {
+  .searchBox {
+    padding: 12px;
+  }
+
+  .input {
+    height: 56px;
+    font-size: 16px;
+  }
+
+  .button {
+    height: 56px;
+  }
+}
 `}</style>
     </div>
   );
