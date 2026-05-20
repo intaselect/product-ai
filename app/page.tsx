@@ -363,6 +363,7 @@ function getVisitorId() {
      headers: {
   "Content-Type": "application/json",
   "x-bps-visitor-id": getVisitorId(),
+  "x-bps-user-email": user?.email || "",
 },
       body: JSON.stringify({
         query: query.trim() === "" ? "*" : query,

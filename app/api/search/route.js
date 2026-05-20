@@ -45,6 +45,9 @@ export async function POST(req) {
     const now = new Date().toISOString();
     const DAILY_LIMIT = 10;
 const MINUTE_LIMIT = 5;
+const ADMIN_EMAILS = ["gospstudio2030@gmail.com"];
+const userEmail = req.headers.get("x-bps-user-email");
+const isAdmin = ADMIN_EMAILS.includes(userEmail || "");
 
 const rawIp = getClientIP(req);
 const realIp = rawIp && rawIp !== "unknown" ? rawIp : null;
@@ -97,6 +100,22 @@ const remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
     }
 
     console.log("⚠️ CACHE MISS:", cacheKey);
+    const origin = req.headers.get("origin") || "";
+const referer = req.headers.get("referer") || "";
+const isFromSite =
+  origin.includes("bpschat.com") || referer.includes("bpschat.com");
+
+if (!visitorId || !isFromSite) {
+  console.log("🚫 BOT BLOCKED BEFORE SERPAPI:", searchKey);
+
+  return Response.json({
+    value: [],
+    message: "طلب غير موثوق.",
+    blocked: true,
+    remainingSearches,
+    limit: DAILY_LIMIT,
+  });
+}
 
 const { count: minuteCount } = await supabase
   .from("search_rate_limits")
@@ -105,7 +124,7 @@ const { count: minuteCount } = await supabase
   .eq("minute_bucket", minuteBucket);
 
 // 🚫 لو بوت
-if ((dailyCount || 0) >= DAILY_LIMIT) {
+if (!isAdmin && (dailyCount || 0) >= DAILY_LIMIT) {
  return Response.json({
   value: [],
   message: "لقد وصلت للحد اليومي 10 عمليات بحث جديدة، جرّب غدًا أو استخدم نتائج الكاش.",
@@ -115,7 +134,7 @@ if ((dailyCount || 0) >= DAILY_LIMIT) {
 });
 }
 
-if ((minuteCount || 0) >= MINUTE_LIMIT) {
+if (!isAdmin && (minuteCount || 0) >= MINUTE_LIMIT) {
   return Response.json({
   value: [],
   message: "طلبات سريعة جدًا، استنى دقيقة وجرب تاني.",
