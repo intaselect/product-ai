@@ -34,6 +34,13 @@ export default function Navbar({ user }: { user?: any }) {
             🛒 متجر عملاء بي بي اس
             <span style={styles.customerStoreSub}>بيع واشتري</span>
           </Link>
+          <Link
+  href="/customer-offers/dashboard"
+  style={styles.sellerDashboardBtn}
+  className="sellerDashboardHover"
+>
+  👤 صفحة البائعين
+</Link>
 
           <Link href="/smart-search" style={styles.smartBtn} className="smartBtnHover">
             ⚡ البحث الذكي
@@ -85,7 +92,9 @@ export default function Navbar({ user }: { user?: any }) {
               0 0 46px rgba(59, 130, 246, 0.28);
           }
         }
-
+.sellerDashboardHover:hover {
+  transform: scale(1.08);
+}
         .adBtnHover:hover,
         .smartBtnHover:hover {
           transform: scale(1.1);
@@ -124,7 +133,17 @@ const styles: any = {
     background: "#212121",
     borderBottom: "1px solid #333",
   },
-
+sellerDashboardBtn: {
+  background: "linear-gradient(135deg, #7c3aed, #2563eb)",
+  padding: "8px 14px",
+  borderRadius: "999px",
+  color: "#fff",
+  textDecoration: "none",
+  fontWeight: "900",
+  boxShadow:
+    "0 0 12px rgba(124,58,237,0.45), 0 0 28px rgba(37,99,235,0.18)",
+  transition: "all 0.3s ease",
+},
   container: {
     display: "flex",
     justifyContent: "space-between",

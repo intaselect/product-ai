@@ -48,6 +48,7 @@ export default function Footer() {
         <Link href="/smart-search">البحث الذكي حسب الميزانية</Link>
         <Link href="/seller-tools">أداة كتابة إعلان بيع منتج</Link>
         <Link href="/trends">المنتجات الأكثر بحثًا اليوم</Link>
+        <Link href="/customer-offers/dashboard">صفحة البائعين</Link>
 
 
         </div>

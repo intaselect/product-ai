@@ -432,6 +432,9 @@ useEffect(() => {
 <a href="/advertise" className="menuItem sidebarAdvertiseGlow">
   🚀 أعلن معنا
 </a>
+<a href="/customer-offers/dashboard" className="menuItem sidebarSellerDashboardGlow">
+  👤 صفحة البائعين
+</a>
 <a href="/smart-search" className="menuItem sidebarSmartGlow">
   ⚡ البحث الذكي
 </a>
@@ -636,7 +639,18 @@ useEffect(() => {
   gap: 10px;
  
 }
-  
+  .sidebarSellerDashboardGlow {
+  background: linear-gradient(135deg, rgba(124,58,237,0.22), rgba(37,99,235,0.18));
+  border: 1px solid rgba(124,58,237,0.35);
+  color: #fff;
+  font-weight: 900;
+  transition: all 0.25s ease;
+}
+
+.sidebarSellerDashboardGlow:hover {
+  transform: translateX(-5px) scale(1.02);
+  box-shadow: 0 0 28px rgba(124,58,237,0.35);
+}
 .sidebarCustomerStoreGlow {
   position: relative;
   background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(59,130,246,0.15));

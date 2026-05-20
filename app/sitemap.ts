@@ -17,6 +17,7 @@ export default async function sitemap() {
   { url: "https://www.bpschat.com/smart-search" },
   { url: "https://www.bpschat.com/seller-tools" },
   { url: "https://www.bpschat.com/customer-offers" },
+  { url: "https://www.bpschat.com/customer-offers/dashboard" },
 
   // صفحات SEO الأساسية
   { url: "https://www.bpschat.com/bps-chat" },
