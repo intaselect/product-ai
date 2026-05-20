@@ -19,19 +19,35 @@ export async function GET(req: Request) {
     return NextResponse.json({ ok: false, error: "غير مصرح" }, { status: 401 });
   }
 
-  const { data, error } = await supabase
+  const { data: offers, error: offersError } = await supabase
     .from("customer_offers")
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) {
+  if (offersError) {
     return NextResponse.json(
-      { ok: false, error: error.message },
+      { ok: false, error: offersError.message },
       { status: 500 }
     );
   }
 
-  return NextResponse.json({ ok: true, offers: data });
+  const { data: limits, error: limitsError } = await supabase
+    .from("customer_offer_limits")
+    .select("*")
+    .order("updated_at", { ascending: false });
+
+  if (limitsError) {
+    return NextResponse.json(
+      { ok: false, error: limitsError.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({
+    ok: true,
+    offers: offers || [],
+    limits: limits || [],
+  });
 }
 
 export async function PATCH(req: Request) {
@@ -41,30 +57,73 @@ export async function PATCH(req: Request) {
 
   const body = await req.json();
 
-  const id = Number(body.id);
-  const status = String(body.status || "");
+  // ✅ تحديث حالة العرض: approved / rejected / pending
+  if (body.action === "update_offer_status") {
+    const id = Number(body.id);
+    const status = String(body.status || "");
 
-  if (!id || !["approved", "rejected", "pending"].includes(status)) {
-    return NextResponse.json(
-      { ok: false, error: "بيانات غير صحيحة" },
-      { status: 400 }
-    );
+    if (!id || !["approved", "rejected", "pending"].includes(status)) {
+      return NextResponse.json(
+        { ok: false, error: "بيانات غير صحيحة" },
+        { status: 400 }
+      );
+    }
+
+    const { error } = await supabase
+      .from("customer_offers")
+      .update({
+        status,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id);
+
+    if (error) {
+      return NextResponse.json(
+        { ok: false, error: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ ok: true });
   }
 
-  const { error } = await supabase
-    .from("customer_offers")
-    .update({
-      status,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", id);
+  // ✅ تحديث عدد العروض المسموح بها للعميل
+  if (body.action === "update_user_limit") {
+    const user_id = String(body.user_id || "");
+    const email = String(body.email || "");
+    const max_offers = Number(body.max_offers);
 
-  if (error) {
-    return NextResponse.json(
-      { ok: false, error: error.message },
-      { status: 500 }
-    );
+    if (!user_id || !email || !Number.isFinite(max_offers) || max_offers < 1) {
+      return NextResponse.json(
+        { ok: false, error: "بيانات limit غير صحيحة" },
+        { status: 400 }
+      );
+    }
+
+    const { error } = await supabase
+      .from("customer_offer_limits")
+      .upsert(
+        {
+          user_id,
+          email,
+          max_offers,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id" }
+      );
+
+    if (error) {
+      return NextResponse.json(
+        { ok: false, error: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ ok: true });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json(
+    { ok: false, error: "نوع العملية غير معروف" },
+    { status: 400 }
+  );
 }
