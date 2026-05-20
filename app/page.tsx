@@ -1644,11 +1644,11 @@ z-index: 3;
 }
   @media (max-width: 600px) {
   .searchBox {
-    padding: 12px;
+    padding: 16px;
   }
 
   .input {
-    height: 56px;
+    height: 64px;
     font-size: 16px;
   }
 
