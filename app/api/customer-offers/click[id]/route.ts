@@ -10,45 +10,36 @@ const supabase = createClient(
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = Number(params.id);
+    const { id: idParam } = await context.params;
+    const id = Number(idParam);
 
     if (!id) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    // 1️⃣ نجيب البيانات
     const { data, error } = await supabase
       .from("customer_offers")
       .select("product_url, click_count")
       .eq("id", id)
       .single();
 
-    if (error || !data) {
+    if (error || !data?.product_url) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    // 2️⃣ نزود العداد (بدون ما نوقف المستخدم لو فشل)
-    try {
-      await supabase
-        .from("customer_offers")
-        .update({
-          click_count: (data.click_count || 0) + 1,
-        })
-        .eq("id", id);
-    } catch (e) {
-      console.error("CLICK UPDATE ERROR:", e);
-    }
+    const currentClicks = Number(data.click_count || 0);
 
-    // 3️⃣ نحول المستخدم للرابط الأصلي
+    await supabase
+      .from("customer_offers")
+      .update({ click_count: currentClicks + 1 })
+      .eq("id", id);
+
     return NextResponse.redirect(data.product_url);
-
   } catch (err) {
     console.error("CLICK ROUTE ERROR:", err);
-
-    // fallback أخير لو حصل crash
     return NextResponse.redirect(new URL("/", req.url));
   }
 }
