@@ -79,19 +79,21 @@ export default function Navbar({ user }: { user?: any }) {
           }
         }
 
-        @keyframes customerStorePulse {
-          0%, 100% {
-            box-shadow:
-              0 0 12px rgba(34, 197, 94, 0.35),
-              0 0 26px rgba(59, 130, 246, 0.14);
-          }
+       @keyframes customerStorePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 12px rgba(249,115,22,0.42),
+      0 0 26px rgba(6,182,212,0.24);
+  }
 
-          50% {
-            box-shadow:
-              0 0 20px rgba(34, 197, 94, 0.7),
-              0 0 46px rgba(59, 130, 246, 0.28);
-          }
-        }
+  50% {
+    transform: scale(1.055);
+    box-shadow:
+      0 0 22px rgba(249,115,22,0.75),
+      0 0 50px rgba(6,182,212,0.45);
+  }
+}
 .sellerDashboardHover:hover {
   transform: scale(1.08);
 }
@@ -100,14 +102,17 @@ export default function Navbar({ user }: { user?: any }) {
           transform: scale(1.1);
         }
 
-       .customerStoreHover {
+      .customerStoreHover {
   transition: all 0.25s ease;
+  animation: customerStorePulse 2.4s ease-in-out infinite;
 }
 
 .customerStoreHover:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 0 25px rgba(34,197,94,0.7);
-  filter: brightness(1.1);
+  transform: translateY(-2px) scale(1.08);
+  box-shadow:
+    0 0 28px rgba(249,115,22,0.85),
+    0 0 58px rgba(6,182,212,0.55);
+  filter: brightness(1.12);
 }
 
         nav a {
@@ -185,27 +190,30 @@ sellerDashboardBtn: {
   padding: "9px 16px",
   borderRadius: "999px",
 
-  background: "linear-gradient(135deg, #22c55e, #16a34a)",
+  background: "linear-gradient(135deg, #f97316, #06b6d4)",
   color: "#fff",
 
   fontWeight: "900",
   fontSize: "14px",
   textDecoration: "none",
+  whiteSpace: "nowrap",
 
-  border: "1px solid rgba(34,197,94,0.5)",
+  border: "1px solid rgba(255,255,255,0.18)",
 
-  boxShadow: "0 0 12px rgba(34,197,94,0.4)",
+  boxShadow:
+    "0 0 12px rgba(249,115,22,0.45), 0 0 26px rgba(6,182,212,0.28)",
 
+  animation: "customerStorePulse 2.4s ease-in-out infinite",
   transition: "all 0.25s ease",
 },
 
-  customerStoreSub: {
-    fontSize: "10px",
-    opacity: 0.95,
-    padding: "2px 7px",
-    borderRadius: "999px",
-    background: "rgba(255,255,255,0.16)",
-  },
+ customerStoreSub: {
+  fontSize: "10px",
+  opacity: 0.85,
+  padding: "2px 7px",
+  borderRadius: "999px",
+  background: "rgba(255,255,255,0.12)",
+},
 
   smartBtn: {
     background: "linear-gradient(135deg, #2563eb, #10a37f)",
