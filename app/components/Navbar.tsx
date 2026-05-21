@@ -27,13 +27,14 @@ export default function Navbar({ user }: { user?: any }) {
           <Link href="/seller-tools">📝 أدوات البائع</Link>
 
           <Link
-            href="/customer-offers"
-            style={styles.customerStoreBtn}
-            className="customerStoreHover"
-          >
-            🛒 متجر عملاء بي بي اس
-            <span style={styles.customerStoreSub}>بيع واشتري</span>
-          </Link>
+  href="/customer-offers"
+  style={styles.customerStoreBtn}
+  className="customerStoreHover"
+>
+  <span style={styles.customerStoreIcon}>🛍️</span>
+  <span style={styles.customerStoreText}>متجر العملاء</span>
+  <span style={styles.customerStoreSub}>بيع واشتري</span>
+</Link>
           <Link
   href="/customer-offers/dashboard"
   style={styles.sellerDashboardBtn}
@@ -78,20 +79,46 @@ export default function Navbar({ user }: { user?: any }) {
               0 0 45px rgba(0, 255, 200, 0.35);
           }
         }
-
-       @keyframes customerStorePulse {
+          @keyframes iconFloat {
   0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+  .customerStoreBtn {
+  animation: customerStorePulse 2.6s ease-in-out infinite, highlightStart 1s ease;
+}
+
+@keyframes highlightStart {
+  0% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
     transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.customerStoreIcon {
+  animation: iconFloat 2s ease-in-out infinite;
+}
+
+      @keyframes customerStorePulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
     box-shadow:
-      0 0 12px rgba(249,115,22,0.42),
-      0 0 26px rgba(6,182,212,0.24);
+      0 0 14px rgba(34,197,94,0.38),
+      0 0 32px rgba(6,182,212,0.18);
   }
 
   50% {
-    transform: scale(1.055);
+    transform: translateY(-1px) scale(1.035);
     box-shadow:
-      0 0 22px rgba(249,115,22,0.75),
-      0 0 50px rgba(6,182,212,0.45);
+      0 0 24px rgba(34,197,94,0.75),
+      0 0 55px rgba(6,182,212,0.38);
   }
 }
 .sellerDashboardHover:hover {
@@ -102,18 +129,34 @@ export default function Navbar({ user }: { user?: any }) {
           transform: scale(1.1);
         }
 
-      .customerStoreHover {
-  transition: all 0.25s ease;
-  animation: customerStorePulse 2.4s ease-in-out infinite;
+     .customerStoreHover {
+  position: relative;
+  overflow: hidden;
+  animation: customerStorePulse 2.6s ease-in-out infinite;
+}
+  .customerStoreHover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.28),
+    transparent
+  );
+  transform: translateX(-120%);
+  transition: transform 0.65s ease;
+}
+  .customerStoreHover:hover::before {
+  transform: translateX(120%);
 }
 
 .customerStoreHover:hover {
-  transform: translateY(-2px) scale(1.08);
-  box-shadow:
-    0 0 28px rgba(249,115,22,0.85),
-    0 0 58px rgba(6,182,212,0.55);
-  filter: brightness(1.12);
+  transform: translateY(-2px) scale(1.07);
+  filter: brightness(1.15);
 }
+
+
 
         nav a {
           color: #ccc;
@@ -186,33 +229,46 @@ sellerDashboardBtn: {
  customerStoreBtn: {
   display: "inline-flex",
   alignItems: "center",
-  gap: "8px",
-  padding: "9px 16px",
+  gap: "7px",
+  padding: "8px 14px",
   borderRadius: "999px",
-
-  background: "linear-gradient(135deg, #f97316, #06b6d4)",
+  background:
+    "linear-gradient(135deg, #16a34a 0%, #06b6d4 55%, #2563eb 100%)",
   color: "#fff",
-
-  fontWeight: "900",
-  fontSize: "14px",
+  fontWeight: "950",
+  fontSize: "13px",
   textDecoration: "none",
   whiteSpace: "nowrap",
-
-  border: "1px solid rgba(255,255,255,0.18)",
-
+  border: "1px solid rgba(255,255,255,0.22)",
   boxShadow:
-    "0 0 12px rgba(249,115,22,0.45), 0 0 26px rgba(6,182,212,0.28)",
-
-  animation: "customerStorePulse 2.4s ease-in-out infinite",
+    "0 0 14px rgba(34,197,94,0.42), 0 0 34px rgba(6,182,212,0.22)",
   transition: "all 0.25s ease",
 },
 
- customerStoreSub: {
+customerStoreIcon: {
+  width: "25px",
+  height: "25px",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: "999px",
+  background: "rgba(255,255,255,0.18)",
+  fontSize: "15px",
+},
+
+customerStoreText: {
+  position: "relative",
+  zIndex: 2,
+},
+
+customerStoreSub: {
+  position: "relative",
+  zIndex: 2,
   fontSize: "10px",
-  opacity: 0.85,
   padding: "2px 7px",
   borderRadius: "999px",
-  background: "rgba(255,255,255,0.12)",
+  background: "rgba(0,0,0,0.22)",
+  color: "#ecfeff",
 },
 
   smartBtn: {

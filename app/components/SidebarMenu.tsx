@@ -71,9 +71,12 @@ export default function SidebarMenu() {
         <a href="/seller-tools" className="menuItem sidebarSellerGlow">
           📝 أدوات البائع
         </a>
-        <a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
-  🛒 متجر العملاء
-  <span className="subText">بيع واشتري</span>
+       <a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
+  <span className="storeIcon">🛍️</span>
+  <span>
+    متجر العملاء
+    <span className="subText">اعرض منتجك وبيع أسرع</span>
+  </span>
 </a>
 
         <a href="/about" className="menuItem">عن الموقع</a>
@@ -123,13 +126,34 @@ export default function SidebarMenu() {
         }
 .sidebarCustomerStoreGlow {
   position: relative;
-  background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(59,130,246,0.15));
-  border: 1px solid rgba(34,197,94,0.35);
-  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(34,197,94,0.28), rgba(6,182,212,0.18), rgba(37,99,235,0.16));
+  border: 1px solid rgba(34,197,94,0.45);
+  color: #fff !important;
   font-weight: 900;
   overflow: hidden;
+  box-shadow: 0 0 18px rgba(34,197,94,0.18);
+}
+  .storeIcon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.14);
+  font-size: 18px;
+  box-shadow: inset 0 0 12px rgba(255,255,255,0.08);
 }
 
+.sidebarCustomerStoreGlow:hover {
+  transform: translateX(-5px) scale(1.02);
+  box-shadow: 0 0 30px rgba(34,197,94,0.42);
+  background: linear-gradient(135deg, rgba(34,197,94,0.36), rgba(6,182,212,0.25), rgba(37,99,235,0.22));
+}
 .sidebarCustomerStoreGlow::before {
   content: "";
   position: absolute;
@@ -143,10 +167,7 @@ export default function SidebarMenu() {
   opacity: 1;
 }
 
-.sidebarCustomerStoreGlow:hover {
-  transform: translateX(-4px);
-  box-shadow: 0 0 25px rgba(34,197,94,0.35);
-}
+
   .sidebarSellerDashboardGlow {
   background: linear-gradient(135deg, rgba(124,58,237,0.22), rgba(37,99,235,0.18));
   border: 1px solid rgba(124,58,237,0.35);
