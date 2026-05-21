@@ -212,11 +212,11 @@ const filteredOffers = approvedOffers.filter((offer) => {
     .filter(Boolean)
     .map((img, index) => (
       <img
-  key={index}
-  src={img as string}
-  alt={offer.product_name}
-  style={{ animationDelay: `${index * 3.33}s` }}
-/>
+        key={index}
+        src={img as string}
+        alt={offer.product_name}
+        
+      />
     ))}
 </div>
                 <div className="floatingLabel">
@@ -591,7 +591,17 @@ const filteredOffers = approvedOffers.filter((offer) => {
   animation: productSlide 3s infinite;
 }
 
+.productSlider img:nth-child(1) {
+  animation-delay: 0s;
+}
 
+.productSlider img:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.productSlider img:nth-child(3) {
+  animation-delay: 4s;
+}
 
 .productSlider img:only-child {
   opacity: 1;
