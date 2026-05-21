@@ -152,7 +152,25 @@ export default function SidebarMenu() {
 .sidebarCustomerStoreGlow:hover {
   transform: translateX(-5px) scale(1.02);
   box-shadow: 0 0 30px rgba(34,197,94,0.42);
-  background: linear-gradient(135deg, rgba(34,197,94,0.36), rgba(6,182,212,0.25), rgba(37,99,235,0.22));
+  background: linear-gradient(
+    135deg,
+    rgba(34,197,94,0.36),
+    rgba(6,182,212,0.25),
+    rgba(37,99,235,0.22)
+  );
+  cursor: pointer; 
+}
+  @keyframes storeIconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.storeIcon {
+  animation: storeIconFloat 2s ease-in-out infinite;
 }
 .sidebarCustomerStoreGlow::before {
   content: "";
@@ -175,6 +193,10 @@ export default function SidebarMenu() {
   font-weight: 900;
   transition: all 0.25s ease;
 }
+  .sidebarCustomerStoreGlow {
+  transition: all 0.25s ease;
+}
+  
 
 .sidebarSellerDashboardGlow:hover {
   transform: translateX(-5px) scale(1.02);
