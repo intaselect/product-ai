@@ -283,7 +283,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
   max-height: 100%;
   object-fit: contain;
   opacity: 0;
-  animation: productSlide 10s infinite;
+  animation: productSlide 60s infinite;
 }
 
 .productSlider img:only-child {
@@ -596,11 +596,11 @@ const filteredOffers = approvedOffers.filter((offer) => {
 }
 
 .productSlider img:nth-child(2) {
-  animation-delay: 2s;
+  animation-delay: 20s;
 }
 
 .productSlider img:nth-child(3) {
-  animation-delay: 4s;
+  animation-delay: 40s;
 }
 
 .productSlider img:only-child {
