@@ -143,6 +143,17 @@ export default async function CustomerOffersPage({
     </a>
   ))}
 </section>
+      <section className="categoryTabs">
+  {Object.entries(categoryNames).map(([key, label]) => (
+    <a
+      key={key}
+      href={key === "all" ? "/customer-offers" : `/customer-offers?category=${key}`}
+      className={selectedCategory === key ? "active" : ""}
+    >
+      {label}
+    </a>
+  ))}
+</section>
 
       {error && (
         <div className="message error">
