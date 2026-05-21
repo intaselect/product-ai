@@ -19,6 +19,7 @@ type Offer = {
   country: string | null;
   status: "pending" | "approved" | "rejected";
   created_at: string;
+  click_count?: number; // ✅ ضيف دي
 };
 
 export default function SellerDashboardPage() {
@@ -252,7 +253,10 @@ export default function SellerDashboardPage() {
                 <p className="storeName">{offer.store_name || "متجر عميل BPS"}</p>
                 <h3>{offer.product_name}</h3>
                 <p className="price">{offer.price}</p>
-
+                
+<p className="clicks">
+  👁️ عدد الضغطات: {offer.click_count || 0}
+</p>
                 <div className="cardMeta">
                   <span>الدولة: {offer.country || "غير محدد"}</span>
                   <span>
@@ -326,6 +330,12 @@ const styles = `
 
 .planCard b {
   color: #22c55e;
+}
+  .clicks {
+  font-size: 12px;
+  color: #86efac;
+  margin-bottom: 6px;
+  font-weight: 800;
 }
 
 .planCard:hover {

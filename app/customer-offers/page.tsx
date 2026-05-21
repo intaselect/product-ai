@@ -270,7 +270,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
   <span className="bestLabel">أفضل عرض</span>
 </div>
                 <a
-                  href={offer.product_url}
+                  href={`/api/customer-offers/click/${offer.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="buyBtn"
