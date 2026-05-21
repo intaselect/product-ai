@@ -44,7 +44,11 @@ export async function POST(req: Request) {
     const product_url = String(body.product_url || "").trim();
     const store_name = String(body.store_name || "").trim();
     const country = String(body.country || "sa").trim();
-    const category = String(body.category || "other").trim();
+    const rawCategory = body.category;
+
+const category = Array.isArray(rawCategory)
+  ? rawCategory.map((c) => String(c).trim()).filter(Boolean)
+  : [String(rawCategory || "other").trim()];
 
     if (!product_name || !price || !image_url || !product_url) {
       return NextResponse.json(

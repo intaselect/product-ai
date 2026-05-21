@@ -54,7 +54,8 @@ export default function AddCustomerOfferPage() {
       product_url: String(formData.get("product_url") || ""),
       store_name: String(formData.get("store_name") || ""),
       country: String(formData.get("country") || "sa"),
-      category: String(formData.get("category") || "other"),
+      category: formData.getAll("category").map((c) => String(c)),
+      
     };
 
     try {
@@ -226,19 +227,20 @@ export default function AddCustomerOfferPage() {
               <option value="eg">مصر</option>
             </select>
           </label>
-<label>
-  فئة المنتج
-  <select name="category" defaultValue="electronics">
-    <option value="electronics">إلكترونيات</option>
-    <option value="mobiles">موبايلات</option>
-    <option value="computers">كمبيوتر ولابتوب</option>
-    <option value="home">المنزل والمطبخ</option>
-    <option value="fashion">أزياء</option>
-    <option value="beauty">جمال وعناية</option>
-    <option value="cars">سيارات وإكسسوارات</option>
-    <option value="other">أخرى</option>
-  </select>
-</label>
+<div className="formGroup">
+  <span>فئات المنتج</span>
+
+  <div className="categoryChecks">
+    <label><input type="checkbox" name="category" value="electronics" defaultChecked /> إلكترونيات</label>
+    <label><input type="checkbox" name="category" value="mobiles" /> موبايلات</label>
+    <label><input type="checkbox" name="category" value="computers" /> كمبيوتر ولابتوب</label>
+    <label><input type="checkbox" name="category" value="home" /> المنزل والمطبخ</label>
+    <label><input type="checkbox" name="category" value="fashion" /> أزياء</label>
+    <label><input type="checkbox" name="category" value="beauty" /> جمال وعناية</label>
+    <label><input type="checkbox" name="category" value="cars" /> سيارات وإكسسوارات</label>
+    <label><input type="checkbox" name="category" value="other" /> أخرى</label>
+  </div>
+</div>
           {error && <div className="errorMsg">{error}</div>}
 
           <button type="submit" disabled={loading}>
@@ -401,7 +403,35 @@ const baseStyle = `
   .offerForm input::placeholder {
     color: #777;
   }
+.formGroup {
+  display: grid;
+  gap: 8px;
+  color: #f3f4f6;
+  font-weight: 900;
+  font-size: 14px;
+}
 
+.categoryChecks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.categoryChecks label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #171717;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 11px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.categoryChecks input {
+  width: auto;
+}
   .offerForm button {
     margin-top: 8px;
     border: 0;
