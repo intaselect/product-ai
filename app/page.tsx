@@ -495,6 +495,11 @@ function getVisitorId() {
 </div>
   <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 </section>
+<a href="/customer-offers" className="liveStorePulse">
+  <span className="liveDot"></span>
+  مئات المستخدمين يكتشفون عروض BPS Chat
+  <span className="aiSpark">AI</span>
+</a>
 
         {/* 🔥 Ads Slider */}
         <div className="adsWrapper" ref={sliderRef}>
@@ -670,6 +675,82 @@ function getVisitorId() {
   justify-content: center;
   gap: 10px;
  
+}
+  .liveStorePulse {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 620px;
+  margin: 18px auto 10px;
+  padding: 14px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 900;
+  font-size: 15px;
+  background:
+    linear-gradient(135deg, rgba(16,163,127,0.28), rgba(0,180,255,0.18)),
+    rgba(255,255,255,0.05);
+  border: 1px solid rgba(0,255,200,0.28);
+  box-shadow:
+    0 0 22px rgba(0,255,200,0.18),
+    inset 0 0 14px rgba(255,255,255,0.04);
+  overflow: hidden;
+  transition: all .25s ease;
+  animation: livePulse 2.4s ease-in-out infinite;
+}
+
+.liveStorePulse::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: translateX(110%);
+  animation: liveShine 3s ease-in-out infinite;
+}
+
+.liveStorePulse:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(0,255,200,0.55);
+  box-shadow:
+    0 0 34px rgba(0,255,200,0.30),
+    0 0 55px rgba(0,180,255,0.16);
+}
+
+.liveDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 14px rgba(34,197,94,0.9);
+  animation: dotBlink 1.2s ease-in-out infinite;
+}
+
+.aiSpark {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(0,255,200,0.14);
+  color: #00ffd5;
+  font-size: 11px;
+  border: 1px solid rgba(0,255,200,0.25);
+}
+
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 0 22px rgba(0,255,200,0.18); }
+  50% { box-shadow: 0 0 36px rgba(0,255,200,0.32); }
+}
+
+@keyframes liveShine {
+  0% { transform: translateX(110%); }
+  45%, 100% { transform: translateX(-110%); }
+}
+
+@keyframes dotBlink {
+  0%, 100% { opacity: .45; transform: scale(.9); }
+  50% { opacity: 1; transform: scale(1.25); }
 }
   .sidebarSellerDashboardGlow {
   background: linear-gradient(135deg, rgba(124,58,237,0.22), rgba(37,99,235,0.18));
