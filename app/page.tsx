@@ -628,22 +628,23 @@ function getVisitorId() {
             })}
         </section>
         <PopularSearches />
-        <section className="storePromo">
+       
+  <section className="storePromo">
   <div className="storePromoContent">
     <div>
       <h3>🛒 متجر عملاء بي بي اس</h3>
       <p>
-        اعرض منتجاتك مجانًا أو اكتشف أفضل عروض المستخدمين داخل BPS Chat
+        ✅ منتجات مختارة ومعتمدة من BPS Chat — تسوّق بثقة أو ابدأ بيع منتجاتك مجانًا
       </p>
     </div>
 
     <div className="storePromoActions">
       <a href="/customer-offers" className="storeBtn primary">
-        تصفح المتجر
+        تسوّق الآن
       </a>
 
       <a href="/customer-offers/dashboard" className="storeBtn secondary">
-        ابدأ البيع
+        اعرض منتجك
       </a>
     </div>
   </div>
