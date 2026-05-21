@@ -165,7 +165,7 @@ export default function AdvertisePage() {
         </div>
 
         <form onSubmit={handleSubmit} style={styles.form}>
-          <h2 style={styles.h2}>اطلب الإعلان الآن</h2>
+          <h2 style={styles.h2}>بعد اتمام عملية الدفع تواصل واتس لتنظيم متطلباتك للحصول على افضل نتائج لك</h2>
 
           <input
             required
