@@ -172,32 +172,34 @@ const filteredOffers = approvedOffers.filter((offer) => {
   ))}
 </section>
 
-<section className="countryTabs">
-  <a
-    href={
-      selectedCategory === "all"
-        ? "/customer-offers"
-        : `/customer-offers?category=${selectedCategory}`
-    }
-    className={selectedCountry === "all" ? "active" : ""}
-  >
-    كل الدول
-  </a>
-
-  {Object.entries(countryNames).map(([key, label]) => (
+<div className="countryBox">
+  <section className="countryTabs">
     <a
-      key={key}
       href={
         selectedCategory === "all"
-          ? `/customer-offers?country=${key}`
-          : `/customer-offers?category=${selectedCategory}&country=${key}`
+          ? "/customer-offers"
+          : `/customer-offers?category=${selectedCategory}`
       }
-      className={selectedCountry === key ? "active" : ""}
+      className={selectedCountry === "all" ? "active" : ""}
     >
-      {label}
+      كل الدول
     </a>
-  ))}
-</section>
+
+    {Object.entries(countryNames).map(([key, label]) => (
+      <a
+        key={key}
+        href={
+          selectedCategory === "all"
+            ? `/customer-offers?country=${key}`
+            : `/customer-offers?category=${selectedCategory}&country=${key}`
+        }
+        className={selectedCountry === key ? "active" : ""}
+      >
+        {label}
+      </a>
+    ))}
+  </section>
+</div>
       {error && (
         <div className="message error">
           حدث خطأ أثناء تحميل العروض. حاول مرة أخرى لاحقًا.
@@ -280,7 +282,26 @@ const filteredOffers = approvedOffers.filter((offer) => {
   flex-wrap: wrap;
   justify-content: center;
 }
+.countryBox {
+  max-width: 1080px;
+  margin: 10px auto 24px;
+  padding: 14px;
+  border-radius: 22px;
 
+  background: linear-gradient(
+    135deg,
+    rgba(59,130,246,0.12),
+    rgba(34,197,94,0.08)
+  );
+
+  border: 1px solid rgba(96,165,250,0.25);
+
+  box-shadow:
+    0 0 30px rgba(59,130,246,0.15),
+    inset 0 0 20px rgba(34,197,94,0.08);
+
+  backdrop-filter: blur(10px);
+}
 
 .countryTabs a {
   text-decoration: none;
