@@ -215,7 +215,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
         key={index}
         src={img as string}
         alt={offer.product_name}
-        style={{ animationDelay: `${index}s` }}
+        
       />
     ))}
 </div>
@@ -576,18 +576,41 @@ const filteredOffers = approvedOffers.filter((offer) => {
   }
 
   .imageWrap img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    transition: transform .3s ease;
-    position: relative;
-    z-index: 2;
-  }
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform .3s ease;
+  z-index: 2;
+}
 
-  .offerCard:hover img {
-    transform: scale(1.07) rotate(-1deg);
-  }
+.productSlider img {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: 0;
+  animation: productSlide 3s infinite;
+}
 
+.productSlider img:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.productSlider img:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.productSlider img:nth-child(3) {
+  animation-delay: 2s;
+}
+
+.productSlider img:only-child {
+  opacity: 1;
+  animation: none;
+}
+
+.offerCard:hover .productSlider img {
+  transform: scale(1.07) rotate(-1deg);
+}
   .floatingLabel {
     position: absolute;
     top: 12px;
