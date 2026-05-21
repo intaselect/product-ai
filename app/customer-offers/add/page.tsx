@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+
 import { createClient } from "@supabase/supabase-js";
-export const dynamic = "force-dynamic";
+
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -12,8 +12,7 @@ const supabase = createClient(
 );
 
 export default function AddCustomerOfferPage() {
-  const searchParams = useSearchParams();
-  const editId = searchParams.get("edit");
+  const [editId, setEditId] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkingUser, setCheckingUser] = useState(true);
   const [accessToken, setAccessToken] = useState("");
@@ -35,6 +34,12 @@ export default function AddCustomerOfferPage() {
 
     checkUser();
   }, []);
+  useEffect(() => {
+  if (typeof window !== "undefined") {
+    const params = new URLSearchParams(window.location.search);
+    setEditId(params.get("edit") || "");
+  }
+}, []);
   useEffect(() => {
   if (!editId) return;
 
