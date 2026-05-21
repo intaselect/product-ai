@@ -269,27 +269,6 @@ const filteredOffers = approvedOffers.filter((offer) => {
   flex-wrap: wrap;
   justify-content: center;
 }
-.productSlider {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.productSlider img {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  opacity: 0;
-  
-}
-
-.productSlider img:only-child {
-  opacity: 1;
-  
-}
 
 
 .countryTabs a {
@@ -578,12 +557,25 @@ const filteredOffers = approvedOffers.filter((offer) => {
   z-index: 2;
 }
 
+.productSlider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .productSlider img {
   position: absolute;
   inset: 0;
   margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   opacity: 0;
- 
+  z-index: 2;
+}
+
+.productSlider img:first-child {
+  opacity: 1;
 }
 
 
