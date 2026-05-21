@@ -60,10 +60,12 @@ const categoryNames: Record<string, string> = {
 export default async function CustomerOffersPage({
   searchParams,
 }: {
-  searchParams?: { category?: string; country?: string };
+  searchParams?: any;
 }) {
-  const selectedCategory = searchParams?.category || "all";
-const selectedCountry = searchParams?.country || "all";
+  const params = await searchParams;
+
+  const selectedCategory = params?.category || "all";
+  const selectedCountry = params?.country || "all";
   const { data: offers, error } = await supabase
     .from("customer_offers")
     .select(
