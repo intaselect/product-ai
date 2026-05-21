@@ -285,7 +285,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
 .countryBox {
   max-width: 1080px;
   margin: 10px auto 24px;
-  padding: 14px;
+  padding: 18px;
   border-radius: 22px;
 
   background: linear-gradient(
@@ -301,18 +301,17 @@ const filteredOffers = approvedOffers.filter((offer) => {
     inset 0 0 20px rgba(34,197,94,0.08);
 
   backdrop-filter: blur(10px);
+
+  display: flex;
+  justify-content: center; /* مهم */
 }
 
-.countryTabs a {
-  text-decoration: none;
-  padding: 9px 14px;
-  border-radius: 999px;
-  background: rgba(59,130,246,0.10);
-  border: 1px solid rgba(96,165,250,0.22);
-  color: #dbeafe;
-  font-weight: 900;
-  font-size: 13px;
-  transition: all .25s ease;
+.countryTabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center; /* يخليه في النص */
+  width: 100%;
 }
 
 .countryTabs a:hover,
