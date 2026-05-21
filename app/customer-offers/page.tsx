@@ -283,20 +283,15 @@ const filteredOffers = approvedOffers.filter((offer) => {
   max-height: 100%;
   object-fit: contain;
   opacity: 0;
-  animation: productSlide 60s infinite;
+  
 }
 
 .productSlider img:only-child {
   opacity: 1;
-  animation: none;
+  
 }
 
-@keyframes productSlide {
-  0% { opacity: 1; }
-  30% { opacity: 1; }
-  33% { opacity: 0; }
-  100% { opacity: 0; }
-}
+
 .countryTabs a {
   text-decoration: none;
   padding: 9px 14px;
@@ -588,25 +583,9 @@ const filteredOffers = approvedOffers.filter((offer) => {
   inset: 0;
   margin: auto;
   opacity: 0;
-  animation: productSlide 3s infinite;
+ 
 }
 
-.productSlider img:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.productSlider img:nth-child(2) {
-  animation-delay: 20s;
-}
-
-.productSlider img:nth-child(3) {
-  animation-delay: 40s;
-}
-
-.productSlider img:only-child {
-  opacity: 1;
-  animation: none;
-}
 
 .offerCard:hover .productSlider img {
   transform: scale(1.07) rotate(-1deg);
