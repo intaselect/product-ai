@@ -167,36 +167,62 @@ export default function SellerDashboardPage() {
       </section>
 
       <section className="upgradeBox">
-        <div>
-          <h2>عايز تزود عدد عروضك؟</h2>
-          <p>
-            الرصيد الافتراضي عرض واحد. لزيادة عدد المنتجات والعروض داخل متجر عملاء
-            بي بي اس، تواصل معنا وسيتم رفع الرصيد يدويًا بعد الدفع أو الاتفاق.
-          </p>
-        </div>
-       <a
-  href="https://www.paypal.com/ncp/payment/JBH72Y65YU8D4"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="upgradeBtn"
->
-  💳 شراء باقة عروض الآن
-</a>
-        <a
-  href="https://wa.me/966549330606?text=عايز%20ازود%20رصيد%20العروض%20في%20BPS%20Chat"
-  target="_blank"
-  className="upgradeBtn"
->
-  تواصل واتساب لزيادة الرصيد
-</a>
-      </section>
+  <div>
+    <h2>باقات زيادة رصيد العروض</h2>
+    <p>
+      اختر الباقة المناسبة لك، وبعد الدفع تواصل معنا على واتساب لتفعيل الرصيد داخل حسابك.
+    </p>
+  </div>
 
-      <section className="sectionTitle">
-        <h2>عروضي داخل متجر العملاء</h2>
-        <p>
-          هنا تظهر كل المنتجات التي أرسلتها، سواء قيد المراجعة أو معتمدة أو مرفوضة.
-        </p>
-      </section>
+  <div className="plansGrid">
+
+    {/* باقة 5 منتجات */}
+    <a
+      href="https://www.paypal.com/ncp/payment/B4V5Q7B4CF5LE"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="planCard"
+    >
+      <strong>5 منتجات</strong>
+      <span>5 دولار / شهر</span>
+      <b>شراء الباقة</b>
+    </a>
+
+    {/* باقة 15 منتج */}
+    <a
+      href="https://www.paypal.com/ncp/payment/MNVA672HM8CKN"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="planCard featured"
+    >
+      <strong>15 منتج</strong>
+      <span>10 دولار / شهر</span>
+      <b>الأكثر طلبًا</b>
+    </a>
+
+    {/* باقة 50 منتج */}
+    <a
+      href="https://www.paypal.com/ncp/payment/JBH72Y65YU8D4"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="planCard"
+    >
+      <strong>50 منتج</strong>
+      <span>20 دولار / شهر</span>
+      <b>شراء الباقة</b>
+    </a>
+
+  </div>
+
+  {/* واتساب */}
+  <a
+    href="https://wa.me/966549330606?text=دفعت%20باقة%20عروض%20BPS%20Chat%20وعايز%20تفعيل%20الرصيد"
+    target="_blank"
+    className="upgradeBtn"
+  >
+    📱 تواصل بعد الدفع
+  </a>
+</section>
 
       {offers.length === 0 ? (
         <section className="emptyBox">
@@ -269,7 +295,48 @@ const styles = `
     color: white;
     padding: 22px 16px 80px;
   }
+.plansGrid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
 
+.planCard {
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  color: white;
+  display: grid;
+  gap: 6px;
+  transition: 0.25s;
+  text-align: center;
+}
+
+.planCard strong {
+  font-size: 20px;
+  color: #bbf7d0;
+}
+
+.planCard span {
+  font-weight: bold;
+}
+
+.planCard b {
+  color: #22c55e;
+}
+
+.planCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(34,197,94,0.5);
+  box-shadow: 0 0 25px rgba(34,197,94,0.25);
+}
+
+.planCard.featured {
+  background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(37,99,235,0.15));
+}
   .hero {
     position: relative;
     max-width: 1100px;
@@ -649,10 +716,11 @@ const styles = `
     }
   }
 
-  @media (max-width: 700px) {
-    .dashboardPage {
-      padding: 14px 12px 60px;
-    }
+ @media (max-width: 700px) {
+  .plansGrid {
+    grid-template-columns: 1fr;
+  }
+}
 
     .hero {
       padding: 24px 12px 20px;
