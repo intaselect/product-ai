@@ -29,7 +29,7 @@ type CustomerOffer = {
   product_url: string;
   store_name: string | null;
   country: string | null;
-  category: string | null;
+  category: string[] | null;
   created_at: string;
 };
 
@@ -71,12 +71,12 @@ const selectedCountry = searchParams?.country || "all";
 )
     .eq("status", "approved")
     .order("created_at", { ascending: false });
+const approvedOffers = (offers || []) as CustomerOffer[];
 
-  const approvedOffers = (offers || []) as CustomerOffer[];
- const filteredOffers = approvedOffers.filter((offer) => {
+const filteredOffers = approvedOffers.filter((offer) => {
   const categoryOk =
     selectedCategory === "all" ||
-    (offer.category || "other") === selectedCategory;
+    (offer.category || ["other"]).includes(selectedCategory);
 
   const countryOk =
     selectedCountry === "all" ||
@@ -84,7 +84,6 @@ const selectedCountry = searchParams?.country || "all";
 
   return categoryOk && countryOk;
 });
-
   return (
     <main className="customerOffersPage" dir="rtl">
       <section className="hero">
@@ -142,7 +141,15 @@ const selectedCountry = searchParams?.country || "all";
   {Object.entries(categoryNames).map(([key, label]) => (
     <a
       key={key}
-      href={key === "all" ? "/customer-offers" : `/customer-offers?category=${key}`}
+     href={
+  key === "all"
+    ? selectedCountry === "all"
+      ? "/customer-offers"
+      : `/customer-offers?country=${selectedCountry}`
+    : selectedCountry === "all"
+      ? `/customer-offers?category=${key}`
+      : `/customer-offers?category=${key}&country=${selectedCountry}`
+}
       className={selectedCategory === key ? "active" : ""}
     >
       {label}
