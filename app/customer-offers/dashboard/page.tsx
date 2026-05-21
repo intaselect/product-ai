@@ -76,6 +76,10 @@ export default function SellerDashboardPage() {
   const approved = offers.filter((o) => o.status === "approved").length;
   const pending = offers.filter((o) => o.status === "pending").length;
   const rejected = offers.filter((o) => o.status === "rejected").length;
+  const totalClicks = offers.reduce(
+  (sum, offer) => sum + Number(offer.click_count || 0),
+  0
+);
 
   if (loading) {
     return (
@@ -165,6 +169,10 @@ export default function SellerDashboardPage() {
           <strong>{rejected}</strong>
           <span>مرفوضة</span>
         </div>
+        <div className="statCard clicksCard">
+  <strong>{totalClicks}</strong>
+ <span>🔥 إجمالي ضغطات المنتجات</span>
+</div>
       </section>
 
       <section className="upgradeBox">
@@ -318,7 +326,32 @@ const styles = `
   transition: 0.25s;
   text-align: center;
 }
+.clicksCard {
+  background: linear-gradient(135deg, rgba(34,197,94,0.25), rgba(6,182,212,0.18));
+  border: 1px solid rgba(34,197,94,0.5);
+  box-shadow: 0 0 30px rgba(34,197,94,0.25);
+  position: relative;
+  overflow: hidden;
+}
 
+.clicksCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: translateX(-100%);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.clicksCard strong {
+  color: #4ade80;
+}
 .planCard strong {
   font-size: 20px;
   color: #bbf7d0;
