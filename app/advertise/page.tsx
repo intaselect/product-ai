@@ -3,14 +3,61 @@
 import { useState } from "react";
 
 const plans = [
-  { country: "السعودية", flag: "🇸🇦", slider: "299 ريال", search: "499 ريال", full: "799 ريال" },
-  { country: "الإمارات", flag: "🇦🇪", slider: "299 درهم", search: "499 درهم", full: "799 درهم" },
-  { country: "الكويت", flag: "🇰🇼", slider: "25 دينار", search: "45 دينار", full: "70 دينار" },
-  { country: "قطر", flag: "🇶🇦", slider: "299 ريال", search: "499 ريال", full: "799 ريال" },
-  { country: "البحرين", flag: "🇧🇭", slider: "25 دينار", search: "45 دينار", full: "70 دينار" },
-  { country: "مصر", flag: "🇪🇬", slider: "1500 جنيه", search: "2500 جنيه", full: "4000 جنيه" },
+  {
+    country: "السعودية",
+    flag: "🇸🇦",
+    packages: [
+      { name: "أعلى الصفحة", price: "15$ / شهر", paypal: "https://www.paypal.com/ncp/payment/JEMC4QYKUMVYG" },
+      { name: "أثناء البحث", price: "25$ / شهر", paypal: "https://www.paypal.com/ncp/payment/T83QR83LUU34A" },
+      { name: "باقة كاملة", price: "40$ / شهر", paypal: "https://www.paypal.com/ncp/payment/WZH4DXXU9AKA2" },
+    ],
+  },
+  {
+    country: "الإمارات",
+    flag: "🇦🇪",
+    packages: [
+      { name: "أعلى الصفحة", price: "15$ / شهر", paypal: "https://www.paypal.com/ncp/payment/JEMC4QYKUMVYG" },
+      { name: "أثناء البحث", price: "25$ / شهر", paypal: "https://www.paypal.com/ncp/payment/T83QR83LUU34A" },
+      { name: "باقة كاملة", price: "40$ / شهر", paypal: "https://www.paypal.com/ncp/payment/WZH4DXXU9AKA2" },
+    ],
+  },
+  {
+    country: "الكويت",
+    flag: "🇰🇼",
+    packages: [
+      { name: "أعلى الصفحة", price: "15$ / شهر", paypal: "https://www.paypal.com/ncp/payment/JEMC4QYKUMVYG" },
+      { name: "أثناء البحث", price: "25$ / شهر", paypal: "https://www.paypal.com/ncp/payment/T83QR83LUU34A" },
+      { name: "باقة كاملة", price: "40$ / شهر", paypal: "https://www.paypal.com/ncp/payment/WZH4DXXU9AKA2" },
+    ],
+  },
+  {
+    country: "قطر",
+    flag: "🇶🇦",
+    packages: [
+      { name: "أعلى الصفحة", price: "15$ / شهر", paypal: "https://www.paypal.com/ncp/payment/JEMC4QYKUMVYG" },
+      { name: "أثناء البحث", price: "25$ / شهر", paypal: "https://www.paypal.com/ncp/payment/T83QR83LUU34A" },
+      { name: "باقة كاملة", price: "40$ / شهر", paypal: "https://www.paypal.com/ncp/payment/WZH4DXXU9AKA2" },
+    ],
+  },
+  {
+    country: "البحرين",
+    flag: "🇧🇭",
+    packages: [
+      { name: "أعلى الصفحة", price: "15$ / شهر", paypal: "https://www.paypal.com/ncp/payment/JEMC4QYKUMVYG" },
+      { name: "أثناء البحث", price: "25$ / شهر", paypal: "https://www.paypal.com/ncp/payment/T83QR83LUU34A" },
+      { name: "باقة كاملة", price: "40$ / شهر", paypal: "https://www.paypal.com/ncp/payment/WZH4DXXU9AKA2" },
+    ],
+  },
+  {
+    country: "مصر",
+    flag: "🇪🇬",
+    packages: [
+      { name: "أعلى الصفحة", price: "10$ / شهر", paypal: "https://www.paypal.com/ncp/payment/JEMC4QYKUMVYG" },
+      { name: "أثناء البحث", price: "15$ / شهر", paypal: "https://www.paypal.com/ncp/payment/T83QR83LUU34A" },
+      { name: "باقة كاملة", price: "25$ / شهر", paypal: "https://www.paypal.com/ncp/payment/WZH4DXXU9AKA2" },
+    ],
+  },
 ];
-
 export default function AdvertisePage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -90,24 +137,31 @@ export default function AdvertisePage() {
           <h2 style={styles.h2}>أسعار الإعلانات حسب الدولة</h2>
 
           <div style={styles.cards}>
-            {plans.map((plan) => (
-              <div key={plan.country} style={styles.card}>
-                <h3 style={styles.country}>
-                  {plan.flag} {plan.country}
-                </h3>
+  {plans.map((plan) => (
+    <div key={plan.country} style={styles.card}>
+      <h3 style={styles.country}>
+        {plan.flag} {plan.country}
+      </h3>
 
-                <p style={styles.priceLine}>
-                  أعلى الصفحة: <strong>{plan.slider}</strong> / شهر
-                </p>
-                <p style={styles.priceLine}>
-                  أثناء البحث: <strong>{plan.search}</strong> / شهر
-                </p>
-                <p style={styles.priceLine}>
-                  باقة كاملة: <strong>{plan.full}</strong> / شهر
-                </p>
-              </div>
-            ))}
-          </div>
+      {plan.packages.map((pkg) => (
+        <div key={pkg.name} style={styles.packageRow}>
+          <p style={styles.priceLine}>
+            {pkg.name}: <strong>{pkg.price}</strong>
+          </p>
+
+          <a
+            href={pkg.paypal}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.paypalBtn}
+          >
+            💳 ادفع الآن
+          </a>
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
         </div>
 
         <form onSubmit={handleSubmit} style={styles.form}>
@@ -420,6 +474,26 @@ aiGrid: {
 particles: {
   position: "absolute",
   inset: 0,
+},
+packageRow: {
+  background: "rgba(255,255,255,0.035)",
+  border: "1px solid rgba(255,255,255,0.06)",
+  borderRadius: "14px",
+  padding: "10px",
+  marginBottom: "10px",
+},
+
+paypalBtn: {
+  display: "inline-block",
+  width: "100%",
+  textAlign: "center",
+  padding: "10px",
+  borderRadius: "999px",
+  background: "linear-gradient(135deg, #0070ba, #00a8e8)",
+  color: "#fff",
+  textDecoration: "none",
+  fontWeight: "900",
+  marginTop: "6px",
 },
 
 particle: {
