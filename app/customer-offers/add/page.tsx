@@ -278,15 +278,26 @@ image_url_3: String(formData.get("image_url_3") || ""),
   <span>فئات المنتج</span>
 
   <div className="categoryChecks">
-    <label><input type="checkbox" name="category" value="electronics" defaultChecked /> إلكترونيات</label>
-    <label><input type="checkbox" name="category" value="mobiles" /> موبايلات</label>
-    <label><input type="checkbox" name="category" value="computers" /> كمبيوتر ولابتوب</label>
-    <label><input type="checkbox" name="category" value="home" /> المنزل والمطبخ</label>
-    <label><input type="checkbox" name="category" value="fashion" /> أزياء</label>
-    <label><input type="checkbox" name="category" value="beauty" /> جمال وعناية</label>
-    <label><input type="checkbox" name="category" value="cars" /> سيارات وإكسسوارات</label>
-    <label><input type="checkbox" name="category" value="other" /> أخرى</label>
-  </div>
+  <label><input type="checkbox" name="category" value="electronics" defaultChecked /> إلكترونيات</label>
+  <label><input type="checkbox" name="category" value="mobiles" /> موبايلات</label>
+  <label><input type="checkbox" name="category" value="mobile_accessories" /> إكسسوارات جوالات</label>
+  <label><input type="checkbox" name="category" value="smart_watch" /> ساعات ذكية</label>
+  <label><input type="checkbox" name="category" value="power_bank" /> باور بانك</label>
+  <label><input type="checkbox" name="category" value="chargers" /> شواحن وكابلات</label>
+  <label><input type="checkbox" name="category" value="headphones" /> سماعات</label>
+  <label><input type="checkbox" name="category" value="computers" /> كمبيوتر ولابتوب</label>
+  <label><input type="checkbox" name="category" value="computer_accessories" /> إكسسوارات كمبيوتر</label>
+  <label><input type="checkbox" name="category" value="gaming" /> ألعاب وجيمينج</label>
+  <label><input type="checkbox" name="category" value="home" /> المنزل والمطبخ</label>
+  <label><input type="checkbox" name="category" value="fashion" /> ملابس</label>
+  <label><input type="checkbox" name="category" value="shoes" /> أحذية</label>
+  <label><input type="checkbox" name="category" value="bags" /> شنط</label>
+  <label><input type="checkbox" name="category" value="beauty" /> جمال وعناية</label>
+  <label><input type="checkbox" name="category" value="cars" /> سيارات وإكسسوارات</label>
+  <label><input type="checkbox" name="category" value="kids" /> أطفال</label>
+  <label><input type="checkbox" name="category" value="sports" /> رياضة</label>
+  <label><input type="checkbox" name="category" value="other" /> أخرى</label>
+</div>
 </div>
           {error && <div className="errorMsg">{error}</div>}
 
