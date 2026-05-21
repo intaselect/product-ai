@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -10,6 +11,8 @@ const supabase = createClient(
 );
 
 export default function AddCustomerOfferPage() {
+  const searchParams = useSearchParams();
+  const editId = searchParams.get("edit");
   const [loading, setLoading] = useState(false);
   const [checkingUser, setCheckingUser] = useState(true);
   const [accessToken, setAccessToken] = useState("");
@@ -31,6 +34,22 @@ export default function AddCustomerOfferPage() {
 
     checkUser();
   }, []);
+  useEffect(() => {
+  if (!editId) return;
+
+  async function loadOffer() {
+    const res = await fetch(`/api/customer-offers/get?id=${editId}`);
+    const data = await res.json();
+
+    if (data.ok && data.offer) {
+      const o = data.offer;
+
+    
+    }
+  }
+
+  loadOffer();
+}, [editId]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -61,14 +80,19 @@ image_url_3: String(formData.get("image_url_3") || ""),
     };
 
     try {
-      const res = await fetch("/api/customer-offers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
+    const res = await fetch(
+  editId
+    ? `/api/customer-offers/update?id=${editId}`
+    : "/api/customer-offers",
+  {
+    method: editId ? "PATCH" : "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(payload),
+  }
+);
 
       const data = await res.json();
 

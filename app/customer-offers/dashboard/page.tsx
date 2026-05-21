@@ -242,6 +242,12 @@ export default function SellerDashboardPage() {
                 >
                   فتح رابط المنتج
                 </a>
+                <Link
+  href={`/customer-offers/add?edit=${offer.id}`}
+  className="secondaryBtn"
+>
+  ✏️ تعديل العرض
+</Link>
               </div>
             </article>
           ))}
