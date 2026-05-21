@@ -60,9 +60,10 @@ const categoryNames: Record<string, string> = {
 export default async function CustomerOffersPage({
   searchParams,
 }: {
-  searchParams?: { category?: string };
+  searchParams?: { category?: string; country?: string };
 }) {
   const selectedCategory = searchParams?.category || "all";
+const selectedCountry = searchParams?.country || "all";
   const { data: offers, error } = await supabase
     .from("customer_offers")
     .select(
@@ -72,12 +73,17 @@ export default async function CustomerOffersPage({
     .order("created_at", { ascending: false });
 
   const approvedOffers = (offers || []) as CustomerOffer[];
-  const filteredOffers =
-  selectedCategory === "all"
-    ? approvedOffers
-    : approvedOffers.filter(
-        (offer) => (offer.category || "other") === selectedCategory
-      );
+ const filteredOffers = approvedOffers.filter((offer) => {
+  const categoryOk =
+    selectedCategory === "all" ||
+    (offer.category || "other") === selectedCategory;
+
+  const countryOk =
+    selectedCountry === "all" ||
+    (offer.country || "sa") === selectedCountry;
+
+  return categoryOk && countryOk;
+});
 
   return (
     <main className="customerOffersPage" dir="rtl">
@@ -154,7 +160,32 @@ export default async function CustomerOffersPage({
     </a>
   ))}
 </section>
+<section className="countryTabs">
+  <a
+    href={
+      selectedCategory === "all"
+        ? "/customer-offers"
+        : `/customer-offers?category=${selectedCategory}`
+    }
+    className={selectedCountry === "all" ? "active" : ""}
+  >
+    كل الدول
+  </a>
 
+  {Object.entries(countryNames).map(([key, label]) => (
+    <a
+      key={key}
+      href={
+        selectedCategory === "all"
+          ? `/customer-offers?country=${key}`
+          : `/customer-offers?category=${selectedCategory}&country=${key}`
+      }
+      className={selectedCountry === key ? "active" : ""}
+    >
+      {label}
+    </a>
+  ))}
+</section>
       {error && (
         <div className="message error">
           حدث خطأ أثناء تحميل العروض. حاول مرة أخرى لاحقًا.
@@ -218,7 +249,34 @@ export default async function CustomerOffersPage({
     padding: 16px 16px 70px;
     overflow-x: hidden;
   }
+.countryTabs {
+  max-width: 1080px;
+  margin: -6px auto 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
+.countryTabs a {
+  text-decoration: none;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: rgba(59,130,246,0.10);
+  border: 1px solid rgba(96,165,250,0.22);
+  color: #dbeafe;
+  font-weight: 900;
+  font-size: 13px;
+  transition: all .25s ease;
+}
+
+.countryTabs a:hover,
+.countryTabs a.active {
+  background: linear-gradient(135deg, #2563eb, #22c55e);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(59,130,246,0.35);
+  transform: translateY(-2px);
+}
   .hero {
     position: relative;
     max-width: 1080px;
