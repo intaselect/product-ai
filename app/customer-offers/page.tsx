@@ -48,6 +48,19 @@ const countryNames: Record<string, string> = {
   bh: "البحرين",
   eg: "مصر",
 };
+const countryCurrencies: Record<string, string> = {
+  sa: "ريال سعودي",
+  ae: "درهم إماراتي",
+  kw: "دينار كويتي",
+  qa: "ريال قطري",
+  bh: "دينار بحريني",
+  eg: "جنيه مصري",
+};
+
+function formatOfferPrice(price: string, country?: string | null) {
+  const currency = countryCurrencies[country || ""] || "";
+  return currency ? `${price} ${currency}` : price;
+}
 const categoryNames: Record<string, string> = {
   all: "كل العروض",
   electronics: "إلكترونيات",
@@ -249,11 +262,13 @@ const filteredOffers = approvedOffers.filter((offer) => {
 
                 <h2>{offer.product_name}</h2>
 
-                <div className="priceRow">
-                  <strong>{offer.price}</strong>
-                  <span>أفضل عرض</span>
-                </div>
-
+               <div className="priceRow">
+  <strong>{offer.price}</strong>
+  <span className="currency">
+    {countryCurrencies[offer.country || ""]}
+  </span>
+  <span className="bestLabel">أفضل عرض</span>
+</div>
                 <a
                   href={offer.product_url}
                   target="_blank"
@@ -664,7 +679,24 @@ const filteredOffers = approvedOffers.filter((offer) => {
   opacity: 1;
 }
 
+.currency {
+  font-size: 12px;
+  color: #a7f3d0;
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.25);
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 800;
+}
 
+.bestLabel {
+  font-size: 11px;
+  color: #d1fae5;
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.22);
+  padding: 5px 9px;
+  border-radius: 999px;
+}
 .offerCard:hover .productSlider img {
   transform: scale(1.07) rotate(-1deg);
 }
