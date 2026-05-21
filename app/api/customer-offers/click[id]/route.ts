@@ -8,13 +8,10 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-export async function GET(
-  req: Request,
-  context: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: Request, context: any) {
   try {
-    const { id: idParam } = await context.params;
-    const id = Number(idParam);
+    const params = await context.params;
+    const id = Number(params?.id);
 
     if (!id) {
       return NextResponse.redirect(new URL("/", req.url));
@@ -30,11 +27,11 @@ export async function GET(
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    const currentClicks = Number(data.click_count || 0);
-
     await supabase
       .from("customer_offers")
-      .update({ click_count: currentClicks + 1 })
+      .update({
+        click_count: Number(data.click_count || 0) + 1,
+      })
       .eq("id", id);
 
     return NextResponse.redirect(data.product_url);
