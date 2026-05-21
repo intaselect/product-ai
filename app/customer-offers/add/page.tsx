@@ -51,6 +51,8 @@ export default function AddCustomerOfferPage() {
       product_name: String(formData.get("product_name") || ""),
       price: String(formData.get("price") || ""),
       image_url: String(formData.get("image_url") || ""),
+      image_url_2: String(formData.get("image_url_2") || ""),
+image_url_3: String(formData.get("image_url_3") || ""),
       product_url: String(formData.get("product_url") || ""),
       store_name: String(formData.get("store_name") || ""),
       country: String(formData.get("country") || "sa"),
@@ -201,6 +203,21 @@ export default function AddCustomerOfferPage() {
               placeholder="https://example.com/product-image.jpg"
             />
           </label>
+          <label>
+  رابط صورة المنتج 2 (اختياري)
+  <input
+    name="image_url_2"
+    placeholder="https://example.com/product-image-2.jpg"
+  />
+</label>
+
+<label>
+  رابط صورة المنتج 3 (اختياري)
+  <input
+    name="image_url_3"
+    placeholder="https://example.com/product-image-3.jpg"
+  />
+</label>
 
           <label>
             رابط المنتج أو المتجر *

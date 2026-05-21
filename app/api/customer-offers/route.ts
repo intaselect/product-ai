@@ -41,6 +41,8 @@ export async function POST(req: Request) {
     const product_name = String(body.product_name || "").trim();
     const price = String(body.price || "").trim();
     const image_url = String(body.image_url || "").trim();
+    const image_url_2 = String(body.image_url_2 || "").trim();
+const image_url_3 = String(body.image_url_3 || "").trim();
     const product_url = String(body.product_url || "").trim();
     const store_name = String(body.store_name || "").trim();
     const country = String(body.country || "sa").trim();
@@ -111,6 +113,8 @@ const category = Array.isArray(rawCategory)
       product_name,
       price,
       image_url,
+      image_url_2: image_url_2 || null,
+image_url_3: image_url_3 || null,
       product_url,
       store_name: store_name || null,
       country,

@@ -26,6 +26,8 @@ type CustomerOffer = {
   product_name: string;
   price: string;
   image_url: string;
+  image_url_2: string | null;
+image_url_3: string | null;
   product_url: string;
   store_name: string | null;
   country: string | null;
@@ -69,7 +71,7 @@ export default async function CustomerOffersPage({
   const { data: offers, error } = await supabase
     .from("customer_offers")
     .select(
-  "id, product_name, price, image_url, product_url, store_name, country, category, created_at"
+  "id, product_name, price, image_url, image_url_2, image_url_3, product_url, store_name, country, category, created_at"
 )
     .eq("status", "approved")
     .order("created_at", { ascending: false });
@@ -205,7 +207,18 @@ const filteredOffers = approvedOffers.filter((offer) => {
           {filteredOffers.map((offer) => (
             <article className="offerCard" key={offer.id}>
               <div className="imageWrap">
-                <img src={offer.image_url} alt={offer.product_name} />
+               <div className="productSlider">
+  {[offer.image_url, offer.image_url_2, offer.image_url_3]
+    .filter(Boolean)
+    .map((img, index) => (
+      <img
+        key={index}
+        src={img as string}
+        alt={offer.product_name}
+        style={{ animationDelay: `${index}s` }}
+      />
+    ))}
+</div>
                 <div className="floatingLabel">
                   {countryNames[offer.country || ""] || "عرض مميز"}
                 </div>
@@ -256,7 +269,34 @@ const filteredOffers = approvedOffers.filter((offer) => {
   flex-wrap: wrap;
   justify-content: center;
 }
+.productSlider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
+.productSlider img {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  animation: productSlide 3s infinite;
+}
+
+.productSlider img:only-child {
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes productSlide {
+  0% { opacity: 1; }
+  30% { opacity: 1; }
+  33% { opacity: 0; }
+  100% { opacity: 0; }
+}
 .countryTabs a {
   text-decoration: none;
   padding: 9px 14px;
