@@ -44,6 +44,7 @@ export async function POST(req: Request) {
     const product_url = String(body.product_url || "").trim();
     const store_name = String(body.store_name || "").trim();
     const country = String(body.country || "sa").trim();
+    const category = String(body.category || "other").trim();
 
     if (!product_name || !price || !image_url || !product_url) {
       return NextResponse.json(
@@ -109,6 +110,7 @@ export async function POST(req: Request) {
       product_url,
       store_name: store_name || null,
       country,
+      category,
       status: "pending",
       user_id,
       seller_email,

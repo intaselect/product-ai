@@ -54,6 +54,7 @@ export default function AddCustomerOfferPage() {
       product_url: String(formData.get("product_url") || ""),
       store_name: String(formData.get("store_name") || ""),
       country: String(formData.get("country") || "sa"),
+      category: String(formData.get("category") || "other"),
     };
 
     try {
@@ -225,7 +226,19 @@ export default function AddCustomerOfferPage() {
               <option value="eg">مصر</option>
             </select>
           </label>
-
+<label>
+  فئة المنتج
+  <select name="category" defaultValue="electronics">
+    <option value="electronics">إلكترونيات</option>
+    <option value="mobiles">موبايلات</option>
+    <option value="computers">كمبيوتر ولابتوب</option>
+    <option value="home">المنزل والمطبخ</option>
+    <option value="fashion">أزياء</option>
+    <option value="beauty">جمال وعناية</option>
+    <option value="cars">سيارات وإكسسوارات</option>
+    <option value="other">أخرى</option>
+  </select>
+</label>
           {error && <div className="errorMsg">{error}</div>}
 
           <button type="submit" disabled={loading}>

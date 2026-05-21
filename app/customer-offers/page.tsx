@@ -29,6 +29,7 @@ type CustomerOffer = {
   product_url: string;
   store_name: string | null;
   country: string | null;
+  category: string | null;
   created_at: string;
 };
 
@@ -45,17 +46,38 @@ const countryNames: Record<string, string> = {
   bh: "البحرين",
   eg: "مصر",
 };
-
-export default async function CustomerOffersPage() {
+const categoryNames: Record<string, string> = {
+  all: "كل العروض",
+  electronics: "إلكترونيات",
+  mobiles: "موبايلات",
+  computers: "كمبيوتر ولابتوب",
+  home: "المنزل والمطبخ",
+  fashion: "أزياء",
+  beauty: "جمال وعناية",
+  cars: "سيارات",
+  other: "أخرى",
+};
+export default async function CustomerOffersPage({
+  searchParams,
+}: {
+  searchParams?: { category?: string };
+}) {
+  const selectedCategory = searchParams?.category || "all";
   const { data: offers, error } = await supabase
     .from("customer_offers")
     .select(
-      "id, product_name, price, image_url, product_url, store_name, country, created_at"
-    )
+  "id, product_name, price, image_url, product_url, store_name, country, category, created_at"
+)
     .eq("status", "approved")
     .order("created_at", { ascending: false });
 
   const approvedOffers = (offers || []) as CustomerOffer[];
+  const filteredOffers =
+  selectedCategory === "all"
+    ? approvedOffers
+    : approvedOffers.filter(
+        (offer) => (offer.category || "other") === selectedCategory
+      );
 
   return (
     <main className="customerOffersPage" dir="rtl">
@@ -87,7 +109,7 @@ export default async function CustomerOffersPage() {
 
         <div className="stats">
           <div>
-            <strong>{approvedOffers.length}</strong>
+            <strong>{filteredOffers.length}</strong>
             <span>عرض معتمد</span>
           </div>
           <div>
@@ -110,6 +132,17 @@ export default async function CustomerOffersPage() {
           قطر، البحرين ومصر.
         </p>
       </section>
+      <section className="categoryTabs">
+  {Object.entries(categoryNames).map(([key, label]) => (
+    <a
+      key={key}
+      href={key === "all" ? "/customer-offers" : `/customer-offers?category=${key}`}
+      className={selectedCategory === key ? "active" : ""}
+    >
+      {label}
+    </a>
+  ))}
+</section>
 
       {error && (
         <div className="message error">
@@ -117,7 +150,7 @@ export default async function CustomerOffersPage() {
         </div>
       )}
 
-      {!error && approvedOffers.length === 0 && (
+      {!error && filteredOffers.length === 0 && (
         <div className="emptyBox">
           <div className="emptyIcon">🛒</div>
           <h2>لا توجد عروض معتمدة حاليًا</h2>
@@ -126,9 +159,9 @@ export default async function CustomerOffersPage() {
         </div>
       )}
 
-      {!error && approvedOffers.length > 0 && (
+      {!error && filteredOffers.length > 0 && (
         <section className="offersGrid">
-          {approvedOffers.map((offer) => (
+          {filteredOffers.map((offer) => (
             <article className="offerCard" key={offer.id}>
               <div className="imageWrap">
                 <img src={offer.image_url} alt={offer.product_name} />
@@ -188,6 +221,34 @@ export default async function CustomerOffersPage() {
     backdrop-filter: blur(12px);
     overflow: hidden;
   }
+    .categoryTabs {
+  max-width: 1080px;
+  margin: 0 auto 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.categoryTabs a {
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  transition: all .25s ease;
+}
+
+.categoryTabs a:hover,
+.categoryTabs a.active {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(34,197,94,0.35);
+  transform: translateY(-2px);
+}
 
   .aiGlow {
     position: absolute;
