@@ -628,6 +628,26 @@ function getVisitorId() {
             })}
         </section>
         <PopularSearches />
+        <section className="storePromo">
+  <div className="storePromoContent">
+    <div>
+      <h3>🛒 متجر عملاء بي بي اس</h3>
+      <p>
+        اعرض منتجاتك مجانًا أو اكتشف أفضل عروض المستخدمين داخل BPS Chat
+      </p>
+    </div>
+
+    <div className="storePromoActions">
+      <a href="/customer-offers" className="storeBtn primary">
+        تصفح المتجر
+      </a>
+
+      <a href="/customer-offers/dashboard" className="storeBtn secondary">
+        ابدأ البيع
+      </a>
+    </div>
+  </div>
+</section>
       </main>
 
 <style jsx>{`
@@ -699,6 +719,64 @@ function getVisitorId() {
   color: #cfcfcf;
   margin-top: 3px;
   font-weight: 600;
+}
+  .storePromo {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 16px;
+
+  background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(59,130,246,0.08));
+  border: 1px solid rgba(34,197,94,0.25);
+
+  backdrop-filter: blur(10px);
+}
+
+.storePromoContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.storePromo h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.storePromo p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.storePromoActions {
+  display: flex;
+  gap: 10px;
+}
+
+.storeBtn {
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 13px;
+  transition: all 0.25s ease;
+}
+
+.storeBtn.primary {
+  background: #22c55e;
+  color: white;
+}
+
+.storeBtn.secondary {
+  background: transparent;
+  border: 1px solid #22c55e;
+  color: #22c55e;
+}
+
+.storeBtn:hover {
+  transform: scale(1.05);
 }
 .searchCounter {
   min-width: 70px;

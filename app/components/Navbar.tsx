@@ -100,15 +100,15 @@ export default function Navbar({ user }: { user?: any }) {
           transform: scale(1.1);
         }
 
-        .customerStoreHover {
-          transition: all 0.3s ease;
-          animation: customerStorePulse 2.4s ease-in-out infinite;
-        }
+       .customerStoreHover {
+  transition: all 0.25s ease;
+}
 
-        .customerStoreHover:hover {
-          transform: translateY(-2px) scale(1.08);
-          filter: brightness(1.12);
-        }
+.customerStoreHover:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 25px rgba(34,197,94,0.7);
+  filter: brightness(1.1);
+}
 
         nav a {
           color: #ccc;
@@ -178,18 +178,26 @@ sellerDashboardBtn: {
     animation: "advertisePulse 2.2s ease-in-out infinite",
   },
 
-  customerStoreBtn: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "7px",
-    padding: "8px 14px",
-    borderRadius: "999px",
-    background: "linear-gradient(135deg, #16a34a, #22c55e, #2563eb)",
-    color: "#fff",
-    textDecoration: "none",
-    fontWeight: "900",
-    whiteSpace: "nowrap",
-  },
+ customerStoreBtn: {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "8px",
+  padding: "9px 16px",
+  borderRadius: "999px",
+
+  background: "linear-gradient(135deg, #22c55e, #16a34a)",
+  color: "#fff",
+
+  fontWeight: "900",
+  fontSize: "14px",
+  textDecoration: "none",
+
+  border: "1px solid rgba(34,197,94,0.5)",
+
+  boxShadow: "0 0 12px rgba(34,197,94,0.4)",
+
+  transition: "all 0.25s ease",
+},
 
   customerStoreSub: {
     fontSize: "10px",
