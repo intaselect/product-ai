@@ -174,9 +174,21 @@ export default function SellerDashboardPage() {
             بي بي اس، تواصل معنا وسيتم رفع الرصيد يدويًا بعد الدفع أو الاتفاق.
           </p>
         </div>
-        <Link href="/contact" className="upgradeBtn">
-          تواصل لزيادة الرصيد
-        </Link>
+       <a
+  href="https://www.paypal.com/ncp/payment/JBH72Y65YU8D4"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="upgradeBtn"
+>
+  💳 شراء باقة عروض الآن
+</a>
+        <a
+  href="https://wa.me/966549330606?text=عايز%20ازود%20رصيد%20العروض%20في%20BPS%20Chat"
+  target="_blank"
+  className="upgradeBtn"
+>
+  تواصل واتساب لزيادة الرصيد
+</a>
       </section>
 
       <section className="sectionTitle">
