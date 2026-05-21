@@ -173,6 +173,11 @@ const filteredOffers = approvedOffers.filter((offer) => {
 </section>
 
 <div className="countryBox">
+  <div className="countryBoxHeader">
+    <span>🌍 اختر الدولة</span>
+    <small>صفّي العروض حسب السوق</small>
+  </div>
+
   <section className="countryTabs">
     <a
       href={
@@ -182,7 +187,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
       }
       className={selectedCountry === "all" ? "active" : ""}
     >
-      كل الدول
+      🌐 كل الدول
     </a>
 
     {Object.entries(countryNames).map(([key, label]) => (
@@ -274,44 +279,94 @@ const filteredOffers = approvedOffers.filter((offer) => {
     padding: 16px 16px 70px;
     overflow-x: hidden;
   }
-.countryTabs {
-  max-width: 1080px;
-  margin: -6px auto 20px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
 .countryBox {
   max-width: 1080px;
-  margin: 10px auto 24px;
+  margin: 14px auto 28px;
   padding: 18px;
-  border-radius: 22px;
-
-  background: linear-gradient(
-    135deg,
-    rgba(59,130,246,0.12),
-    rgba(34,197,94,0.08)
-  );
-
-  border: 1px solid rgba(96,165,250,0.25);
-
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 12% 50%, rgba(34,197,94,0.20), transparent 34%),
+    linear-gradient(135deg, rgba(15,23,42,0.72), rgba(8,47,73,0.38));
+  border: 1px solid rgba(56,189,248,0.28);
   box-shadow:
-    0 0 30px rgba(59,130,246,0.15),
-    inset 0 0 20px rgba(34,197,94,0.08);
+    0 0 38px rgba(56,189,248,0.16),
+    0 0 55px rgba(34,197,94,0.10),
+    inset 0 0 24px rgba(255,255,255,0.035);
+  backdrop-filter: blur(12px);
+}
 
-  backdrop-filter: blur(10px);
-
+.countryBoxHeader {
   display: flex;
-  justify-content: center; /* مهم */
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.countryBoxHeader span {
+  font-size: 15px;
+  font-weight: 950;
+  color: #fff;
+}
+
+.countryBoxHeader small {
+  color: #a7f3d0;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .countryTabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center; /* يخليه في النص */
-  width: 100%;
+}
+
+.countryTabs a {
+  text-decoration: none;
+  min-height: 48px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.065);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #e5f7ff;
+  font-weight: 950;
+  font-size: 13px;
+  transition: all .25s ease;
+}
+
+.countryTabs a:hover,
+.countryTabs a.active {
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+  color: #fff;
+  border-color: rgba(134,239,172,0.55);
+  box-shadow: 0 0 26px rgba(34,197,94,0.30);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 700px) {
+  .countryBox {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .countryBoxHeader {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .countryTabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .countryTabs a {
+    min-height: 44px;
+    font-size: 12.5px;
+  }
 }
 
 .countryTabs a:hover,
