@@ -561,6 +561,8 @@ function getVisitorId() {
             <option value="qa">قطر</option>
             <option value="bh">البحرين</option>
             <option value="eg">مصر</option>
+            <option value="iq">العراق</option> 
+<option value="om">عُمان</option>  
           </select>
 <div className="dailyLimitNotice">
   ⚡ لكل مستخدم 10 عمليات بحث يوميًا لضمان أفضل أداء للموقع

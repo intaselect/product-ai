@@ -31,6 +31,9 @@ const countries: any = {
   kw: { name: "الكويت", currency: "دينار", minFactor: 0.7, maxFactor: 1.35 },
   qa: { name: "قطر", currency: "ريال", minFactor: 0.75, maxFactor: 1.25 },
   bh: { name: "البحرين", currency: "دينار", minFactor: 0.7, maxFactor: 1.35 },
+
+  iq: { name: "العراق", currency: "دينار", minFactor: 0.7, maxFactor: 1.4 }, // جديد
+  om: { name: "عُمان", currency: "ريال", minFactor: 0.75, maxFactor: 1.3 }, // جديد
 };
 
 const productTypes = [
@@ -365,6 +368,8 @@ seoLinks.forEach(function (link) {
               <option value="kw">الكويت</option>
               <option value="qa">قطر</option>
               <option value="bh">البحرين</option>
+              <option value="iq">العراق</option>
+<option value="om">عُمان</option>
             </select>
           </div>
 
