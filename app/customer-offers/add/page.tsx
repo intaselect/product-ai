@@ -262,9 +262,18 @@ if (remainingOffers !== null && remainingOffers <= 0) {
           </p>
 
           <div className="successActions">
-  <Link href="/customer-offers/add" className="successBtn">
-    ➕ إضافة عرض جديد
-  </Link>
+  <button
+  type="button"
+  className="successBtn successButtonReset"
+  onClick={() => {
+    setMessage("");
+    setError("");
+    setLoading(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }}
+>
+  ➕ إضافة عرض جديد
+</button>
 
   <Link href="/customer-offers" className="secondaryBtn">
     مشاهدة متجر العملاء
@@ -420,7 +429,12 @@ const baseStyle = `
     color: white;
     padding: 45px 16px 80px;
   }
-
+.successButtonReset {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
   .addHero {
     position: relative;
     max-width: 950px;
