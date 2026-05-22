@@ -304,39 +304,38 @@ export default function CustomerOffersAdminPage() {
                     </strong>
                   </p>
 
-                  {offer.user_id ? (
-                    <div className="limitControl">
-                      <input
-                        type="number"
-                        min={1}
-                        defaultValue={maxOffers}
-                        id={`limit-${offer.user_id}`}
-                      />
+                 {offer.user_id ? (
+  <>
+    <div className="limitControl">
+      <input
+        type="number"
+        min={0}
+        defaultValue={maxOffers}
+        id={`limit-${offer.user_id}`}
+      />
 
-                      <button
-                        disabled={actionLoading === `limit-${offer.user_id}`}
-                        onClick={() => {
-                          const input = document.getElementById(
-                            `limit-${offer.user_id}`
-                          ) as HTMLInputElement | null;
+      <button
+        disabled={actionLoading === `limit-${offer.user_id}`}
+        onClick={() => {
+          const input = document.getElementById(
+            `limit-${offer.user_id}`
+          ) as HTMLInputElement | null;
 
-                          const newLimit = Number(input?.value || 1);
+          const newLimit = Number(input?.value || 0);
 
-                          updateUserLimit(
-                            offer.user_id!,
-                            sellerEmail,
-                            newLimit
-                          );
-                        }}
-                      >
-                        {actionLoading === `limit-${offer.user_id}`
-                          ? "جاري..."
-                          : "تحديث العدد"}
-                      </button>
-                    </div>
-                    
-                  ) : (
-                    <p className="oldOfferNote">
+          updateUserLimit(offer.user_id!, sellerEmail, newLimit);
+        }}
+      >
+        {actionLoading === `limit-${offer.user_id}`
+          ? "جاري..."
+          : "تحديث العدد"}
+      </button>
+    </div>
+
+   
+  </>
+) : (
+  <p className="oldOfferNote">
                       عرض قديم قبل ربط تسجيل الدخول
                     </p>
                   )}
