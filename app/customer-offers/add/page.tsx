@@ -374,9 +374,7 @@ if (remainingOffers !== null && remainingOffers <= 0) {
               <option value="kw">الكويت</option>
               <option value="qa">قطر</option>
               <option value="bh">البحرين</option>
-              <option value="eg">مصر</option>
-              <option value="iq">العراق</option>
-<option value="om">عُمان</option>
+              <option value="eg">مصر</option>ئ
             </select>
           </label>
 <div className="formGroup">
