@@ -42,12 +42,9 @@ export default function LoginPage() {
       { onConflict: "email" }
     );
 
-    if (insertError) {
-      setMessage(insertError.message);
-      setLoading(false);
-      return;
-    }
-
+   if (insertError) {
+  console.warn("PROFILE_SAVE_ERROR:", insertError.message);
+}
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
       options: {
