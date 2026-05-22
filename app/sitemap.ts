@@ -63,19 +63,42 @@ export default async function sitemap() {
   { url: "https://www.bpschat.com/what-is-bpschat" },
 ];
 
-  // نجيب السلاج من الداتا بيز
-  const { data } = await supabase
-    .from("search_terms")
-    .select("slug, updated_at")
-    .limit(5000); // ممكن تزود بعدين
+// نجيب السلاج من الداتا بيز
+const { data } = await supabase
+  .from("search_terms")
+  .select("slug, updated_at")
+  .limit(5000);
 
-  const dynamicPages =
-    data?.map((item) => ({
-      url: `https://www.bpschat.com/search/${item.slug}`,
-      lastModified: item.updated_at
-        ? new Date(item.updated_at)
-        : new Date(),
-    })) || [];
+// نجيب منتجات المتجر للـ SEO
+const { data: offers } = await supabase
+  .from("customer_offers")
+  .select("id, product_name, country, updated_at")
+  .eq("status", "approved")
+  .limit(5000);
 
-  return [...staticPages, ...dynamicPages];
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
+}
+
+const dynamicPages =
+  data?.map((item) => ({
+    url: `https://www.bpschat.com/search/${item.slug}`,
+    lastModified: item.updated_at ? new Date(item.updated_at) : new Date(),
+  })) || [];
+
+const offerPages =
+  offers?.map((item) => {
+    const name = slugify(item.product_name || "product");
+    const country = item.country || "sa";
+
+    return {
+      url: `https://www.bpschat.com/customer-offers/product/bps-chat-${name}-${country}-${item.id}`,
+      lastModified: item.updated_at ? new Date(item.updated_at) : new Date(),
+    };
+  }) || [];
+
+  return [...staticPages, ...dynamicPages, ...offerPages];
 }
