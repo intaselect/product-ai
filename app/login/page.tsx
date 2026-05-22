@@ -32,21 +32,26 @@ export default function LoginPage() {
     setLoading(true);
     setMessage("");
 
-    const { error: insertError } = await supabase.from("profiles").upsert(
-      {
-        first_name: firstName,
-        last_name: lastName,
-        phone,
-        email,
-      },
-      { onConflict: "email" }
-    );
+   const profileRes = await fetch("/api/profiles", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    first_name: firstName,
+    last_name: lastName,
+    phone,
+    email,
+  }),
+});
 
-    if (insertError) {
-      setMessage(insertError.message);
-      setLoading(false);
-      return;
-    }
+const profileData = await profileRes.json();
+
+if (!profileRes.ok || !profileData.ok) {
+  setMessage(profileData.error || "حدث خطأ أثناء حفظ بيانات الحساب");
+  setLoading(false);
+  return;
+}
 
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
