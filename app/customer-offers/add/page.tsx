@@ -17,6 +17,7 @@ export default function AddCustomerOfferPage() {
   const [checkingUser, setCheckingUser] = useState(true);
   const [accessToken, setAccessToken] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [remainingOffers, setRemainingOffers] = useState<number | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -24,10 +25,24 @@ export default function AddCustomerOfferPage() {
     async function checkUser() {
       const { data } = await supabase.auth.getSession();
 
-      if (data.session?.access_token) {
-        setAccessToken(data.session.access_token);
-        setUserEmail(data.session.user.email || "");
-      }
+     if (data.session?.access_token) {
+  const token = data.session.access_token;
+
+  setAccessToken(token);
+  setUserEmail(data.session.user.email || "");
+
+  const res = await fetch("/api/customer-offers/my", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const json = await res.json();
+
+  if (json.ok) {
+    setRemainingOffers(Number(json.stats?.remainingOffers ?? 0));
+  }
+}
 
       setCheckingUser(false);
     }
@@ -128,7 +143,33 @@ image_url_3: String(formData.get("image_url_3") || ""),
       </main>
     );
   }
+if (remainingOffers !== null && remainingOffers <= 0) {
+  return (
+    <main className="addOfferPage" dir="rtl">
+      <section className="successCard">
+        <div className="successIcon">🚫</div>
 
+        <h1>لا يمكنك إضافة عرض</h1>
+
+        <p>
+          تم حظر حسابك أو انتهى رصيد العروض لديك.
+        </p>
+
+        <div className="successActions">
+          <Link href="/customer-offers/dashboard" className="successBtn">
+            الرجوع للداشبورد
+          </Link>
+
+          <Link href="/customer-offers" className="homeBtn">
+            مشاهدة متجر العملاء
+          </Link>
+        </div>
+      </section>
+
+      <style>{baseStyle}</style>
+    </main>
+  );
+}
   if (!accessToken) {
     return (
       <main className="addOfferPage" dir="rtl">
