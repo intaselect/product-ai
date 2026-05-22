@@ -15,6 +15,7 @@ export default function Home() {
   const [user, setUser] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [remainingSearches, setRemainingSearches] = useState(10);
+  const [isMobile, setIsMobile] = useState(false);
 useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
@@ -68,6 +69,18 @@ useEffect(() => {
 
   return () => {
     listener.subscription.unsubscribe();
+  };
+}, []);
+useEffect(() => {
+  const checkMobile = () => {
+    setIsMobile(window.innerWidth <= 600);
+  };
+
+  checkMobile();
+  window.addEventListener("resize", checkMobile);
+
+  return () => {
+    window.removeEventListener("resize", checkMobile);
   };
 }, []);
   // 🔥 Ads حسب الدولة
@@ -394,31 +407,34 @@ function getVisitorId() {
 }
 
   return (
-    <div className="page">
-    {/* AI Animated Background */}
-  <div className="aiBackground">
-    <div className="brainCore"></div>
+  <div className="page">
+    {/* AI Animated Background - Desktop only */}
+    {!isMobile && (
+      <div className="aiBackground">
+        <div className="brainCore"></div>
 
-    <div className="grid"></div>
+        <div className="grid"></div>
 
-    <div className="particles">
-      {Array.from({ length: 35 }).map((_, i) => (
-        <span
-  key={i}
-  style={
-    {
-      "--i": i,
-      top: `${Math.random() * 100}%`,
-      left: `${Math.random() * 100}%`,
-    } as React.CSSProperties
-  }
-/>
-      ))}
-    </div>
-  </div>
-      <button className="menuButton" onClick={() => setMenuOpen(true)}>
-  ☰
-</button>
+        <div className="particles">
+          {Array.from({ length: 35 }).map((_, i) => (
+            <span
+              key={i}
+              style={
+                {
+                  "--i": i,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                } as React.CSSProperties
+              }
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+    <button className="menuButton" onClick={() => setMenuOpen(true)}>
+      ☰
+    </button>
 
 {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)} />}
 
