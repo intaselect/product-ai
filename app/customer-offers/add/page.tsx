@@ -155,15 +155,64 @@ if (remainingOffers !== null && remainingOffers <= 0) {
           تم حظر حسابك أو انتهى رصيد العروض لديك.
         </p>
 
-        <div className="successActions">
-          <Link href="/customer-offers/dashboard" className="successBtn">
-            الرجوع للداشبورد
-          </Link>
+       <div className="successActions">
+  <Link href="/customer-offers/dashboard" className="successBtn">
+    الرجوع للداشبورد
+  </Link>
 
-          <Link href="/customer-offers" className="homeBtn">
-            مشاهدة متجر العملاء
-          </Link>
-        </div>
+  <Link href="/customer-offers" className="homeBtn">
+    مشاهدة متجر العملاء
+  </Link>
+</div>
+
+<div className="blockedPlansBox">
+  <h2>باقات زيادة رصيد العروض</h2>
+  <p>اختر الباقة المناسبة، وبعد الدفع تواصل معنا لتفعيل الرصيد داخل حسابك.</p>
+
+  <div className="blockedPlansGrid">
+    <a
+      href="https://www.paypal.com/ncp/payment/B4V5Q7B4CF5LE"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="blockedPlanCard"
+    >
+      <strong>5 منتجات</strong>
+      <span>5 دولار / شهر</span>
+      <b>شراء الباقة</b>
+    </a>
+
+    <a
+      href="https://www.paypal.com/ncp/payment/MNVA672HM8CKN"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="blockedPlanCard featured"
+    >
+      <strong>15 منتج</strong>
+      <span>10 دولار / شهر</span>
+      <b>الأكثر طلبًا</b>
+    </a>
+
+    <a
+      href="https://www.paypal.com/ncp/payment/JBH72Y65YU8D4"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="blockedPlanCard"
+    >
+      <strong>50 منتج</strong>
+      <span>20 دولار / شهر</span>
+      <b>شراء الباقة</b>
+    </a>
+  </div>
+
+  <a
+    href="https://wa.me/966549330606?text=دفعت%20باقة%20عروض%20BPS%20Chat%20وعايز%20تفعيل%20الرصيد"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="blockedWhatsappBtn"
+  >
+    📱 تواصل بعد الدفع
+  </a>
+</div>
       </section>
 
       <style>{baseStyle}</style>
@@ -632,7 +681,77 @@ const baseStyle = `
     color: white;
     border: 1px solid rgba(255,255,255,0.12);
   }
+.blockedPlansBox {
+  margin-top: 28px;
+  padding: 18px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(37,99,235,0.10));
+  border: 1px solid rgba(34,197,94,0.22);
+}
 
+.blockedPlansBox h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.blockedPlansBox p {
+  margin: 0 0 16px;
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+.blockedPlansGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.blockedPlanCard {
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  color: white;
+  display: grid;
+  gap: 6px;
+  transition: 0.25s;
+}
+
+.blockedPlanCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34,197,94,0.5);
+}
+
+.blockedPlanCard strong {
+  color: #bbf7d0;
+  font-size: 18px;
+}
+
+.blockedPlanCard b {
+  color: #22c55e;
+}
+
+.blockedPlanCard.featured {
+  background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(37,99,235,0.16));
+}
+
+.blockedWhatsappBtn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: white;
+  color: #111;
+  text-decoration: none;
+  font-weight: 950;
+}
+
+@media (max-width: 700px) {
+  .blockedPlansGrid {
+    grid-template-columns: 1fr;
+  }
+}
   @media (max-width: 700px) {
     .addOfferPage {
       padding-top: 28px;
