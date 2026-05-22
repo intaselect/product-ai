@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -13,9 +13,15 @@ export default function LoginPage() {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [savedEmail, setSavedEmail] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const lastEmail = localStorage.getItem("bps_last_email") || "";
+    setSavedEmail(lastEmail);
+  }, []);
 
   async function handleRegister() {
     if (!firstName || !lastName || !phone || !email) {
@@ -52,7 +58,31 @@ export default function LoginPage() {
     if (otpError) {
       setMessage(otpError.message);
     } else {
+      localStorage.setItem("bps_last_email", email);
+      setSavedEmail(email);
       setMessage("تم إرسال رابط تسجيل الدخول إلى بريدك الإلكتروني");
+    }
+
+    setLoading(false);
+  }
+
+  async function handleSavedEmailLogin() {
+    if (!savedEmail) return;
+
+    setLoading(true);
+    setMessage("");
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email: savedEmail,
+      options: {
+        emailRedirectTo: "https://www.bpschat.com",
+      },
+    });
+
+    if (error) {
+      setMessage(error.message);
+    } else {
+      setMessage(`تم إرسال رابط تسجيل الدخول إلى ${savedEmail}`);
     }
 
     setLoading(false);
@@ -62,6 +92,7 @@ export default function LoginPage() {
     <main style={styles.page}>
       <section style={styles.card}>
         <h1 style={styles.title}>تسجيل الدخول</h1>
+
         <p style={styles.subtitle}>
           سجل بياناتك وسيتم إرسال رابط الدخول على الإيميل
         </p>
@@ -98,6 +129,16 @@ export default function LoginPage() {
         <button onClick={handleRegister} disabled={loading} style={styles.button}>
           {loading ? "جاري الإرسال..." : "تسجيل الدخول بالإيميل"}
         </button>
+
+        {savedEmail && (
+          <button
+            onClick={handleSavedEmailLogin}
+            disabled={loading}
+            style={styles.savedEmailButton}
+          >
+            الدخول بالإيميل السابق: {savedEmail}
+          </button>
+        )}
 
         {message && <p style={styles.message}>{message}</p>}
 
@@ -155,6 +196,18 @@ const styles: any = {
     color: "#fff",
     fontWeight: "bold",
     cursor: "pointer",
+  },
+  savedEmailButton: {
+    width: "100%",
+    minHeight: "48px",
+    borderRadius: "14px",
+    border: "1px solid #10a37f",
+    background: "rgba(16,163,127,0.12)",
+    color: "#10a37f",
+    fontWeight: "bold",
+    cursor: "pointer",
+    marginTop: "12px",
+    padding: "10px",
   },
   message: {
     marginTop: "14px",
