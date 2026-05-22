@@ -49,6 +49,10 @@ export default function CustomerOffersAdminPage() {
     return map;
   }, [limits]);
   const adminStats = useMemo(() => {
+    const totalSellers = new Set(
+    offers.map((offer) => offer.user_id).filter(Boolean)
+  ).size;
+
   const totalClicks = offers.reduce(
     (sum, offer) => sum + Number(offer.click_count || 0),
     0
@@ -60,10 +64,11 @@ export default function CustomerOffersAdminPage() {
     return acc;
   }, {});
 
-  return {
-    totalClicks,
-    sellerClicks: Object.entries(sellerClicks).sort((a, b) => b[1] - a[1]),
-  };
+ return {
+  totalSellers,
+  totalClicks,
+  sellerClicks: Object.entries(sellerClicks).sort((a, b) => b[1] - a[1]),
+};
 }, [offers]);
 
   async function loadData(adminSecret = secret) {
@@ -218,6 +223,10 @@ export default function CustomerOffersAdminPage() {
       </section>
       {secret && (
   <section className="analyticsBox">
+  <div className="totalClicksCard">
+  <strong>{adminStats.totalSellers}</strong>
+  <span>عدد العملاء اللي أضافوا عروض</span>
+</div>
     <div className="totalClicksCard">
       <strong>{adminStats.totalClicks}</strong>
       <span>إجمالي ضغطات كل عروض الموقع</span>
@@ -325,12 +334,30 @@ export default function CustomerOffersAdminPage() {
                           : "تحديث العدد"}
                       </button>
                     </div>
+                    
                   ) : (
                     <p className="oldOfferNote">
                       عرض قديم قبل ربط تسجيل الدخول
                     </p>
                   )}
                 </div>
+                <div className="blockControl">
+  <button
+    className="reject"
+    disabled={actionLoading === `limit-${offer.user_id}`}
+    onClick={() => updateUserLimit(offer.user_id!, sellerEmail, 0)}
+  >
+    🚫 حظر
+  </button>
+
+  <button
+    className="approve"
+    disabled={actionLoading === `limit-${offer.user_id}`}
+    onClick={() => updateUserLimit(offer.user_id!, sellerEmail, 1)}
+  >
+    🔓 فك الحظر
+  </button>
+</div>
 
                 <a
                   href={offer.product_url}
@@ -393,7 +420,21 @@ export default function CustomerOffersAdminPage() {
           text-align: center;
           box-shadow: 0 20px 60px rgba(0,0,0,0.35);
         }
+.blockControl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
 
+.blockControl button {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: 900;
+}
         .adminHero h1 {
           margin: 0 0 10px;
           font-size: 34px;

@@ -80,6 +80,15 @@ const category = Array.isArray(rawCategory)
     }
 
     const maxOffers = Number(limitData || 1);
+    if (maxOffers <= 0) {
+  return NextResponse.json(
+    {
+      ok: false,
+      error: "🚫 حسابك محظور من إضافة عروض. تواصل معنا.",
+    },
+    { status: 403 }
+  );
+}
 
     const { count, error: countError } = await supabaseAdmin
       .from("customer_offers")
