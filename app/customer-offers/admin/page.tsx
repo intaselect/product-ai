@@ -259,7 +259,7 @@ export default function CustomerOffersAdminPage() {
           const sellerEmail =
             offer.seller_email || userLimit?.email || "غير معروف";
 
-          const maxOffers = userLimit?.max_offers || 1;
+          const maxOffers = userLimit?.max_offers ?? 1;
 
           const userOffersCount = offer.user_id
             ? offers.filter((item) => item.user_id === offer.user_id).length

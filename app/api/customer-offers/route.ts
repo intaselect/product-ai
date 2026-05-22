@@ -79,7 +79,7 @@ const category = Array.isArray(rawCategory)
       );
     }
 
-    const maxOffers = Number(limitData || 1);
+    const maxOffers = Number(limitData ?? 1);
     if (maxOffers <= 0) {
   return NextResponse.json(
     {

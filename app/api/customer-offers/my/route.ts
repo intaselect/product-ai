@@ -65,7 +65,7 @@ export async function GET(req: Request) {
     }
 
     const usedOffers = offers?.length || 0;
-    const maxOffers = Number(maxOffersData || 1);
+    const maxOffers = Number(maxOffersData ?? 1);
 
     return NextResponse.json({
       ok: true,
