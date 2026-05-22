@@ -47,6 +47,9 @@ const countryNames: Record<string, string> = {
   qa: "قطر",
   bh: "البحرين",
   eg: "مصر",
+
+  iq: "العراق",   // جديد
+  om: "عُمان",    // جديد
 };
 const countryCurrencies: Record<string, string> = {
   sa: "ريال سعودي",
@@ -55,6 +58,9 @@ const countryCurrencies: Record<string, string> = {
   qa: "ريال قطري",
   bh: "دينار بحريني",
   eg: "جنيه مصري",
+
+  iq: "دينار عراقي",   // جديد
+  om: "ريال عماني",    // جديد
 };
 
 function formatOfferPrice(price: string, country?: string | null) {
