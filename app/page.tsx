@@ -1828,7 +1828,7 @@ z-index: 3;
 
   .aiErrorBox {
     max-width: 100%;
-    font-size: 12px;
+    font-size: 12px; 
     line-height: 1.7;
     padding: 10px 12px;
     margin: 10px auto 12px;
@@ -1893,6 +1893,60 @@ z-index: 3;
   }
 }
 }
+}
+@media (max-width: 600px) {
+
+  /* ❌ إلغاء الخلفية والأنيميشن */
+  .aiBackground,
+  .particles,
+  .particles span,
+  .brainCore,
+  .grid {
+    display: none !important;
+  }
+
+  /* ❌ إلغاء أي glow من الهيرو */
+  .hero::before {
+    display: none !important;
+    animation: none !important;
+  }
+
+  /* 📱 تحسينات الموبايل */
+  .menuButton {
+    display: block;
+  }
+
+  .sidebar {
+    width: 82%;
+    left: -85%;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar a,
+  .sidebar .menuItem {
+    color: #ffffff !important;
+  }
+
+  .composer {
+    padding: 16px 12px;
+    margin: 16px 10px 0;
+    border-radius: 20px;
+  }
+
+  .searchBox {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  /* 💥 أهم سطر (لو النقط لسه موجودة) */
+  span[style*="--i"] {
+    display: none !important;
+  }
 }
 `}</style>
     </div>
