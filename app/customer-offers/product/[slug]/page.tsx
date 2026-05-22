@@ -79,12 +79,15 @@ async function getOffer(slug: string) {
 
 async function getRelatedOffers(offer: any) {
   const category = Array.isArray(offer.category) ? offer.category : [];
+  const country = offer.country || "sa";
 
+  // 1️⃣ نحاول نفس الكاتيجري + نفس الدولة
   if (category.length > 0) {
     const { data } = await supabase
       .from("customer_offers")
       .select("id, product_name, price, image_url, store_name, country, category")
       .eq("status", "approved")
+      .eq("country", country) // ✅ مهم جدا
       .neq("id", offer.id)
       .overlaps("category", category)
       .limit(6);
@@ -92,11 +95,12 @@ async function getRelatedOffers(offer: any) {
     if (data && data.length > 0) return data;
   }
 
+  // 2️⃣ fallback: نفس الدولة فقط
   const { data } = await supabase
     .from("customer_offers")
     .select("id, product_name, price, image_url, store_name, country, category")
     .eq("status", "approved")
-    .eq("country", offer.country || "sa")
+    .eq("country", country) // ✅ برضو هنا
     .neq("id", offer.id)
     .limit(6);
 

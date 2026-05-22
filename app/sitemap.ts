@@ -97,6 +97,8 @@ const offerPages =
     return {
       url: `https://www.bpschat.com/customer-offers/product/bps-chat-${name}-${country}-${item.id}`,
       lastModified: item.updated_at ? new Date(item.updated_at) : new Date(),
+      changeFrequency: "daily",
+      priority: 0.7,
     };
   }) || [];
 
