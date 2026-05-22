@@ -50,6 +50,19 @@ function cleanPrice(price: string) {
   return number || "0";
 }
 
+function slugify(text: string) {
+  return String(text || "product")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
+}
+
+function offerSeoUrl(offer: any) {
+  return `/customer-offers/product/bps-chat-${slugify(
+    offer.product_name
+  )}-${offer.country || "sa"}-${offer.id}`;
+}
+
 async function getOffer(slug: string) {
   const id = getIdFromSlug(slug);
   if (!id) return null;
@@ -62,6 +75,32 @@ async function getOffer(slug: string) {
     .single();
 
   return data;
+}
+
+async function getRelatedOffers(offer: any) {
+  const category = Array.isArray(offer.category) ? offer.category : [];
+
+  if (category.length > 0) {
+    const { data } = await supabase
+      .from("customer_offers")
+      .select("id, product_name, price, image_url, store_name, country, category")
+      .eq("status", "approved")
+      .neq("id", offer.id)
+      .overlaps("category", category)
+      .limit(6);
+
+    if (data && data.length > 0) return data;
+  }
+
+  const { data } = await supabase
+    .from("customer_offers")
+    .select("id, product_name, price, image_url, store_name, country, category")
+    .eq("status", "approved")
+    .eq("country", offer.country || "sa")
+    .neq("id", offer.id)
+    .limit(6);
+
+  return data || [];
 }
 
 export async function generateMetadata({
@@ -83,15 +122,15 @@ export async function generateMetadata({
   const pageUrl = `${SITE_URL}/customer-offers/product/${slug}`;
 
   return {
-    title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat`,
-    description: `شاهد عرض ${offer.product_name} بسعر ${offer.price} ${currency} من ${
-      offer.store_name || "أحد عملاء BPS Chat"
-    } عبر بي بي اس شات، مع رابط مباشر للشراء.`,
+    title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat بي بي اس شات`,
+    description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat (بي بي اس شات). شاهد العرض بسعر ${offer.price} ${currency} من ${
+      offer.store_name || "متجر موثوق"
+    } مع رابط شراء مباشر.`,
     alternates: {
       canonical: pageUrl,
     },
     openGraph: {
-      title: `${offer.product_name} | BPS Chat`,
+      title: `${offer.product_name} | BPS Chat بي بي اس شات`,
       description: `أفضل عرض ${offer.product_name} في ${country} بسعر ${offer.price} ${currency}.`,
       url: pageUrl,
       images: offer.image_url ? [offer.image_url] : [],
@@ -110,6 +149,8 @@ export default async function ProductSeoPage({
 
   if (!offer) notFound();
 
+  const relatedOffers = await getRelatedOffers(offer);
+
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
   const currencyCode = currencyCodes[offer.country || ""] || "USD";
@@ -119,8 +160,10 @@ export default async function ProductSeoPage({
     "@context": "https://schema.org",
     "@type": "Product",
     name: offer.product_name,
-    image: [offer.image_url, offer.image_url_2, offer.image_url_3].filter(Boolean),
-    description: `عرض ${offer.product_name} في ${country} عبر BPS Chat بسعر ${offer.price} ${currency}.`,
+    image: [offer.image_url, offer.image_url_2, offer.image_url_3].filter(
+      Boolean
+    ),
+    description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}.`,
     brand: {
       "@type": "Brand",
       name: offer.store_name || "BPS Chat Customer Offer",
@@ -146,12 +189,14 @@ export default async function ProductSeoPage({
 
         <h1>
           {offer.product_name}
-          <span>أفضل عرض في {country} من متجر {offer.store_name || "عميل BPS Chat"}</span>
+          <span>أفضل سعر عبر BPS Chat (بي بي اس شات) في {country}</span>
         </h1>
 
         <p>
-          شاهد تفاصيل عرض <strong>{offer.product_name}</strong> بسعر{" "}
-          <strong>{offer.price} {currency}</strong> مع رابط مباشر للشراء من البائع.
+          يعرض لك <strong>BPS Chat (بي بي اس شات)</strong> أفضل سعر لمنتج{" "}
+          <strong>{offer.product_name}</strong> في {country} مع رابط مباشر من
+          البائع. يمكنك من خلال <strong>بي بي اس شات</strong> مقارنة الأسعار
+          والوصول لأفضل العروض بسهولة.
         </p>
       </section>
 
@@ -200,10 +245,20 @@ export default async function ProductSeoPage({
         <h2>أفضل سعر {offer.product_name} في {country}</h2>
 
         <p>
+          يعتبر موقع <strong>BPS Chat</strong> من أفضل المواقع لمقارنة أسعار
+          المنتجات في السعودية والإمارات ومصر، حيث يوفر لك{" "}
+          <strong>بي بي اس شات</strong> عروض حقيقية من المتاجر والعملاء مع
+          روابط مباشرة للشراء.
+        </p>
+
+        <p>
           إذا كنت تبحث عن <strong>{offer.product_name}</strong> في {country}،
           فهذه الصفحة تساعدك على الوصول إلى عرض مباشر من{" "}
           <strong>{offer.store_name || "أحد عملاء بي بي اس شات"}</strong> بسعر{" "}
-          <strong>{offer.price} {currency}</strong>.
+          <strong>
+            {offer.price} {currency}
+          </strong>
+          .
         </p>
 
         <div className="cardsGrid">
@@ -226,8 +281,8 @@ export default async function ProductSeoPage({
           <div className="infoCard">
             <h3>ضمن عروض BPS Chat</h3>
             <p>
-              يظهر هذا المنتج ضمن متجر عروض العملاء في بي بي اس شات بعد المراجعة
-              للمساعدة في عرض منتجات وأسعار مميزة.
+              يظهر هذا المنتج ضمن متجر عروض العملاء في بي بي اس شات بعد
+              المراجعة للمساعدة في عرض منتجات وأسعار مميزة.
             </p>
           </div>
         </div>
@@ -239,6 +294,40 @@ export default async function ProductSeoPage({
           <li>قارن العرض مع منتجات مشابهة داخل BPS Chat قبل اتخاذ القرار.</li>
           <li>تأكد أن رابط المنتج والمتجر مناسبين لك قبل الدفع.</li>
         </ul>
+
+        {relatedOffers.length > 0 && (
+          <>
+            <h2>منتجات مشابهة قد تهمك</h2>
+
+            <div className="relatedGrid">
+              {relatedOffers.map((item: any) => {
+                const itemCountry = countryNames[item.country || ""] || "";
+                const itemCurrency = currencies[item.country || ""] || "";
+
+                return (
+                  <Link
+                    key={item.id}
+                    href={offerSeoUrl(item)}
+                    className="relatedCard"
+                  >
+                    <div className="relatedImage">
+                      <img src={item.image_url} alt={item.product_name} />
+                    </div>
+
+                    <div className="relatedContent">
+                      <small>{itemCountry}</small>
+                      <h3>{item.product_name}</h3>
+                      <strong>
+                        {item.price} {itemCurrency}
+                      </strong>
+                      <span>{item.store_name || "عرض عميل BPS Chat"}</span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </>
+        )}
 
         <h2>روابط مفيدة داخل BPS Chat</h2>
         <div className="quickLinks">
@@ -252,9 +341,19 @@ export default async function ProductSeoPage({
         <div className="finalCta">
           <h2>هل تريد مقارنة منتجات أكثر؟</h2>
           <p>
-            استخدم BPS Chat للبحث عن أفضل الأسعار والعروض في السعودية، الإمارات،
-            الكويت، قطر، البحرين ومصر.
+            استخدم BPS Chat للبحث عن أفضل الأسعار والعروض في السعودية،
+            الإمارات، الكويت، قطر، البحرين ومصر.
           </p>
+
+          <h2>عن BPS Chat</h2>
+
+          <p>
+            موقع <strong>BPS Chat (بي بي اس شات)</strong> هو محرك بحث متخصص في
+            مقارنة أسعار المنتجات في الدول العربية مثل السعودية، الإمارات،
+            الكويت، قطر، البحرين ومصر. يساعدك الموقع في العثور على أفضل سعر لأي
+            منتج بسهولة وسرعة.
+          </p>
+
           <Link href="/" className="primaryBtn">
             ابحث في BPS Chat
           </Link>
@@ -488,6 +587,72 @@ export default async function ProductSeoPage({
           margin: 0 0 10px;
         }
 
+        .relatedGrid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 16px;
+          margin-top: 18px;
+        }
+
+        .relatedCard {
+          overflow: hidden;
+          border-radius: 20px;
+          background: rgba(40,40,40,0.72);
+          border: 1px solid rgba(255,255,255,0.08);
+          text-decoration: none;
+          color: white;
+          transition: all .25s ease;
+        }
+
+        .relatedCard:hover {
+          transform: translateY(-5px);
+          border-color: rgba(16,163,127,0.5);
+          box-shadow: 0 0 30px rgba(16,163,127,0.16);
+        }
+
+        .relatedImage {
+          height: 170px;
+          background: #0f0f0f;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 14px;
+        }
+
+        .relatedImage img {
+          max-width: 100%;
+          max-height: 145px;
+          object-fit: contain;
+        }
+
+        .relatedContent {
+          padding: 14px;
+        }
+
+        .relatedContent small {
+          color: #7fffe0;
+          font-weight: 900;
+        }
+
+        .relatedContent h3 {
+          font-size: 15px;
+          line-height: 1.6;
+          min-height: 48px;
+          margin: 8px 0;
+        }
+
+        .relatedContent strong {
+          display: block;
+          color: #22c55e;
+          font-size: 18px;
+          margin-bottom: 5px;
+        }
+
+        .relatedContent span {
+          color: #cfcfcf;
+          font-size: 12px;
+        }
+
         .quickLinks {
           display: flex;
           flex-wrap: wrap;
@@ -544,7 +709,8 @@ export default async function ProductSeoPage({
             font-size: 18px;
           }
 
-          .cardsGrid {
+          .cardsGrid,
+          .relatedGrid {
             grid-template-columns: 1fr;
           }
 
