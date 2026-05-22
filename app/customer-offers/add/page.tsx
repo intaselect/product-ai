@@ -636,8 +636,14 @@ const baseStyle = `
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(34,197,94,0.35);
     box-shadow: 0 0 60px rgba(34,197,94,0.18);
+     position: relative; 
+  z-index: 5;    
   }
-
+.successActions a {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+}
   .successIcon {
     font-size: 64px;
     margin-bottom: 18px;
@@ -663,18 +669,33 @@ const baseStyle = `
   }
 
   .successBtn,
-  .homeBtn {
-    padding: 13px 22px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-weight: 900;
-  }
+.homeBtn {
+  padding: 13px 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 900;
+  display: inline-block;
+  transition: all 0.25s ease;
+}
+.secondaryBtn {
+  padding: 13px 22px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  font-weight: 900;
+}
+.successBtn {
+  background: linear-gradient(135deg, #16a34a, #22c55e, #2563eb);
+  color: white;
+  box-shadow: 0 0 30px rgba(34,197,94,0.35);
+}
 
-  .successBtn {
-    background: linear-gradient(135deg, #16a34a, #22c55e);
-    color: white;
-    box-shadow: 0 0 30px rgba(34,197,94,0.35);
-  }
+.successBtn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 40px rgba(34,197,94,0.6);
+}
 
   .homeBtn {
     background: rgba(255,255,255,0.1);
