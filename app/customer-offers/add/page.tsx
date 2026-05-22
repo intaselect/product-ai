@@ -172,14 +172,18 @@ image_url_3: String(formData.get("image_url_3") || ""),
           </p>
 
           <div className="successActions">
-            <Link href="/customer-offers" className="successBtn">
-              مشاهدة متجر العملاء
-            </Link>
+  <Link href="/customer-offers/add" className="successBtn">
+    ➕ إضافة عرض جديد
+  </Link>
 
-            <Link href="/" className="homeBtn">
-              الرجوع للرئيسية
-            </Link>
-          </div>
+  <Link href="/customer-offers" className="secondaryBtn">
+    مشاهدة متجر العملاء
+  </Link>
+
+  <Link href="/" className="homeBtn">
+    الرجوع للرئيسية
+  </Link>
+</div>
         </section>
 
         <style>{baseStyle}</style>
