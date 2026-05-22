@@ -1355,7 +1355,7 @@ z-index: 3;
   gap: 10px;
 
   width: 100%;
-  max-width: 600px;
+  max-width: 670px;
   margin: 15px auto;
 
   background: rgba(255,255,255,0.04);
@@ -1365,7 +1365,7 @@ z-index: 3;
 .input {
   flex: 1;
   height: 46px;
-  padding: 0 14px;
+  padding: 0 16px;
 
   border-radius: 14px;
 
@@ -1881,6 +1881,18 @@ z-index: 3;
   .button {
     height: 56px;
   }
+  @media (max-width: 600px) {
+  .searchBox {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .input {
+    padding: 18px 16px;
+    font-size: 17px;
+  }
+}
+}
 }
 `}</style>
     </div>
