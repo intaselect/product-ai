@@ -14,6 +14,7 @@ type Offer = {
   created_at: string;
   user_id: string | null;
   seller_email: string | null;
+  click_count?: number;
 };
 
 type Limit = {
@@ -47,6 +48,23 @@ export default function CustomerOffersAdminPage() {
     limits.forEach((limit) => map.set(limit.user_id, limit));
     return map;
   }, [limits]);
+  const adminStats = useMemo(() => {
+  const totalClicks = offers.reduce(
+    (sum, offer) => sum + Number(offer.click_count || 0),
+    0
+  );
+
+  const sellerClicks = offers.reduce((acc: Record<string, number>, offer) => {
+    const email = offer.seller_email || "غير معروف";
+    acc[email] = (acc[email] || 0) + Number(offer.click_count || 0);
+    return acc;
+  }, {});
+
+  return {
+    totalClicks,
+    sellerClicks: Object.entries(sellerClicks).sort((a, b) => b[1] - a[1]),
+  };
+}, [offers]);
 
   async function loadData(adminSecret = secret) {
     setLoading(true);
@@ -198,6 +216,29 @@ export default function CustomerOffersAdminPage() {
 
         {error && <div className="errorMsg">{error}</div>}
       </section>
+      {secret && (
+  <section className="analyticsBox">
+    <div className="totalClicksCard">
+      <strong>{adminStats.totalClicks}</strong>
+      <span>إجمالي ضغطات كل عروض الموقع</span>
+    </div>
+
+    <div className="sellerClicksList">
+      <h2>ضغطات كل بائع</h2>
+
+      {adminStats.sellerClicks.length === 0 ? (
+        <p>لا توجد ضغطات حتى الآن</p>
+      ) : (
+        adminStats.sellerClicks.map(([email, clicks]) => (
+          <div className="sellerClickRow" key={email}>
+            <span>{email}</span>
+            <strong>{clicks}</strong>
+          </div>
+        ))
+      )}
+    </div>
+  </section>
+)}
 
       <section className="offersGrid">
         {offers.map((offer) => {
@@ -233,9 +274,13 @@ export default function CustomerOffersAdminPage() {
                 <h2>{offer.product_name}</h2>
 
                 <p className="price">{offer.price}</p>
+                <p className="clicksMeta">
+  👁️ ضغطات العرض: <strong>{offer.click_count || 0}</strong>
+</p>
 
                 <p className="meta">المتجر: {offer.store_name || "غير محدد"}</p>
                 <p className="meta">الدولة: {offer.country || "غير محدد"}</p>
+                
 
                 <div className="sellerBox">
                   <p>
@@ -370,6 +415,71 @@ export default function CustomerOffersAdminPage() {
           cursor: pointer;
           box-shadow: 0 0 28px rgba(34,197,94,0.28);
         }
+          .analyticsBox {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+}
+
+.totalClicksCard,
+.sellerClicksList {
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(34,197,94,0.22);
+}
+
+.totalClicksCard {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(34,197,94,0.20), rgba(37,99,235,0.14));
+}
+
+.totalClicksCard strong {
+  display: block;
+  font-size: 42px;
+  color: #86efac;
+  font-weight: 950;
+}
+
+.totalClicksCard span {
+  color: #d1d5db;
+  font-weight: 900;
+}
+
+.sellerClicksList h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.sellerClickRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: #d1d5db;
+  font-size: 13px;
+}
+
+.sellerClickRow strong {
+  color: #86efac;
+  font-size: 16px;
+}
+
+.clicksMeta {
+  margin: 0 0 10px;
+  color: #86efac;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+@media (max-width: 700px) {
+  .analyticsBox {
+    grid-template-columns: 1fr;
+  }
+}
 
         .secretBox,
         .errorMsg {
