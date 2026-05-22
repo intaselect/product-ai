@@ -93,7 +93,7 @@ export async function PATCH(req: Request) {
     const email = String(body.email || "");
     const max_offers = Number(body.max_offers);
 
-    if (!user_id || !email || !Number.isFinite(max_offers) || max_offers < 1) {
+    if (!user_id || !email || !Number.isFinite(max_offers) || max_offers < 0) {
       return NextResponse.json(
         { ok: false, error: "بيانات limit غير صحيحة" },
         { status: 400 }
