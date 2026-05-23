@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/app/components/Navbar";
+import SidebarMenu from "@/app/components/SidebarMenu";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Footer from "./components/Footer";
@@ -155,8 +156,9 @@ export default function RootLayout({
 />
 </head>
 
-      <body className="min-h-screen flex flex-col">
+   <body className="min-h-screen flex flex-col">
   <Navbar />
+  <SidebarMenu />
 
   <div className="flex-1">
     {children}
