@@ -92,14 +92,10 @@ useEffect(() => {
 }, []);
 useEffect(() => {
   async function loadStoreProducts() {
-    const { data } = await supabase
-      .from("customer_offers")
-      .select("*")
-      .eq("status", "approved")
-      .order("created_at", { ascending: false })
-      .limit(50);
+const res = await fetch("/api/customer-offers/public");
+const json = await res.json();
 
-    setStoreProducts(data || []);
+setStoreProducts(json.offers || []);
   }
 
   loadStoreProducts();
