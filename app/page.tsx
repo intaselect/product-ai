@@ -2080,6 +2080,84 @@ z-index: 3;
   color: #22c55e;
   font-weight: bold;
 }
+  .storeSlider {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 10px 4px 14px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #10a37f #2f2f2f;
+}
+
+.storeSlider::-webkit-scrollbar {
+  height: 7px;
+}
+
+.storeSlider::-webkit-scrollbar-track {
+  background: #2f2f2f;
+  border-radius: 999px;
+}
+
+.storeSlider::-webkit-scrollbar-thumb {
+  background: #10a37f;
+  border-radius: 999px;
+}
+
+.storeCard {
+  min-width: 175px;
+  max-width: 175px;
+  background: rgba(40,40,40,0.78);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  transition: all .25s ease;
+  animation: storeCardFloat 3s ease-in-out infinite;
+}
+
+.storeCard:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: rgba(0,255,200,0.45);
+  box-shadow:
+    0 0 24px rgba(0,255,200,0.22),
+    0 12px 35px rgba(0,0,0,0.30);
+}
+
+.storeCard img {
+  width: 100%;
+  height: 125px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.storeInfo {
+  padding: 10px;
+}
+
+.storeName {
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 42px;
+}
+
+.storePrice {
+  color: #22c55e;
+  font-weight: 950;
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+@keyframes storeCardFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
 `}</style>
     </div>
   );

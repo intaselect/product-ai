@@ -8,17 +8,26 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-export async function GET() {
-  const { data, error } = await supabase
-    .from("customer_offers")
-    .select("id, product_name, price, image_url, country, store_name, created_at")
-    .eq("status", "approved")
-    .order("created_at", { ascending: false })
-    .limit(60);
+const countries = ["sa", "ae", "kw", "qa", "bh", "eg"];
 
-  if (error) {
+export async function GET() {
+  try {
+    const results = await Promise.all(
+      countries.map(async (country) => {
+        const { data } = await supabase
+          .from("customer_offers")
+          .select("id, product_name, price, image_url, country, store_name, created_at")
+          .eq("status", "approved")
+          .eq("country", country)
+          .order("created_at", { ascending: false })
+          .limit(20);
+
+        return data || [];
+      })
+    );
+
+    return NextResponse.json({ ok: true, offers: results.flat() });
+  } catch {
     return NextResponse.json({ ok: false, offers: [] }, { status: 500 });
   }
-
-  return NextResponse.json({ ok: true, offers: data || [] });
 }
