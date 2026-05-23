@@ -6,6 +6,7 @@ import PopularSearches from "@/app/components/PopularSearches";
 import type React from "react";
 
 export default function Home() {
+  const [storeProducts, setStoreProducts] = useState<any[]>([]);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,12 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState("");
   const [remainingSearches, setRemainingSearches] = useState(10);
   const [isMobile, setIsMobile] = useState(false);
+  const groupedProducts = storeProducts.reduce((acc: any, product: any) => {
+  const key = product.country || "sa";
+  if (!acc[key]) acc[key] = [];
+  acc[key].push(product);
+  return acc;
+}, {});
 useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
@@ -82,6 +89,20 @@ useEffect(() => {
   return () => {
     window.removeEventListener("resize", checkMobile);
   };
+}, []);
+useEffect(() => {
+  async function loadStoreProducts() {
+    const { data } = await supabase
+      .from("customer_offers")
+      .select("*")
+      .eq("status", "approved")
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    setStoreProducts(data || []);
+  }
+
+  loadStoreProducts();
 }, []);
   // 🔥 Ads حسب الدولة
   const adsByCountry: any = {
@@ -649,6 +670,50 @@ function getVisitorId() {
             })}
         </section>
         <PopularSearches />
+        <section className="storeSections">
+
+  {Object.entries(groupedProducts).map(([countryKey, products]: any) => (
+    <div key={countryKey} className="storeBlock">
+
+      {/* زر الدولة */}
+      <a
+        href={`/customer-offers?country=${countryKey}`}
+        className="storeCountryBtn"
+      >
+        تصفح منتجات {countryKey.toUpperCase()}
+      </a>
+
+      {/* سلايدر */}
+      <div className="storeSlider">
+        {products.slice(0, 10).map((item: any) => (
+         <a
+  key={item.id}
+  href={`/api/customer-offers/click/${item.id}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="storeCard"
+>
+  <img
+    src={item.image_url}
+    alt={item.product_name || "منتج من متجر BPS Chat"}
+  />
+
+  <div className="storeInfo">
+    <div className="storeName">
+      {item.product_name}
+    </div>
+
+    <div className="storePrice">
+      {item.price}
+    </div>
+  </div>
+</a>
+        ))}
+      </div>
+    </div>
+  ))}
+
+</section>
        
   <section className="storePromo">
   <div className="storePromoContent">
@@ -1963,6 +2028,61 @@ z-index: 3;
   span[style*="--i"] {
     display: none !important;
   }
+}
+  .storeSections {
+  margin-top: 30px;
+}
+
+.storeBlock {
+  margin-bottom: 30px;
+}
+
+.storeCountryBtn {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #2563eb);
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.storeSlider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.storeCard {
+  min-width: 160px;
+  background: #1e1e1e;
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+}
+
+.storeCard img {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  background: white;
+}
+
+.storeInfo {
+  padding: 8px;
+}
+
+.storeName {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.storePrice {
+  color: #22c55e;
+  font-weight: bold;
 }
 `}</style>
     </div>
