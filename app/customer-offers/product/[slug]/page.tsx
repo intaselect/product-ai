@@ -126,13 +126,17 @@ export async function generateMetadata({
   const pageUrl = `${SITE_URL}/customer-offers/product/${slug}`;
 
   return {
-    title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat بي بي اس شات`,
-    description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat (بي بي اس شات). شاهد العرض بسعر ${offer.price} ${currency} من ${
-      offer.store_name || "متجر موثوق"
-    } مع رابط شراء مباشر.`,
-    alternates: {
-      canonical: pageUrl,
-    },
+  title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat بي بي اس شات`,
+  description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat (بي بي اس شات). شاهد العرض بسعر ${offer.price} ${currency} من ${
+    offer.store_name || "متجر موثوق"
+  } مع رابط شراء مباشر.`,
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: pageUrl,
+  },
     openGraph: {
       title: `${offer.product_name} | BPS Chat بي بي اس شات`,
       description: `أفضل عرض ${offer.product_name} في ${country} بسعر ${offer.price} ${currency}.`,
@@ -180,13 +184,76 @@ export default async function ProductSeoPage({
       availability: "https://schema.org/InStock",
     },
   };
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "الرئيسية",
+      item: SITE_URL,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "عروض العملاء",
+      item: `${SITE_URL}/customer-offers`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: offer.product_name,
+      item: pageUrl,
+    },
+  ],
+};
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: `ما هو سعر ${offer.product_name} في ${country}؟`,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `السعر المعروض لمنتج ${offer.product_name} هو ${offer.price} ${currency}، وقد يختلف السعر النهائي حسب المتجر والتوفر والشحن.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: `أين أشتري ${offer.product_name} في ${country}؟`,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `يمكنك الضغط على زر عرض المنتج داخل صفحة BPS Chat للانتقال إلى رابط الشراء المباشر من ${offer.store_name || "البائع"}.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: `هل عرض ${offer.product_name} موثوق؟`,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `هذا العرض يظهر ضمن عروض العملاء في BPS Chat بعد المراجعة، لكن يجب دائمًا مراجعة السعر النهائي والتوفر وسياسة الشحن داخل موقع البائع قبل الشراء.`,
+      },
+    },
+  ],
+};
   return (
     <main className="seoProductPage" dir="rtl">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
+      <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+/>
+
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+/>
 
       <section className="hero">
         <div className="badge">BPS Chat | بي بي اس شات</div>
@@ -298,7 +365,59 @@ export default async function ProductSeoPage({
           <li>قارن العرض مع منتجات مشابهة داخل BPS Chat قبل اتخاذ القرار.</li>
           <li>تأكد أن رابط المنتج والمتجر مناسبين لك قبل الدفع.</li>
         </ul>
+<h2>معلومات عن عرض {offer.product_name}</h2>
 
+<p>
+  صفحة <strong>{offer.product_name}</strong> على BPS Chat مصممة لمساعدة
+  المستخدمين في الوصول إلى سعر واضح ورابط مباشر للمنتج داخل {country}.
+  يظهر هذا العرض ضمن قسم عروض العملاء في <strong>بي بي اس شات</strong> حتى
+  يتمكن الزوار من اكتشاف منتجات وأسعار من متاجر وبائعين مختلفين.
+</p>
+
+<p>
+  عند البحث عن <strong>سعر {offer.product_name} في {country}</strong> قد تجد
+  اختلافًا بين المتاجر حسب حالة المنتج، التوفر، الضمان، الشحن، والعروض
+  الحالية. لذلك ننصح دائمًا بمراجعة تفاصيل المنتج داخل موقع البائع قبل إتمام
+  الشراء.
+</p>
+
+<h2>كلمات بحث مرتبطة بـ {offer.product_name}</h2>
+
+<p>
+  سعر {offer.product_name} في {country} - شراء {offer.product_name} أونلاين -
+  أفضل عرض {offer.product_name} - أرخص سعر {offer.product_name} - عروض{" "}
+  {offer.product_name} في {country} - {offer.product_name} من{" "}
+  {offer.store_name || "متجر موثوق"} - مقارنة سعر {offer.product_name} عبر
+  BPS Chat - بي بي اس شات.
+</p>
+
+<h2>أسئلة شائعة عن {offer.product_name}</h2>
+
+<div className="faqBox">
+  <div>
+    <h3>هل السعر المعروض نهائي؟</h3>
+    <p>
+      السعر المعروض هو السعر الذي أضافه البائع، وقد يختلف السعر النهائي حسب
+      الشحن أو التوفر أو تحديثات المتجر.
+    </p>
+  </div>
+
+  <div>
+    <h3>هل يمكن مقارنة هذا المنتج مع منتجات أخرى؟</h3>
+    <p>
+      نعم، يمكنك الرجوع إلى صفحة عروض العملاء أو استخدام بحث BPS Chat لمقارنة
+      منتجات وأسعار أخرى في {country}.
+    </p>
+  </div>
+
+  <div>
+    <h3>هل BPS Chat يبيع المنتج مباشرة؟</h3>
+    <p>
+      لا، BPS Chat يساعدك على الوصول للعرض ورابط المنتج، والشراء يتم من خلال
+      البائع أو المتجر صاحب الرابط.
+    </p>
+  </div>
+</div>
         {relatedOffers.length > 0 && (
           <>
             <h2>منتجات مشابهة قد تهمك</h2>
@@ -740,6 +859,23 @@ export default async function ProductSeoPage({
             font-size: 30px;
           }
         }
+          .faqBox {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.faqBox div {
+  background: rgba(40,40,40,0.72);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.faqBox h3 {
+  margin: 0 0 8px;
+  color: #fff;
+}
       `}</style>
     </main>
   );
