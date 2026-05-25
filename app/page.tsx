@@ -4,7 +4,7 @@ import { saveSearch } from "@/lib/saveSearch";
 import { supabase } from "@/lib/supabase";
 import PopularSearches from "@/app/components/PopularSearches";
 import type React from "react";
-const [country, setCountry] = useState("sa");
+
 
 
 export default function Home() {
