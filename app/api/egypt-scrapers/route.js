@@ -31,20 +31,29 @@ export async function POST(req) {
       noon: noon.length,
     });
 
-    const results = [...amazon, ...jumia, ...noon]
-      .filter((item) => item.title && item.url && item.image)
-      .map((item, i) => ({
-        id: `eg-bg-${i + 1}`,
-        title: `🔥 ${item.title}`,
-        price: item.price || 0,
-        priceText: item.price
-          ? `${Number(item.price).toLocaleString("en-US")} EGP`
-          : "السعر داخل المتجر",
-        store: item.store || "Egypt Store",
-        image: item.image,
-        url: item.url,
-      }))
-      .slice(0, 10);
+   function normalize(items, sourceName) {
+  return (items || [])
+    .filter((item) => item.title && item.url && item.image)
+    .map((item) => ({
+      title: `🔥 ${item.title}`,
+      price: item.price || 0,
+      priceText: item.price
+        ? `${Number(item.price).toLocaleString("en-US")} EGP`
+        : "السعر داخل المتجر",
+      store: sourceName,
+      image: item.image,
+      url: item.url,
+    }));
+}
+
+const results = [
+  ...normalize(amazon, "Amazon.eg"),
+  ...normalize(noon, "Noon Egypt"),
+  ...normalize(jumia, "Jumia Egypt"),
+].map((item, i) => ({
+  id: `eg-bg-${i + 1}`,
+  ...item,
+}));
 
     return Response.json(results);
   } catch (err) {
