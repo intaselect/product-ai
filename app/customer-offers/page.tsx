@@ -200,18 +200,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
   ))}
 </section>
 <section className="offersSearchBox">
-  <form
-  action="/customer-offers"
-  className="offersSearchForm"
-  onSubmit={(e) => {
-    const country = new URLSearchParams(window.location.search).get("country");
-
-    if (!country || country === "all") {
-      e.preventDefault();
-      alert("⚠️ رجاء اختيار الدولة أولاً");
-    }
-  }}
->
+  <form action="/customer-offers" className="offersSearchForm">
     {selectedCategory !== "all" && (
       <input type="hidden" name="category" value={selectedCategory} />
     )}
