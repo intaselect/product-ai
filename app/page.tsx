@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 import PopularSearches from "@/app/components/PopularSearches";
 import type React from "react";
 const [country, setCountry] = useState("sa");
-const [countryAutoLoaded, setCountryAutoLoaded] = useState(false);
+
 
 export default function Home() {
   const [storeProducts, setStoreProducts] = useState<any[]>([]);
@@ -19,6 +19,29 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState("");
   const [remainingSearches, setRemainingSearches] = useState(10);
   const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+  async function loadVisitorCountry() {
+    try {
+      const savedCountry = localStorage.getItem("bps_selected_country");
+
+      if (savedCountry) {
+        setCountry(savedCountry);
+        return;
+      }
+
+      const res = await fetch("/api/visitor-country");
+      const data = await res.json();
+
+      if (data?.country) {
+        setCountry(data.country);
+      }
+    } catch {
+      setCountry("sa");
+    }
+  }
+
+  loadVisitorCountry();
+}, []);
   const groupedProducts = storeProducts.reduce((acc: any, product: any) => {
   const key = product.country || "sa";
   if (!acc[key]) acc[key] = [];
@@ -87,7 +110,6 @@ useEffect(() => {
 
       if (savedCountry) {
         setCountry(savedCountry);
-        setCountryAutoLoaded(true);
         return;
       }
 
@@ -99,8 +121,6 @@ useEffect(() => {
       }
     } catch {
       setCountry("sa");
-    } finally {
-      setCountryAutoLoaded(true);
     }
   }
 
