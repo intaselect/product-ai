@@ -92,8 +92,8 @@ export default async function CustomerOffersPage({
 
   const selectedCategory = params?.category || "all";
   const selectedCountry = params?.country || "all";
-  const isCountrySelected = selectedCountry !== "all";
-  const searchQuery = String(params?.q || "").trim().toLowerCase();
+
+  
   const { data: offers, error } = await supabase
     .from("customer_offers")
     .select(
@@ -199,54 +199,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
     </a>
   ))}
 </section>
-<section className="offersSearchBox">
-  <form
-  action="/customer-offers"
-  className="offersSearchForm"
-  onSubmit={(e) => {
-    const country = new URLSearchParams(window.location.search).get("country");
 
-    if (!country || country === "all") {
-      e.preventDefault();
-      alert("⚠️ رجاء اختيار الدولة أولاً");
-    }
-  }}
->
-    {selectedCategory !== "all" && (
-      <input type="hidden" name="category" value={selectedCategory} />
-    )}
-
-    {selectedCountry !== "all" && (
-      <input type="hidden" name="country" value={selectedCountry} />
-    )}
-
-    <input
-      name="q"
-      defaultValue={params?.q || ""}
-      placeholder="ابحث داخل متجر العملاء... مثال: موبايل ريلمي"
-    />
-
-    <button type="submit" disabled={!isCountrySelected}>
-  🔎 بحث
-</button>
-
-    {searchQuery && (
-      <a
-        href={
-          selectedCategory === "all" && selectedCountry === "all"
-            ? "/customer-offers"
-            : selectedCategory === "all"
-              ? `/customer-offers?country=${selectedCountry}`
-              : selectedCountry === "all"
-                ? `/customer-offers?category=${selectedCategory}`
-                : `/customer-offers?category=${selectedCategory}&country=${selectedCountry}`
-        }
-      >
-        مسح البحث
-      </a>
-    )}
-  </form>
-</section>
 
 <div className="countryBox">
   <div className="countryBoxHeader">
