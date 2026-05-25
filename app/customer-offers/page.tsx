@@ -200,7 +200,18 @@ const filteredOffers = approvedOffers.filter((offer) => {
   ))}
 </section>
 <section className="offersSearchBox">
-  <form action="/customer-offers" className="offersSearchForm">
+  <form
+  action="/customer-offers"
+  className="offersSearchForm"
+  onSubmit={(e) => {
+    const country = new URLSearchParams(window.location.search).get("country");
+
+    if (!country || country === "all") {
+      e.preventDefault();
+      alert("⚠️ رجاء اختيار الدولة أولاً");
+    }
+  }}
+>
     {selectedCategory !== "all" && (
       <input type="hidden" name="category" value={selectedCategory} />
     )}
@@ -218,11 +229,6 @@ const filteredOffers = approvedOffers.filter((offer) => {
     <button type="submit" disabled={!isCountrySelected}>
   🔎 بحث
 </button>
-{!isCountrySelected && (
-  <div className="countryWarning">
-    ⚠️ رجاء اختيار الدولة أولاً
-  </div>
-)}
 
     {searchQuery && (
       <a
@@ -976,18 +982,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
     .stats span {
       font-size: 10.5px;
     }
-.countryWarning {
-  color: #ff4d4f;
-  font-size: 13px;
-  margin-top: 8px;
-  text-align: center;
-}
 
-.offersSearchForm button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: #444 !important;
-}
     .seoBox {
       padding: 13px 14px;
       border-radius: 18px;
