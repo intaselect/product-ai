@@ -92,8 +92,6 @@ export default async function CustomerOffersPage({
 
   const selectedCategory = params?.category || "all";
   const selectedCountry = params?.country || "all";
-
-  
   const { data: offers, error } = await supabase
     .from("customer_offers")
     .select(
@@ -112,20 +110,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
     selectedCountry === "all" ||
     (offer.country || "sa") === selectedCountry;
 
-  const searchableText = [
-    offer.product_name,
-    offer.store_name,
-    offer.price,
-    countryNames[offer.country || ""],
-    ...(offer.category || []),
-  ]
-    .join(" ")
-    .toLowerCase();
-
-  const searchOk =
-    !searchQuery || searchableText.includes(searchQuery);
-
-  return categoryOk && countryOk && searchOk;
+  return categoryOk && countryOk;
 });
   return (
     <main className="customerOffersPage" dir="rtl">
@@ -199,7 +184,6 @@ const filteredOffers = approvedOffers.filter((offer) => {
     </a>
   ))}
 </section>
-
 
 <div className="countryBox">
   <div className="countryBoxHeader">
@@ -310,73 +294,6 @@ const filteredOffers = approvedOffers.filter((offer) => {
     padding: 16px 16px 70px;
     overflow-x: hidden;
   }
-    .offersSearchBox {
-  max-width: 1080px;
-  margin: 0 auto 16px;
-  padding: 16px;
-  border-radius: 22px;
-  background: rgba(255,255,255,0.045);
-  border: 1px solid rgba(34,197,94,0.18);
-  box-shadow: 0 0 35px rgba(34,197,94,0.10);
-}
-
-.offersSearchForm {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.offersSearchForm input {
-  flex: 1;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: #111;
-  color: white;
-  border-radius: 16px;
-  padding: 14px 16px;
-  font-size: 15px;
-  outline: none;
-}
-
-.offersSearchForm input:focus {
-  border-color: rgba(34,197,94,0.75);
-  box-shadow: 0 0 0 4px rgba(34,197,94,0.12);
-}
-
-.offersSearchForm button,
-.offersSearchForm a {
-  border: 0;
-  text-decoration: none;
-  white-space: nowrap;
-  border-radius: 16px;
-  padding: 14px 18px;
-  font-weight: 950;
-  cursor: pointer;
-}
-
-.offersSearchForm button {
-  background: linear-gradient(135deg, #16a34a, #2563eb);
-  color: white;
-}
-
-.offersSearchForm a {
-  background: rgba(255,255,255,0.10);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.12);
-}
-
-@media (max-width: 700px) {
-  .offersSearchForm {
-    flex-direction: column;
-  }
-
-  .offersSearchForm input,
-  .offersSearchForm button,
-  .offersSearchForm a {
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-  }
-}
 .countryBox {
   max-width: 1080px;
   margin: 14px auto 28px;
