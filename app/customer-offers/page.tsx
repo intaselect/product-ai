@@ -92,6 +92,8 @@ export default async function CustomerOffersPage({
 
   const selectedCategory = params?.category || "all";
   const selectedCountry = params?.country || "all";
+  const searchQuery = String(params?.q || "").trim().toLowerCase();
+const isCountrySelected = selectedCountry !== "all";
   const { data: offers, error } = await supabase
     .from("customer_offers")
     .select(
@@ -110,7 +112,19 @@ const filteredOffers = approvedOffers.filter((offer) => {
     selectedCountry === "all" ||
     (offer.country || "sa") === selectedCountry;
 
-  return categoryOk && countryOk;
+  const searchableText = [
+    offer.product_name,
+    offer.store_name,
+    offer.price,
+    countryNames[offer.country || ""],
+    ...(offer.category || []),
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  const searchOk = !searchQuery || searchableText.includes(searchQuery);
+
+  return categoryOk && countryOk && searchOk;
 });
   return (
     <main className="customerOffersPage" dir="rtl">
@@ -184,7 +198,35 @@ const filteredOffers = approvedOffers.filter((offer) => {
     </a>
   ))}
 </section>
+<section className="offersSearchBox">
+  <form action="/customer-offers" className="offersSearchForm">
+    {selectedCategory !== "all" && (
+      <input type="hidden" name="category" value={selectedCategory} />
+    )}
 
+    {selectedCountry !== "all" && (
+      <input type="hidden" name="country" value={selectedCountry} />
+    )}
+
+    <input
+      name="q"
+      defaultValue={params?.q || ""}
+      placeholder="ابحث داخل متجر العملاء... مثال: موبايل ريلمي"
+    />
+
+    <button type="submit" disabled={!isCountrySelected}>
+      🔎 بحث
+    </button>
+
+    {!isCountrySelected && (
+      <span className="countryWarning">رجاء اختيار الدولة أولاً</span>
+    )}
+
+    {searchQuery && (
+      <a href="/customer-offers">مسح البحث</a>
+    )}
+  </form>
+</section>
 <div className="countryBox">
   <div className="countryBoxHeader">
     <span>🌍 اختر الدولة</span>
@@ -284,6 +326,77 @@ const filteredOffers = approvedOffers.filter((offer) => {
       )}
 
      <style>{`
+     .offersSearchBox {
+  max-width: 1080px;
+  margin: 0 auto 16px;
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(34,197,94,0.18);
+}
+
+.offersSearchForm {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.offersSearchForm input {
+  flex: 1;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #111;
+  color: white;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-size: 15px;
+}
+
+.offersSearchForm button,
+.offersSearchForm a {
+  border: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-weight: 950;
+}
+
+.offersSearchForm button {
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+  color: white;
+}
+
+.offersSearchForm button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: #444 !important;
+}
+
+.offersSearchForm a {
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+}
+
+.countryWarning {
+  color: #ff4d4f;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+@media (max-width: 700px) {
+  .offersSearchForm {
+    flex-direction: column;
+  }
+
+  .offersSearchForm input,
+  .offersSearchForm button,
+  .offersSearchForm a,
+  .countryWarning {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+}
   .customerOffersPage {
     min-height: 100vh;
     background:
