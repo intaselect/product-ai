@@ -4,6 +4,8 @@ import { saveSearch } from "@/lib/saveSearch";
 import { supabase } from "@/lib/supabase";
 import PopularSearches from "@/app/components/PopularSearches";
 import type React from "react";
+const [country, setCountry] = useState("sa");
+const [countryAutoLoaded, setCountryAutoLoaded] = useState(false);
 
 export default function Home() {
   const [storeProducts, setStoreProducts] = useState<any[]>([]);
@@ -77,6 +79,32 @@ useEffect(() => {
   return () => {
     listener.subscription.unsubscribe();
   };
+}, []);
+useEffect(() => {
+  async function loadVisitorCountry() {
+    try {
+      const savedCountry = localStorage.getItem("bps_selected_country");
+
+      if (savedCountry) {
+        setCountry(savedCountry);
+        setCountryAutoLoaded(true);
+        return;
+      }
+
+      const res = await fetch("/api/visitor-country");
+      const data = await res.json();
+
+      if (data?.country) {
+        setCountry(data.country);
+      }
+    } catch {
+      setCountry("sa");
+    } finally {
+      setCountryAutoLoaded(true);
+    }
+  }
+
+  loadVisitorCountry();
 }, []);
 useEffect(() => {
   const checkMobile = () => {
@@ -569,7 +597,10 @@ function getVisitorId() {
 )}
           <select
             value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            onChange={(e) => {
+  setCountry(e.target.value);
+  localStorage.setItem("bps_selected_country", e.target.value);
+}}
             className="select"
           >
             <option value="sa">السعودية</option>
