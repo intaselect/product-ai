@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +40,20 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
+const vercelCountryToCode: Record<string, string> = {
+  SA: "sa",
+  AE: "ae",
+  KW: "kw",
+  QA: "qa",
+  BH: "bh",
+  EG: "eg",
+};
+
+async function getVisitorCountry() {
+  const h = await headers();
+  const vercelCountry = h.get("x-vercel-ip-country") || "";
+  return vercelCountryToCode[vercelCountry.toUpperCase()] || "all";
+}
 
 const countryNames: Record<string, string> = {
   sa: "السعودية",
@@ -91,7 +106,8 @@ export default async function CustomerOffersPage({
   const params = await searchParams;
 
   const selectedCategory = params?.category || "all";
-  const selectedCountry = params?.country || "all";
+const visitorCountry = await getVisitorCountry();
+const selectedCountry = params?.country || visitorCountry;
   const searchQuery = String(params?.q || "").trim().toLowerCase();
 const isCountrySelected = selectedCountry !== "all";
   const { data: offers, error } = await supabase
