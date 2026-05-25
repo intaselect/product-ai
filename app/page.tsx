@@ -103,29 +103,7 @@ useEffect(() => {
     listener.subscription.unsubscribe();
   };
 }, []);
-useEffect(() => {
-  async function loadVisitorCountry() {
-    try {
-      const savedCountry = localStorage.getItem("bps_selected_country");
 
-      if (savedCountry) {
-        setCountry(savedCountry);
-        return;
-      }
-
-      const res = await fetch("/api/visitor-country");
-      const data = await res.json();
-
-      if (data?.country) {
-        setCountry(data.country);
-      }
-    } catch {
-      setCountry("sa");
-    }
-  }
-
-  loadVisitorCountry();
-}, []);
 useEffect(() => {
   const checkMobile = () => {
     setIsMobile(window.innerWidth <= 600);
@@ -462,6 +440,31 @@ function getVisitorId() {
     console.log("API RESULT:", data);
 
     setResults(data?.value || data?.products || data || []);
+    // 🔥 تحميل السكرابر في الخلفية (مصر فقط)
+if (country === "eg") {
+  setTimeout(async () => {
+    try {
+      const res = await fetch("/api/egypt-scrapers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: query.trim() === "" ? "*" : query,
+          country,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (Array.isArray(data) && data.length > 0) {
+        setResults((prev) => [...data, ...prev]);
+      }
+    } catch {
+      console.log("Egypt scraper failed");
+    }
+  }, 1500); // بعد 1.5 ثانية
+}
     setErrorMessage("");
   } catch (err) {
     console.error("Search error:", err);
