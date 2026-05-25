@@ -203,25 +203,25 @@ const filteredOffers = approvedOffers.filter((offer) => {
     {selectedCategory !== "all" && (
       <input type="hidden" name="category" value={selectedCategory} />
     )}
-
-    {selectedCountry !== "all" && (
-      <input type="hidden" name="country" value={selectedCountry} />
-    )}
-
     <input
       name="q"
       defaultValue={params?.q || ""}
       placeholder="ابحث داخل متجر العملاء... مثال: موبايل ريلمي"
     />
+    <select name="country" defaultValue={selectedCountry}>
+  <option value="all">🌍 اختر الدولة</option>
+  {Object.entries(countryNames).map(([key, label]) => (
+    <option key={key} value={key}>
+      {label}
+    </option>
+  ))}
+</select>
 
-    <button type="submit" disabled={!isCountrySelected}>
-      🔎 بحث
-    </button>
+    <button type="submit">
+  🔎 بحث
+</button>
 
-    {!isCountrySelected && (
-      <span className="countryWarning">رجاء اختيار الدولة أولاً</span>
-    )}
-
+   
     {searchQuery && (
       <a href="/customer-offers">مسح البحث</a>
     )}
@@ -349,6 +349,16 @@ const filteredOffers = approvedOffers.filter((offer) => {
   border-radius: 16px;
   padding: 14px 16px;
   font-size: 15px;
+}
+  .offersSearchForm select {
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #111;
+  color: white;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 900;
+  min-width: 140px;
 }
 
 .offersSearchForm button,
