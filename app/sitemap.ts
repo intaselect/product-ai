@@ -101,6 +101,43 @@ const offerPages =
       priority: 0.9,
     };
   }) || [];
+  const countries = ["sa", "ae", "kw", "qa", "bh", "eg"];
 
-  return [...staticPages, ...dynamicPages, ...offerPages];
+const categories = [
+  "electronics",
+  "mobiles",
+  "mobile_accessories",
+  "smart_watch",
+  "power_bank",
+  "chargers",
+  "headphones",
+  "computers",
+  "computer_accessories",
+  "gaming",
+  "home",
+  "fashion",
+  "shoes",
+  "bags",
+  "beauty",
+  "cars",
+  "kids",
+  "sports",
+  "other",
+];
+
+const categoryCountryPages = countries.flatMap((c) =>
+  categories.map((cat) => ({
+    url: `https://www.bpschat.com/customer-offers/${c}/${cat}`,
+    lastModified: new Date(),
+    changeFrequency: "daily",
+    priority: 0.9,
+  }))
+);
+
+ return [
+  ...staticPages,
+  ...dynamicPages,
+  ...offerPages,
+  ...categoryCountryPages,
+];
 }
