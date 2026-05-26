@@ -737,15 +737,19 @@ async function handleSearch() {
             alt={item.product_name || "إعلان"}
           />
 
-          <div className="storeInfo">
-            <div className="storeName">
-              🔥 إعلان - {item.product_name}
-            </div>
+         <div className="storeInfo">
+  <div className="storeName">
+    🔥 إعلان - {item.product_name}
+  </div>
 
-            <div className="storePrice">
-              {item.price}
-            </div>
-          </div>
+  <div className="storePrice">
+    {item.price} {currencyLabel[country] || ""}
+  </div>
+
+  <div style={{ fontSize: "11px", color: "#aaa", marginTop: "4px" }}>
+    🌍 {countryLabel[country] || country}
+  </div>
+</div>
         </a>
       ))}
     </div>
