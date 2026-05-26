@@ -4,7 +4,7 @@ import { scrapeNoonEgypt } from "@/lib/scrapeNoonEgypt";
 
 export const dynamic = "force-dynamic";
 
-function withTimeout(promise, ms = 9000) {
+function withTimeout(promise, ms = 20000) {
   return Promise.race([
     promise,
     new Promise((resolve) => setTimeout(() => resolve([]), ms)),
@@ -20,9 +20,9 @@ export async function POST(req) {
     }
 
     const [amazon, jumia, noon] = await Promise.all([
-      withTimeout(scrapeAmazonEgypt(query), 9000),
-      withTimeout(scrapeJumiaEgypt(query), 9000),
-      withTimeout(scrapeNoonEgypt(query), 9000),
+      withTimeout(scrapeAmazonEgypt(query)),
+      withTimeout(scrapeJumiaEgypt(query)),
+      withTimeout(scrapeNoonEgypt(query)),
     ]);
 
     console.log("EG SCRAPERS:", {
@@ -32,7 +32,7 @@ export async function POST(req) {
     });
 
     const results = [...amazon, ...jumia, ...noon]
-      .filter((item) => item.title && item.url && item.image)
+      .filter((item) => item.title && item.url)
       .map((item, i) => ({
         id: `eg-bg-${i + 1}`,
         title: `🔥 ${item.title}`,
@@ -41,10 +41,9 @@ export async function POST(req) {
           ? `${Number(item.price).toLocaleString("en-US")} EGP`
           : "السعر داخل المتجر",
         store: item.store || "Egypt Store",
-        image: item.image,
+        image: item.image || "",
         url: item.url,
-      }))
-      .slice(0, 100);
+      }));
 
     return Response.json(results);
   } catch (err) {

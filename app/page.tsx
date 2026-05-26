@@ -407,65 +407,77 @@ function getVisitorId() {
 
   return id;
 }
-  async function handleSearch() {
+async function handleSearch() {
   if (loading) return;
 
   setLoading(true);
 
   try {
+    const cleanQuery = query.trim() === "" ? "*" : query;
 
-    const res = await fetch("/api/search", {
+    // 🔥 شغل السيرب والسكرابر مع بعض
+    const mainPromise = fetch("/api/search", {
       method: "POST",
-     headers: {
-  "Content-Type": "application/json",
-  "x-bps-visitor-id": getVisitorId(),
-  "x-bps-user-email": user?.email || "",
-},
+      headers: {
+        "Content-Type": "application/json",
+        "x-bps-visitor-id": getVisitorId(),
+        "x-bps-user-email": user?.email || "",
+      },
       body: JSON.stringify({
-        query: query.trim() === "" ? "*" : query,
+        query: cleanQuery,
         country: country,
       }),
     });
 
-    const data = await res.json();
-    if (typeof data.remainingSearches === "number") {
-  setRemainingSearches(data.remainingSearches);
-}
-    if (data.blocked) {
-  setErrorMessage(data.message);
-  setLoading(false);
-  return;
-}
+    let scraperPromise = null;
 
-    console.log("API RESULT:", data);
-
-    setResults(data?.value || data?.products || data || []);
-    // 🔥 تحميل السكرابر في الخلفية (مصر فقط)
-if (country === "eg") {
-  setTimeout(async () => {
-    try {
-      const res = await fetch("/api/egypt-scrapers", {
+    if (country === "eg") {
+      scraperPromise = fetch("/api/egypt-scrapers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          query: query.trim() === "" ? "*" : query,
+          query: cleanQuery,
           country,
         }),
       });
-
-      const data = await res.json();
-
-      if (Array.isArray(data) && data.length > 0) {
-        setResults((prev) => [...data, ...prev]);
-      }
-    } catch {
-      console.log("Egypt scraper failed");
     }
-  }, 1500); // بعد 1.5 ثانية
-}
+
+    // ✅ استنى النتائج الأساسية بس
+    const res = await mainPromise;
+    const data = await res.json();
+
+    // 🔥 التحكم في الليميت
+    if (typeof data.remainingSearches === "number") {
+      setRemainingSearches(data.remainingSearches);
+    }
+
+    if (data.blocked) {
+      setErrorMessage(data.message);
+      setLoading(false);
+      return;
+    }
+
+    console.log("API RESULT:", data);
+
+    // ✅ عرض النتائج الأساسية فورًا
+    setResults(data?.value || data?.products || data || []);
+
     setErrorMessage("");
+
+    // 🔥 لما السكرابر يخلص ضيفه فوق
+    if (scraperPromise) {
+      scraperPromise
+        .then((r) => r.json())
+        .then((scraperData) => {
+          if (Array.isArray(scraperData) && scraperData.length > 0) {
+            setResults((prev) => [...scraperData, ...prev]);
+          }
+        })
+        .catch(() => console.log("scraper failed"));
+    }
+
   } catch (err) {
     console.error("Search error:", err);
     setResults([]);
@@ -473,6 +485,7 @@ if (country === "eg") {
     setLoading(false);
   }
 }
+  
 
   return (
   <div className="page">
