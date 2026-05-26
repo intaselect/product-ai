@@ -50,9 +50,27 @@ const groupedProducts = storeProducts.reduce((acc: any, product: any) => {
   return acc;
 }, {});
 
+const countryLabel: any = {
+  sa: "السعودية",
+  ae: "الإمارات",
+  kw: "الكويت",
+  qa: "قطر",
+  bh: "البحرين",
+  eg: "مصر",
+};
+
+const currencyLabel: any = {
+  sa: "ريال",
+  ae: "درهم",
+  kw: "دينار",
+  qa: "ريال",
+  bh: "دينار",
+  eg: "جنيه",
+};
+
 const sponsoredProducts = (groupedProducts[country] || [])
   .sort(() => Math.random() - 0.5)
-  .slice(0, 2);
+  .slice(0, 4);
 useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
@@ -705,7 +723,7 @@ async function handleSearch() {
   <section className="sponsoredResults">
     <div className="sponsoredTitle">🔥 إعلان</div>
 
-    <div className="storeSlider">
+    <div className="sponsoredGrid">
       {sponsoredProducts.map((item: any) => (
         <a
           key={`ad-${item.id}`}
@@ -794,7 +812,13 @@ async function handleSearch() {
 
         <div className="storeInfo">
           <div className="storeName">{item.product_name}</div>
-          <div className="storePrice">{item.price}</div>
+         <div className="storePrice">
+  {item.price} {currencyLabel[country] || ""}
+</div>
+
+<div style={{ fontSize: "11px", color: "#aaa", marginTop: "4px" }}>
+  🌍 {countryLabel[country] || country}
+</div>
         </div>
       </a>
     ))}
@@ -2038,7 +2062,17 @@ z-index: 3;
     height: 44px;
     padding: 0 14px;
   }
+.sponsoredGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
 
+@media (max-width: 700px) {
+  .sponsoredGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
   .searchCounter {
     min-width: 56px;
     height: 44px;
