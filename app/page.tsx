@@ -1961,6 +1961,50 @@ z-index: 3;
   margin-bottom: 10px;
   text-align: center;
 }
+  .sponsoredResults {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  padding: 18px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(249,115,22,0.28), transparent 28%),
+    radial-gradient(circle at 80% 90%, rgba(34,197,94,0.18), transparent 30%),
+    linear-gradient(135deg, rgba(249,115,22,0.16), rgba(34,197,94,0.10));
+  border: 1px solid rgba(249,115,22,0.55);
+  box-shadow:
+    0 0 22px rgba(249,115,22,0.22),
+    0 0 45px rgba(34,197,94,0.10),
+    inset 0 0 18px rgba(255,255,255,0.04);
+}
+
+.sponsoredResults::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.16), transparent);
+  transform: translateX(110%);
+  animation: sponsoredShine 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.sponsoredResults .storeCard {
+  border: 1px solid rgba(249,115,22,0.28);
+  box-shadow: 0 0 16px rgba(249,115,22,0.12);
+}
+
+.sponsoredResults .storeCard:hover {
+  transform: translateY(-5px) scale(1.03);
+  border-color: rgba(249,115,22,0.65);
+  box-shadow:
+    0 0 24px rgba(249,115,22,0.28),
+    0 0 38px rgba(34,197,94,0.12);
+}
+
+@keyframes sponsoredShine {
+  0% { transform: translateX(110%); }
+  45%, 100% { transform: translateX(-110%); }
+}
 
 .seeMoreOffersBtn {
   display: block;
