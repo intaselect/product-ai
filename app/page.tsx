@@ -40,14 +40,16 @@ export default function Home() {
     }
   }
 
-  loadVisitorCountry();
-}, []);
-  const groupedProducts = storeProducts.reduce((acc: any, product: any) => {
+ const groupedProducts = storeProducts.reduce((acc: any, product: any) => {
   const key = product.country || "sa";
   if (!acc[key]) acc[key] = [];
   acc[key].push(product);
   return acc;
 }, {});
+
+const sponsoredProducts = (groupedProducts[country] || [])
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 2);
 useEffect(() => {
   const slider = sliderRef.current;
   if (!slider) return;
@@ -696,8 +698,40 @@ async function handleSearch() {
           {!loading && results.length === 0 && (
             <p className="empty">ابدأ البحث أو جرّب اسم منتج آخر</p>
           )}
+{results.length > 0 && sponsoredProducts.length > 0 && (
+  <section className="sponsoredResults">
+    <div className="sponsoredTitle">🔥 إعلان</div>
 
+    <div className="storeSlider">
+      {sponsoredProducts.map((item: any) => (
+        <a
+          key={`ad-${item.id}`}
+          href={`/api/customer-offers/click/${item.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="storeCard"
+        >
+          <img
+            src={item.image_url}
+            alt={item.product_name || "إعلان"}
+          />
+
+          <div className="storeInfo">
+            <div className="storeName">
+              🔥 إعلان - {item.product_name}
+            </div>
+
+            <div className="storePrice">
+              {item.price}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
           {!loading &&
+          
             results.map((item, i) => {
               const data = item as any;
 
@@ -1881,6 +1915,20 @@ z-index: 3;
   margin: 0;
   color: #cfcfcf;
   font-size: 14px;
+}
+  .sponsoredResults {
+  margin-bottom: 20px;
+  padding: 14px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(249,115,22,0.18), rgba(255,215,0,0.12));
+  border: 1px solid rgba(249,115,22,0.4);
+}
+
+.sponsoredTitle {
+  font-weight: 900;
+  color: #f97316;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .seeMoreOffersBtn {
