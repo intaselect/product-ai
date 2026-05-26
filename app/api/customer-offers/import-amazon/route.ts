@@ -219,6 +219,14 @@ export async function POST(req: Request) {
 
         const fetchUrl = buildProductPageUrl(rawUrl, country);
         const productUrl = buildAffiliateUrl(rawUrl, country, affiliateTag);
+        if (!productUrl.includes(`tag=${encodeURIComponent(affiliateTag)}`)) {
+  failed.push({
+    url: rawUrl,
+    asin,
+    reason: "رابط الأفلييت لم يتم توليده بشكل صحيح",
+  });
+  continue;
+}
 
         const data = await fetchAmazonData(fetchUrl);
 
