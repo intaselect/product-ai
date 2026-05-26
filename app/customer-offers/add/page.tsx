@@ -49,32 +49,39 @@ export default function AddCustomerOfferPage() {
 
     checkUser();
   }, []);
-  useEffect(() => {
+ useEffect(() => {
   if (typeof window === "undefined") return;
+  if (checkingUser) return;
+  if (!accessToken) return;
 
   const params = new URLSearchParams(window.location.search);
   if (!params.get("auto")) return;
 
-  function setInput(name: string, value: string) {
-    const el = document.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLSelectElement | null;
-    if (el && value) el.value = value;
-  }
+  setTimeout(() => {
+    function setInput(name: string, value: string) {
+      const el = document.querySelector(
+        `[name="${name}"]`
+      ) as HTMLInputElement | HTMLSelectElement | null;
 
-  setInput("product_name", params.get("product_name") || "");
-  setInput("price", params.get("price") || "");
-  setInput("image_url", params.get("image_url") || "");
-  setInput("product_url", params.get("product_url") || "");
-  setInput("store_name", params.get("store_name") || "amazon.sa");
-  setInput("country", params.get("country") || "sa");
+      if (el && value) el.value = value;
+    }
 
-  const category = params.get("category") || "electronics";
+    setInput("product_name", params.get("product_name") || "");
+    setInput("price", params.get("price") || "");
+    setInput("image_url", params.get("image_url") || "");
+    setInput("product_url", params.get("product_url") || "");
+    setInput("store_name", params.get("store_name") || "amazon.sa");
+    setInput("country", params.get("country") || "sa");
 
-  document
-    .querySelectorAll<HTMLInputElement>('input[name="category"]')
-    .forEach((box) => {
-      box.checked = box.value === category;
-    });
-}, []);
+    const category = params.get("category") || "electronics";
+
+    document
+      .querySelectorAll<HTMLInputElement>('input[name="category"]')
+      .forEach((box) => {
+        box.checked = box.value === category;
+      });
+  }, 300);
+}, [checkingUser, accessToken]);
   useEffect(() => {
   if (typeof window !== "undefined") {
     const params = new URLSearchParams(window.location.search);
