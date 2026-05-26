@@ -19,7 +19,7 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState("");
   const [remainingSearches, setRemainingSearches] = useState(10);
   const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
+ useEffect(() => {
   async function loadVisitorCountry() {
     try {
       const savedCountry = localStorage.getItem("bps_selected_country");
@@ -40,7 +40,10 @@ export default function Home() {
     }
   }
 
- const groupedProducts = storeProducts.reduce((acc: any, product: any) => {
+  loadVisitorCountry();
+}, []);
+
+const groupedProducts = storeProducts.reduce((acc: any, product: any) => {
   const key = product.country || "sa";
   if (!acc[key]) acc[key] = [];
   acc[key].push(product);
