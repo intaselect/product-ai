@@ -10,6 +10,20 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey);
 const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
+function cleanText(text: string) {
+  return String(text || "")
+    .replace(/&quot;/g, '"')
+    .replace(/&#34;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&rlm;/g, "")
+    .replace(/&lrm;/g, "")
+    .replace(/<[^>]+>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function extractAsin(input: string) {
   const text = String(input || "").trim();
 
@@ -19,7 +33,8 @@ function extractAsin(input: string) {
 
   const match =
     text.match(/\/dp\/([A-Z0-9]{10})/i) ||
-    text.match(/\/gp\/product\/([A-Z0-9]{10})/i);
+    text.match(/\/gp\/product\/([A-Z0-9]{10})/i) ||
+    text.match(/[?&]asin=([A-Z0-9]{10})/i);
 
   return match?.[1]?.toUpperCase() || "";
 }
@@ -30,37 +45,10 @@ function amazonDomainByCountry(country: string) {
   return "www.amazon.sa";
 }
 
-function buildProductPageUrl(originalUrl: string, country: string) {
-  const asin = extractAsin(originalUrl);
-  const domain = amazonDomainByCountry(country);
-
-  if (!asin) return originalUrl;
-
-  return `https://${domain}/dp/${asin}`;
-}
-
-function buildAffiliateUrl(originalUrl: string, country: string, tag: string) {
-  const asin = extractAsin(originalUrl);
-  const domain = amazonDomainByCountry(country);
-  const cleanTag = String(tag || "").trim();
-
-  if (!asin) return originalUrl;
-
-  if (!cleanTag) {
-    return `https://${domain}/dp/${asin}`;
-  }
-
-  return `https://${domain}/dp/${asin}?tag=${encodeURIComponent(cleanTag)}`;
-}
-
-function cleanText(text: string) {
-  return String(text || "")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+function storeNameByCountry(country: string) {
+  if (country === "ae") return "amazon.ae";
+  if (country === "eg") return "amazon.eg";
+  return "amazon.sa";
 }
 
 function pickMeta(html: string, key: string) {
@@ -74,41 +62,81 @@ function pickMeta(html: string, key: string) {
     "i"
   );
 
-  return cleanText(html.match(reg1)?.[1] || html.match(reg2)?.[1] || "");
+  const reg3 = new RegExp(
+    `<meta[^>]+name=["']${key}["'][^>]+content=["']([^"']+)["']`,
+    "i"
+  );
+
+  return cleanText(
+    html.match(reg1)?.[1] ||
+      html.match(reg2)?.[1] ||
+      html.match(reg3)?.[1] ||
+      ""
+  );
 }
 
 function extractTitle(html: string) {
-  const og = pickMeta(html, "og:title");
+  const productTitle =
+    html.match(/id=["']productTitle["'][^>]*>([\s\S]*?)<\/span>/i)?.[1] || "";
 
-  if (og) {
-    return og.replace(/\s*:\s*Amazon\..*$/i, "").trim();
-  }
+  if (productTitle) return cleanText(productTitle);
+
+  const og = pickMeta(html, "og:title");
+  if (og) return og.replace(/\s*:\s*Amazon\..*$/i, "").trim();
 
   const title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || "";
-
   return cleanText(title).replace(/\s*:\s*Amazon\..*$/i, "").trim();
+}
+
+function decodeAmazonImageUrl(url: string) {
+  return cleanText(url)
+    .replace(/\\u002F/g, "/")
+    .replace(/\\/g, "")
+    .replace(/&amp;/g, "&");
 }
 
 function extractImage(html: string) {
   const og = pickMeta(html, "og:image");
+  if (og) return decodeAmazonImageUrl(og);
 
-  if (og) return og;
+  const landing =
+    html.match(/"landingImage"\s*:\s*"([^"]+)"/i)?.[1] ||
+    html.match(/id=["']landingImage["'][^>]+src=["']([^"']+)["']/i)?.[1] ||
+    html.match(/data-old-hires=["']([^"']+)["']/i)?.[1];
 
-  const landing = html.match(/"landingImage"\s*:\s*"([^"]+)"/i)?.[1];
+  if (landing) return decodeAmazonImageUrl(landing);
 
-  if (landing) {
-    return landing.replace(/\\u002F/g, "/").replace(/\\/g, "");
+  const dynamicImage = html.match(/data-a-dynamic-image=["']([^"']+)["']/i)?.[1];
+  if (dynamicImage) {
+    const decoded = cleanText(dynamicImage);
+    const firstImage = decoded.match(/https?:\/\/[^"{}]+/i)?.[0];
+    if (firstImage) return decodeAmazonImageUrl(firstImage);
   }
 
   return "";
 }
 
 function extractPrice(html: string) {
-  const metaPrice =
-    html.match(/"priceAmount"\s*:\s*([0-9.]+)/i)?.[1] ||
-    html.match(/"displayPrice"\s*:\s*"([^"]+)"/i)?.[1];
+  const offscreenPrices = Array.from(
+    html.matchAll(
+      /<span[^>]*class=["'][^"']*a-offscreen[^"']*["'][^>]*>([\s\S]*?)<\/span>/gi
+    )
+  )
+    .map((m) => cleanText(m[1]))
+    .filter((v) => /\d/.test(v));
 
-  if (metaPrice) return cleanText(metaPrice);
+  if (offscreenPrices.length > 0) {
+    return offscreenPrices[0];
+  }
+
+  const displayPrice =
+    html.match(/"displayPrice"\s*:\s*"([^"]+)"/i)?.[1] ||
+    html.match(/"priceToPay"\s*:\s*"([^"]+)"/i)?.[1];
+
+  if (displayPrice) return cleanText(displayPrice);
+
+  const priceAmount = html.match(/"priceAmount"\s*:\s*([0-9.]+)/i)?.[1];
+  if (priceAmount) return cleanText(priceAmount);
 
   const whole = html
     .match(
@@ -122,26 +150,48 @@ function extractPrice(html: string) {
     )?.[1]
     ?.replace(/[^\d]/g, "");
 
-  if (whole) {
-    return fraction ? `${whole}.${fraction}` : whole;
-  }
+  if (whole) return fraction ? `${whole}.${fraction}` : whole;
 
   return "";
 }
 
-async function fetchAmazonData(url: string) {
-  const res = await fetch(url, {
+function isAmazonUrl(url: string) {
+  return (
+    url.includes("amazon.sa") ||
+    url.includes("amazon.ae") ||
+    url.includes("amazon.eg") ||
+    url.includes("amzn.to")
+  );
+}
+
+function hasAffiliate(rawUrl: string, finalUrl: string) {
+  return (
+    rawUrl.includes("tag=") ||
+    finalUrl.includes("tag=") ||
+    rawUrl.includes("amzn.to/")
+  );
+}
+
+async function fetchAmazonData(inputUrl: string) {
+  const res = await fetch(inputUrl, {
     cache: "no-store",
+    redirect: "follow",
     headers: {
       "user-agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
-      "accept-language": "ar,en-US;q=0.9,en;q=0.8",
+      "accept":
+        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+      "accept-language": "ar-SA,ar;q=0.9,en-US;q=0.8,en;q=0.7",
+      "cache-control": "no-cache",
+      "pragma": "no-cache",
     },
   });
 
+  const finalUrl = res.url || inputUrl;
   const html = await res.text();
 
   return {
+    finalUrl,
     title: extractTitle(html),
     image: extractImage(html),
     price: extractPrice(html),
@@ -174,18 +224,17 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const urls = Array.isArray(body.urls)
-  ? body.urls
-      .map((u: unknown) => String(u || "").trim())
-      .filter(Boolean)
-      .slice(0, 50)
-  : String(body.urls || "")
-      .split("\n")
-      .map((u: string) => u.trim())
-      .filter(Boolean)
-      .slice(0, 50);
+      ? body.urls
+          .map((u: unknown) => String(u || "").trim())
+          .filter(Boolean)
+          .slice(0, 50)
+      : String(body.urls || "")
+          .split("\n")
+          .map((u: string) => u.trim())
+          .filter(Boolean)
+          .slice(0, 50);
 
     const country = String(body.country || "sa").trim();
-    const affiliateTag = String(body.affiliateTag || "").trim();
     const category = [String(body.category || "electronics").trim()];
 
     if (!urls.length) {
@@ -195,19 +244,29 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!affiliateTag) {
-      return NextResponse.json(
-        { ok: false, error: "اكتب كود الأفلييت" },
-        { status: 400 }
-      );
-    }
-
     const success: any[] = [];
     const failed: any[] = [];
 
     for (const rawUrl of urls) {
       try {
-        const asin = extractAsin(rawUrl);
+        if (!isAmazonUrl(rawUrl)) {
+          failed.push({
+            url: rawUrl,
+            reason: "الرابط ليس رابط أمازون أو amzn.to",
+          });
+          continue;
+        }
+
+        const fetched = await fetchAmazonData(rawUrl);
+        const asin = extractAsin(fetched.finalUrl) || extractAsin(rawUrl);
+
+        if (!hasAffiliate(rawUrl, fetched.finalUrl)) {
+          failed.push({
+            url: rawUrl,
+            reason: "الرابط لا يحتوي على أفلييت tag أو ليس رابط amzn.to",
+          });
+          continue;
+        }
 
         if (!asin) {
           failed.push({
@@ -217,20 +276,7 @@ export async function POST(req: Request) {
           continue;
         }
 
-        const fetchUrl = buildProductPageUrl(rawUrl, country);
-        const productUrl = buildAffiliateUrl(rawUrl, country, affiliateTag);
-        if (!productUrl.includes(`tag=${encodeURIComponent(affiliateTag)}`)) {
-  failed.push({
-    url: rawUrl,
-    asin,
-    reason: "رابط الأفلييت لم يتم توليده بشكل صحيح",
-  });
-  continue;
-}
-
-        const data = await fetchAmazonData(fetchUrl);
-
-        if (!data.title || !data.image || !data.price) {
+        if (!fetched.title || !fetched.image || !fetched.price) {
           failed.push({
             url: rawUrl,
             asin,
@@ -240,13 +286,13 @@ export async function POST(req: Request) {
         }
 
         const { error } = await supabaseAdmin.from("customer_offers").insert({
-          product_name: data.title,
-          price: data.price,
-          image_url: data.image,
+          product_name: fetched.title,
+          price: fetched.price,
+          image_url: fetched.image,
           image_url_2: null,
           image_url_3: null,
-          product_url: productUrl,
-          store_name: amazonDomainByCountry(country),
+          product_url: rawUrl,
+          store_name: storeNameByCountry(country),
           country,
           category,
           status: "pending",
@@ -265,15 +311,15 @@ export async function POST(req: Request) {
 
         success.push({
           asin,
-          product_name: data.title,
-          price: data.price,
-          image_url: data.image,
-          product_url: productUrl,
+          product_name: fetched.title,
+          price: fetched.price,
+          image_url: fetched.image,
+          product_url: rawUrl,
         });
       } catch {
         failed.push({
           url: rawUrl,
-          reason: "فشل جلب بيانات المنتج",
+          reason: "فشل جلب بيانات المنتج من أمازون",
         });
       }
     }

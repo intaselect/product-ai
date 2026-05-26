@@ -41,7 +41,6 @@ export default function ImportAmazonPage() {
   );
 
   const [country, setCountry] = useState("sa");
-  const [affiliateTag, setAffiliateTag] = useState("bpschatksa-21");
   const [category, setCategory] = useState("electronics");
 
   const [result, setResult] = useState<any>(null);
@@ -77,7 +76,7 @@ export default function ImportAmazonPage() {
     const urls = inputs.map((u) => u.trim()).filter(Boolean);
 
     if (!urls.length) {
-      setError("حط رابط واحد على الأقل");
+      setError("حط رابط أفلييت واحد على الأقل");
       return;
     }
 
@@ -95,7 +94,6 @@ export default function ImportAmazonPage() {
         body: JSON.stringify({
           urls,
           country,
-          affiliateTag,
           category,
         }),
       });
@@ -148,11 +146,12 @@ export default function ImportAmazonPage() {
           ← رجوع لإضافة عرض يدوي
         </Link>
 
-        <h1>استيراد منتجات أمازون بالجملة</h1>
+        <h1>استيراد منتجات أمازون بالأفلييت</h1>
 
         <p>
-          حط كل رابط في خانة منفصلة. السيستم يعالج كل خانة لوحدها، ويجيب الاسم
-          والصورة والسعر ويحفظ المنتج Pending للمراجعة.
+          حط روابط أفلييت جاهزة من Amazon SiteStripe أو روابط amzn.to. كل رابط
+          في خانة مستقلة. السيستم يحاول يجيب الاسم والصورة والسعر، والمنتجات
+          الناجحة تتحفظ Pending للمراجعة.
         </p>
       </section>
 
@@ -165,16 +164,6 @@ export default function ImportAmazonPage() {
               <option value="ae">الإمارات</option>
               <option value="eg">مصر</option>
             </select>
-          </label>
-
-          <label>
-            كود الأفلييت
-            <input
-              required
-              value={affiliateTag}
-              onChange={(e) => setAffiliateTag(e.target.value)}
-              placeholder="مثال: bpschatksa-21"
-            />
           </label>
 
           <label>
@@ -191,7 +180,7 @@ export default function ImportAmazonPage() {
 
         <div className="inputsHeader">
           <div>
-            <h2>روابط المنتجات</h2>
+            <h2>روابط الأفلييت</h2>
             <p>الممتلئ الآن: {filledCount} / 50</p>
           </div>
 
@@ -200,15 +189,23 @@ export default function ImportAmazonPage() {
           </button>
         </div>
 
+        <div className="tipsBox">
+          <strong>مهم جدًا:</strong>
+          <span>
+            استخدم رابط أفلييت جاهز فيه tag أو رابط amzn.to من SiteStripe.
+            المنتجات اللي تفشل في جلب الاسم أو الصورة أو السعر لن يتم إضافتها.
+          </span>
+        </div>
+
         <div className="inputsList">
           {inputs.map((value, index) => (
             <label key={index} className="urlRow">
-              <span>رابط المنتج رقم {index + 1}</span>
+              <span>رابط أفلييت رقم {index + 1}</span>
               <input
                 type="text"
                 value={value}
                 onChange={(e) => updateInput(index, e.target.value)}
-                placeholder="https://www.amazon.sa/.../dp/B0XXXXXXXX"
+                placeholder="https://www.amazon.sa/.../dp/B0XXXXXXXX?...&tag=xxxx أو https://amzn.to/xxxx"
                 dir="ltr"
               />
             </label>
@@ -222,8 +219,8 @@ export default function ImportAmazonPage() {
         </button>
 
         <p className="note">
-          مهم: كل input يتعالج لوحده. لو رابط فشل، باقي الروابط الناجحة هتتحفظ
-          عادي. بدون Amazon PA-API ممكن بعض المنتجات تفشل في جلب السعر أو الصورة.
+          الرابط اللي هيتحفظ هو نفس رابط الأفلييت اللي أنت حطيته، علشان العمولة
+          ماتضيعش.
         </p>
       </form>
 
@@ -341,7 +338,7 @@ const style = `
 
 .topGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 14px;
 }
 
@@ -401,6 +398,21 @@ const style = `
   background: rgba(239,68,68,0.18);
   color: #fecaca;
   font-weight: 950;
+}
+
+.tipsBox {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(250,204,21,0.10);
+  border: 1px solid rgba(250,204,21,0.26);
+  color: #fef3c7;
+  line-height: 1.8;
+}
+
+.tipsBox strong {
+  color: #fde68a;
 }
 
 .inputsList {
@@ -550,7 +562,7 @@ const style = `
 
 .failed div {
   background: rgba(239,68,68,0.12);
-  border: 1px solid rgba(239,68,0.25);
+  border: 1px solid rgba(239,68,68,0.25);
   border-radius: 14px;
   padding: 12px;
 }
