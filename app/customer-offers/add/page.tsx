@@ -50,6 +50,32 @@ export default function AddCustomerOfferPage() {
     checkUser();
   }, []);
   useEffect(() => {
+  if (typeof window === "undefined") return;
+
+  const params = new URLSearchParams(window.location.search);
+  if (!params.get("auto")) return;
+
+  function setInput(name: string, value: string) {
+    const el = document.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLSelectElement | null;
+    if (el && value) el.value = value;
+  }
+
+  setInput("product_name", params.get("product_name") || "");
+  setInput("price", params.get("price") || "");
+  setInput("image_url", params.get("image_url") || "");
+  setInput("product_url", params.get("product_url") || "");
+  setInput("store_name", params.get("store_name") || "amazon.sa");
+  setInput("country", params.get("country") || "sa");
+
+  const category = params.get("category") || "electronics";
+
+  document
+    .querySelectorAll<HTMLInputElement>('input[name="category"]')
+    .forEach((box) => {
+      box.checked = box.value === category;
+    });
+}, []);
+  useEffect(() => {
   if (typeof window !== "undefined") {
     const params = new URLSearchParams(window.location.search);
     setEditId(params.get("edit") || "");
