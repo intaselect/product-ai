@@ -10,10 +10,17 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey);
 const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-function extractAsin(url: string) {
+function extractAsin(input: string) {
+  const text = String(input || "").trim();
+
+  if (/^[A-Z0-9]{10}$/i.test(text)) {
+    return text.toUpperCase();
+  }
+
   const match =
-    url.match(/\/dp\/([A-Z0-9]{10})/i) ||
-    url.match(/\/gp\/product\/([A-Z0-9]{10})/i);
+    text.match(/\/dp\/([A-Z0-9]{10})/i) ||
+    text.match(/\/gp\/product\/([A-Z0-9]{10})/i);
+
   return match?.[1]?.toUpperCase() || "";
 }
 
@@ -23,13 +30,21 @@ function amazonDomainByCountry(country: string) {
   return "www.amazon.sa";
 }
 
-function buildAffiliateUrl(originalUrl: string, country: string, tag: string) {
+function buildProductPageUrl(originalUrl: string, country: string) {
   const asin = extractAsin(originalUrl);
   const domain = amazonDomainByCountry(country);
 
   if (!asin) return originalUrl;
 
+  return `https://${domain}/dp/${asin}`;
+}
+
+function buildAffiliateUrl(originalUrl: string, country: string, tag: string) {
+  const asin = extractAsin(originalUrl);
+  const domain = amazonDomainByCountry(country);
   const cleanTag = String(tag || "").trim();
+
+  if (!asin) return originalUrl;
 
   if (!cleanTag) {
     return `https://${domain}/dp/${asin}`;
@@ -43,6 +58,7 @@ function cleanText(text: string) {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -52,6 +68,7 @@ function pickMeta(html: string, key: string) {
     `<meta[^>]+property=["']${key}["'][^>]+content=["']([^"']+)["']`,
     "i"
   );
+
   const reg2 = new RegExp(
     `<meta[^>]+content=["']([^"']+)["'][^>]+property=["']${key}["']`,
     "i"
@@ -62,18 +79,26 @@ function pickMeta(html: string, key: string) {
 
 function extractTitle(html: string) {
   const og = pickMeta(html, "og:title");
-  if (og) return og.replace(/\s*:\s*Amazon\..*$/i, "").trim();
+
+  if (og) {
+    return og.replace(/\s*:\s*Amazon\..*$/i, "").trim();
+  }
 
   const title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || "";
+
   return cleanText(title).replace(/\s*:\s*Amazon\..*$/i, "").trim();
 }
 
 function extractImage(html: string) {
   const og = pickMeta(html, "og:image");
+
   if (og) return og;
 
   const landing = html.match(/"landingImage"\s*:\s*"([^"]+)"/i)?.[1];
-  if (landing) return landing.replace(/\\u002F/g, "/").replace(/\\/g, "");
+
+  if (landing) {
+    return landing.replace(/\\u002F/g, "/").replace(/\\/g, "");
+  }
 
   return "";
 }
@@ -86,11 +111,15 @@ function extractPrice(html: string) {
   if (metaPrice) return cleanText(metaPrice);
 
   const whole = html
-    .match(/<span[^>]*class=["'][^"']*a-price-whole[^"']*["'][^>]*>([\s\S]*?)<\/span>/i)?.[1]
+    .match(
+      /<span[^>]*class=["'][^"']*a-price-whole[^"']*["'][^>]*>([\s\S]*?)<\/span>/i
+    )?.[1]
     ?.replace(/[^\d.,]/g, "");
 
   const fraction = html
-    .match(/<span[^>]*class=["'][^"']*a-price-fraction[^"']*["'][^>]*>([\s\S]*?)<\/span>/i)?.[1]
+    .match(
+      /<span[^>]*class=["'][^"']*a-price-fraction[^"']*["'][^>]*>([\s\S]*?)<\/span>/i
+    )?.[1]
     ?.replace(/[^\d]/g, "");
 
   if (whole) {
@@ -144,11 +173,16 @@ export async function POST(req: Request) {
     const user = userData.user;
     const body = await req.json();
 
-    const urls = String(body.urls || "")
-      .split("\n")
-      .map((u) => u.trim())
+    const urls = Array.isArray(body.urls)
+  ? body.urls
+      .map((u: unknown) => String(u || "").trim())
       .filter(Boolean)
-      .slice(0, 30);
+      .slice(0, 50)
+  : String(body.urls || "")
+      .split("\n")
+      .map((u: string) => u.trim())
+      .filter(Boolean)
+      .slice(0, 50);
 
     const country = String(body.country || "sa").trim();
     const affiliateTag = String(body.affiliateTag || "").trim();
@@ -171,21 +205,26 @@ export async function POST(req: Request) {
     const success: any[] = [];
     const failed: any[] = [];
 
-    for (const url of urls) {
+    for (const rawUrl of urls) {
       try {
-        const asin = extractAsin(url);
+        const asin = extractAsin(rawUrl);
 
         if (!asin) {
-          failed.push({ url, reason: "لم يتم العثور على كود ASIN" });
+          failed.push({
+            url: rawUrl,
+            reason: "لم يتم العثور على كود ASIN",
+          });
           continue;
         }
 
-        const productUrl = buildAffiliateUrl(url, country, affiliateTag);
-        const data = await fetchAmazonData(productUrl);
+        const fetchUrl = buildProductPageUrl(rawUrl, country);
+        const productUrl = buildAffiliateUrl(rawUrl, country, affiliateTag);
+
+        const data = await fetchAmazonData(fetchUrl);
 
         if (!data.title || !data.image || !data.price) {
           failed.push({
-            url,
+            url: rawUrl,
             asin,
             reason: "لم نقدر نجيب الاسم أو الصورة أو السعر من أمازون",
           });
@@ -208,7 +247,11 @@ export async function POST(req: Request) {
         });
 
         if (error) {
-          failed.push({ url, asin, reason: error.message });
+          failed.push({
+            url: rawUrl,
+            asin,
+            reason: error.message,
+          });
           continue;
         }
 
@@ -220,7 +263,10 @@ export async function POST(req: Request) {
           product_url: productUrl,
         });
       } catch {
-        failed.push({ url, reason: "فشل جلب بيانات المنتج" });
+        failed.push({
+          url: rawUrl,
+          reason: "فشل جلب بيانات المنتج",
+        });
       }
     }
 
@@ -233,6 +279,7 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error("IMPORT_AMAZON_ERROR:", error);
+
     return NextResponse.json(
       { ok: false, error: "حدث خطأ غير متوقع" },
       { status: 500 }

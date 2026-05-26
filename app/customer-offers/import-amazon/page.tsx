@@ -35,10 +35,15 @@ export default function ImportAmazonPage() {
   const [accessToken, setAccessToken] = useState("");
   const [checking, setChecking] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [urls, setUrls] = useState("");
+
+  const [inputs, setInputs] = useState<string[]>(
+    Array.from({ length: 50 }, () => "")
+  );
+
   const [country, setCountry] = useState("sa");
   const [affiliateTag, setAffiliateTag] = useState("bpschatksa-21");
   const [category, setCategory] = useState("electronics");
+
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
 
@@ -52,8 +57,30 @@ export default function ImportAmazonPage() {
     checkUser();
   }, []);
 
+  function updateInput(index: number, value: string) {
+    setInputs((prev) => {
+      const copy = [...prev];
+      copy[index] = value;
+      return copy;
+    });
+  }
+
+  function clearInputs() {
+    setInputs(Array.from({ length: 50 }, () => ""));
+    setResult(null);
+    setError("");
+  }
+
   async function handleImport(e: React.FormEvent) {
     e.preventDefault();
+
+    const urls = inputs.map((u) => u.trim()).filter(Boolean);
+
+    if (!urls.length) {
+      setError("حط رابط واحد على الأقل");
+      return;
+    }
+
     setLoading(true);
     setError("");
     setResult(null);
@@ -103,12 +130,16 @@ export default function ImportAmazonPage() {
         <div className="card">
           <h1>سجّل دخول الأول</h1>
           <p>لازم تسجل دخول علشان تستورد منتجات أمازون.</p>
-          <Link href="/login" className="btn">تسجيل الدخول</Link>
+          <Link href="/login" className="btn">
+            تسجيل الدخول
+          </Link>
         </div>
         <style>{style}</style>
       </main>
     );
   }
+
+  const filledCount = inputs.filter((u) => u.trim()).length;
 
   return (
     <main className="page" dir="rtl">
@@ -118,62 +149,81 @@ export default function ImportAmazonPage() {
         </Link>
 
         <h1>استيراد منتجات أمازون بالجملة</h1>
+
         <p>
-          حط روابط أمازون، اختار الدولة، اكتب كود الأفلييت، واختار كاتيجري
-          واحدة. المنتجات هتتحفظ Pending لحد ما توافق عليها.
+          حط كل رابط في خانة منفصلة. السيستم يعالج كل خانة لوحدها، ويجيب الاسم
+          والصورة والسعر ويحفظ المنتج Pending للمراجعة.
         </p>
       </section>
 
       <form onSubmit={handleImport} className="form">
-        <label>
-          روابط أمازون
-          <textarea
-            required
-            value={urls}
-            onChange={(e) => setUrls(e.target.value)}
-            placeholder={`حط كل رابط في سطر\nhttps://www.amazon.sa/.../dp/B0FPG2DK8N\nhttps://www.amazon.sa/.../dp/B0GNK19RLH`}
-          />
-        </label>
+        <div className="topGrid">
+          <label>
+            الدولة
+            <select value={country} onChange={(e) => setCountry(e.target.value)}>
+              <option value="sa">السعودية</option>
+              <option value="ae">الإمارات</option>
+              <option value="eg">مصر</option>
+            </select>
+          </label>
 
-        <label>
-          الدولة
-          <select value={country} onChange={(e) => setCountry(e.target.value)}>
-            <option value="sa">السعودية</option>
-            <option value="ae">الإمارات</option>
-            <option value="eg">مصر</option>
-          </select>
-        </label>
+          <label>
+            كود الأفلييت
+            <input
+              required
+              value={affiliateTag}
+              onChange={(e) => setAffiliateTag(e.target.value)}
+              placeholder="مثال: bpschatksa-21"
+            />
+          </label>
 
-        <label>
-          كود الأفلييت
-          <input
-            required
-            value={affiliateTag}
-            onChange={(e) => setAffiliateTag(e.target.value)}
-            placeholder="مثال: bpschatksa-21"
-          />
-        </label>
+          <label>
+            الكاتيجري لكل المنتجات
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+              {categories.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
 
-        <label>
-          الكاتيجري لكل المنتجات
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            {categories.map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="inputsHeader">
+          <div>
+            <h2>روابط المنتجات</h2>
+            <p>الممتلئ الآن: {filledCount} / 50</p>
+          </div>
+
+          <button type="button" className="clearBtn" onClick={clearInputs}>
+            مسح الكل
+          </button>
+        </div>
+
+        <div className="inputsList">
+          {inputs.map((value, index) => (
+            <label key={index} className="urlRow">
+              <span>رابط المنتج رقم {index + 1}</span>
+              <input
+                type="text"
+                value={value}
+                onChange={(e) => updateInput(index, e.target.value)}
+                placeholder="https://www.amazon.sa/.../dp/B0XXXXXXXX"
+                dir="ltr"
+              />
+            </label>
+          ))}
+        </div>
 
         {error && <div className="error">{error}</div>}
 
-        <button disabled={loading} type="submit">
+        <button disabled={loading} type="submit" className="submitBtn">
           {loading ? "جاري جلب المنتجات..." : "🚀 استيراد المنتجات"}
         </button>
 
         <p className="note">
-          مهم: بدون Amazon PA-API جلب السعر والصورة ممكن يفشل لبعض المنتجات.
-          الروابط الناجحة فقط هتتحفظ.
+          مهم: كل input يتعالج لوحده. لو رابط فشل، باقي الروابط الناجحة هتتحفظ
+          عادي. بدون Amazon PA-API ممكن بعض المنتجات تفشل في جلب السعر أو الصورة.
         </p>
       </form>
 
@@ -195,6 +245,7 @@ export default function ImportAmazonPage() {
           {result.success?.length > 0 && (
             <>
               <h3>المنتجات الناجحة</h3>
+
               <div className="grid">
                 {result.success.map((item: any) => (
                   <div className="product" key={item.asin}>
@@ -202,6 +253,7 @@ export default function ImportAmazonPage() {
                     <div>
                       <b>{item.product_name}</b>
                       <span>{item.price}</span>
+                      <small>{item.asin}</small>
                     </div>
                   </div>
                 ))}
@@ -212,6 +264,7 @@ export default function ImportAmazonPage() {
           {result.failedItems?.length > 0 && (
             <>
               <h3>روابط فشلت</h3>
+
               <div className="failed">
                 {result.failedItems.map((item: any, index: number) => (
                   <div key={index}>
@@ -245,7 +298,7 @@ const style = `
 .form,
 .result,
 .card {
-  max-width: 850px;
+  max-width: 920px;
   margin: 0 auto 22px;
   border-radius: 28px;
   background: rgba(255,255,255,0.055);
@@ -275,7 +328,7 @@ const style = `
 
 .hero p {
   margin: 0 auto;
-  max-width: 700px;
+  max-width: 740px;
   color: #ddd;
   line-height: 1.9;
 }
@@ -283,7 +336,13 @@ const style = `
 .form {
   padding: 22px;
   display: grid;
-  gap: 16px;
+  gap: 18px;
+}
+
+.topGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
 }
 
 .form label {
@@ -293,8 +352,7 @@ const style = `
 }
 
 .form input,
-.form select,
-.form textarea {
+.form select {
   width: 100%;
   box-sizing: border-box;
   border: 1px solid rgba(255,255,255,0.13);
@@ -306,14 +364,80 @@ const style = `
   outline: none;
 }
 
-.form textarea {
-  min-height: 210px;
-  resize: vertical;
-  direction: ltr;
-  text-align: left;
+.form input:focus,
+.form select:focus {
+  border-color: rgba(34,197,94,0.75);
+  box-shadow: 0 0 0 4px rgba(34,197,94,0.12);
 }
 
-.form button,
+.inputsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(0,0,0,0.20);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.inputsHeader h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.inputsHeader p {
+  margin: 0;
+  color: #bbf7d0;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.clearBtn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  background: rgba(239,68,68,0.18);
+  color: #fecaca;
+  font-weight: 950;
+}
+
+.inputsList {
+  display: grid;
+  gap: 10px;
+  max-height: 580px;
+  overflow-y: auto;
+  padding: 12px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.urlRow {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.urlRow span {
+  color: #d1fae5;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.urlRow input {
+  direction: ltr;
+  text-align: left;
+  font-size: 13px;
+}
+
+.submitBtn,
 .btn {
   border: 0;
   cursor: pointer;
@@ -327,7 +451,7 @@ const style = `
   text-align: center;
 }
 
-.form button:disabled {
+.submitBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -411,6 +535,14 @@ const style = `
   margin-top: 8px;
 }
 
+.product small {
+  display: block;
+  color: #aaa;
+  margin-top: 6px;
+  direction: ltr;
+  text-align: left;
+}
+
 .failed {
   display: grid;
   gap: 10px;
@@ -418,7 +550,7 @@ const style = `
 
 .failed div {
   background: rgba(239,68,68,0.12);
-  border: 1px solid rgba(239,68,68,0.25);
+  border: 1px solid rgba(239,68,0.25);
   border-radius: 14px;
   padding: 12px;
 }
@@ -437,7 +569,15 @@ const style = `
   word-break: break-all;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
+  .topGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .urlRow {
+    grid-template-columns: 1fr;
+  }
+
   .product {
     grid-template-columns: 1fr;
   }
