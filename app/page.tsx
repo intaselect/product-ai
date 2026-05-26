@@ -733,49 +733,39 @@ async function handleSearch() {
             })}
         </section>
         <PopularSearches />
-        <section className="storeSections">
-
-  {Object.entries(groupedProducts).map(([countryKey, products]: any) => (
-    <div key={countryKey} className="storeBlock">
-
-      {/* زر الدولة */}
-      <a
-        href={`/customer-offers?country=${countryKey}`}
-        className="storeCountryBtn"
-      >
-        تصفح منتجات {countryKey.toUpperCase()}
-      </a>
-
-      {/* سلايدر */}
-      <div className="storeSlider">
-        {products.slice(0, 10).map((item: any) => (
-         <a
-  key={item.id}
-  href={`/api/customer-offers/click/${item.id}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="storeCard"
->
-  <img
-    src={item.image_url}
-    alt={item.product_name || "منتج من متجر BPS Chat"}
-  />
-
-  <div className="storeInfo">
-    <div className="storeName">
-      {item.product_name}
-    </div>
-
-    <div className="storePrice">
-      {item.price}
-    </div>
+        <h3 style={{ marginTop: "30px" }}>🌍 تصفح باقي الدول</h3>
+      <section className="homeCountryOffers">
+  <div className="homeCountryHeader">
+    <span>🔥 عروض مختارة لك</span>
+    <h2>منتجات من {country.toUpperCase()}</h2>
+    <p>عروض قريبة من دولتك تظهر لك أولًا حسب اختيارك الحالي.</p>
   </div>
-</a>
-        ))}
-      </div>
-    </div>
-  ))}
 
+  <div className="storeSlider">
+    {(groupedProducts[country] || []).slice(0, 12).map((item: any) => (
+      <a
+        key={item.id}
+        href={`/api/customer-offers/click/${item.id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="storeCard"
+      >
+        <img
+          src={item.image_url}
+          alt={item.product_name || "منتج من متجر BPS Chat"}
+        />
+
+        <div className="storeInfo">
+          <div className="storeName">{item.product_name}</div>
+          <div className="storePrice">{item.price}</div>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <a href={`/customer-offers?country=${country}`} className="seeMoreOffersBtn">
+    شاهد كل عروض دولتك ↗
+  </a>
 </section>
        
   <section className="storePromo">
@@ -1863,7 +1853,47 @@ z-index: 3;
   gap: 14px;
   box-shadow: 0 0 28px rgba(0,180,255,0.12);
 }
+.homeCountryOffers {
+  margin-top: 28px;
+  padding: 20px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(34,197,94,0.14), rgba(59,130,246,0.10));
+  border: 1px solid rgba(34,197,94,0.25);
+  box-shadow: 0 0 28px rgba(34,197,94,0.12);
+}
 
+.homeCountryHeader {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.homeCountryHeader span {
+  color: #22c55e;
+  font-weight: 900;
+}
+
+.homeCountryHeader h2 {
+  margin: 8px 0;
+  font-size: 24px;
+}
+
+.homeCountryHeader p {
+  margin: 0;
+  color: #cfcfcf;
+  font-size: 14px;
+}
+
+.seeMoreOffersBtn {
+  display: block;
+  width: fit-content;
+  margin: 18px auto 0;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: white;
+  text-decoration: none;
+  font-weight: 900;
+}
 .smartSearchPromo strong {
   color: #fff;
   font-size: 17px;
