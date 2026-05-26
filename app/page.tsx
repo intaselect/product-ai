@@ -723,7 +723,7 @@ async function handleSearch() {
   <section className="sponsoredResults">
     <div className="sponsoredTitle">🔥 إعلان</div>
 
-    <div className="sponsoredGrid">
+    <div className="storeSlider">
       {sponsoredProducts.map((item: any) => (
         <a
           key={`ad-${item.id}`}
@@ -2234,7 +2234,8 @@ z-index: 3;
 }
 
 .storeCard {
-  min-width: 160px;
+  min-width: 180px;
+   max-width: 200px;
   background: #1e1e1e;
   border-radius: 14px;
   overflow: hidden;
