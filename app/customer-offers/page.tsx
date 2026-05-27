@@ -151,14 +151,17 @@ const filteredOffers = approvedOffers.filter((offer) => {
         <div className="badge">🚀 عروض مختارة من عملاء ومتاجر BPS Chat</div>
 
         <h1>
-          أفضل عروض العملاء على{" "}
-          <span>BPS Chat</span>
-        </h1>
+  BPS Market <span>بي بي اس ماركت</span>
+</h1>
 
         <p>
-          صفحة مخصصة لعرض منتجات مميزة بأسعار منافسة من المتاجر والعملاء.
-          كل عرض يتم مراجعته قبل الظهور لضمان جودة أفضل وتجربة شراء أوضح.
-        </p>
+  اكتشف أفضل عروض المنتجات والمتاجر على BPS Market by BPS Chat —
+  منصة عربية وعالمية لعرض المنتجات، مقارنة الأسعار، واكتشاف العروض
+  في السعودية، الإمارات، الكويت، قطر، البحرين ومصر.
+  <br />
+  Discover trending products, best deals, electronics, fashion,
+  mobiles, home appliances and more across the Middle East.
+</p>
 
         <div className="heroActions">
           <a href="/customer-offers/add" className="primaryBtn">
@@ -424,15 +427,13 @@ const filteredOffers = approvedOffers.filter((offer) => {
   }
 }
   .customerOffersPage {
-    min-height: 100vh;
-    background:
-      radial-gradient(circle at 18% 8%, rgba(34,197,94,0.16), transparent 26%),
-      radial-gradient(circle at 84% 10%, rgba(59,130,246,0.14), transparent 24%),
-      linear-gradient(180deg, #171717 0%, #212121 45%, #101010 100%);
-    color: #fff;
-    padding: 16px 16px 70px;
-    overflow-x: hidden;
-  }
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, #f4f7fb 0%, #eef2f7 100%);
+  color: #111827;
+  padding: 0 0 70px;
+  overflow-x: hidden;
+}
 .countryBox {
   max-width: 1080px;
   margin: 14px auto 28px;
@@ -530,19 +531,18 @@ const filteredOffers = approvedOffers.filter((offer) => {
   box-shadow: 0 0 24px rgba(59,130,246,0.35);
   transform: translateY(-2px);
 }
-  .hero {
-    position: relative;
-    max-width: 1080px;
-    margin: 0 auto 16px;
-    text-align: center;
-    padding: 22px 16px 18px;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 26px;
-    background: rgba(255,255,255,0.035);
-    box-shadow: 0 18px 55px rgba(0,0,0,0.32);
-    backdrop-filter: blur(12px);
-    overflow: hidden;
-  }
+ .hero {
+  position: relative;
+  max-width: 1320px;
+  margin: 0 auto 24px;
+  overflow: hidden;
+  border-radius: 0 0 34px 34px;
+  padding: 55px 30px;
+  background:
+    linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #2563eb 100%);
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.15);
+}
     .categoryTabs {
   max-width: 1080px;
   margin: 0 auto 18px;
@@ -660,27 +660,30 @@ const filteredOffers = approvedOffers.filter((offer) => {
   }
 
   .primaryBtn {
-    padding: 11px 22px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #16a34a, #22c55e);
-    color: white;
-    font-weight: 950;
-    box-shadow: 0 0 24px rgba(34,197,94,0.36);
-  }
+  padding: 14px 28px;
+  border-radius: 14px;
+  background: #22c55e;
+  color: white;
+  font-weight: 900;
+  font-size: 15px;
+  box-shadow:
+    0 8px 24px rgba(34,197,94,0.28);
+}
 
   .primaryBtn:hover {
     transform: translateY(-3px) scale(1.03);
     box-shadow: 0 0 38px rgba(34,197,94,0.58);
   }
 
-  .secondaryBtn {
-    padding: 11px 20px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #fff;
-    font-weight: 850;
-  }
+ .secondaryBtn {
+  padding: 14px 24px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: #fff;
+  font-weight: 850;
+  backdrop-filter: blur(10px);
+}
 
   .secondaryBtn:hover {
     background: rgba(255,255,255,0.14);
@@ -739,24 +742,25 @@ const filteredOffers = approvedOffers.filter((offer) => {
   }
 
   .offersGrid {
-    max-width: 1080px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
-    gap: 18px;
-    align-items: stretch;
-  }
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+  align-items: stretch;
+}
 
   .offerCard {
-    position: relative;
-    overflow: hidden;
-    border-radius: 24px;
-    background: linear-gradient(180deg, #202020, #121212);
-    border: 1px solid rgba(255,255,255,0.09);
-    box-shadow: 0 18px 45px rgba(0,0,0,0.34);
-    transition: all .28s ease;
-  }
-
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  box-shadow:
+    0 4px 18px rgba(0,0,0,0.06);
+  transition: all .25s ease;
+}
   .offerCard:before {
     content: "";
     position: absolute;
@@ -768,26 +772,24 @@ const filteredOffers = approvedOffers.filter((offer) => {
   }
 
   .offerCard:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 25px 70px rgba(0,0,0,0.5);
-    border-color: rgba(34,197,94,0.35);
-  }
-
+  transform: translateY(-6px);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.12);
+}
   .offerCard:hover:before {
     opacity: 1;
   }
 
   .imageWrap {
-    position: relative;
-    height: 210px;
-    background:
-      radial-gradient(circle at center, rgba(255,255,255,0.09), transparent 62%),
-      #0e0e0e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-  }
+  position: relative;
+  height: 260px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
 
   .imageWrap img {
   max-width: 100%;
@@ -860,19 +862,20 @@ const filteredOffers = approvedOffers.filter((offer) => {
   }
 
   .storeName {
-    color: #9ca3af;
-    font-size: 12.5px;
-    font-weight: 700;
-    margin: 0 0 7px;
-  }
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
 
   .cardContent h2 {
-    font-size: 15.5px;
-    line-height: 1.6;
-    margin: 0 0 12px;
-    min-height: 50px;
-    color: #fff;
-  }
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 0 10px;
+  min-height: 52px;
+  color: #111827;
+  font-weight: 800;
+}
 
   .priceRow {
     display: flex;
@@ -883,10 +886,10 @@ const filteredOffers = approvedOffers.filter((offer) => {
   }
 
   .priceRow strong {
-    color: #22c55e;
-    font-size: 21px;
-    font-weight: 950;
-  }
+  color: #16a34a;
+  font-size: 26px;
+  font-weight: 950;
+}
 
   .priceRow span {
     font-size: 11px;
@@ -898,23 +901,22 @@ const filteredOffers = approvedOffers.filter((offer) => {
     white-space: nowrap;
   }
 
-  .buyBtn {
-    display: block;
-    text-align: center;
-    padding: 11px;
-    border-radius: 15px;
-    background: #fff;
-    color: #111;
-    font-weight: 950;
-  }
+ .buyBtn {
+  display: block;
+  text-align: center;
+  padding: 13px;
+  border-radius: 14px;
+  background: #111827;
+  color: #fff;
+  font-weight: 900;
+  transition: all .25s ease;
+}
 
-  .buyBtn:hover {
-    background: #22c55e;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 0 25px rgba(34,197,94,0.32);
-  }
-
+ .buyBtn:hover {
+  background: #2563eb;
+  color: #fff;
+  transform: translateY(-2px);
+}
   .message,
   .emptyBox {
     max-width: 760px;
