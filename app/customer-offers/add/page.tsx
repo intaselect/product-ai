@@ -432,6 +432,9 @@ if (remainingOffers !== null && remainingOffers <= 0) {
   <label><input type="checkbox" name="category" value="cars" /> سيارات وإكسسوارات</label>
   <label><input type="checkbox" name="category" value="kids" /> أطفال</label>
   <label><input type="checkbox" name="category" value="sports" /> رياضة</label>
+  <label><input type="checkbox" name="category" value="cameras" /> كاميرات</label>
+
+<label><input type="checkbox" name="category" value="camera_accessories" /> ملحقات كاميرات</label>
   <label><input type="checkbox" name="category" value="other" /> أخرى</label>
 </div>
 </div>

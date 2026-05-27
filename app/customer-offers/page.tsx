@@ -88,6 +88,8 @@ const categoryCards: Record<string, { ar: string; en: string; icon: string }> = 
   sports: { ar: "رياضة", en: "Sports", icon: "🏋️" },
   kids: { ar: "أطفال", en: "Kids", icon: "🧸" },
   cars: { ar: "سيارات", en: "Cars", icon: "🚗" },
+  cameras: { ar: "كاميرات", en: "Cameras", icon: "📷" },
+camera_accessories: { ar: "ملحقات كاميرات", en: "Camera Accessories", icon: "🎥" },
   other: { ar: "المزيد", en: "More", icon: "▦" },
 };
 const categoryNames: Record<string, string> = {
@@ -110,6 +112,8 @@ const categoryNames: Record<string, string> = {
   cars: "سيارات وإكسسوارات",
   kids: "أطفال",
   sports: "رياضة",
+  cameras: "كاميرات",
+camera_accessories: "ملحقات كاميرات",
   other: "أخرى",
 };
 export default async function CustomerOffersPage({
