@@ -339,7 +339,16 @@ const filteredOffers = approvedOffers.filter((offer) => {
           <a href="/customer-offers/add">أضف أول عرض</a>
         </div>
       )}
+<section className="marketSectionHeader">
+  <div>
+    <h2>🔥 عروض اليوم</h2>
+    <p>Today Deals</p>
+  </div>
 
+  <a href="/customer-offers">
+    عرض كل العروض
+  </a>
+</section>
       {!error && filteredOffers.length > 0 && (
         <section className="offersGrid">
           {filteredOffers.map((offer) => (
@@ -932,14 +941,14 @@ const filteredOffers = approvedOffers.filter((offer) => {
     opacity: 1;
   }
 
-  .imageWrap {
+ .imageWrap {
   position: relative;
-  height: 260px;
+  height: 290px;
   background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
   border-bottom: 1px solid #f1f5f9;
 }
 
@@ -1008,10 +1017,10 @@ const filteredOffers = approvedOffers.filter((offer) => {
   }
 
   .cardContent {
-    position: relative;
-    z-index: 2;
-    padding: 15px;
-  }
+  position: relative;
+  z-index: 2;
+  padding: 12px;
+}
 
   .storeName {
   color: #6b7280;
@@ -1020,15 +1029,14 @@ const filteredOffers = approvedOffers.filter((offer) => {
   margin: 0 0 8px;
 }
 
-  .cardContent h2 {
-  font-size: 15px;
+ .cardContent h2 {
+  font-size: 14px;
   line-height: 1.7;
   margin: 0 0 10px;
-  min-height: 52px;
+  min-height: 46px;
   color: #111827;
   font-weight: 800;
 }
-
   .priceRow {
     display: flex;
     align-items: center;
@@ -1108,7 +1116,46 @@ const filteredOffers = approvedOffers.filter((offer) => {
     color: white;
     font-weight: 900;
   }
+.marketSectionHeader {
+  max-width: 1320px;
+  margin: 24px auto 18px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.marketSectionHeader h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #111827;
+  font-weight: 950;
+}
+
+.marketSectionHeader p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.marketSectionHeader a {
+  text-decoration: none;
+  color: #16a34a;
+  font-weight: 950;
+}
+
+@media (max-width: 700px) {
+  .marketSectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .marketSectionHeader h2 {
+    font-size: 22px;
+  }
+}
   @media (max-width: 700px) {
     .customerOffersPage {
       padding: 12px 12px 60px;
