@@ -968,87 +968,50 @@ async function handleSearch() {
 }
 .sidebarCustomerStoreGlow {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-
-  padding: 15px 14px;
-  border-radius: 22px;
-  min-height: 72px;
-
-  background: linear-gradient(135deg, rgba(16,185,129,0.26), rgba(6,182,212,0.20), rgba(59,130,246,0.26));
-  border: 1px solid rgba(0,255,200,0.34);
-  color: #fff !important;
-  font-weight: 950;
+  background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(59,130,246,0.15));
+  border: 1px solid rgba(34,197,94,0.35);
+  color: #fff;
+  font-weight: 900;
   overflow: hidden;
-
-  box-shadow:
-    0 0 24px rgba(0,255,200,0.22),
-    0 0 45px rgba(0,180,255,0.16),
-    inset 0 0 22px rgba(255,255,255,0.04);
-
-  backdrop-filter: blur(14px);
-  animation: marketSidebarPulse 2.8s ease-in-out infinite;
-  transition: all 0.28s ease;
+  transition: all 0.25s ease;
 }
 
-.sidebarCustomerStoreGlow::before {
+/* glow متحرك */
+.sidebarCustomerStoreGlow::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.16), transparent);
-  transform: translateX(-120%);
-  animation: sidebarShine 4s linear infinite;
+  inset: -1px;
+  background: linear-gradient(120deg, transparent, rgba(34,197,94,0.6), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
+.sidebarCustomerStoreGlow:hover::after {
+  opacity: 1;
+}
+
+/* hover حركة */
 .sidebarCustomerStoreGlow:hover {
-  transform: translateX(-6px) scale(1.025);
-  border-color: rgba(0,255,200,0.62);
-  box-shadow:
-    0 0 32px rgba(0,255,200,0.34),
-    0 0 60px rgba(0,180,255,0.24),
-    inset 0 0 26px rgba(255,255,255,0.07);
+  transform: translateX(-5px) scale(1.02);
+  box-shadow: 0 0 28px rgba(34,197,94,0.35);
 }
 
-.storeIcon {
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08));
-  border: 1px solid rgba(255,255,255,0.16);
-  font-size: 22px;
-  box-shadow: 0 0 18px rgba(255,255,255,0.10);
-}
-
+/* النص الصغير */
 .subText {
   display: block;
-  margin-top: 4px;
   font-size: 11px;
-  font-weight: 700;
-  color: #d9fdf7;
-  opacity: 0.92;
+  color: #cfcfcf;
+  margin-top: 3px;
+  font-weight: 600;
 }
-
-@keyframes sidebarShine {
-  0% { transform: translateX(-120%); }
-  100% { transform: translateX(120%); }
-}
-
-@keyframes marketSidebarPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.018); }
-}
-
-.storePromo {
+  .storePromo {
   margin-top: 25px;
   padding: 20px;
   border-radius: 16px;
+
   background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(59,130,246,0.08));
   border: 1px solid rgba(34,197,94,0.25);
+
   backdrop-filter: blur(10px);
 }
 
@@ -2108,62 +2071,7 @@ z-index: 3;
       0 0 45px rgba(0,180,255,0.25);
   }
 }
- @media (max-width: 600px) {
-  .aiBackground,
-  .particles,
-  .particles span,
-  .brainCore,
-  .grid,
-  span[style*="--i"] {
-    display: none !important;
-  }
-
-  .hero::before {
-    display: none !important;
-    animation: none !important;
-  }
-
-  .menuButton {
-    display: block;
-  }
-
-  .sidebar {
-    width: 82%;
-    left: -85%;
-  }
-
-  .sidebar.open {
-    left: 0;
-  }
-
-  .sidebar a,
-  .sidebar .menuItem {
-    color: #ffffff !important;
-  }
-
-  .sidebarCustomerStoreGlow {
-    padding: 16px 14px !important;
-    border-radius: 18px;
-    box-shadow:
-      0 0 24px rgba(249,115,22,0.42),
-      0 0 42px rgba(34,197,94,0.34);
-    animation: marketSidebarPulse 2s ease-in-out infinite;
-  }
-
-  .sidebarCustomerStoreGlow .subText {
-    font-size: 12px;
-    margin-top: 5px;
-    color: rgba(255,255,255,0.92);
-  }
-
-  .storeIcon {
-    width: 46px;
-    height: 46px;
-    min-width: 46px;
-    font-size: 24px;
-    border-radius: 16px;
-  }
-
+  @media (max-width: 600px) {
   .composer {
     padding: 16px 12px;
     margin: 16px 10px 0;
@@ -2183,64 +2091,16 @@ z-index: 3;
     align-items: stretch;
     gap: 10px;
     max-width: 100%;
-    padding: 12px;
+    padding: 10px;
   }
 
   .input {
     width: 100%;
-    height: 54px;
+    height: 44px;
     text-align: right;
-    font-size: 16px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(0,255,200,0.22);
-    border-radius: 14px;
-    padding: 0 14px;
+    font-size: 14px;
   }
 
-  .input:focus {
-    border-color: rgba(0,255,200,0.55);
-    box-shadow:
-      0 0 0 3px rgba(0,255,200,0.12),
-      inset 0 0 10px rgba(0,255,200,0.08);
-  }
-
-  .searchActions {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 8px;
-  }
-
-  .button {
-    width: 100%;
-    height: 50px;
-    padding: 0 14px;
-  }
-
-  .searchCounter {
-    min-width: 56px;
-    height: 50px;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    border-radius: 13px;
-    white-space: nowrap;
-  }
-
-  .aiErrorBox {
-    max-width: 100%;
-    font-size: 12px;
-    line-height: 1.7;
-    padding: 10px 12px;
-    margin: 10px auto 12px;
-  }
-
-  .sponsoredGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
   .searchActions {
     width: 100%;
     display: grid;
