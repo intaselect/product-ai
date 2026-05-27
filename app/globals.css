@@ -109,7 +109,8 @@ body {
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 10px 0;
+ padding: 10px 0 10px 62px;
+ min-height: 44px;
   background: linear-gradient(135deg, #0f172a, #1d4ed8, #16a34a);
   border-bottom: 1px solid rgba(255,255,255,0.12);
   box-shadow: 0 10px 28px rgba(15,23,42,0.18);
@@ -138,8 +139,8 @@ body {
 .trustedTrack {
   display: flex;
   gap: 12px;
-  min-width: max-content;
-  animation: trustedScroll 28s linear infinite;
+  width: max-content;
+  animation: trustedScroll 55s linear infinite;
 }
 
 .trustedLogo {
@@ -160,11 +161,12 @@ body {
 }
 
 @keyframes trustedScroll {
-  from {
+  0% {
     transform: translateX(0);
   }
-  to {
-    transform: translateX(50%);
+
+  100% {
+    transform: translateX(-50%);
   }
 }
 

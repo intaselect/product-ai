@@ -970,77 +970,85 @@ async function handleSearch() {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 
-  padding: 14px 12px;
-  border-radius: 20px;
-  min-height: 64px;
+  padding: 15px 14px;
+  border-radius: 22px;
+  min-height: 72px;
 
-  background: linear-gradient(135deg, #f97316 0%, #22c55e 48%, #2563eb 100%);
-  border: 1px solid rgba(255,255,255,0.22);
+  background: linear-gradient(135deg, rgba(16,185,129,0.26), rgba(6,182,212,0.20), rgba(59,130,246,0.26));
+  border: 1px solid rgba(0,255,200,0.34);
   color: #fff !important;
   font-weight: 950;
   overflow: hidden;
 
   box-shadow:
-    0 0 22px rgba(249,115,22,0.32),
-    0 0 38px rgba(34,197,94,0.28);
+    0 0 24px rgba(0,255,200,0.22),
+    0 0 45px rgba(0,180,255,0.16),
+    inset 0 0 22px rgba(255,255,255,0.04);
 
-  animation: marketSidebarPulse 2.4s ease-in-out infinite;
-  transition: all 0.25s ease;
+  backdrop-filter: blur(14px);
+  animation: marketSidebarPulse 2.8s ease-in-out infinite;
+  transition: all 0.28s ease;
 }
+
+.sidebarCustomerStoreGlow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.16), transparent);
+  transform: translateX(-120%);
+  animation: sidebarShine 4s linear infinite;
+}
+
+.sidebarCustomerStoreGlow:hover {
+  transform: translateX(-6px) scale(1.025);
+  border-color: rgba(0,255,200,0.62);
+  box-shadow:
+    0 0 32px rgba(0,255,200,0.34),
+    0 0 60px rgba(0,180,255,0.24),
+    inset 0 0 26px rgba(255,255,255,0.07);
+}
+
 .storeIcon {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.22);
-  font-size: 20px;
-}
-@keyframes marketSidebarPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.045); }
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08));
+  border: 1px solid rgba(255,255,255,0.16);
+  font-size: 22px;
+  box-shadow: 0 0 18px rgba(255,255,255,0.10);
 }
 
-/* glow متحرك */
-.sidebarCustomerStoreGlow::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(120deg, transparent, rgba(34,197,94,0.6), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.sidebarCustomerStoreGlow:hover::after {
-  opacity: 1;
-}
-
-/* hover حركة */
-.sidebarCustomerStoreGlow:hover {
-  transform: translateX(-5px) scale(1.02);
-  box-shadow: 0 0 28px rgba(34,197,94,0.35);
-}
-
-/* النص الصغير */
 .subText {
   display: block;
+  margin-top: 4px;
   font-size: 11px;
-  color: #cfcfcf;
-  margin-top: 3px;
-  font-weight: 600;
+  font-weight: 700;
+  color: #d9fdf7;
+  opacity: 0.92;
 }
-  .storePromo {
+
+@keyframes sidebarShine {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+@keyframes marketSidebarPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.018); }
+}
+
+.storePromo {
   margin-top: 25px;
   padding: 20px;
   border-radius: 16px;
-
   background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(59,130,246,0.08));
   border: 1px solid rgba(34,197,94,0.25);
-
   backdrop-filter: blur(10px);
 }
 

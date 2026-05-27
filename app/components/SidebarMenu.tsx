@@ -99,31 +99,109 @@ export default function SidebarMenu() {
       </aside>
 
       <style jsx>{`
-        .menuButton {
-          position: fixed;
-          top: 76px;
-          left: 18px;
-          z-index: 9999;
+ .menuButton {
+  position: fixed;
+  top: 76px;
+  left: 18px;
+  z-index: 9999;
 
-          width: 42px;
-          height: 42px;
-          padding: 0;
+  width: 48px;
+  height: 48px;
+  padding: 0;
 
-          display: flex;
-          align-items: center;
-          justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-          border: 1px solid #3a3a3a;
-          border-radius: 12px;
-          background: #2f2f2f;
-          color: #ffffff;
+  border-radius: 16px;
 
-          font-size: 22px;
-          line-height: 1;
-          cursor: pointer;
+  border: 1px solid rgba(0,255,200,0.32);
 
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-        }
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15,23,42,0.96),
+      rgba(30,41,59,0.94)
+    );
+
+  color: #ffffff;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 0 12px rgba(0,255,200,0.18),
+    0 0 30px rgba(37,99,235,0.20),
+    inset 0 0 18px rgba(255,255,255,0.05);
+
+  animation: menuGlowPulse 2.2s ease-in-out infinite;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.menuButton::before {
+  content: "";
+
+  position: absolute;
+  inset: -2px;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.22),
+      transparent
+    );
+
+  transform: translateX(-140%);
+  animation: menuShine 3.5s linear infinite;
+}
+
+.menuButton:hover {
+  transform: scale(1.08);
+
+  border-color: rgba(0,255,200,0.58);
+
+  box-shadow:
+    0 0 18px rgba(0,255,200,0.30),
+    0 0 42px rgba(37,99,235,0.30),
+    inset 0 0 20px rgba(255,255,255,0.08);
+}
+
+@keyframes menuGlowPulse {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 12px rgba(0,255,200,0.18),
+      0 0 30px rgba(37,99,235,0.20);
+  }
+
+  50% {
+    transform: scale(1.06);
+    box-shadow:
+      0 0 22px rgba(0,255,200,0.38),
+      0 0 55px rgba(37,99,235,0.34);
+  }
+}
+
+@keyframes menuShine {
+  0% {
+    transform: translateX(-140%);
+  }
+
+  100% {
+    transform: translateX(140%);
+  }
+}
 .sidebarCustomerStoreGlow {
   position: relative;
   display: flex;
