@@ -511,7 +511,7 @@ async function handleSearch() {
   
 
   return (
- <div className="marketHomePage">
+  <div className="page">
     {/* AI Animated Background - Desktop only */}
     {!isMobile && (
       <div className="aiBackground">
@@ -2387,133 +2387,6 @@ z-index: 3;
 
   50% {
     transform: translateY(-3px);
-  }
-}
-  .marketHomePage {
-  min-height: 100vh;
-
-  background:
-    radial-gradient(circle at top, rgba(59,130,246,0.10), transparent 30%),
-    linear-gradient(180deg, #f3f7fb 0%, #ffffff 100%);
-
-  color: #0f172a;
-
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* إزالة الجو القديم */
-.marketHomePage .aiBackground,
-.marketHomePage .brainCore,
-.marketHomePage .grid,
-.marketHomePage .particles {
-  display: none !important;
-}
-
-/* الهيرو */
-.marketHomePage .hero {
-  background:
-    linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #2563eb 100%);
-
-  border-radius: 0 0 40px 40px;
-
-  padding:
-    80px 25px
-    60px;
-
-  margin-bottom: 35px;
-
-  color: white;
-
-  box-shadow:
-    0 20px 60px rgba(37,99,235,0.18);
-}
-
-/* العنوان */
-.marketHomePage .typingText {
-  color: #ffffff;
-  text-shadow: none;
-}
-
-.marketHomePage .arabicBrandName {
-  color: #dbeafe;
-}
-
-/* شريط المستخدمين */
-.marketHomePage .liveStorePulse {
-  background: white;
-  color: #0f172a;
-
-  border: 1px solid rgba(37,99,235,0.12);
-
-  box-shadow:
-    0 10px 35px rgba(0,0,0,0.08);
-}
-
-/* البحث */
-.marketHomePage .composer {
-  background: white;
-
-  border: 1px solid #dbe4f0;
-
-  box-shadow:
-    0 20px 50px rgba(15,23,42,0.08);
-}
-
-.marketHomePage .searchBox {
-  background: #f8fafc;
-  border: 1px solid #dbe4f0;
-}
-
-.marketHomePage .input {
-  color: #111827;
-}
-
-.marketHomePage .input::placeholder {
-  color: #64748b;
-}
-
-/* الكروت */
-.marketHomePage .card,
-.marketHomePage .adCard,
-.marketHomePage .storeCard {
-  background: white !important;
-
-  border: 1px solid #e5e7eb !important;
-
-  box-shadow:
-    0 10px 30px rgba(15,23,42,0.06);
-}
-
-/* النصوص */
-.marketHomePage .subtitle,
-.marketHomePage .meta,
-.marketHomePage p {
-  color: #64748b;
-}
-
-/* الأزرار */
-.marketHomePage .button,
-.marketHomePage .storeBtn.primary {
-  background:
-    linear-gradient(135deg, #2563eb, #22c55e);
-
-  color: white;
-}
-
-.marketHomePage .button:hover,
-.marketHomePage .storeBtn.primary:hover {
-  transform: translateY(-2px);
-}
-
-/* موبايل */
-@media (max-width: 768px) {
-  .marketHomePage .hero {
-    padding:
-      70px 18px
-      50px;
-
-    border-radius: 0 0 28px 28px;
   }
 }
 `}</style>

@@ -159,15 +159,6 @@ export default function RootLayout({
    <body className="min-h-screen flex flex-col">
   <Navbar />
   <SidebarMenu />
-  <Navbar />
-
-<a href="/" className="globalSearchPromo">
-  <span>🔥 لسه مش بتستخدم BPS Chat؟</span>
-  <strong>ابحث عن أي منتج واعرف أفضل سعر الآن</strong>
-  <b>ابدأ البحث ←</b>
-</a>
-
-{children}
 
   <div className="flex-1">
     {children}
