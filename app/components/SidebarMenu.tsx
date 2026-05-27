@@ -74,8 +74,8 @@ export default function SidebarMenu() {
        <a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
   <span className="storeIcon">🛍️</span>
   <span>
-    متجر العملاء
-    <span className="subText">اعرض منتجك وبيع أسرع</span>
+   BPS Market 🛒
+<span className="subText">تسوّق عروض العملاء الآن</span>
   </span>
 </a>
 
@@ -128,29 +128,56 @@ export default function SidebarMenu() {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: linear-gradient(135deg, rgba(34,197,94,0.28), rgba(6,182,212,0.18), rgba(37,99,235,0.16));
-  border: 1px solid rgba(34,197,94,0.45);
+  gap: 12px;
+
+  padding: 14px 12px;
+  border-radius: 20px;
+
+  min-height: 64px;
+
+  background:
+    linear-gradient(135deg, #f97316 0%, #22c55e 48%, #2563eb 100%);
+
+  border: 1px solid rgba(255,255,255,0.22);
+
   color: #fff !important;
-  font-weight: 900;
+
+  font-weight: 950;
+
   overflow: hidden;
-  box-shadow: 0 0 18px rgba(34,197,94,0.18);
+
+  box-shadow:
+    0 0 22px rgba(249,115,22,0.32),
+    0 0 38px rgba(34,197,94,0.28);
+
+  animation: marketSidebarPulse 2.4s ease-in-out infinite;
+
+  transition: all 0.25s ease;
 }
-  .storeIcon {
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
+  @keyframes marketSidebarPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.045);
+  }
+}
+ .storeIcon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.14);
-  font-size: 18px;
-  box-shadow: inset 0 0 12px rgba(255,255,255,0.08);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.22);
+  font-size: 20px;
+  box-shadow: inset 0 0 14px rgba(255,255,255,0.14);
+  animation: storeIconFloat 2s ease-in-out infinite;
 }
 
 .sidebarCustomerStoreGlow:hover {
-  transform: translateX(-5px) scale(1.02);
+  transform: translateX(-5px) scale(1.03);
   box-shadow: 0 0 30px rgba(34,197,94,0.42);
   background: linear-gradient(
     135deg,
@@ -191,9 +218,6 @@ export default function SidebarMenu() {
   border: 1px solid rgba(124,58,237,0.35);
   color: #fff;
   font-weight: 900;
-  transition: all 0.25s ease;
-}
-  .sidebarCustomerStoreGlow {
   transition: all 0.25s ease;
 }
   
@@ -381,6 +405,58 @@ export default function SidebarMenu() {
           .sidebar.open {
             left: 0;
           }
+            .sidebarCustomerStoreGlow {
+  padding: 16px 14px !important;
+  border-radius: 18px;
+
+  box-shadow:
+    0 0 24px rgba(249,115,22,0.42),
+    0 0 42px rgba(34,197,94,0.34);
+
+  animation: marketSidebarPulse 2s ease-in-out infinite;
+}
+
+.sidebarCustomerStoreGlow .subText {
+  font-size: 12px;
+  margin-top: 5px;
+  color: rgba(255,255,255,0.92);
+}
+
+.storeIcon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+
+  font-size: 24px;
+
+  border-radius: 16px;
+
+  box-shadow:
+    inset 0 0 18px rgba(255,255,255,0.18),
+    0 0 16px rgba(255,255,255,0.12);
+}
+
+.sidebarCustomerStoreGlow::after {
+  content: "🔥";
+  position: absolute;
+
+  top: 8px;
+  left: 10px;
+
+  font-size: 14px;
+
+  animation: fireFloat 1.8s ease-in-out infinite;
+}
+
+@keyframes fireFloat {
+  0%,100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
         }
       `}</style>
     </>

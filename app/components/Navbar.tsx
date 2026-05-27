@@ -32,8 +32,15 @@ export default function Navbar({ user }: { user?: any }) {
   className="customerStoreHover"
 >
   <span style={styles.customerStoreIcon}>🛍️</span>
-  <span style={styles.customerStoreText}>متجر العملاء</span>
-  <span style={styles.customerStoreSub}>بيع واشتري</span>
+ <div style={styles.customerStoreContent}>
+  <div style={styles.customerStoreTexts}>
+    <span style={styles.customerStoreText}>BPS Market</span>
+
+    <span style={styles.customerStoreSub}>
+      تسوّق الآن
+    </span>
+  </div>
+</div>
 </Link>
           <Link
   href="/customer-offers/dashboard"
@@ -106,19 +113,19 @@ export default function Navbar({ user }: { user?: any }) {
   animation: iconFloat 2s ease-in-out infinite;
 }
 
-      @keyframes customerStorePulse {
+    @keyframes customerStorePulse {
   0%, 100% {
     transform: translateY(0) scale(1);
     box-shadow:
-      0 0 14px rgba(34,197,94,0.38),
-      0 0 32px rgba(6,182,212,0.18);
+      0 0 16px rgba(249,115,22,0.45),
+      0 0 34px rgba(34,197,94,0.28);
   }
 
   50% {
-    transform: translateY(-1px) scale(1.035);
+    transform: translateY(-2px) scale(1.06);
     box-shadow:
-      0 0 24px rgba(34,197,94,0.75),
-      0 0 55px rgba(6,182,212,0.38);
+      0 0 28px rgba(249,115,22,0.75),
+      0 0 58px rgba(34,197,94,0.48);
   }
 }
 .sellerDashboardHover:hover {
@@ -147,10 +154,9 @@ export default function Navbar({ user }: { user?: any }) {
   transform: translateX(-120%);
   transition: transform 0.65s ease;
 }
-  .customerStoreHover:hover::before {
-  transform: translateX(120%);
+ .customerStoreHover:hover {
+  transform: translateY(-2px) scale(1.05);
 }
-
 .customerStoreHover:hover {
   transform: translateY(-2px) scale(1.07);
   filter: brightness(1.15);
@@ -181,6 +187,41 @@ const styles: any = {
     background: "#212121",
     borderBottom: "1px solid #333",
   },
+  customerStoreContent: {
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+},
+
+customerStoreIcon: {
+  width: "34px",
+  height: "34px",
+  borderRadius: "12px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "rgba(255,255,255,0.18)",
+  fontSize: "18px",
+  boxShadow: "inset 0 0 10px rgba(255,255,255,0.15)",
+},
+
+customerStoreTexts: {
+  display: "flex",
+  flexDirection: "column",
+  lineHeight: 1.05,
+},
+
+customerStoreText: {
+  fontSize: "14px",
+  fontWeight: 950,
+  color: "#fff",
+},
+
+customerStoreSub: {
+  fontSize: "10px",
+  fontWeight: 800,
+  color: "rgba(255,255,255,0.85)",
+},
 sellerDashboardBtn: {
   background: "linear-gradient(135deg, #7c3aed, #2563eb)",
   padding: "8px 14px",
@@ -226,50 +267,35 @@ sellerDashboardBtn: {
     animation: "advertisePulse 2.2s ease-in-out infinite",
   },
 
- customerStoreBtn: {
+customerStoreBtn: {
   display: "inline-flex",
   alignItems: "center",
-  gap: "7px",
-  padding: "8px 14px",
+
+  padding: "8px 15px",
+
   borderRadius: "999px",
+
   background:
-    "linear-gradient(135deg, #16a34a 0%, #06b6d4 55%, #2563eb 100%)",
+    "linear-gradient(135deg, #f97316 0%, #22c55e 45%, #2563eb 100%)",
+
   color: "#fff",
-  fontWeight: "950",
-  fontSize: "13px",
+
   textDecoration: "none",
-  whiteSpace: "nowrap",
+
   border: "1px solid rgba(255,255,255,0.22)",
+
   boxShadow:
-    "0 0 14px rgba(34,197,94,0.42), 0 0 34px rgba(6,182,212,0.22)",
-  transition: "all 0.25s ease",
-},
+    "0 0 18px rgba(249,115,22,0.42), 0 0 34px rgba(34,197,94,0.28)",
 
-customerStoreIcon: {
-  width: "25px",
-  height: "25px",
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  borderRadius: "999px",
-  background: "rgba(255,255,255,0.18)",
-  fontSize: "15px",
-},
+  animation: "customerStorePulse 2.4s ease-in-out infinite",
 
-customerStoreText: {
+  transition: "all .25s ease",
+
+  overflow: "hidden",
+
   position: "relative",
-  zIndex: 2,
 },
 
-customerStoreSub: {
-  position: "relative",
-  zIndex: 2,
-  fontSize: "10px",
-  padding: "2px 7px",
-  borderRadius: "999px",
-  background: "rgba(0,0,0,0.22)",
-  color: "#ecfeff",
-},
 
   smartBtn: {
     background: "linear-gradient(135deg, #2563eb, #10a37f)",
