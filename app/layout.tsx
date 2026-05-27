@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Footer from "./components/Footer";
 import InternalLinksBoost from "./components/InternalLinksBoost";
+import TrustedSourcesBar from "@/app/components/TrustedSourcesBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -157,9 +158,9 @@ export default function RootLayout({
 </head>
 
    <body className="min-h-screen flex flex-col">
-  <Navbar />
-  <SidebarMenu />
-
+ <Navbar />
+<TrustedSourcesBar />
+<SidebarMenu />
   <div className="flex-1">
     {children}
   </div>

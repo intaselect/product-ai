@@ -102,3 +102,92 @@ body {
 .mouseGlowBody {
   position: relative;
 }
+.trustedSourcesBar {
+  position: relative;
+  z-index: 20;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 0;
+  background: linear-gradient(135deg, #0f172a, #1d4ed8, #16a34a);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 10px 28px rgba(15,23,42,0.18);
+}
+
+.trustedText {
+  flex: 0 0 auto;
+  padding: 0 18px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.trustedText strong {
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.trustedText span {
+  font-size: 11px;
+  color: #dbeafe;
+  font-weight: 800;
+}
+
+.trustedTrack {
+  display: flex;
+  gap: 12px;
+  min-width: max-content;
+  animation: trustedScroll 28s linear infinite;
+}
+
+.trustedLogo {
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: white;
+  font-size: 12px;
+  font-weight: 950;
+  white-space: nowrap;
+  box-shadow: inset 0 0 12px rgba(255,255,255,0.06);
+}
+
+.trustedLogo:hover {
+  background: rgba(255,255,255,0.24);
+  transform: translateY(-1px);
+}
+
+@keyframes trustedScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
+@media (max-width: 700px) {
+  .trustedSourcesBar {
+    gap: 10px;
+    padding: 9px 0;
+  }
+
+  .trustedText {
+    padding: 0 12px;
+  }
+
+  .trustedText strong {
+    font-size: 12px;
+  }
+
+  .trustedText span {
+    font-size: 10px;
+  }
+
+  .trustedLogo {
+    font-size: 11px;
+    padding: 6px 11px;
+  }
+}
