@@ -76,6 +76,20 @@ function formatOfferPrice(price: string, country?: string | null) {
   const currency = countryCurrencies[country || ""] || "";
   return currency ? `${price} ${currency}` : price;
 }
+const categoryCards: Record<string, { ar: string; en: string; icon: string }> = {
+  all: { ar: "كل العروض", en: "All Deals", icon: "🛍️" },
+  mobiles: { ar: "موبايلات", en: "Mobiles", icon: "📱" },
+  electronics: { ar: "إلكترونيات", en: "Electronics", icon: "🎧" },
+  computers: { ar: "كمبيوتر ولابتوب", en: "Computers", icon: "💻" },
+  home: { ar: "المنزل والمطبخ", en: "Home", icon: "🏠" },
+  beauty: { ar: "جمال وعناية", en: "Beauty", icon: "💄" },
+  fashion: { ar: "ملابس", en: "Fashion", icon: "👕" },
+  shoes: { ar: "أحذية", en: "Shoes", icon: "👟" },
+  sports: { ar: "رياضة", en: "Sports", icon: "🏋️" },
+  kids: { ar: "أطفال", en: "Kids", icon: "🧸" },
+  cars: { ar: "سيارات", en: "Cars", icon: "🚗" },
+  other: { ar: "المزيد", en: "More", icon: "▦" },
+};
 const categoryNames: Record<string, string> = {
   all: "كل العروض",
   electronics: "إلكترونيات",
@@ -188,6 +202,37 @@ const filteredOffers = approvedOffers.filter((offer) => {
           </div>
         </div>
       </section>
+      <section className="marketCategorySection">
+  <div className="sectionTitleRow">
+    <div>
+      <h2>تسوق حسب القسم</h2>
+      <p>Shop by Category</p>
+    </div>
+    <a href="/customer-offers">عرض كل العروض</a>
+  </div>
+
+  <div className="marketCategoryGrid">
+    {Object.entries(categoryCards).map(([key, item]) => (
+      <a
+        key={key}
+        href={
+          key === "all"
+            ? selectedCountry === "all"
+              ? "/customer-offers"
+              : `/customer-offers?country=${selectedCountry}`
+            : selectedCountry === "all"
+              ? `/customer-offers?category=${key}`
+              : `/customer-offers?category=${key}&country=${selectedCountry}`
+        }
+        className={selectedCategory === key ? "marketCategoryCard active" : "marketCategoryCard"}
+      >
+        <span className="categoryIcon">{item.icon}</span>
+        <strong>{item.ar}</strong>
+        <small>{item.en}</small>
+      </a>
+    ))}
+  </div>
+</section>
 
       <section className="seoBox">
         <h2>عروض منتجات حقيقية من العملاء والمتاجر</h2>
@@ -198,6 +243,7 @@ const filteredOffers = approvedOffers.filter((offer) => {
           قطر، البحرين ومصر.
         </p>
       </section>
+      
       <section className="categoryTabs">
   {Object.entries(categoryNames).map(([key, label]) => (
     <a
@@ -359,7 +405,115 @@ const filteredOffers = approvedOffers.filter((offer) => {
   gap: 10px;
   align-items: center;
 }
+.marketCategorySection {
+  max-width: 1320px;
+  margin: 0 auto 22px;
+  padding: 0 20px;
+}
 
+.sectionTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.sectionTitleRow h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.sectionTitleRow p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.sectionTitleRow a {
+  text-decoration: none;
+  color: #16a34a;
+  font-weight: 950;
+  font-size: 14px;
+}
+
+.marketCategoryGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+}
+
+.marketCategoryCard {
+  text-decoration: none;
+  min-height: 118px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  box-shadow: 0 6px 20px rgba(15,23,42,0.06);
+  transition: all .25s ease;
+}
+
+.marketCategoryCard:hover,
+.marketCategoryCard.active {
+  transform: translateY(-5px);
+  border-color: rgba(34,197,94,0.45);
+  box-shadow: 0 16px 34px rgba(15,23,42,0.12);
+  background: linear-gradient(180deg, #ffffff, #ecfdf5);
+}
+
+.categoryIcon {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0fdf4;
+  font-size: 25px;
+}
+
+.marketCategoryCard strong {
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.marketCategoryCard small {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .marketCategoryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .marketCategoryGrid {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .marketCategoryCard {
+    min-width: 130px;
+  }
+
+  .sectionTitleRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
 .offersSearchForm input {
   flex: 1;
   border: 1px solid rgba(255,255,255,0.12);
@@ -543,36 +697,33 @@ const filteredOffers = approvedOffers.filter((offer) => {
   box-shadow:
     0 10px 40px rgba(0,0,0,0.15);
 }
-    .categoryTabs {
-  max-width: 1080px;
-  margin: 0 auto 18px;
+   .categoryTabs {
+  max-width: 1320px;
+  margin: 10px auto 18px;
+  padding: 0 20px;
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
+  overflow-x: auto;
+  flex-wrap: nowrap;
 }
-
 .categoryTabs a {
   text-decoration: none;
-  padding: 11px 16px;
+  padding: 9px 15px;
   border-radius: 999px;
   background: #ffffff;
   border: 1px solid #dbe4ee;
   color: #111827;
   font-weight: 900;
-  font-size: 13px;
+  font-size: 12px;
   transition: all .25s ease;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  white-space: nowrap;
 }
 .categoryTabs a:hover,
 .categoryTabs a.active {
-  background: linear-gradient(135deg, #2563eb, #22c55e);
+  background: #111827;
   color: #fff;
-  border-color: transparent;
-  box-shadow: 0 8px 22px rgba(37,99,235,0.22);
-  transform: translateY(-2px);
+  border-color: #111827;
 }
-
   .aiGlow {
     position: absolute;
     width: 210px;
