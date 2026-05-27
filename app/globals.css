@@ -113,7 +113,8 @@ body {
   display: flex;
   align-items: center;
 
-  background: linear-gradient(135deg, #0f172a, #1d4ed8, #16a34a);
+  background: linear-gradient(135deg, #0f172a, #111827, #166534);
+
   border: 1px solid rgba(255,255,255,0.14);
 
   box-shadow:
@@ -197,7 +198,10 @@ body {
     height: 42px;
     margin: 7px auto 0;
     border-radius: 14px;
+
+    background: linear-gradient(135deg, #0f172a, #111827, #166534);
   }
+
 
   .trustedText {
     flex-basis: 150px;
