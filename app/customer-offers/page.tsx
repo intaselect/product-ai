@@ -122,6 +122,16 @@ export default async function CustomerOffersPage({
   const selectedCategory = params?.category || "all";
 const visitorCountry = await getVisitorCountry();
 const selectedCountry = params?.country || visitorCountry;
+const heroCountryName =
+  selectedCountry === "all"
+    ? "كل الدول"
+    : countryNames[selectedCountry] || "منطقتك";
+
+const heroCountryUrl =
+  selectedCountry === "all"
+    ? "/customer-offers"
+    : `/customer-offers?country=${selectedCountry}`;
+
   const searchQuery = String(params?.q || "").trim().toLowerCase();
 const isCountrySelected = selectedCountry !== "all";
   const { data: offers, error } = await supabase
@@ -158,50 +168,51 @@ const filteredOffers = approvedOffers.filter((offer) => {
 });
   return (
     <main className="customerOffersPage" dir="rtl">
-      <section className="hero">
-        <div className="aiGlow aiGlowOne" />
-        <div className="aiGlow aiGlowTwo" />
+      <section className="hero marketplaceHero">
+  <div className="heroText">
+    <div className="badge">🛒 BPS Market | بي بي اس ماركت</div>
 
-        <div className="badge">🚀 عروض مختارة من عملاء ومتاجر BPS Chat</div>
+    <h1>
+      أفضل عروض <span>{heroCountryName}</span>
+    </h1>
 
-        <h1>
-  BPS Market <span>بي بي اس ماركت</span>
-</h1>
+    <p>
+      اكتشف عروض ومنتجات مختارة في {heroCountryName} من العملاء والمتاجر
+      على BPS Market by BPS Chat.
+      <br />
+      Discover best deals, trending products, electronics, fashion,
+      mobiles and home appliances in {heroCountryName}.
+    </p>
 
-        <p>
-  اكتشف أفضل عروض المنتجات والمتاجر على BPS Market by BPS Chat —
-  منصة عربية وعالمية لعرض المنتجات، مقارنة الأسعار، واكتشاف العروض
-  في السعودية، الإمارات، الكويت، قطر، البحرين ومصر.
-  <br />
-  Discover trending products, best deals, electronics, fashion,
-  mobiles, home appliances and more across the Middle East.
-</p>
+    <div className="heroActions">
+      <a href={heroCountryUrl} className="primaryBtn">
+        تصفح عروض {heroCountryName}
+      </a>
 
-        <div className="heroActions">
-          <a href="/customer-offers/add" className="primaryBtn">
-            + أضف عرضك الآن
-          </a>
+      <a href="/customer-offers/add" className="secondaryBtn">
+        + أضف عرضك
+      </a>
+    </div>
+  </div>
 
-          <a href="/" className="secondaryBtn">
-            ابحث عن منتج في BPS Chat
-          </a>
-        </div>
+  <div className="heroVisual">
+    <div className="dealCard bigDeal">
+      <span>🔥 Today Deals</span>
+      <strong>{filteredOffers.length}</strong>
+      <small>عرض متاح الآن</small>
+    </div>
 
-        <div className="stats">
-          <div>
-            <strong>{filteredOffers.length}</strong>
-            <span>عرض معتمد</span>
-          </div>
-          <div>
-            <strong>6</strong>
-            <span>دول مستهدفة</span>
-          </div>
-          <div>
-            <strong>AI</strong>
-            <span>تجربة بحث ذكية</span>
-          </div>
-        </div>
-      </section>
+    <div className="dealCard smallDeal one">
+      <span>📱 Mobiles</span>
+      <strong>Best Prices</strong>
+    </div>
+
+    <div className="dealCard smallDeal two">
+      <span>🚚 Local Deals</span>
+      <strong>{heroCountryName}</strong>
+    </div>
+  </div>
+</section>
       <section className="marketCategorySection">
   <div className="sectionTitleRow">
     <div>
@@ -714,6 +725,87 @@ const filteredOffers = approvedOffers.filter((offer) => {
   gap: 10px;
   overflow-x: auto;
   flex-wrap: nowrap;
+}
+  .marketplaceHero {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  align-items: center;
+  gap: 28px;
+}
+
+.heroText {
+  position: relative;
+  z-index: 2;
+}
+
+.heroVisual {
+  position: relative;
+  min-height: 260px;
+}
+
+.dealCard {
+  position: absolute;
+  background: rgba(255,255,255,0.95);
+  color: #111827;
+  border-radius: 26px;
+  padding: 22px;
+  box-shadow: 0 22px 55px rgba(0,0,0,0.22);
+}
+
+.bigDeal {
+  width: 260px;
+  height: 170px;
+  left: 40px;
+  top: 30px;
+}
+
+.dealCard span {
+  display: block;
+  color: #2563eb;
+  font-weight: 950;
+  margin-bottom: 12px;
+}
+
+.dealCard strong {
+  display: block;
+  font-size: 34px;
+  font-weight: 950;
+  color: #16a34a;
+}
+
+.dealCard small {
+  color: #6b7280;
+  font-weight: 800;
+}
+
+.smallDeal {
+  width: 180px;
+  padding: 16px;
+}
+
+.smallDeal strong {
+  font-size: 17px;
+}
+
+.smallDeal.one {
+  right: 10px;
+  top: 5px;
+}
+
+.smallDeal.two {
+  right: 60px;
+  bottom: 10px;
+}
+
+@media (max-width: 800px) {
+  .marketplaceHero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .heroVisual {
+    display: none;
+  }
 }
 .categoryTabs a {
   text-decoration: none;
