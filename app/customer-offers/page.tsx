@@ -554,21 +554,22 @@ const filteredOffers = approvedOffers.filter((offer) => {
 
 .categoryTabs a {
   text-decoration: none;
-  padding: 10px 15px;
+  padding: 11px 16px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #fff;
+  background: #ffffff;
+  border: 1px solid #dbe4ee;
+  color: #111827;
   font-weight: 900;
   font-size: 13px;
   transition: all .25s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
 }
-
 .categoryTabs a:hover,
 .categoryTabs a.active {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
+  background: linear-gradient(135deg, #2563eb, #22c55e);
   color: #fff;
-  box-shadow: 0 0 24px rgba(34,197,94,0.35);
+  border-color: transparent;
+  box-shadow: 0 8px 22px rgba(37,99,235,0.22);
   transform: translateY(-2px);
 }
 
