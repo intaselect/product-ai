@@ -971,11 +971,12 @@ async function handleSearch() {
   display: flex;
   align-items: center;
   gap: 12px;
+
+  padding: 14px 12px;
+  border-radius: 20px;
   min-height: 64px;
 
-  background:
-    linear-gradient(135deg, #f97316 0%, #22c55e 48%, #2563eb 100%);
-
+  background: linear-gradient(135deg, #f97316 0%, #22c55e 48%, #2563eb 100%);
   border: 1px solid rgba(255,255,255,0.22);
   color: #fff !important;
   font-weight: 950;
@@ -2099,7 +2100,62 @@ z-index: 3;
       0 0 45px rgba(0,180,255,0.25);
   }
 }
-  @media (max-width: 600px) {
+ @media (max-width: 600px) {
+  .aiBackground,
+  .particles,
+  .particles span,
+  .brainCore,
+  .grid,
+  span[style*="--i"] {
+    display: none !important;
+  }
+
+  .hero::before {
+    display: none !important;
+    animation: none !important;
+  }
+
+  .menuButton {
+    display: block;
+  }
+
+  .sidebar {
+    width: 82%;
+    left: -85%;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar a,
+  .sidebar .menuItem {
+    color: #ffffff !important;
+  }
+
+  .sidebarCustomerStoreGlow {
+    padding: 16px 14px !important;
+    border-radius: 18px;
+    box-shadow:
+      0 0 24px rgba(249,115,22,0.42),
+      0 0 42px rgba(34,197,94,0.34);
+    animation: marketSidebarPulse 2s ease-in-out infinite;
+  }
+
+  .sidebarCustomerStoreGlow .subText {
+    font-size: 12px;
+    margin-top: 5px;
+    color: rgba(255,255,255,0.92);
+  }
+
+  .storeIcon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    font-size: 24px;
+    border-radius: 16px;
+  }
+
   .composer {
     padding: 16px 12px;
     margin: 16px 10px 0;
@@ -2119,16 +2175,64 @@ z-index: 3;
     align-items: stretch;
     gap: 10px;
     max-width: 100%;
-    padding: 10px;
+    padding: 12px;
   }
 
   .input {
     width: 100%;
-    height: 44px;
+    height: 54px;
     text-align: right;
-    font-size: 14px;
+    font-size: 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(0,255,200,0.22);
+    border-radius: 14px;
+    padding: 0 14px;
   }
 
+  .input:focus {
+    border-color: rgba(0,255,200,0.55);
+    box-shadow:
+      0 0 0 3px rgba(0,255,200,0.12),
+      inset 0 0 10px rgba(0,255,200,0.08);
+  }
+
+  .searchActions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+
+  .button {
+    width: 100%;
+    height: 50px;
+    padding: 0 14px;
+  }
+
+  .searchCounter {
+    min-width: 56px;
+    height: 50px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border-radius: 13px;
+    white-space: nowrap;
+  }
+
+  .aiErrorBox {
+    max-width: 100%;
+    font-size: 12px;
+    line-height: 1.7;
+    padding: 10px 12px;
+    margin: 10px auto 12px;
+  }
+
+  .sponsoredGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
   .searchActions {
     width: 100%;
     display: grid;
