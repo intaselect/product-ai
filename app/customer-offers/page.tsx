@@ -812,10 +812,19 @@ const filteredOffers = approvedOffers.filter((offer) => {
     display: flex;
     overflow-x: auto;
     padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .premiumCountryTabs::-webkit-scrollbar {
+    display: none;
   }
 
   .premiumCountryTabs a {
     min-width: 125px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
   }
 }
 
@@ -1237,20 +1246,32 @@ const filteredOffers = approvedOffers.filter((offer) => {
 .offerCard:hover .productSlider img {
   transform: scale(1.07) rotate(-1deg);
 }
-  .floatingLabel {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 3;
-    padding: 6px 11px;
-    border-radius: 999px;
-    background: rgba(34,197,94,0.16);
-    border: 1px solid rgba(34,197,94,0.35);
-    color: #bbf7d0;
-    font-size: 11px;
-    font-weight: 900;
-  }
+ .floatingLabel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
 
+  padding: 7px 12px;
+  border-radius: 999px;
+
+ background: linear-gradient(135deg, #0f172a, #2563eb, #22c55e);
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 950;
+
+  border: 0;
+
+  box-shadow:
+    0 6px 18px rgba(34,197,94,0.35);
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.25);
+
+  backdrop-filter: blur(6px);
+}
   .cardContent {
   position: relative;
   z-index: 2;
