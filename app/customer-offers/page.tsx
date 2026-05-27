@@ -1225,23 +1225,17 @@ const filteredOffers = approvedOffers.filter((offer) => {
   opacity: 1;
 }
 
-.currency {
-  font-size: 12px;
-  color: #a7f3d0;
-  background: rgba(34,197,94,0.12);
-  border: 1px solid rgba(34,197,94,0.25);
-  padding: 4px 8px;
-  border-radius: 999px;
-  font-weight: 800;
-}
-
+.currency,
 .bestLabel {
   font-size: 11px;
-  color: #d1fae5;
-  background: rgba(34,197,94,0.12);
-  border: 1px solid rgba(34,197,94,0.22);
-  padding: 5px 9px;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+  border: 0 !important;
+  padding: 6px 10px;
   border-radius: 999px;
+  font-weight: 950;
+  box-shadow: 0 5px 14px rgba(34,197,94,0.28);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.22);
 }
 .offerCard:hover .productSlider img {
   transform: scale(1.07) rotate(-1deg);
