@@ -574,8 +574,8 @@ async function handleSearch() {
   📝 أدوات البائع
 </a>
 <a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
-  🛒 متجر عملاء بي بي اس
-  <span className="subText">بيع واشتري</span>
+ 🛒 BPS Market
+<span className="subText">تسوّق عروض العملاء الآن</span>
 </a>
 <a href="/about" className="menuItem">عن الموقع</a>
 <a href="/contact" className="menuItem">تواصل معنا</a>
@@ -965,12 +965,22 @@ async function handleSearch() {
 }
 .sidebarCustomerStoreGlow {
   position: relative;
-  background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(59,130,246,0.15));
-  border: 1px solid rgba(34,197,94,0.35);
-  color: #fff;
-  font-weight: 900;
+  background:
+    linear-gradient(135deg, #f97316 0%, #22c55e 48%, #2563eb 100%);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #fff !important;
+  font-weight: 950;
   overflow: hidden;
+  box-shadow:
+    0 0 22px rgba(249,115,22,0.32),
+    0 0 38px rgba(34,197,94,0.28);
+  animation: marketSidebarPulse 2.4s ease-in-out infinite;
   transition: all 0.25s ease;
+}
+
+@keyframes marketSidebarPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
 }
 
 /* glow متحرك */
