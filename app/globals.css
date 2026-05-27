@@ -22,13 +22,7 @@
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-
-  /* اللون الأساسي للنص */
   color: #0f172a;
-
-  /* الخلفية الجريديانت */
-  background: linear-gradient(135deg, #d7f0ff, #ffffff);
-
   overflow-x: hidden;
 }
 
