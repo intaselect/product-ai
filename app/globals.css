@@ -104,90 +104,120 @@ body {
 }
 
 
-.trustedText strong {
-  font-size: 11px;
-  font-weight: 950;
+.trustedSourcesBar {
+  position: relative;
+  z-index: 20;
+
+  width: calc(100% - 44px);
+  margin: 8px auto 0;
+
+  height: 44px;
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+
+  background: linear-gradient(135deg, #0f172a, #1d4ed8, #16a34a);
+  border: 1px solid rgba(255,255,255,0.14);
+
+  box-shadow:
+    0 8px 22px rgba(15,23,42,0.20),
+    0 0 18px rgba(37,99,235,0.16);
 }
 
 .trustedText {
-  flex: 0 0 auto;
+  position: relative;
+  z-index: 5;
 
-  min-width: 170px;
-  max-width: 170px;
+  flex: 0 0 190px;
+  width: 190px;
+  height: 100%;
 
-  padding: 0 16px 0 70px;
+  padding-left: 64px;
+  padding-right: 12px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 
-  line-height: 1.15;
+  background: linear-gradient(90deg, #0f172a 0%, rgba(15,23,42,0.92) 78%, rgba(15,23,42,0) 100%);
+  color: #ffffff;
 
-  position: relative;
-  z-index: 3;
-
-  background: linear-gradient(
-    90deg,
-    rgba(15,23,42,0.96),
-    rgba(15,23,42,0.88)
-  );
-
-  border-right: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
 }
 
 .trustedText strong {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 950;
-  color: #ffffff;
-
+  line-height: 1.1;
   white-space: nowrap;
 }
 
 .trustedText span {
-  font-size: 10px;
-  color: #dbeafe;
+  margin-top: 2px;
+  font-size: 9px;
   font-weight: 800;
-
+  color: #dbeafe;
   white-space: nowrap;
 }
+
 .trustedTrack {
   display: flex;
+  align-items: center;
   gap: 10px;
+
   width: max-content;
+  min-width: max-content;
+
   animation: trustedScroll 85s linear infinite;
 }
 
 .trustedLogo {
   padding: 5px 11px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.14);
-  border: 1px solid rgba(255,255,255,0.18);
-  color: white;
+
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.20);
+
+  color: #ffffff;
   font-size: 11px;
   font-weight: 950;
   white-space: nowrap;
 }
 
 @keyframes trustedScroll {
-  0% {
+  from {
     transform: translateX(0);
   }
 
-  100% {
+  to {
     transform: translateX(-50%);
   }
 }
 
 @media (max-width: 700px) {
-  .trustedText {
-    padding: 0 10px 0 58px;
-    min-width: 135px;
-    max-width: 135px;
+  .trustedSourcesBar {
+    width: calc(100% - 18px);
+    height: 42px;
+    margin: 7px auto 0;
+    border-radius: 14px;
   }
 
-
   .trustedText {
-    padding: 0 8px;
+    flex-basis: 150px;
+    width: 150px;
+    padding-left: 58px;
+    padding-right: 8px;
+  }
+
+  .trustedText strong {
+    font-size: 10px;
+  }
+
+  .trustedText span {
+    font-size: 8px;
   }
 
   .trustedLogo {
