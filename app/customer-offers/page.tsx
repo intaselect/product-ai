@@ -284,13 +284,14 @@ const filteredOffers = approvedOffers.filter((offer) => {
       defaultValue={params?.q || ""}
       placeholder="ابحث داخل متجر العملاء... مثال: موبايل ريلمي"
     />
-    <select name="country" defaultValue={selectedCountry}>
-  <option value="all">🌍 اختر الدولة</option>
-  {Object.entries(countryNames).map(([key, label]) => (
-    <option key={key} value={key}>
-      {label}
-    </option>
-  ))}
+   <select name="country" defaultValue={selectedCountry} className="countrySelect">
+  <option value="all">🌍 كل الدول</option>
+  <option value="sa">🇸🇦 السعودية</option>
+  <option value="ae">🇦🇪 الإمارات</option>
+  <option value="kw">🇰🇼 الكويت</option>
+  <option value="qa">🇶🇦 قطر</option>
+  <option value="bh">🇧🇭 البحرين</option>
+  <option value="eg">🇪🇬 مصر</option>
 </select>
 
     <button type="submit">
@@ -411,17 +412,21 @@ const filteredOffers = approvedOffers.filter((offer) => {
       )}
 
      <style>{`
-     .offersSearchBox {
-  max-width: 1080px;
-  margin: 0 auto 16px;
-  padding: 16px;
-  border-radius: 22px;
-  background: rgba(255,255,255,0.045);
-  border: 1px solid rgba(34,197,94,0.18);
+    .offersSearchBox {
+  max-width: 1120px;
+  margin: 22px auto 18px;
+  padding: 10px;
+  border-radius: 26px;
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  border: 1px solid #dbeafe;
+  box-shadow:
+    0 18px 45px rgba(15,23,42,0.08),
+    0 0 0 6px rgba(34,197,94,0.04);
 }
 
 .offersSearchForm {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 190px 110px auto;
   gap: 10px;
   align-items: center;
 }
@@ -534,40 +539,54 @@ const filteredOffers = approvedOffers.filter((offer) => {
     flex-direction: column;
   }
 }
-.offersSearchForm input {
-  flex: 1;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: #111;
-  color: white;
-  border-radius: 16px;
-  padding: 14px 16px;
-  font-size: 15px;
+.offersSearchForm input,
+.offersSearchForm select {
+  height: 54px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 18px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 850;
+  outline: none;
+  transition: all .25s ease;
 }
-  .offersSearchForm select {
-  border: 1px solid rgba(255,255,255,0.12);
-  background: #111;
-  color: white;
-  border-radius: 16px;
-  padding: 14px 16px;
-  font-size: 15px;
-  font-weight: 900;
-  min-width: 140px;
+
+.offersSearchForm input:focus,
+.offersSearchForm select:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 5px rgba(34,197,94,0.12);
+}
+
+.countrySelect {
+  cursor: pointer;
 }
 
 .offersSearchForm button,
 .offersSearchForm a {
+  height: 54px;
   border: 0;
   text-decoration: none;
   white-space: nowrap;
-  border-radius: 16px;
-  padding: 14px 18px;
+  border-radius: 18px;
+  padding: 0 20px;
   font-weight: 950;
 }
 
 .offersSearchForm button {
   background: linear-gradient(135deg, #16a34a, #2563eb);
   color: white;
+  box-shadow: 0 12px 28px rgba(37,99,235,0.22);
+  cursor: pointer;
+  transition: all .25s ease;
 }
+
+.offersSearchForm button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 38px rgba(37,99,235,0.30);
+}
+
 
 .offersSearchForm button:disabled {
   opacity: 0.45;
@@ -588,10 +607,12 @@ const filteredOffers = approvedOffers.filter((offer) => {
 
 @media (max-width: 700px) {
   .offersSearchForm {
+    display: flex;
     flex-direction: column;
   }
 
   .offersSearchForm input,
+  .offersSearchForm select,
   .offersSearchForm button,
   .offersSearchForm a,
   .countryWarning {
