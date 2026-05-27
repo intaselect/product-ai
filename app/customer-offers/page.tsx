@@ -304,13 +304,16 @@ const filteredOffers = approvedOffers.filter((offer) => {
     )}
   </form>
 </section>
-<div className="countryBox">
+<div className="countryBox premiumCountryBox">
   <div className="countryBoxHeader">
-    <span>🌍 اختر الدولة</span>
-    <small>صفّي العروض حسب السوق</small>
+    <div>
+      <span>🌍 اختر سوقك</span>
+      <small>Choose your market</small>
+    </div>
+    <p>العروض تظهر حسب الدولة المختارة</p>
   </div>
 
-  <section className="countryTabs">
+  <section className="countryTabs premiumCountryTabs">
     <a
       href={
         selectedCategory === "all"
@@ -319,22 +322,34 @@ const filteredOffers = approvedOffers.filter((offer) => {
       }
       className={selectedCountry === "all" ? "active" : ""}
     >
-      🌐 كل الدول
+      <b>🌐</b>
+      <span>كل الدول</span>
+      <small>All Markets</small>
     </a>
 
-    {Object.entries(countryNames).map(([key, label]) => (
-      <a
-        key={key}
-        href={
-          selectedCategory === "all"
-            ? `/customer-offers?country=${key}`
-            : `/customer-offers?category=${selectedCategory}&country=${key}`
-        }
-        className={selectedCountry === key ? "active" : ""}
-      >
-        {label}
-      </a>
-    ))}
+    <a href={selectedCategory === "all" ? "/customer-offers?country=sa" : `/customer-offers?category=${selectedCategory}&country=sa`} className={selectedCountry === "sa" ? "active" : ""}>
+      <b>🇸🇦</b><span>السعودية</span><small>Saudi Arabia</small>
+    </a>
+
+    <a href={selectedCategory === "all" ? "/customer-offers?country=ae" : `/customer-offers?category=${selectedCategory}&country=ae`} className={selectedCountry === "ae" ? "active" : ""}>
+      <b>🇦🇪</b><span>الإمارات</span><small>UAE</small>
+    </a>
+
+    <a href={selectedCategory === "all" ? "/customer-offers?country=kw" : `/customer-offers?category=${selectedCategory}&country=kw`} className={selectedCountry === "kw" ? "active" : ""}>
+      <b>🇰🇼</b><span>الكويت</span><small>Kuwait</small>
+    </a>
+
+    <a href={selectedCategory === "all" ? "/customer-offers?country=qa" : `/customer-offers?category=${selectedCategory}&country=qa`} className={selectedCountry === "qa" ? "active" : ""}>
+      <b>🇶🇦</b><span>قطر</span><small>Qatar</small>
+    </a>
+
+    <a href={selectedCategory === "all" ? "/customer-offers?country=bh" : `/customer-offers?category=${selectedCategory}&country=bh`} className={selectedCountry === "bh" ? "active" : ""}>
+      <b>🇧🇭</b><span>البحرين</span><small>Bahrain</small>
+    </a>
+
+    <a href={selectedCategory === "all" ? "/customer-offers?country=eg" : `/customer-offers?category=${selectedCategory}&country=eg`} className={selectedCountry === "eg" ? "active" : ""}>
+      <b>🇪🇬</b><span>مصر</span><small>Egypt</small>
+    </a>
   </section>
 </div>
       {error && (
@@ -629,72 +644,179 @@ const filteredOffers = approvedOffers.filter((offer) => {
   padding: 0 0 70px;
   overflow-x: hidden;
 }
-.countryBox {
-  max-width: 1080px;
-  margin: 14px auto 28px;
+.premiumCountryBox {
+  max-width: 1120px;
+  margin: 18px auto 34px;
   padding: 18px;
-  border-radius: 24px;
+  border-radius: 30px;
   background:
-    radial-gradient(circle at 12% 50%, rgba(34,197,94,0.20), transparent 34%),
-    linear-gradient(135deg, rgba(15,23,42,0.72), rgba(8,47,73,0.38));
-  border: 1px solid rgba(56,189,248,0.28);
+    radial-gradient(circle at 15% 20%, rgba(34,197,94,0.12), transparent 28%),
+    linear-gradient(135deg, #ffffff, #f8fafc);
+  border: 1px solid #dbeafe;
   box-shadow:
-    0 0 38px rgba(56,189,248,0.16),
-    0 0 55px rgba(34,197,94,0.10),
-    inset 0 0 24px rgba(255,255,255,0.035);
-  backdrop-filter: blur(12px);
+    0 20px 50px rgba(15,23,42,0.08),
+    0 0 0 6px rgba(37,99,235,0.035);
 }
 
 .countryBoxHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 14px;
 }
 
+.countryBoxHeader div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
 .countryBoxHeader span {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 950;
-  color: #fff;
+  color: #111827;
 }
 
 .countryBoxHeader small {
-  color: #a7f3d0;
-  font-size: 12px;
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.countryBoxHeader p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
   font-weight: 800;
 }
 
-.countryTabs {
+.premiumCountryTabs {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
-.countryTabs a {
+.premiumCountryTabs a {
+  position: relative;
+  overflow: hidden;
+  min-height: 92px;
   text-decoration: none;
-  min-height: 48px;
-  border-radius: 16px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 8px 22px rgba(15,23,42,0.05);
+  transition: all .28s ease;
+}
+
+.premiumCountryTabs a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(34,197,94,0.12));
+  opacity: 0;
+  transition: opacity .28s ease;
+}
+
+.premiumCountryTabs a b {
+  position: relative;
+  z-index: 2;
+  font-size: 28px;
+  line-height: 1;
+  transition: transform .28s ease;
+}
+
+.premiumCountryTabs a span {
+  position: relative;
+  z-index: 2;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.premiumCountryTabs a small {
+  position: relative;
+  z-index: 2;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.premiumCountryTabs a:hover {
+  transform: translateY(-5px);
+  border-color: rgba(37,99,235,0.22);
+  box-shadow: 0 18px 36px rgba(15,23,42,0.12);
+}
+
+.premiumCountryTabs a:hover::before {
+  opacity: 1;
+}
+
+.premiumCountryTabs a:hover b {
+  transform: scale(1.18) rotate(-4deg);
+}
+
+.premiumCountryTabs a.active {
+  background: linear-gradient(135deg, #0f172a, #2563eb);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow:
+    0 18px 42px rgba(37,99,235,0.26),
+    0 0 0 5px rgba(37,99,235,0.08);
+}
+
+.premiumCountryTabs a.active small {
+  color: #dbeafe;
+}
+
+.premiumCountryTabs a.active::after {
+  content: "✓";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 10px 12px;
-  background: rgba(255,255,255,0.065);
-  border: 1px solid rgba(255,255,255,0.12);
-  color: #e5f7ff;
+  font-size: 12px;
   font-weight: 950;
-  font-size: 13px;
-  transition: all .25s ease;
 }
 
-.countryTabs a:hover,
-.countryTabs a.active {
-  background: linear-gradient(135deg, #16a34a, #2563eb);
-  color: #fff;
-  border-color: rgba(134,239,172,0.55);
-  box-shadow: 0 0 26px rgba(34,197,94,0.30);
-  transform: translateY(-2px);
+@media (max-width: 900px) {
+  .premiumCountryTabs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .premiumCountryBox {
+    padding: 14px;
+    border-radius: 24px;
+  }
+
+  .countryBoxHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .premiumCountryTabs {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .premiumCountryTabs a {
+    min-width: 125px;
+  }
 }
 
 @media (max-width: 700px) {
