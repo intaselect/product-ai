@@ -574,8 +574,11 @@ async function handleSearch() {
   📝 أدوات البائع
 </a>
 <a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
- 🛒 BPS Market
-<span className="subText">تسوّق عروض العملاء الآن</span>
+  <span className="storeIcon">🛍️</span>
+  <span>
+    BPS Market
+    <span className="subText">تسوّق عروض العملاء الآن</span>
+  </span>
 </a>
 <a href="/about" className="menuItem">عن الموقع</a>
 <a href="/contact" className="menuItem">تواصل معنا</a>
@@ -965,19 +968,37 @@ async function handleSearch() {
 }
 .sidebarCustomerStoreGlow {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+
   background:
     linear-gradient(135deg, #f97316 0%, #22c55e 48%, #2563eb 100%);
+
   border: 1px solid rgba(255,255,255,0.22);
   color: #fff !important;
   font-weight: 950;
   overflow: hidden;
+
   box-shadow:
     0 0 22px rgba(249,115,22,0.32),
     0 0 38px rgba(34,197,94,0.28);
+
   animation: marketSidebarPulse 2.4s ease-in-out infinite;
   transition: all 0.25s ease;
 }
-
+.storeIcon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.22);
+  font-size: 20px;
+}
 @keyframes marketSidebarPulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.045); }
