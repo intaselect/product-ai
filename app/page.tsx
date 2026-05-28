@@ -2770,6 +2770,81 @@ z-index: 3;
     font-size: 20px;
   }
 }
+  @media (max-width: 700px) {
+
+  .container {
+    padding: 14px 12px 30px;
+  }
+
+  .newHero {
+    padding: 18px 14px !important;
+    border-radius: 24px !important;
+  }
+
+  .heroContent {
+    gap: 18px !important;
+  }
+
+  .heroBadge {
+    width: fit-content;
+    font-size: 11px !important;
+    padding: 8px 12px !important;
+    border-radius: 999px;
+  }
+
+  .heroTitle {
+    font-size: 42px !important;
+    line-height: 1.05 !important;
+    margin-top: 14px !important;
+  }
+
+  .heroTitle span {
+    margin-top: 10px;
+  }
+
+  .heroDesc {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    margin-top: 14px !important;
+    color: rgba(255,255,255,0.72) !important;
+  }
+
+  .heroStats {
+    gap: 10px !important;
+    margin-top: 20px !important;
+  }
+
+  .heroStatCard {
+    min-height: 88px !important;
+    padding: 14px !important;
+    border-radius: 20px !important;
+  }
+
+  .heroStatCard strong {
+    font-size: 28px !important;
+  }
+
+  .heroStatCard span {
+    font-size: 11px !important;
+  }
+
+  .heroRight {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .floatingCard {
+    min-width: 150px;
+    flex-shrink: 0;
+    font-size: 13px !important;
+    padding: 14px !important;
+    border-radius: 18px !important;
+  }
+
+}
 `}</style>
     </div>
   );
