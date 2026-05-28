@@ -298,46 +298,48 @@ const faqSchema = {
         </p>
       </section>
 
-      <section className="productBox">
-        <div className="imageBox">
-          <img src={offer.image_url} alt={offer.product_name} />
-        </div>
+      <section className="premiumProductBox">
+  <div className="premiumImageBox">
+    <img src={offer.image_url} alt={offer.product_name} />
+    <span className="imageBadge">🔥 عرض مميز</span>
+  </div>
 
-        <div className="detailsBox">
-          <span className="countryBadge">🌍 {country}</span>
+  <div className="premiumDetailsBox">
+    <span className="premiumCountryBadge">🌍 {country}</span>
 
-          <h2>{offer.product_name}</h2>
+    <h2>{offer.product_name}</h2>
 
-          <div className="priceBox">
-            <strong>{offer.price}</strong>
-            <span>{currency}</span>
-          </div>
+    <div className="premiumPriceBox">
+      <strong>{offer.price}</strong>
+      <span>{currency}</span>
+    </div>
 
-          <div className="metaGrid">
-            <div>
-              <small>المتجر</small>
-              <b>{offer.store_name || "عرض عميل BPS Chat"}</b>
-            </div>
-            <div>
-              <small>الدولة</small>
-              <b>{country}</b>
-            </div>
-          </div>
+    <div className="premiumMetaGrid">
+      <div>
+        <small>المتجر</small>
+        <b>{offer.store_name || "عرض عميل BPS Chat"}</b>
+      </div>
 
-          <a
-            href={`/api/customer-offers/click/${offer.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="buyBtn"
-          >
-            🔥 عرض المنتج الآن
-          </a>
+      <div>
+        <small>الدولة</small>
+        <b>{country}</b>
+      </div>
+    </div>
 
-          <Link href="/customer-offers" className="backBtn">
-            مشاهدة باقي عروض العملاء
-          </Link>
-        </div>
-      </section>
+    <a
+      href={`/api/customer-offers/click/${offer.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="premiumBuyBtn"
+    >
+      🔥 عرض المنتج الآن
+    </a>
+
+    <Link href="/customer-offers" className="premiumBackBtn">
+      مشاهدة باقي عروض العملاء
+    </Link>
+  </div>
+</section>
 <MarketPromoSection />
       <section className="content">
         <h2>أفضل سعر {offer.product_name} في {country}</h2>
@@ -908,6 +910,193 @@ const faqSchema = {
 .faqBox h3 {
   margin: 0 0 8px;
   color: #fff;
+}
+  .premiumProductBox {
+  max-width: 1120px;
+  margin: 18px auto 0;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  border-radius: 34px;
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  border: 1px solid #dbeafe;
+  box-shadow:
+    0 24px 70px rgba(15,23,42,0.16),
+    0 0 0 6px rgba(34,197,94,0.04);
+}
+
+.premiumImageBox {
+  position: relative;
+  min-height: 430px;
+  border-radius: 28px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  border: 1px solid #e5e7eb;
+  box-shadow: inset 0 0 30px rgba(15,23,42,0.04);
+}
+
+.premiumImageBox img {
+  max-width: 100%;
+  max-height: 390px;
+  object-fit: contain;
+  transition: transform .3s ease;
+}
+
+.premiumImageBox:hover img {
+  transform: scale(1.05);
+}
+
+.imageBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0f172a, #2563eb, #22c55e);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 0 10px 24px rgba(37,99,235,0.25);
+}
+
+.premiumDetailsBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px;
+  color: #111827;
+}
+
+.premiumCountryBadge {
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-weight: 950;
+  margin-bottom: 14px;
+}
+
+.premiumDetailsBox h2 {
+  margin: 0 0 18px;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.45;
+  color: #111827;
+  font-weight: 950;
+}
+
+.premiumPriceBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.premiumPriceBox strong {
+  color: #16a34a;
+  font-size: 44px;
+  font-weight: 950;
+}
+
+.premiumPriceBox span {
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.premiumMetaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.premiumMetaGrid div {
+  padding: 16px;
+  border-radius: 20px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.premiumMetaGrid small {
+  display: block;
+  color: #64748b;
+  margin-bottom: 6px;
+  font-weight: 900;
+}
+
+.premiumMetaGrid b {
+  color: #111827;
+  word-break: break-word;
+}
+
+.premiumBuyBtn,
+.premiumBackBtn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 950;
+  border-radius: 16px;
+  padding: 15px 18px;
+  transition: all .25s ease;
+}
+
+.premiumBuyBtn {
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+  color: #fff;
+  box-shadow: 0 14px 32px rgba(37,99,235,0.24);
+  margin-bottom: 12px;
+}
+
+.premiumBuyBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 44px rgba(37,99,235,0.35);
+}
+
+.premiumBackBtn {
+  background: #111827;
+  color: #fff;
+}
+
+.premiumBackBtn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 850px) {
+  .premiumProductBox {
+    grid-template-columns: 1fr;
+    margin: 14px 12px 0;
+    padding: 16px;
+    border-radius: 26px;
+  }
+
+  .premiumImageBox {
+    min-height: 300px;
+  }
+
+  .premiumImageBox img {
+    max-height: 280px;
+  }
+
+  .premiumMetaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .premiumPriceBox {
+    flex-wrap: wrap;
+  }
+
+  .premiumPriceBox strong {
+    font-size: 34px;
+  }
 }
       `}</style>
     </main>
