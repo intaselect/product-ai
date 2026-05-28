@@ -227,3 +227,82 @@ body {
     animation-duration: 95s;
   }
 }
+/* ================================
+   BPS Chat Global Mobile Balance
+================================ */
+
+@media (max-width: 700px) {
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  main,
+  section {
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: clamp(28px, 8vw, 42px) !important;
+    line-height: 1.15 !important;
+  }
+
+  h2 {
+    font-size: clamp(22px, 6vw, 30px) !important;
+    line-height: 1.2 !important;
+  }
+
+  h3 {
+    font-size: 18px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 14px !important;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  [class*="container"],
+  [class*="Wrapper"],
+  [class*="wrap"] {
+    max-width: 100% !important;
+  }
+
+  [class*="Card"],
+  [class*="card"],
+  [class*="Box"],
+  [class*="box"] {
+    border-radius: 18px !important;
+  }
+
+  [class*="Grid"],
+  [class*="grid"] {
+    gap: 12px !important;
+  }
+
+  [class*="Button"],
+  [class*="button"],
+  [class*="Btn"],
+  [class*="btn"] {
+    border-radius: 14px !important;
+  }
+}
