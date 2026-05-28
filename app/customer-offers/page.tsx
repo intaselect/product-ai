@@ -116,6 +116,31 @@ const categoryNames: Record<string, string> = {
 camera_accessories: "ملحقات كاميرات",
   other: "أخرى",
 };
+const brandDefinitions = [
+  { key: "apple", label: "Apple", terms: ["apple", "iphone", "ipad", "macbook", "airpods", "ابل", "ايفون"] },
+  { key: "samsung", label: "Samsung", terms: ["samsung", "galaxy", "سامسونج"] },
+  { key: "hp", label: "HP", terms: ["hp", "اتش بي"] },
+  { key: "lenovo", label: "Lenovo", terms: ["lenovo", "لينوفو", "thinkpad", "ideapad", "legion"] },
+  { key: "dell", label: "Dell", terms: ["dell"] },
+  { key: "asus", label: "ASUS", terms: ["asus"] },
+  { key: "acer", label: "Acer", terms: ["acer"] },
+  { key: "msi", label: "MSI", terms: ["msi"] },
+  { key: "sony", label: "Sony", terms: ["sony", "playstation", "بلايستيشن", "سوني"] },
+  { key: "xiaomi", label: "Xiaomi", terms: ["xiaomi", "redmi", "poco", "شاومي"] },
+  { key: "huawei", label: "Huawei", terms: ["huawei", "هواوي"] },
+  { key: "oppo", label: "OPPO", terms: ["oppo", "اوبو"] },
+  { key: "realme", label: "Realme", terms: ["realme", "ريلمي"] },
+  { key: "canon", label: "Canon", terms: ["canon", "كانون"] },
+  { key: "nikon", label: "Nikon", terms: ["nikon", "نيكون"] },
+];
+
+function detectBrand(offer: CustomerOffer) {
+  const text = `${offer.product_name || ""} ${offer.store_name || ""}`.toLowerCase();
+
+  return brandDefinitions.find((brand) =>
+    brand.terms.some((term) => text.includes(term.toLowerCase()))
+  );
+}
 export default async function CustomerOffersPage({
   searchParams,
 }: {
@@ -137,6 +162,7 @@ const heroCountryUrl =
     : `/customer-offers?country=${selectedCountry}`;
 
   const searchQuery = String(params?.q || "").trim().toLowerCase();
+  const selectedBrand = String(params?.brand || "").trim().toLowerCase();
 const isCountrySelected = selectedCountry !== "all";
   const { data: offers, error } = await supabase
     .from("customer_offers")
@@ -146,8 +172,30 @@ const isCountrySelected = selectedCountry !== "all";
     .eq("status", "approved")
     .order("created_at", { ascending: false });
 const approvedOffers = (offers || []) as CustomerOffer[];
+const countryCategoryOffers = approvedOffers.filter((offer) => {
+  const categoryOk =
+    selectedCategory === "all" ||
+    (offer.category || ["other"]).includes(selectedCategory);
 
-const filteredOffers = approvedOffers.filter((offer) => {
+  const countryOk =
+    selectedCountry === "all" ||
+    (offer.country || "sa") === selectedCountry;
+
+  return categoryOk && countryOk;
+});
+
+const availableBrands = brandDefinitions
+  .map((brand) => {
+    const count = countryCategoryOffers.filter((offer) => {
+      const detected = detectBrand(offer);
+      return detected?.key === brand.key;
+    }).length;
+
+    return { ...brand, count };
+  })
+  .filter((brand) => brand.count > 0);
+
+const filteredOffers = countryCategoryOffers.filter((offer) => {
   const categoryOk =
     selectedCategory === "all" ||
     (offer.category || ["other"]).includes(selectedCategory);
@@ -166,9 +214,14 @@ const filteredOffers = approvedOffers.filter((offer) => {
     .join(" ")
     .toLowerCase();
 
-  const searchOk = !searchQuery || searchableText.includes(searchQuery);
+ const searchOk =
+  !searchQuery || searchableText.includes(searchQuery);
 
-  return categoryOk && countryOk && searchOk;
+const brandOk =
+  !selectedBrand ||
+  detectBrand(offer)?.key === selectedBrand;
+
+return searchOk && brandOk;
 });
   return (
     <main className="customerOffersPage" dir="rtl">
@@ -356,6 +409,63 @@ const filteredOffers = approvedOffers.filter((offer) => {
     </a>
   </section>
 </div>
+
+{availableBrands.length > 0 && (
+  <section className="brandFilterBox">
+    <div className="brandFilterHeader">
+      <div>
+        <h2>فلترة حسب البراند</h2>
+        <p>
+          البراندات تظهر تلقائيًا حسب الدولة والقسم الحالي
+        </p>
+      </div>
+
+      {selectedBrand && (
+        <a
+          href={
+            selectedCategory === "all"
+              ? selectedCountry === "all"
+                ? "/customer-offers"
+                : `/customer-offers?country=${selectedCountry}`
+              : selectedCountry === "all"
+                ? `/customer-offers?category=${selectedCategory}`
+                : `/customer-offers?category=${selectedCategory}&country=${selectedCountry}`
+          }
+        >
+          مسح البراند
+        </a>
+      )}
+    </div>
+
+    <div className="brandFilterChips">
+      {availableBrands.map((brand) => {
+        const base =
+          selectedCategory === "all"
+            ? selectedCountry === "all"
+              ? "/customer-offers"
+              : `/customer-offers?country=${selectedCountry}`
+            : selectedCountry === "all"
+              ? `/customer-offers?category=${selectedCategory}`
+              : `/customer-offers?category=${selectedCategory}&country=${selectedCountry}`;
+
+        const href = `${base}${base.includes("?") ? "&" : "?"}brand=${brand.key}`;
+
+        return (
+          <a
+            key={brand.key}
+            href={href}
+            className={selectedBrand === brand.key ? "active" : ""}
+          >
+            <strong>{brand.label}</strong>
+            <span>{brand.count}</span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+)}
+
+
       {error && (
         <div className="message error">
           حدث خطأ أثناء تحميل العروض. حاول مرة أخرى لاحقًا.
@@ -1465,6 +1575,122 @@ const filteredOffers = approvedOffers.filter((offer) => {
       height: 205px;
     }
   }
+    .brandFilterBox {
+  max-width: 1120px;
+  margin: 18px auto 28px;
+  padding: 18px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(37,99,235,0.10), transparent 28%),
+    linear-gradient(135deg, #ffffff, #f8fafc);
+  border: 1px solid #dbeafe;
+  box-shadow:
+    0 18px 45px rgba(15,23,42,0.08),
+    0 0 0 6px rgba(34,197,94,0.035);
+}
+
+.brandFilterHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.brandFilterHeader h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.brandFilterHeader p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.brandFilterHeader a {
+  text-decoration: none;
+  color: #16a34a;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.brandFilterChips {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+
+.brandFilterChips a {
+  min-width: 118px;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: 0 8px 22px rgba(15,23,42,0.05);
+  transition: all .25s ease;
+}
+
+.brandFilterChips a:hover,
+.brandFilterChips a.active {
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, #0f172a, #2563eb);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 18px 34px rgba(37,99,235,0.22);
+}
+
+.brandFilterChips strong {
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.brandFilterChips span {
+  min-width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.brandFilterChips a.active span,
+.brandFilterChips a:hover span {
+  background: #22c55e;
+  color: #ffffff;
+}
+
+@media (max-width: 700px) {
+  .brandFilterBox {
+    margin: 14px 12px 22px;
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .brandFilterHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brandFilterChips a {
+    min-width: 110px;
+  }
+}
 `}</style>
     </main>
   );
