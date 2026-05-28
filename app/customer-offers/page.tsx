@@ -78,7 +78,7 @@ function formatOfferPrice(price: string, country?: string | null) {
 }
 const categoryCards: Record<string, { ar: string; en: string; icon: string }> = {
   all: { ar: "كل العروض", en: "All Deals", icon: "🛍️" },
-  mobiles: { ar: "موبايلات", en: "Mobiles", icon: "📱" },
+  mobiles: { ar: "جوالات وتابلت", en: "Mobiles", icon: "📱" },
   electronics: { ar: "إلكترونيات", en: "Electronics", icon: "🎧" },
   computers: { ar: "كمبيوتر ولابتوب", en: "Computers", icon: "💻" },
   home: { ar: "المنزل والمطبخ", en: "Home", icon: "🏠" },
@@ -95,7 +95,7 @@ camera_accessories: { ar: "ملحقات كاميرات", en: "Camera Accessories
 const categoryNames: Record<string, string> = {
   all: "كل العروض",
   electronics: "إلكترونيات",
-  mobiles: "موبايلات",
+  mobiles: "جوالات وتابلت",
   mobile_accessories: "إكسسوارات جوالات",
   smart_watch: "ساعات ذكية",
   power_bank: "باور بانك",
