@@ -833,6 +833,37 @@ async function handleSearch() {
               );
             })}
         </section>
+        <section className="smartLinksBox">
+  <div className="smartLinksGlow"></div>
+
+  <div className="smartLinksHeader">
+    <span>⚡ روابط سريعة</span>
+    <h2>ابدأ من هنا مع BPS Chat</h2>
+    <p>اختصر وقتك: تسوّق، قارن، بيع، أو أعلن داخل بي بي اس شات.</p>
+  </div>
+
+  <div className="smartLinksGrid">
+    <a href="/customer-offers" className="smartLinkCard">
+      <b>🛍️ متجر BPS</b>
+      <span>تصفح عروض ومنتجات العملاء</span>
+    </a>
+
+    <a href="/smart-search" className="smartLinkCard">
+      <b>⚡ البحث الذكي</b>
+      <span>رشّح منتجات حسب ميزانيتك</span>
+    </a>
+
+    <a href="/customer-offers/dashboard" className="smartLinkCard">
+      <b>👤 بيع معنا</b>
+      <span>اعرض منتجك مجانًا</span>
+    </a>
+
+    <a href="/advertise" className="smartLinkCard">
+      <b>🚀 أعلن معنا</b>
+      <span>اظهر قدام الزوار المهتمين</span>
+    </a>
+  </div>
+</section>
         <PopularSearches />
         <h3 style={{ marginTop: "30px" }}>🌍 تصفح باقي الدول</h3>
       <section className="homeCountryOffers">
@@ -2642,6 +2673,101 @@ z-index: 3;
   .heroRight {
     width: 100%;
     height: 180px;
+  }
+}
+  .smartLinksBox {
+  position: relative;
+  margin: 28px 0;
+  padding: 22px;
+  border-radius: 26px;
+  background:
+    linear-gradient(135deg, rgba(16,163,127,0.18), rgba(59,130,246,0.10)),
+    rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,255,200,0.18);
+  overflow: hidden;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.28);
+}
+
+.smartLinksGlow {
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle, rgba(0,255,200,0.18), transparent 55%);
+  animation: smartLinksFloat 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.smartLinksHeader {
+  position: relative;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.smartLinksHeader span {
+  color: #00ffd5;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.smartLinksHeader h2 {
+  margin: 6px 0;
+  font-size: 24px;
+  color: #fff;
+}
+
+.smartLinksHeader p {
+  margin: 0;
+  color: #a9b7c6;
+  font-size: 14px;
+}
+
+.smartLinksGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.smartLinkCard {
+  padding: 16px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #fff;
+  background: rgba(10,15,20,0.72);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all .25s ease;
+}
+
+.smartLinkCard b {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 7px;
+}
+
+.smartLinkCard span {
+  display: block;
+  font-size: 12px;
+  color: #b8c4d2;
+  line-height: 1.6;
+}
+
+.smartLinkCard:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: rgba(0,255,200,0.45);
+  box-shadow: 0 0 28px rgba(0,255,200,0.20);
+}
+
+@keyframes smartLinksFloat {
+  0%,100% { transform: translateX(0) rotate(0deg); opacity: .55; }
+  50% { transform: translateX(8%) rotate(8deg); opacity: 1; }
+}
+
+@media (max-width: 700px) {
+  .smartLinksGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .smartLinksHeader h2 {
+    font-size: 20px;
   }
 }
 `}</style>
