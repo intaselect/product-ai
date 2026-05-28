@@ -240,8 +240,14 @@ const brandOk =
 
 return searchOk && brandOk;
 });
-  return (
-    <main className="customerOffersPage" dir="rtl">
+
+const featuredSliderOffers = filteredOffers
+  .slice()
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 18);
+
+return (
+  <main className="customerOffersPage" dir="rtl">
       <section className="hero marketplaceHero">
   <div className="heroText">
     <div className="badge">🛒 BPS Market | بي بي اس ماركت</div>
@@ -505,6 +511,44 @@ return searchOk && brandOk;
     يتم عرض أفضل عروض السعودية المناسبة للشحن الخليجي.
   </div>
 )}
+{featuredSliderOffers.length > 0 && (
+  <section className="hotOffersSliderBox">
+    <div className="hotOffersHeader">
+      <div>
+        <h2>⚡ أهم العروض</h2>
+        <p>
+          منتجات مختارة عشوائيًا من {heroCountryName} حسب السوق الحالي
+        </p>
+      </div>
+
+      <a href="/customer-offers">تصفح المزيد</a>
+    </div>
+
+    <div className="hotOffersTrack">
+      {[...featuredSliderOffers, ...featuredSliderOffers].map((offer, index) => (
+        <a
+          key={`${offer.id}-${index}`}
+          href={`/api/customer-offers/click/${offer.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hotOfferMiniCard"
+        >
+          <div className="hotOfferImage">
+            <img src={offer.image_url} alt={offer.product_name} />
+          </div>
+
+          <div className="hotOfferInfo">
+            <strong>{offer.product_name}</strong>
+            <span>
+              {offer.price} {countryCurrencies[offer.country || ""]}
+            </span>
+            <small>{offer.store_name || "BPS Market"}</small>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
 <section className="marketSectionHeader">
   <div>
     <h2>🔥 عروض اليوم</h2>
@@ -577,7 +621,161 @@ return searchOk && brandOk;
     0 18px 45px rgba(15,23,42,0.08),
     0 0 0 6px rgba(34,197,94,0.04);
 }
+.hotOffersSliderBox {
+  max-width: 1320px;
+  margin: 10px auto 26px;
+  padding: 20px;
+  overflow: hidden;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(34,197,94,0.14), transparent 30%),
+    linear-gradient(135deg, #ffffff, #f8fafc);
+  border: 1px solid #dbeafe;
+  box-shadow:
+    0 20px 50px rgba(15,23,42,0.08),
+    0 0 0 6px rgba(34,197,94,0.035);
+}
 
+.hotOffersHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.hotOffersHeader h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 26px;
+  font-weight: 950;
+}
+
+.hotOffersHeader p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.hotOffersHeader a {
+  text-decoration: none;
+  color: #16a34a;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.hotOffersTrack {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: hotOffersMove 45s linear infinite;
+}
+
+.hotOffersSliderBox:hover .hotOffersTrack {
+  animation-play-state: paused;
+}
+
+.hotOfferMiniCard {
+  width: 235px;
+  min-height: 104px;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 10px;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 22px;
+  padding: 10px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 22px rgba(15,23,42,0.06);
+  transition: all .25s ease;
+}
+
+.hotOfferMiniCard:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: rgba(34,197,94,0.45);
+  box-shadow: 0 18px 38px rgba(15,23,42,0.13);
+}
+
+.hotOfferImage {
+  width: 82px;
+  height: 82px;
+  border-radius: 18px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hotOfferImage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.hotOfferInfo {
+  min-width: 0;
+}
+
+.hotOfferInfo strong {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #111827;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 950;
+}
+
+.hotOfferInfo span {
+  display: block;
+  margin-top: 6px;
+  color: #16a34a;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.hotOfferInfo small {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+@keyframes hotOffersMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
+@media (max-width: 700px) {
+  .hotOffersSliderBox {
+    margin: 8px 12px 22px;
+    padding: 14px;
+    border-radius: 24px;
+  }
+
+  .hotOffersHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hotOffersHeader h2 {
+    font-size: 22px;
+  }
+
+  .hotOfferMiniCard {
+    width: 210px;
+  }
+}
 .offersSearchForm {
   display: grid;
   grid-template-columns: 1fr 190px 110px auto;
