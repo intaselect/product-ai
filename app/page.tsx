@@ -733,6 +733,15 @@ async function handleSearch() {
 </div>
           </div>
        </section>
+       {loading && (
+  <div className="searchLoadingOverlay">
+    <div className="searchLoadingBox">
+      <div className="aiSpinner"></div>
+      <h3>جاري البحث عن أفضل الأسعار...</h3>
+      <p>ثواني ونجيب لك أفضل المنتجات من المتاجر</p>
+    </div>
+  </div>
+)}
 
 {results.length === 0 && (
   <>
@@ -1693,6 +1702,38 @@ z-index: 3;
 }
 .button:hover {
   background: #0e8f6e;
+}
+  .searchLoadingOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(3, 7, 18, 0.72);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchLoadingBox {
+  width: min(90%, 360px);
+  padding: 28px 22px;
+  border-radius: 26px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(16,163,127,0.22), rgba(37,99,235,0.16));
+  border: 1px solid rgba(0,255,200,0.28);
+  box-shadow: 0 0 45px rgba(0,255,200,0.18);
+}
+
+.searchLoadingBox h3 {
+  margin: 16px 0 6px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.searchLoadingBox p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 13px;
 }
 .composer::before {
   content: "";
