@@ -4,6 +4,7 @@ import { saveSearch } from "@/lib/saveSearch";
 import { supabase } from "@/lib/supabase";
 import PopularSearches from "@/app/components/PopularSearches";
 import type React from "react";
+import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
 
 
 
@@ -740,6 +741,10 @@ async function handleSearch() {
 
   <a href="/smart-search">جرّب البحث الذكي</a>
 </section>
+<BpsMarketAdSection
+  products={groupedProducts[country] || []}
+  country={country}
+/>
 
         <section className="results">
   {loading && (
@@ -790,6 +795,7 @@ async function handleSearch() {
       ))}
     </div>
   </section>
+
 )}
           {!loading &&
           
