@@ -113,7 +113,7 @@ ${detailsText}
   return (
     <main className="sellerPage">
       <SeoSearchBar />
-      <MarketPromoSection />
+
 
       <section className="hero" dir="rtl">
         <div className="badge">BPS Chat Seller Tools</div>
