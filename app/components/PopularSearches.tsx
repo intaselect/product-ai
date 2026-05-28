@@ -131,7 +131,7 @@ export default function PopularSearches() {
           display: flex;
           gap: 14px;
           width: max-content;
-          animation: popularAutoMove 55s linear infinite;
+          animation: popularAutoMove 160s linear infinite;
         }
 
         .popularSearches:hover .popularSliderTrack {
