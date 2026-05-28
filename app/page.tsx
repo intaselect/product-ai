@@ -3020,7 +3020,7 @@ z-index: 3;
     grid-column: 1 / -1 !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 0 30px 0 !important;
+    margin: 0 0 31px 0 !important;
     padding: 28px !important;
   }
 
@@ -3041,7 +3041,7 @@ z-index: 3;
   }
 
   .heroComposer .select {
-    height: 56px !important;
+    height: 57px !important;
     min-width: 190px !important;
     font-size: 16px !important;
   }
