@@ -2902,10 +2902,11 @@ z-index: 3;
 
 }
   .heroComposer {
-  max-width: 720px !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin: 24px 0 0 !important;
-  padding: 18px !important;
-  border-radius: 28px !important;
+  padding: 24px !important;
+  border-radius: 30px !important;
   position: relative !important;
   top: auto !important;
   background:
@@ -2914,6 +2915,20 @@ z-index: 3;
   box-shadow:
     0 20px 50px rgba(15,23,42,0.22),
     0 0 0 6px rgba(34,197,94,0.06) !important;
+}
+    .heroComposer .input {
+  min-height: 60px !important;
+  font-size: 17px !important;
+}
+
+.heroComposer .button {
+  min-width: 140px !important;
+  min-height: 60px !important;
+  font-size: 18px !important;
+}
+
+.heroComposer .select {
+  min-height: 52px !important;
 }
 
 .heroComposer .select {
