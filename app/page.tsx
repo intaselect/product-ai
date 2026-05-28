@@ -755,8 +755,9 @@ async function handleSearch() {
 )}
 
 <section className="results">
+
   {loading && (
-    <div className="aiLoading">
+    <div className="topLoader">
       <div className="aiSpinner"></div>
       <p className="aiText">جاري الحصول على أفضل نتائج ...</p>
     </div>
@@ -931,6 +932,14 @@ async function handleSearch() {
 </main>
 
 <style jsx>{`
+.topLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  margin: 10px auto 20px;
+}
 .page {
   min-height: 100vh;
   background:
