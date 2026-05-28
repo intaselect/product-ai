@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const dynamic = "force-dynamic";
 
@@ -106,7 +107,7 @@ async function getRelatedOffers(offer: any) {
 
   return data || [];
 }
-
+<MarketPromoSection />
 export async function generateMetadata({
   params,
 }: {
