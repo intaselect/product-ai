@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import MarketPromoSection from "@/app/components/MarketPromoSection";
+import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -297,6 +298,8 @@ const faqSchema = {
           والوصول لأفضل العروض بسهولة.
         </p>
       </section>
+      <SearchBeforeBuyBanner />
+
 
       <section className="premiumProductBox">
   <div className="premiumImageBox">

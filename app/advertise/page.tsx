@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 const plans = [
   {
     country: "السعودية",
@@ -111,7 +111,7 @@ export default function AdvertisePage() {
   في السعودية والإمارات والكويت وقطر والبحرين ومصر.
   الإعلان يظهر حسب الدولة المناسبة لعملائك ويصل لعملاء جاهزين للشراء.
 </p>
-
+<SearchBeforeBuyBanner />
         <div style={styles.box}>
           <h2 style={styles.h2}>
   لماذا الإعلان في BPS Chat (بي بي اس شات)؟

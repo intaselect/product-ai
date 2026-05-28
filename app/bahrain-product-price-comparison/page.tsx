@@ -3,6 +3,7 @@ import Link from "next/link";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import MarketPromoSection from "@/app/components/MarketPromoSection";
+import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 export const metadata: Metadata = {
   title: "مقارنة أسعار المنتجات في البحرين | أفضل سعر وعروض البحرين",
   description:
@@ -39,6 +40,7 @@ export default function BahrainProductPriceComparisonPage() {
     <main className="seoPage">
       <SeoSearchBar />
 <MarketPromoSection />
+<SearchBeforeBuyBanner />
       <section className="hero" dir="rtl">
         <div className="badge">BPS Chat | بي بي اس شات</div>
 
