@@ -18,5 +18,6 @@ export default async function sitemap() {
     { url: "https://www.bpschat.com/categories" },
     { url: "https://www.bpschat.com/brands" },
     { url: "https://www.bpschat.com/stores" },
+    { url: "https://www.bpschat.com/trending" },
   ];
 }

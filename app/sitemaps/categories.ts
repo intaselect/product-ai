@@ -22,13 +22,33 @@ export default async function sitemap() {
     "cars",
     "kids",
     "sports",
+    "cameras",
+    "camera_accessories",
     "other",
   ];
 
-  return countries.flatMap((c) =>
+  // صفحات الكاتيجوري العادية
+  const customerOfferCategoryPages = countries.flatMap((c) =>
     categories.map((cat) => ({
       url: `https://www.bpschat.com/customer-offers/${c}/${cat}`,
       lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
     }))
   );
+
+  // صفحات Best الجديدة
+  const bestCategoryPages = countries.flatMap((c) =>
+    categories.map((cat) => ({
+      url: `https://www.bpschat.com/best/${c}/${cat}`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    }))
+  );
+
+  return [
+    ...customerOfferCategoryPages,
+    ...bestCategoryPages,
+  ];
 }
