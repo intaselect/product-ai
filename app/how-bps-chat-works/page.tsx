@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const metadata: Metadata = {
   title: "كيف يعمل BPS Chat؟ | شرح بي بي اس شات",
@@ -25,6 +26,7 @@ export default function HowBpsChatWorksPage() {
   return (
     <main className="seoPage">
       <SeoSearchBar />
+      <MarketPromoSection />
 
       <section className="content" dir="rtl">
         <h1>كيف يعمل BPS Chat؟</h1>
