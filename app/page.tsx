@@ -618,6 +618,57 @@ async function handleSearch() {
         بي بي اس شات يساعدك تكتشف أفضل العروض والمنتجات
         في السعودية والإمارات والكويت وقطر والبحرين ومصر.
       </p>
+      <section className="composer heroComposer">
+  {errorMessage && (
+    <div className="aiErrorBox">
+      {errorMessage}
+    </div>
+  )}
+
+  <select
+    value={country}
+    onChange={(e) => {
+      setCountry(e.target.value);
+      localStorage.setItem("bps_selected_country", e.target.value);
+    }}
+    className="select"
+  >
+    <option value="sa">السعودية</option>
+    <option value="ae">الإمارات</option>
+    <option value="kw">الكويت</option>
+    <option value="qa">قطر</option>
+    <option value="bh">البحرين</option>
+    <option value="eg">مصر</option>
+  </select>
+
+  <div className="dailyLimitNotice">
+    ⚡ لكل مستخدم 10 عمليات بحث يوميًا لضمان أفضل أداء للموقع
+  </div>
+
+  <div className="searchBox">
+    <input
+      placeholder="اكتب اسم المنتج..."
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleSearch();
+        }
+      }}
+      className="input"
+    />
+
+    <div className="searchActions">
+      <button onClick={handleSearch} className="button" disabled={loading}>
+        {loading ? "..." : "بحث"}
+      </button>
+
+      <div className={`searchCounter ${remainingSearches <= 3 ? "danger" : ""}`}>
+        {remainingSearches} / 10
+      </div>
+    </div>
+  </div>
+</section>
 
       <div className="heroStats">
         <div className="heroStatCard">
@@ -685,54 +736,7 @@ async function handleSearch() {
           ))}
         </div>
 
-        <section className="composer">
-          {errorMessage && (
-  <div className="aiErrorBox">
-    {errorMessage}
-  </div>
-)}
-          <select
-            value={country}
-            onChange={(e) => {
-  setCountry(e.target.value);
-  localStorage.setItem("bps_selected_country", e.target.value);
-}}
-            className="select"
-          >
-            <option value="sa">السعودية</option>
-            <option value="ae">الإمارات</option>
-            <option value="kw">الكويت</option>
-            <option value="qa">قطر</option>
-            <option value="bh">البحرين</option>
-            <option value="eg">مصر</option>
-          </select>
-<div className="dailyLimitNotice">
-  ⚡ لكل مستخدم 10 عمليات بحث يوميًا لضمان أفضل أداء للموقع
-</div>
-          <div className="searchBox">
-            <input
-              placeholder="اكتب اسم المنتج..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearch();
-                }
-              }}
-              className="input"
-            />
 
-          <div className="searchActions">
-  <button onClick={handleSearch} className="button" disabled={loading}>
-    {loading ? "..." : "بحث"}
-  </button>
-
-  <div className={`searchCounter ${remainingSearches <= 3 ? "danger" : ""}`}>
-    {remainingSearches} / 10
-  </div>
-</div>
-          </div>
-       </section>
        {loading && (
   <div className="searchLoadingOverlay">
     <div className="searchLoadingBox">
@@ -2896,6 +2900,99 @@ z-index: 3;
     border-radius: 18px !important;
   }
 
+}
+  .heroComposer {
+  max-width: 720px !important;
+  margin: 24px 0 0 !important;
+  padding: 18px !important;
+  border-radius: 28px !important;
+  position: relative !important;
+  top: auto !important;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92)) !important;
+  border: 1px solid rgba(219,234,254,0.95) !important;
+  box-shadow:
+    0 20px 50px rgba(15,23,42,0.22),
+    0 0 0 6px rgba(34,197,94,0.06) !important;
+}
+
+.heroComposer .select {
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #e5e7eb !important;
+  min-width: 150px;
+}
+
+.heroComposer .dailyLimitNotice {
+  background: linear-gradient(135deg, #ecfdf5, #dbeafe) !important;
+  color: #047857 !important;
+  border: 1px solid rgba(34,197,94,0.25) !important;
+  box-shadow: none !important;
+}
+
+.heroComposer .searchBox {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.heroComposer .input {
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.heroComposer .input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.heroComposer .button {
+  background: linear-gradient(135deg, #16a34a, #2563eb) !important;
+  color: #ffffff !important;
+}
+
+.heroComposer .searchCounter {
+  background: linear-gradient(135deg, #ecfdf5, #dbeafe) !important;
+  color: #059669 !important;
+  border: 1px solid rgba(34,197,94,0.22) !important;
+}
+
+@media (max-width: 700px) {
+  .newHero {
+    margin: 16px 10px 18px !important;
+    padding: 26px 16px !important;
+    border-radius: 28px !important;
+    background:
+      radial-gradient(circle at 15% 12%, rgba(34,197,94,0.20), transparent 32%),
+      linear-gradient(135deg, #0f172a 0%, #1e293b 48%, #2563eb 100%) !important;
+  }
+
+  .heroComposer {
+    margin-top: 22px !important;
+    padding: 16px !important;
+    border-radius: 26px !important;
+  }
+
+  .heroComposer .searchBox {
+    display: block !important;
+  }
+
+  .heroComposer .input {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 10px !important;
+  }
+
+  .heroComposer .searchActions {
+    display: grid !important;
+    grid-template-columns: 1fr 62px !important;
+    gap: 10px !important;
+  }
+
+  .heroRight {
+    display: none !important;
+  }
 }
 `}</style>
     </div>
