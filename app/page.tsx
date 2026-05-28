@@ -732,201 +732,203 @@ async function handleSearch() {
   </div>
 </div>
           </div>
-        </section>
-        <section className="smartSearchPromo">
-  <div>
-    <strong>⚡ البحث الذكي حسب الميزانية</strong>
-    <p>اختار المنتج والدولة والميزانية، وخلّي BPS Chat يرشح لك نتائج مناسبة.</p>
-  </div>
+       </section>
 
-  <a href="/smart-search">جرّب البحث الذكي</a>
-</section>
-<BpsMarketAdSection
-  products={groupedProducts[country] || []}
-  country={country}
-/>
+{results.length === 0 && (
+  <>
+    <section className="smartSearchPromo">
+      <div>
+        <strong>⚡ البحث الذكي حسب الميزانية</strong>
+        <p>
+          اختار المنتج والدولة والميزانية، وخلّي BPS Chat يرشح لك نتائج مناسبة.
+        </p>
+      </div>
 
-        <section className="results">
+      <a href="/smart-search">جرّب البحث الذكي</a>
+    </section>
+
+    <BpsMarketAdSection
+      products={groupedProducts[country] || []}
+      country={country}
+    />
+  </>
+)}
+
+<section className="results">
   {loading && (
     <div className="aiLoading">
       <div className="aiSpinner"></div>
-
-      <p className="aiText">
-        جاري الحصول على أفضل نتائج ...
-      </p>
+      <p className="aiText">جاري الحصول على أفضل نتائج ...</p>
     </div>
   )}
 
-          {!loading && results.length === 0 && (
-            <p className="empty">ابدأ البحث أو جرّب اسم منتج آخر</p>
-          )}
-{results.length > 0 && sponsoredProducts.length > 0 && (
-  <section className="sponsoredResults">
-    <div className="sponsoredTitle">🔥 إعلان</div>
+  {!loading && results.length === 0 && (
+    <p className="empty">ابدأ البحث أو جرّب اسم منتج آخر</p>
+  )}
 
-    <div className="storeSlider">
-      {sponsoredProducts.map((item: any) => (
-        <a
-          key={`ad-${item.id}`}
-          href={`/api/customer-offers/click/${item.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="storeCard"
-        >
+  {results.length > 0 && sponsoredProducts.length > 0 && (
+    <section className="sponsoredResults">
+      <div className="sponsoredTitle">🔥 إعلان</div>
+      <div className="storeSlider">
+        {sponsoredProducts.map((item: any) => (
+          <a
+            key={`ad-${item.id}`}
+            href={`/api/customer-offers/click/${item.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="storeCard"
+          >
+            <img src={item.image_url} alt={item.product_name || "إعلان"} />
+            <div className="storeInfo">
+              <div className="storeName">🔥 إعلان - {item.product_name}</div>
+              <div className="storePrice">
+                {item.price} {currencyLabel[country] || ""}
+              </div>
+              <div style={{ fontSize: "11px", color: "#aaa", marginTop: "4px" }}>
+                🌍 {countryLabel[country] || country}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {!loading &&
+    results.map((item, i) => {
+      const data = item as any;
+
+      return (
+        <article key={i} className="card">
           <img
-            src={item.image_url}
-            alt={item.product_name || "إعلان"}
+            src={data.image}
+            className="image"
+            alt={data.title || data.name || "Product image"}
           />
 
-         <div className="storeInfo">
-  <div className="storeName">
-    🔥 إعلان - {item.product_name}
-  </div>
+          <div className="info">
+            <div className="name">{data.title || data.name || "No title"}</div>
 
-  <div className="storePrice">
-    {item.price} {currencyLabel[country] || ""}
-  </div>
+            <div className="meta">
+              <span>💰 {data.priceText || "No price"}</span>
+              <span>🏬 {data.store || "Unknown store"}</span>
+            </div>
 
-  <div style={{ fontSize: "11px", color: "#aaa", marginTop: "4px" }}>
-    🌍 {countryLabel[country] || country}
-  </div>
-</div>
+            <a
+              href={data.url || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link"
+            >
+              عرض المنتج ↗
+            </a>
+          </div>
+        </article>
+      );
+    })}
+</section>
+
+{results.length === 0 && (
+  <>
+    <section className="smartLinksBox">
+      <div className="smartLinksGlow"></div>
+
+      <div className="smartLinksHeader">
+        <span>⚡ روابط سريعة</span>
+        <h2>ابدأ من هنا مع BPS Chat</h2>
+        <p>اختصر وقتك: تسوّق، قارن، بيع، أو أعلن داخل بي بي اس شات.</p>
+      </div>
+
+      <div className="smartLinksGrid">
+        <a href="/customer-offers" className="smartLinkCard">
+          <b>🛍️ متجر BPS</b>
+          <span>تصفح عروض ومنتجات العملاء</span>
         </a>
-      ))}
-    </div>
-  </section>
 
-)}
-          {!loading &&
-          
-            results.map((item, i) => {
-              const data = item as any;
+        <a href="/smart-search" className="smartLinkCard">
+          <b>⚡ البحث الذكي</b>
+          <span>رشّح منتجات حسب ميزانيتك</span>
+        </a>
 
-              return (
-                <article key={i} className="card">
-                  <img
-                    src={data.image}
-                    className="image"
-                    alt={data.title || data.name || "Product image"}
-                  />
+        <a href="/customer-offers/dashboard" className="smartLinkCard">
+          <b>👤 بيع معنا</b>
+          <span>اعرض منتجك مجانًا</span>
+        </a>
 
-                  <div className="info">
-                    <div className="name">
-                      {data.title || data.name || "No title"}
-                    </div>
+        <a href="/advertise" className="smartLinkCard">
+          <b>🚀 أعلن معنا</b>
+          <span>اظهر قدام الزوار المهتمين</span>
+        </a>
+      </div>
+    </section>
 
-                    <div className="meta">
-                      <span>💰 {data.priceText || "No price"}</span>
-                      <span>🏬 {data.store || "Unknown store"}</span>
-                    </div>
+    <PopularSearches />
 
-                    <a
-                      href={data.url || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="link"
-                    >
-                      عرض المنتج ↗
-                    </a>
-                  </div>
-                </article>
-              );
-            })}
-        </section>
-        <section className="smartLinksBox">
-  <div className="smartLinksGlow"></div>
+    <h3 style={{ marginTop: "30px" }}>🌍 تصفح باقي الدول</h3>
 
-  <div className="smartLinksHeader">
-    <span>⚡ روابط سريعة</span>
-    <h2>ابدأ من هنا مع BPS Chat</h2>
-    <p>اختصر وقتك: تسوّق، قارن، بيع، أو أعلن داخل بي بي اس شات.</p>
-  </div>
+    <section className="homeCountryOffers">
+      <div className="homeCountryHeader">
+        <span>🔥 عروض مختارة لك</span>
+        <h2>منتجات من {country.toUpperCase()}</h2>
+        <p>عروض قريبة من دولتك تظهر لك أولًا حسب اختيارك الحالي.</p>
+      </div>
 
-  <div className="smartLinksGrid">
-    <a href="/customer-offers" className="smartLinkCard">
-      <b>🛍️ متجر BPS</b>
-      <span>تصفح عروض ومنتجات العملاء</span>
-    </a>
+      <div className="storeSlider">
+        {(groupedProducts[country] || []).slice(0, 12).map((item: any) => (
+          <a
+            key={item.id}
+            href={`/api/customer-offers/click/${item.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="storeCard"
+          >
+            <img
+              src={item.image_url}
+              alt={item.product_name || "منتج من متجر BPS Chat"}
+            />
 
-    <a href="/smart-search" className="smartLinkCard">
-      <b>⚡ البحث الذكي</b>
-      <span>رشّح منتجات حسب ميزانيتك</span>
-    </a>
+            <div className="storeInfo">
+              <div className="storeName">{item.product_name}</div>
+              <div className="storePrice">
+                {item.price} {currencyLabel[country] || ""}
+              </div>
 
-    <a href="/customer-offers/dashboard" className="smartLinkCard">
-      <b>👤 بيع معنا</b>
-      <span>اعرض منتجك مجانًا</span>
-    </a>
+              <div style={{ fontSize: "11px", color: "#aaa", marginTop: "4px" }}>
+                🌍 {countryLabel[country] || country}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
 
-    <a href="/advertise" className="smartLinkCard">
-      <b>🚀 أعلن معنا</b>
-      <span>اظهر قدام الزوار المهتمين</span>
-    </a>
-  </div>
-</section>
-        <PopularSearches />
-        <h3 style={{ marginTop: "30px" }}>🌍 تصفح باقي الدول</h3>
-      <section className="homeCountryOffers">
-  <div className="homeCountryHeader">
-    <span>🔥 عروض مختارة لك</span>
-    <h2>منتجات من {country.toUpperCase()}</h2>
-    <p>عروض قريبة من دولتك تظهر لك أولًا حسب اختيارك الحالي.</p>
-  </div>
+      <a href={`/customer-offers?country=${country}`} className="seeMoreOffersBtn">
+        شاهد كل عروض دولتك ↗
+      </a>
+    </section>
 
-  <div className="storeSlider">
-    {(groupedProducts[country] || []).slice(0, 12).map((item: any) => (
-      <a
-        key={item.id}
-        href={`/api/customer-offers/click/${item.id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="storeCard"
-      >
-        <img
-          src={item.image_url}
-          alt={item.product_name || "منتج من متجر BPS Chat"}
-        />
-
-        <div className="storeInfo">
-          <div className="storeName">{item.product_name}</div>
-         <div className="storePrice">
-  {item.price} {currencyLabel[country] || ""}
-</div>
-
-<div style={{ fontSize: "11px", color: "#aaa", marginTop: "4px" }}>
-  🌍 {countryLabel[country] || country}
-</div>
+    <section className="storePromo">
+      <div className="storePromoContent">
+        <div>
+          <h3>🛒 متجر عملاء بي بي اس</h3>
+          <p>
+            ✅ منتجات مختارة ومعتمدة من BPS Chat — تسوّق بثقة أو ابدأ بيع منتجاتك مجانًا
+          </p>
         </div>
-      </a>
-    ))}
-  </div>
 
-  <a href={`/customer-offers?country=${country}`} className="seeMoreOffersBtn">
-    شاهد كل عروض دولتك ↗
-  </a>
-</section>
-       
-  <section className="storePromo">
-  <div className="storePromoContent">
-    <div>
-      <h3>🛒 متجر عملاء بي بي اس</h3>
-      <p>
-        ✅ منتجات مختارة ومعتمدة من BPS Chat — تسوّق بثقة أو ابدأ بيع منتجاتك مجانًا
-      </p>
-    </div>
+        <div className="storePromoActions">
+          <a href="/customer-offers" className="storeBtn primary">
+            تسوّق الآن
+          </a>
 
-    <div className="storePromoActions">
-      <a href="/customer-offers" className="storeBtn primary">
-        تسوّق الآن
-      </a>
-
-      <a href="/customer-offers/dashboard" className="storeBtn secondary">
-        اعرض منتجك
-      </a>
-    </div>
-  </div>
-</section>
-      </main>
+          <a href="/customer-offers/dashboard" className="storeBtn secondary">
+            اعرض منتجك
+          </a>
+        </div>
+      </div>
+    </section>
+  </>
+)}
+</main>
 
 <style jsx>{`
 .page {
@@ -2770,7 +2772,7 @@ z-index: 3;
     font-size: 20px;
   }
 }
-  @media (max-width: 700px) {
+@media (max-width: 700px) {
 
   .container {
     padding: 14px 12px 30px;
