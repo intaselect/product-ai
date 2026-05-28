@@ -204,33 +204,36 @@ export default function SidebarMenu() {
 }
 .sidebarCustomerStoreGlow {
   position: relative;
+  overflow: hidden;
+
   display: flex;
   align-items: center;
   gap: 12px;
 
   padding: 14px 12px;
-  border-radius: 20px;
+  min-height: 68px;
 
-  min-height: 64px;
+  border-radius: 22px;
 
   background:
-    linear-gradient(135deg, #f97316 0%, #22c55e 48%, #2563eb 100%);
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f8fafc 55%,
+      #ecfdf5 100%
+    );
 
-  border: 1px solid rgba(255,255,255,0.22);
+  border: 1px solid rgba(219,234,254,0.95);
 
-  color: #fff !important;
-
-  font-weight: 950;
-
-  overflow: hidden;
+  color: #111827 !important;
 
   box-shadow:
-    0 0 22px rgba(249,115,22,0.32),
-    0 0 38px rgba(34,197,94,0.28);
+    0 14px 32px rgba(15,23,42,0.18),
+    0 0 0 5px rgba(34,197,94,0.05);
 
-  animation: marketSidebarPulse 2.4s ease-in-out infinite;
+  animation: marketSidebarWhitePulse 3.2s ease-in-out infinite;
 
-  transition: all 0.25s ease;
+  transition: all .25s ease;
 }
   @keyframes marketSidebarPulse {
   0%, 100% {
@@ -241,19 +244,29 @@ export default function SidebarMenu() {
   }
 }
  .storeIcon {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.22);
-  font-size: 20px;
-  box-shadow: inset 0 0 14px rgba(255,255,255,0.14);
-  animation: storeIconFloat 2s ease-in-out infinite;
-}
 
+  border-radius: 16px;
+
+  background:
+    linear-gradient(135deg,#ecfdf5,#dbeafe);
+
+  color: #111827;
+
+  font-size: 22px;
+
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,.8),
+    0 8px 18px rgba(15,23,42,.10);
+
+  animation: marketIconFloat 2.2s ease-in-out infinite;
+}
 .sidebarCustomerStoreGlow:hover {
   transform: translateX(-5px) scale(1.03);
   box-shadow: 0 0 30px rgba(34,197,94,0.42);
@@ -305,13 +318,14 @@ export default function SidebarMenu() {
   box-shadow: 0 0 28px rgba(124,58,237,0.35);
 }
 
-/* النص الصغير */
 .subText {
   display: block;
   font-size: 11px;
-  color: #cfcfcf;
-  margin-top: 3px;
-  font-weight: 600;
+  margin-top: 4px;
+
+  color: #16a34a;
+
+  font-weight: 900;
 }
         .menuButton:hover {
           background: #383838;
@@ -536,6 +550,32 @@ export default function SidebarMenu() {
   }
 }
         }
+@keyframes marketSidebarWhitePulse {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 14px 32px rgba(15,23,42,.18),
+      0 0 0 5px rgba(34,197,94,.05);
+  }
+
+  50% {
+    transform: scale(1.035);
+    box-shadow:
+      0 18px 42px rgba(15,23,42,.22),
+      0 0 0 7px rgba(37,99,235,.08),
+      0 0 40px rgba(37,99,235,.20);
+  }
+}
+
+@keyframes marketIconFloat {
+  0%,100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
       `}</style>
     </>
   );
