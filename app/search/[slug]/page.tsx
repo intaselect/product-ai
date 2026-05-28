@@ -258,7 +258,43 @@ const storeSummary = stores
       },
     })) || [],
 };
+type MarketOffer = {
+  id: number;
+  product_name: string;
+  price: string;
+  image_url: string;
+  product_url: string;
+  store_name: string | null;
+  country: string | null;
+};
 
+const countryNames: Record<string, string> = {
+  sa: "السعودية",
+  ae: "الإمارات",
+  kw: "الكويت",
+  qa: "قطر",
+  bh: "البحرين",
+  eg: "مصر",
+};
+
+const countryCurrencies: Record<string, string> = {
+  sa: "ريال سعودي",
+  ae: "درهم إماراتي",
+  kw: "دينار كويتي",
+  qa: "ريال قطري",
+  bh: "دينار بحريني",
+  eg: "جنيه مصري",
+};
+
+const { data: marketOffers } = await supabase
+  .from("customer_offers")
+  .select("id, product_name, price, image_url, product_url, store_name, country")
+  .eq("status", "approved")
+  .eq("country", countryCode)
+  .order("created_at", { ascending: false })
+  .limit(4);
+
+const slugMarketOffers = (marketOffers || []) as MarketOffer[];
 return (
   <>
     <SidebarMenu />
@@ -297,6 +333,90 @@ return (
   }}
 />
     <SeoSearchBar />
+    <section className="slugMarketHero" dir="rtl">
+  <div className="slugMarketText">
+    <div className="slugMarketBadge">🛒 BPS Market | بي بي اس ماركت</div>
+
+    <h2>
+      عروض حقيقية قريبة من بحثك في <span>{countryName}</span>
+    </h2>
+
+    <p>
+      أثناء بحثك عن <strong>{data?.query || query}</strong>، تقدر كمان تشوف عروض
+      العملاء والمتاجر داخل {countryName} من BPS Market.
+    </p>
+
+    <div className="slugMarketActions">
+      <a href={`/customer-offers?country=${countryCode}`} className="slugPrimaryBtn">
+        🔥 تصفح عروض {countryName}
+      </a>
+
+      <a href="/customer-offers/add" className="slugSecondaryBtn">
+        + أضف عرضك
+      </a>
+    </div>
+  </div>
+
+  <div className="slugMarketVisual">
+    <div className="slugDealCard big">
+      <span>Today Deals 🔥</span>
+      <strong>{slugMarketOffers.length}</strong>
+      <small>عروض مناسبة لدولتك</small>
+    </div>
+
+    <div className="slugDealCard small one">
+      <span>Best Prices</span>
+      <strong>{countryName}</strong>
+    </div>
+
+    <div className="slugDealCard small two">
+      <span>BPS Market</span>
+      <strong>Local Deals</strong>
+    </div>
+  </div>
+</section>
+
+{slugMarketOffers.length > 0 && (
+  <section className="slugMarketOffers" dir="rtl">
+    <div className="slugSectionHeader">
+      <div>
+        <h2>🔥 عروض من المتجر في {countryName}</h2>
+        <p>منتجات مختارة من BPS Market حسب الدولة</p>
+      </div>
+
+      <a href={`/customer-offers?country=${countryCode}`}>عرض كل العروض</a>
+    </div>
+
+    <div className="slugOffersGrid">
+      {slugMarketOffers.map((offer) => (
+        <article className="slugOfferCard" key={offer.id}>
+          <div className="slugOfferImage">
+            <img src={offer.image_url} alt={offer.product_name} loading="lazy" />
+            <span>{countryNames[offer.country || ""] || countryName}</span>
+          </div>
+
+          <div className="slugOfferContent">
+            <p>{offer.store_name || "عرض عميل BPS Chat"}</p>
+            <h3>{offer.product_name}</h3>
+
+            <div className="slugPriceRow">
+              <strong>{offer.price}</strong>
+              <small>{countryCurrencies[offer.country || ""]}</small>
+            </div>
+
+            <a
+              href={`/api/customer-offers/click/${offer.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              عرض المنتج
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+)}
 
     <div style={{ padding: "40px" }}>
       <h1>
@@ -662,6 +782,304 @@ overflow: hidden;
     0%,100% { opacity: 0.4; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.8); }
   }
+    .slugMarketHero {
+  max-width: 1320px;
+  margin: 26px auto 28px;
+  padding: 42px 32px;
+  border-radius: 34px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #2563eb 100%);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.22);
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 28px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.slugMarketText h2 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 44px);
+  font-weight: 950;
+  color: #fff;
+}
+
+.slugMarketText h2 span {
+  background: linear-gradient(135deg, #22c55e, #60a5fa, #fff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.slugMarketText p {
+  color: #dbeafe;
+  line-height: 1.9;
+  font-size: 15px;
+  max-width: 760px;
+}
+
+.slugMarketBadge {
+  display: inline-flex;
+  padding: 8px 15px;
+  border-radius: 999px;
+  background: rgba(34,197,94,0.14);
+  border: 1px solid rgba(34,197,94,0.35);
+  color: #bbf7d0;
+  font-size: 12px;
+  font-weight: 950;
+  margin-bottom: 10px;
+}
+
+.slugMarketActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.slugPrimaryBtn,
+.slugSecondaryBtn {
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 15px;
+  font-weight: 950;
+  transition: all .25s ease;
+}
+
+.slugPrimaryBtn {
+  background: #22c55e;
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(34,197,94,0.3);
+}
+
+.slugSecondaryBtn {
+  background: rgba(255,255,255,0.13);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.16);
+}
+
+.slugPrimaryBtn:hover,
+.slugSecondaryBtn:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+
+.slugMarketVisual {
+  position: relative;
+  min-height: 230px;
+}
+
+.slugDealCard {
+  position: absolute;
+  background: rgba(255,255,255,0.96);
+  color: #111827;
+  border-radius: 26px;
+  padding: 20px;
+  box-shadow: 0 22px 55px rgba(0,0,0,0.22);
+}
+
+.slugDealCard span {
+  color: #2563eb;
+  font-weight: 950;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.slugDealCard strong {
+  color: #16a34a;
+  font-size: 28px;
+  font-weight: 950;
+  display: block;
+}
+
+.slugDealCard.big {
+  width: 240px;
+  min-height: 145px;
+  left: 35px;
+  top: 30px;
+}
+
+.slugDealCard.small {
+  width: 175px;
+}
+
+.slugDealCard.one {
+  right: 0;
+  top: 0;
+}
+
+.slugDealCard.two {
+  right: 55px;
+  bottom: 5px;
+}
+
+.slugMarketOffers {
+  max-width: 1320px;
+  margin: 0 auto 26px;
+  padding: 0 20px;
+}
+
+.slugSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.slugSectionHeader h2 {
+  color: #fff;
+  margin: 0;
+  font-size: 26px;
+  font-weight: 950;
+}
+
+.slugSectionHeader p {
+  color: #cbd5e1;
+  margin: 5px 0 0;
+}
+
+.slugSectionHeader a {
+  color: #22c55e;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.slugOffersGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.slugOfferCard {
+  background: #fff;
+  color: #111827;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.16);
+  transition: all .25s ease;
+}
+
+.slugOfferCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.22);
+}
+
+.slugOfferImage {
+  position: relative;
+  height: 220px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.slugOfferImage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.slugOfferImage span {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0f172a, #2563eb, #22c55e);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.slugOfferContent {
+  padding: 14px;
+}
+
+.slugOfferContent p {
+  margin: 0 0 8px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.slugOfferContent h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 48px;
+}
+
+.slugPriceRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.slugPriceRow strong {
+  color: #16a34a;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.slugPriceRow small {
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-weight: 900;
+}
+
+.slugOfferContent a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 13px;
+  border-radius: 14px;
+  background: #111827;
+  color: #fff;
+  font-weight: 950;
+}
+
+.slugOfferContent a:hover {
+  background: #2563eb;
+}
+
+@media (max-width: 900px) {
+  .slugMarketHero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .slugMarketVisual {
+    display: none;
+  }
+
+  .slugMarketActions {
+    justify-content: center;
+  }
+
+  .slugOffersGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .slugMarketHero {
+    margin: 18px 12px;
+    padding: 24px 16px;
+    border-radius: 24px;
+  }
+
+  .slugOffersGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .slugSectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
 `}</style>
      </main>
   </>
