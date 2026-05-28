@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const metadata: Metadata = {
   title: "هل BPS Chat مجاني؟ | بي بي اس شات لمقارنة الأسعار",
@@ -28,6 +29,7 @@ export default function IsBpsChatFreePage() {
   return (
     <main className="seoPage">
       <SeoSearchBar />
+      <MarketPromoSection />
 
       <section className="content" dir="rtl">
         <h1>هل BPS Chat مجاني؟</h1>

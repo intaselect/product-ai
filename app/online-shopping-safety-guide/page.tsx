@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const metadata: Metadata = {
   title: "دليل الشراء الآمن أونلاين | السعودية ومصر والإمارات والخليج",
@@ -29,6 +30,7 @@ export default function OnlineShoppingSafetyGuidePage() {
   return (
     <main className="seoPage">
       <SeoSearchBar />
+      <MarketPromoSection />
 
       <section className="hero" dir="rtl">
         <div className="badge">دليل الشراء الآمن</div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const metadata: Metadata = {
   title: "مقارنة أسعار Laptop | أفضل سعر لابتوب في السعودية والخليج ومصر",
@@ -37,6 +38,7 @@ export default function LaptopPriceComparisonPage() {
   return (
     <main className="seoPage">
       <SeoSearchBar />
+      <MarketPromoSection />
 
       <section className="hero" dir="rtl">
         <div className="badge">BPS Chat | بي بي اس شات</div>
