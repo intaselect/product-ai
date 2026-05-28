@@ -603,22 +603,7 @@ async function handleSearch() {
   <div className="heroGlow"></div>
 
   <div className="heroContent">
-
-    <div className="heroLeft">
-      <div className="heroBadge">
-        ⚡ BPS Chat AI Shopping Engine
-      </div>
-
-      <h1 className="heroTitle">
-        ابحث عن أفضل المنتجات
-        <span>وقارن الأسعار بذكاء</span>
-      </h1>
-
-      <p className="heroDesc">
-        بي بي اس شات يساعدك تكتشف أفضل العروض والمنتجات
-        في السعودية والإمارات والكويت وقطر والبحرين ومصر.
-      </p>
-      <section className="composer heroComposer">
+  <section className="composer heroComposer">
   {errorMessage && (
     <div className="aiErrorBox">
       {errorMessage}
@@ -669,6 +654,21 @@ async function handleSearch() {
     </div>
   </div>
 </section>
+    <div className="heroLeft">
+      <div className="heroBadge">
+        ⚡ BPS Chat AI Shopping Engine
+      </div>
+
+      <h1 className="heroTitle">
+        ابحث عن أفضل المنتجات
+        <span>وقارن الأسعار بذكاء</span>
+      </h1>
+
+      <p className="heroDesc">
+        بي بي اس شات يساعدك تكتشف أفضل العروض والمنتجات
+        في السعودية والإمارات والكويت وقطر والبحرين ومصر.
+      </p>
+    
 
       <div className="heroStats">
         <div className="heroStatCard">
@@ -3009,7 +3009,37 @@ z-index: 3;
     display: none !important;
   }
 }
-  
+  @media (min-width: 701px) {
+  .heroContent {
+    display: grid !important;
+    grid-template-columns: 1fr 260px !important;
+    gap: 30px !important;
+  }
+
+  .heroComposer {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 28px 0 !important;
+    padding: 28px !important;
+  }
+
+  .heroComposer .searchBox {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .heroComposer .input {
+    height: 64px !important;
+    font-size: 18px !important;
+  }
+
+  .heroComposer .button {
+    height: 64px !important;
+    min-width: 170px !important;
+    font-size: 18px !important;
+  }
+}
 `}</style>
     </div>
   );
