@@ -107,7 +107,7 @@ async function getRelatedOffers(offer: any) {
 
   return data || [];
 }
-<MarketPromoSection />
+
 export async function generateMetadata({
   params,
 }: {
@@ -338,7 +338,7 @@ const faqSchema = {
           </Link>
         </div>
       </section>
-
+<MarketPromoSection />
       <section className="content">
         <h2>أفضل سعر {offer.product_name} في {country}</h2>
 
