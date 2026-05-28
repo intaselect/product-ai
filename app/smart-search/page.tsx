@@ -5,6 +5,7 @@ import PopularSearches from "@/app/components/PopularSearches";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 import { headers } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const revalidate = 86400; // يوم
 
@@ -319,6 +320,7 @@ seoLinks.forEach(function (link) {
 />
 
       <SeoSearchBar />
+      <MarketPromoSection />
 <div id="smartLoadingOverlay" className="smartLoadingOverlay">
   <div className="aiLoaderBox">
     <div className="aiOrbit">

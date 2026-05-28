@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 const countries: any = {
   sa: { name: "السعودية", currency: "ريال", market: "حراج، فيسبوك، واتساب، إنستجرام" },
@@ -112,6 +113,7 @@ ${detailsText}
   return (
     <main className="sellerPage">
       <SeoSearchBar />
+      <MarketPromoSection />
 
       <section className="hero" dir="rtl">
         <div className="badge">BPS Chat Seller Tools</div>
