@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-
+import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -287,6 +287,8 @@ return searchOk && brandOk;
     </div>
   </div>
 </section>
+<SearchBeforeBuyBanner />
+
       <section className="marketCategorySection">
   <div className="sectionTitleRow">
     <div>

@@ -6,6 +6,7 @@ import VideoPreview from "@/app/marketing-video/VideoPreview";
 import SidebarMenu from "@/app/components/SidebarMenu";
 import ShareSlugVideo from "@/app/components/ShareSlugVideo";
 import { headers } from "next/headers";
+import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
   
 
 export const revalidate = 43200; // 12 ساعة
@@ -375,7 +376,7 @@ return (
     </div>
   </div>
 </section>
-
+<SearchBeforeBuyBanner />
 {slugMarketOffers.length > 0 && (
   <section className="slugMarketOffers" dir="rtl">
     <div className="slugSectionHeader">
