@@ -609,7 +609,16 @@ async function handleSearch() {
       {errorMessage}
     </div>
   )}
+<a href="/customer-offers" className="heroMarketBigBtn">
+  <span className="heroMarketIcon">🛒</span>
 
+  <span className="heroMarketText">
+    <strong>BPS Market</strong>
+    <small>تسوّق العروض الآن</small>
+  </span>
+
+  <span className="heroMarketArrow">←</span>
+</a>
   <select
     value={country}
     onChange={(e) => {
@@ -3038,6 +3047,118 @@ z-index: 3;
     height: 64px !important;
     min-width: 170px !important;
     font-size: 18px !important;
+  }
+}
+  .heroMarketBigBtn {
+  width: 100%;
+  min-height: 66px;
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  text-decoration: none;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 55%, #ecfdf5 100%);
+  border: 1px solid rgba(219,234,254,0.95);
+  color: #111827;
+
+  box-shadow:
+    0 14px 32px rgba(15,23,42,0.16),
+    0 0 0 5px rgba(34,197,94,0.06);
+
+  position: relative;
+  overflow: hidden;
+  animation: heroMarketPulse 3.2s ease-in-out infinite;
+}
+
+.heroMarketBigBtn::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  width: 44px;
+  right: -70px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
+  animation: heroMarketShine 3.8s ease-in-out infinite;
+}
+
+.heroMarketIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ecfdf5, #dbeafe);
+  font-size: 23px;
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,0.85),
+    0 8px 18px rgba(15,23,42,0.10);
+}
+
+.heroMarketText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  text-align: right;
+}
+
+.heroMarketText strong {
+  color: #111827;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.heroMarketText small {
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 900;
+  margin-top: 4px;
+}
+
+.heroMarketArrow {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+  color: #ffffff;
+  font-weight: 950;
+  box-shadow: 0 8px 18px rgba(37,99,235,0.24);
+}
+
+.heroMarketBigBtn:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+@keyframes heroMarketPulse {
+  0%,100% {
+    box-shadow:
+      0 14px 32px rgba(15,23,42,0.16),
+      0 0 0 5px rgba(34,197,94,0.06);
+  }
+
+  50% {
+    box-shadow:
+      0 18px 42px rgba(15,23,42,0.22),
+      0 0 0 7px rgba(37,99,235,0.08),
+      0 0 40px rgba(37,99,235,0.20);
+  }
+}
+
+@keyframes heroMarketShine {
+  0% {
+    transform: translateX(-140%) skewX(-18deg);
+  }
+
+  55%,100% {
+    transform: translateX(170%) skewX(-18deg);
   }
 }
 `}</style>
