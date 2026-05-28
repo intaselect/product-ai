@@ -1,3 +1,4 @@
+"use client";
 export default function SearchBeforeBuyBanner() {
   return (
     <section className="searchBeforeBuyBanner" dir="rtl">
