@@ -3,6 +3,7 @@ import Link from "next/link";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const revalidate = 300;
 
@@ -173,6 +174,7 @@ export default async function BestSmartphones2026Page() {
       />
 
       <SeoSearchBar />
+      <MarketPromoSection />
 
       <section className="hero" dir="rtl">
         <div className="badge">BPS Chat | بي بي اس شات</div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const metadata: Metadata = {
   title: "BPS Chat | بي بي اس شات - محرك بحث ومقارنة أسعار المنتجات",
@@ -53,6 +54,7 @@ export default function BpsChatPage() {
   return (
     <main className="seoPage">
       <SeoSearchBar />
+      <MarketPromoSection />
 
       <script
         type="application/ld+json"
