@@ -598,25 +598,58 @@ async function handleSearch() {
 )}
 </aside>
       <main className="container">
-       <section className="hero">
-  
-  <div className="badge">BPS Chat | بي بي اس شات</div>
-  <div className="brandTitleBlock">
-  <h1 className="titleWithLogo">
-    <img src="/logo-icon.png" className="inlineLogo leftLogo" />
+       <section className="newHero">
+  <div className="heroGlow"></div>
 
-    <span className="typingText">
-      BPS Chat
-    </span>
+  <div className="heroContent">
 
-    <img src="/logo-icon.png" className="inlineLogo rightLogo" />
-  </h1>
+    <div className="heroLeft">
+      <div className="heroBadge">
+        ⚡ BPS Chat AI Shopping Engine
+      </div>
 
-  <div className="arabicBrandName">
-    بي بي اس شات
+      <h1 className="heroTitle">
+        ابحث عن أفضل المنتجات
+        <span>وقارن الأسعار بذكاء</span>
+      </h1>
+
+      <p className="heroDesc">
+        بي بي اس شات يساعدك تكتشف أفضل العروض والمنتجات
+        في السعودية والإمارات والكويت وقطر والبحرين ومصر.
+      </p>
+
+      <div className="heroStats">
+        <div className="heroStatCard">
+          <strong>+50K</strong>
+          <span>عملية بحث</span>
+        </div>
+
+        <div className="heroStatCard">
+          <strong>6</strong>
+          <span>دول مدعومة</span>
+        </div>
+
+        <div className="heroStatCard">
+          <strong>AI</strong>
+          <span>نتائج ذكية</span>
+        </div>
+      </div>
+    </div>
+
+    <div className="heroRight">
+      <div className="floatingCard card1">
+        🔥 Trending Deals
+      </div>
+
+      <div className="floatingCard card2">
+        🛍️ BPS Market
+      </div>
+
+      <div className="floatingCard card3">
+        ⚡ AI Search
+      </div>
+    </div>
   </div>
-</div>
-  <p className="subtitle">ابحث عن المنتجات حسب الدولة</p>
 </section>
 <a href="/customer-offers" className="liveStorePulse">
   <span className="liveDot"></span>
@@ -2390,6 +2423,219 @@ z-index: 3;
 
   50% {
     transform: translateY(-3px);
+  }
+}
+  .newHero {
+  position: relative;
+  z-index: 3;
+
+  margin-top: 30px;
+  margin-bottom: 25px;
+
+  border-radius: 34px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15,23,42,0.96),
+      rgba(17,24,39,0.92),
+      rgba(10,163,127,0.18)
+    );
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 40px rgba(0,255,200,0.08),
+    inset 0 0 30px rgba(255,255,255,0.03);
+
+  padding: 60px 50px;
+}
+
+.heroGlow {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at top right,
+    rgba(0,255,200,0.16),
+    transparent 30%);
+
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.heroLeft {
+  flex: 1;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 18px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.06);
+
+  border: 1px solid rgba(0,255,200,0.22);
+
+  color: #00ffd5;
+  font-size: 13px;
+  font-weight: 800;
+
+  margin-bottom: 18px;
+}
+
+.heroTitle {
+  font-size: 52px;
+  line-height: 1.15;
+  margin: 0;
+
+  font-weight: 950;
+}
+
+.heroTitle span {
+  display: block;
+  margin-top: 10px;
+
+  color: #00ffd5;
+}
+
+.heroDesc {
+  margin-top: 20px;
+
+  color: #cbd5e1;
+
+  line-height: 1.9;
+  font-size: 16px;
+
+  max-width: 650px;
+}
+
+.heroStats {
+  display: flex;
+  gap: 16px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.heroStatCard {
+  min-width: 120px;
+
+  padding: 18px;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.05);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(12px);
+}
+
+.heroStatCard strong {
+  display: block;
+  font-size: 28px;
+  color: #00ffd5;
+}
+
+.heroStatCard span {
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.heroRight {
+  position: relative;
+
+  width: 320px;
+  height: 260px;
+}
+
+.floatingCard {
+  position: absolute;
+
+  padding: 18px 22px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.12),
+      rgba(255,255,255,0.04)
+    );
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  backdrop-filter: blur(14px);
+
+  font-weight: 900;
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.25);
+}
+
+.card1 {
+  top: 10px;
+  right: 30px;
+
+  animation: floatCard 4s ease-in-out infinite;
+}
+
+.card2 {
+  top: 100px;
+  left: 0;
+
+  animation: floatCard 5s ease-in-out infinite;
+}
+
+.card3 {
+  bottom: 0;
+  right: 40px;
+
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+  0%,100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 900px) {
+
+  .newHero {
+    padding: 35px 22px;
+  }
+
+  .heroContent {
+    flex-direction: column;
+  }
+
+  .heroTitle {
+    font-size: 36px;
+  }
+
+  .heroRight {
+    width: 100%;
+    height: 180px;
   }
 }
 `}</style>
