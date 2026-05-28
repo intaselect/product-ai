@@ -185,22 +185,18 @@ const shouldUseSaudiFallback =
   !hasLocalProducts;
 
 if (shouldUseSaudiFallback) {
-  finalOffers = approvedOffers.map((offer) => ({
-    ...offer,
-    country:
-      offer.country === "sa"
-        ? "sa"
-        : offer.country,
-  }));
+  finalOffers = approvedOffers.filter(
+    (offer) => offer.country === "sa"
+  );
 }
 const countryCategoryOffers = finalOffers.filter((offer) => {
   const categoryOk =
     selectedCategory === "all" ||
     (offer.category || ["other"]).includes(selectedCategory);
-
-  const countryOk =
-    selectedCountry === "all" ||
-    (offer.country || "sa") === selectedCountry;
+const countryOk =
+  shouldUseSaudiFallback ||
+  selectedCountry === "all" ||
+  (offer.country || "sa") === selectedCountry;
 
   return categoryOk && countryOk;
 });
