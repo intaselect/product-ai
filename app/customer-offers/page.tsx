@@ -172,7 +172,28 @@ const isCountrySelected = selectedCountry !== "all";
     .eq("status", "approved")
     .order("created_at", { ascending: false });
 const approvedOffers = (offers || []) as CustomerOffer[];
-const countryCategoryOffers = approvedOffers.filter((offer) => {
+let finalOffers = approvedOffers;
+
+const gccFallbackCountries = ["kw", "qa", "bh"];
+
+const hasLocalProducts = approvedOffers.some(
+  (offer) => offer.country === selectedCountry
+);
+
+const shouldUseSaudiFallback =
+  gccFallbackCountries.includes(selectedCountry) &&
+  !hasLocalProducts;
+
+if (shouldUseSaudiFallback) {
+  finalOffers = approvedOffers.map((offer) => ({
+    ...offer,
+    country:
+      offer.country === "sa"
+        ? "sa"
+        : offer.country,
+  }));
+}
+const countryCategoryOffers = finalOffers.filter((offer) => {
   const categoryOk =
     selectedCategory === "all" ||
     (offer.category || ["other"]).includes(selectedCategory);
@@ -480,6 +501,12 @@ return searchOk && brandOk;
           <a href="/customer-offers/add">أضف أول عرض</a>
         </div>
       )}
+      {shouldUseSaudiFallback && (
+  <div className="fallbackNotice">
+    🇸🇦 لا توجد عروض محلية كافية حاليًا،
+    يتم عرض أفضل عروض السعودية المناسبة للشحن الخليجي.
+  </div>
+)}
 <section className="marketSectionHeader">
   <div>
     <h2>🔥 عروض اليوم</h2>
@@ -1690,6 +1717,25 @@ return searchOk && brandOk;
   .brandFilterChips a {
     min-width: 110px;
   }
+}
+  .fallbackNotice {
+  max-width: 1320px;
+  margin: 10px auto 18px;
+  padding: 16px 20px;
+  border-radius: 20px;
+
+  background:
+    linear-gradient(135deg, rgba(37,99,235,0.10), rgba(34,197,94,0.12));
+
+  border: 1px solid rgba(37,99,235,0.16);
+
+  color: #0f172a;
+
+  font-size: 14px;
+  font-weight: 950;
+
+  box-shadow:
+    0 10px 28px rgba(15,23,42,0.06);
 }
 `}</style>
     </main>
