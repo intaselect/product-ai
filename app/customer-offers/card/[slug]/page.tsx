@@ -107,14 +107,32 @@ export async function generateMetadata({
     alternates: { canonical: pageUrl },
     robots: { index: true, follow: true },
     openGraph: {
-      title: `كارت عرض ${offer.product_name} | BPS Chat Market`,
-      description: `عرض مميز بسعر ${offer.price} ${currency} في ${country}.`,
-      url: pageUrl,
-      images: offer.image_url
-        ? [{ url: offer.image_url, width: 1200, height: 630 }]
-        : [],
-      type: "website",
-    },
+  title: `${offer.product_name} | ${offer.price} ${currency}`,
+  description: `🔥 عرض في ${country} بسعر ${offer.price} ${currency} من ${
+    offer.store_name || "BPS Market"
+  }. شاهد العرض على BPS Chat.`,
+  url: pageUrl,
+  siteName: "BPS Chat | بي بي اس شات",
+  images: offer.image_url
+    ? [
+        {
+          url: offer.image_url,
+          width: 1200,
+          height: 630,
+          alt: offer.product_name,
+        },
+      ]
+    : [],
+  type: "website",
+},
+twitter: {
+  card: "summary_large_image",
+  title: `${offer.product_name} | ${offer.price} ${currency}`,
+  description: `🔥 عرض في ${country} بسعر ${offer.price} ${currency} من ${
+    offer.store_name || "BPS Market"
+  }.`,
+  images: offer.image_url ? [offer.image_url] : [],
+},
   };
 }
 
@@ -170,14 +188,15 @@ export default async function OfferCardSeoPage({
             className="affiliateBtn"
           >
             🔥 عرض المنتج من المتجر
-          </a>
+        </a>
+
 <div className="premiumShareBox">
   <h3>📢 شارك العرض</h3>
 
   <div className="premiumShareButtons">
     <a
       href={`https://wa.me/?text=${encodeURIComponent(
-        `${offer.product_name} - ${SITE_URL}/customer-offers/card/${slug}`
+        `🔥 ${offer.product_name}\nالسعر: ${offer.price} ${currency}\nالدولة: ${country}\nشاهد العرض على BPS Chat:\n${SITE_URL}/customer-offers/card/${slug}`
       )}`}
       target="_blank"
       rel="noopener noreferrer"
@@ -193,6 +212,8 @@ export default async function OfferCardSeoPage({
     <a
       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
         `${SITE_URL}/customer-offers/card/${slug}`
+      )}&quote=${encodeURIComponent(
+        `🔥 ${offer.product_name} - السعر: ${offer.price} ${currency}`
       )}`}
       target="_blank"
       rel="noopener noreferrer"
@@ -208,7 +229,9 @@ export default async function OfferCardSeoPage({
     <a
       href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
         `${SITE_URL}/customer-offers/card/${slug}`
-      )}&text=${encodeURIComponent(offer.product_name)}`}
+      )}&text=${encodeURIComponent(
+        `🔥 ${offer.product_name}\nالسعر: ${offer.price} ${currency}\nمن BPS Chat`
+      )}`}
       target="_blank"
       rel="noopener noreferrer"
       className="premiumShareBtn twitter"
@@ -221,16 +244,17 @@ export default async function OfferCardSeoPage({
     </a>
   </div>
 </div>
-          <Link href={productSeoUrl(offer)} className="detailsBtn">
-            🚀 تفاصيل المنتج داخل BPS Chat
-          </Link>
 
-          <div className="shareMiniText">
-            كارت مختصر للمنتج داخل BPS Market مع رابط مباشر للشراء ومنتجات
-            مشابهة من نفس الدولة.
-          </div>
-        </div>
-      </section>
+<Link href={productSeoUrl(offer)} className="detailsBtn">
+  🚀 تفاصيل المنتج داخل BPS Chat
+</Link>
+
+<div className="shareMiniText">
+  كارت مختصر للمنتج داخل BPS Market مع رابط مباشر للشراء ومنتجات
+  مشابهة من نفس الدولة.
+</div>
+</div>
+</section>
 
       <SearchBeforeBuyBanner />
 
