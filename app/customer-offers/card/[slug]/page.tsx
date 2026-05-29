@@ -161,6 +161,12 @@ export default async function OfferCardSeoPage({
 
 const shareHashtags =
   `${countryHashtags[offer.country || "sa"] || ""} #BPSChat #بي_بي_اس_شات #عروض`;
+  const shareUrl = `${SITE_URL}/customer-offers/card/${offer.country || "sa"}-${offer.id}`;
+
+const shortTitle =
+  offer.product_name.length > 85
+    ? `${offer.product_name.slice(0, 85)}...`
+    : offer.product_name;
   
 
   return (
@@ -208,16 +214,15 @@ const shareHashtags =
   <div className="premiumShareButtons">
     <a
     href={`https://wa.me/?text=${encodeURIComponent(
-  `🔥 ${offer.product_name}
+  `🔥 ${shortTitle}
 
-💰 السعر: ${offer.price} ${currency}
+💰 ${offer.price} ${currency}
 
-🌍 الدولة: ${country}
+🌍 ${country}
 
 ${shareHashtags}
 
-شاهد العرض على BPS Chat:
-${SITE_URL}/customer-offers/card/${slug}`
+${shareUrl}`
 )}`}
 target="_blank"
 rel="noopener noreferrer"
@@ -231,17 +236,9 @@ className="premiumShareBtn whatsapp"
 </a>
 
 <a
-  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-    `${SITE_URL}/customer-offers/card/${slug}`
-  )}&quote=${encodeURIComponent(
-    `🔥 ${offer.product_name}
-
-💰 السعر: ${offer.price} ${currency}
-
-🌍 ${country}
-
-${shareHashtags}`
-  )}`}
+ href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+  shareUrl
+)}`}
   target="_blank"
   rel="noopener noreferrer"
   className="premiumShareBtn facebook"
@@ -254,19 +251,17 @@ ${shareHashtags}`
 </a>
 
 <a
-  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-    `${SITE_URL}/customer-offers/card/${slug}`
-  )}&text=${encodeURIComponent(
-    `🔥 ${offer.product_name}
+href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+  shareUrl
+)}&text=${encodeURIComponent(
+  `🔥 ${shortTitle}
 
-💰 السعر: ${offer.price} ${currency}
+💰 ${offer.price} ${currency}
 
 🌍 ${country}
 
-${shareHashtags}
-
-من BPS Chat`
-  )}`}
+#BPSChat`
+)}`}
   target="_blank"
   rel="noopener noreferrer"
   className="premiumShareBtn twitter"
