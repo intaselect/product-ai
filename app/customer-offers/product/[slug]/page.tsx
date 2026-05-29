@@ -341,6 +341,56 @@ const faqSchema = {
     <Link href="/customer-offers" className="premiumBackBtn">
       مشاهدة باقي عروض العملاء
     </Link>
+    <div className="premiumShareBox">
+  <h3>📢 شارك المنتج</h3>
+
+  <div className="premiumShareButtons">
+    <a
+      href={`https://wa.me/?text=${encodeURIComponent(
+        `${offer.product_name} - ${pageUrl}`
+      )}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="premiumShareBtn whatsapp"
+    >
+      <span>📱</span>
+      <div>
+        <strong>واتساب</strong>
+        <small>WhatsApp</small>
+      </div>
+    </a>
+
+    <a
+      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        pageUrl
+      )}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="premiumShareBtn facebook"
+    >
+      <span>👍</span>
+      <div>
+        <strong>فيسبوك</strong>
+        <small>Facebook</small>
+      </div>
+    </a>
+
+    <a
+      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+        pageUrl
+      )}&text=${encodeURIComponent(offer.product_name)}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="premiumShareBtn twitter"
+    >
+      <span>𝕏</span>
+      <div>
+        <strong>X</strong>
+        <small>Twitter</small>
+      </div>
+    </a>
+  </div>
+</div>
   </div>
 </section>
 <MarketPromoSection />
@@ -1099,6 +1149,92 @@ const faqSchema = {
 
   .premiumPriceBox strong {
     font-size: 34px;
+  }
+}
+  .premiumShareBox {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(37,99,235,.08), transparent 30%),
+    linear-gradient(135deg,#ffffff,#f8fafc);
+  border: 1px solid #dbeafe;
+  box-shadow:
+    0 12px 35px rgba(15,23,42,.08),
+    0 0 0 4px rgba(34,197,94,.03);
+}
+
+.premiumShareBox h3 {
+  margin: 0 0 14px;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.premiumShareButtons {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 12px;
+}
+
+.premiumShareBtn {
+  text-decoration: none;
+  color: #111827;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all .25s ease;
+  box-shadow: 0 8px 22px rgba(15,23,42,.05);
+}
+
+.premiumShareBtn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px rgba(15,23,42,.12);
+}
+
+.premiumShareBtn span {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  font-weight: 900;
+}
+
+.premiumShareBtn strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.premiumShareBtn small {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.whatsapp span {
+  background: linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.facebook span {
+  background: linear-gradient(135deg,#2563eb,#3b82f6);
+}
+
+.twitter span {
+  background: linear-gradient(135deg,#111827,#000);
+}
+
+@media (max-width: 700px) {
+  .premiumShareButtons {
+    grid-template-columns: 1fr;
   }
 }
       `}</style>
