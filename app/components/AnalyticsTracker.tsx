@@ -31,6 +31,14 @@ export default function AnalyticsTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (
+      pathname.startsWith("/admin") ||
+      pathname.startsWith("/customer-offers/add") ||
+      pathname.startsWith("/customer-offers/dashboard")
+    ) {
+      return;
+    }
+
     const visitorId = getOrCreateId("bps_visitor_id");
     const sessionId = getOrCreateId("bps_session_id");
 
