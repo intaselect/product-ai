@@ -40,6 +40,20 @@ export default function Navbar({ user }: { user?: any }) {
 
   <span style={styles.customerStoreArrow}>←</span>
 </Link>
+<Link
+  href="/customer-offers/share-center"
+  style={styles.quickBrowseBtn}
+  className="quickBrowseHover"
+>
+  <span style={styles.quickBrowseIcon}>⚡</span>
+
+  <div style={styles.customerStoreContent}>
+    <span style={styles.quickBrowseText}>تصفح سريع</span>
+    <span style={styles.quickBrowseSub}>كل المنتجات والشير</span>
+  </div>
+
+  <span style={styles.quickBrowseArrow}>←</span>
+</Link>
           <Link
   href="/customer-offers/dashboard"
   style={styles.sellerDashboardBtn}
@@ -153,6 +167,63 @@ export default function Navbar({ user }: { user?: any }) {
   animation: marketShineMove 3.8s ease-in-out infinite;
   z-index: -1;
 }
+  @keyframes quickBrowsePulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow:
+      0 12px 28px rgba(15,23,42,0.18),
+      0 0 0 5px rgba(250,204,21,0.08),
+      0 0 30px rgba(250,204,21,0.26);
+  }
+
+  50% {
+    transform: translateY(-2px) scale(1.035);
+    box-shadow:
+      0 18px 40px rgba(15,23,42,0.24),
+      0 0 0 7px rgba(249,115,22,0.10),
+      0 0 46px rgba(249,115,22,0.38);
+  }
+}
+
+.quickBrowseHover {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  animation: quickBrowsePulse 3.4s ease-in-out infinite;
+}
+
+.quickBrowseHover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(250,204,21,0.18), transparent 32%),
+    linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,251,235,0.92));
+  z-index: -2;
+}
+
+.quickBrowseHover::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  width: 42px;
+  right: -60px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.95),
+    transparent
+  );
+  animation: marketShineMove 3.8s ease-in-out infinite;
+  z-index: -1;
+}
+
+.quickBrowseHover:hover {
+  animation-play-state: paused;
+  transform: translateY(-4px) scale(1.06);
+  filter: brightness(1.04);
+}
 
 .customerStoreIcon {
   animation: marketIconFloat 2.2s ease-in-out infinite;
@@ -252,6 +323,65 @@ customerStoreBtn: {
   transition: "all .25s ease",
   overflow: "hidden",
   position: "relative",
+},
+quickBrowseBtn: {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "10px",
+  minWidth: "190px",
+  padding: "9px 13px",
+  borderRadius: "999px",
+  background:
+    "linear-gradient(135deg, #ffffff 0%, #fffbeb 55%, #fef3c7 100%)",
+  color: "#111827",
+  textDecoration: "none",
+  border: "1px solid rgba(253,230,138,0.95)",
+  boxShadow:
+    "0 14px 32px rgba(15,23,42,0.18), 0 0 0 5px rgba(250,204,21,0.06)",
+  transition: "all .25s ease",
+  overflow: "hidden",
+  position: "relative",
+},
+
+quickBrowseIcon: {
+  width: "42px",
+  height: "42px",
+  borderRadius: "16px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "linear-gradient(135deg, #fef3c7, #fed7aa)",
+  color: "#111827",
+  fontSize: "22px",
+  boxShadow:
+    "inset 0 0 12px rgba(255,255,255,0.85), 0 8px 18px rgba(15,23,42,0.10)",
+},
+
+quickBrowseText: {
+  fontSize: "15px",
+  fontWeight: 950,
+  color: "#111827",
+  letterSpacing: "-0.2px",
+},
+
+quickBrowseSub: {
+  fontSize: "11px",
+  fontWeight: 900,
+  color: "#f97316",
+},
+
+quickBrowseArrow: {
+  width: "27px",
+  height: "27px",
+  borderRadius: "999px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "linear-gradient(135deg, #f97316, #facc15)",
+  color: "#111827",
+  fontSize: "16px",
+  fontWeight: 950,
+  boxShadow: "0 8px 18px rgba(249,115,22,0.24)",
 },
 sellerDashboardBtn: {
   background: "linear-gradient(135deg, #7c3aed, #2563eb)",
