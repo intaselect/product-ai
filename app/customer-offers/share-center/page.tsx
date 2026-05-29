@@ -44,9 +44,7 @@ function slugify(text: string) {
 }
 
 function cardUrl(item: any) {
-  return `${SITE_URL}/customer-offers/card/bps-chat-${slugify(
-    item.product_name
-  )}-${item.country || "sa"}-${item.id}`;
+  return `${SITE_URL}/customer-offers/card/${item.country || "sa"}-${item.id}`;
 }
 
 export default async function ShareCenterPage({
@@ -126,15 +124,11 @@ ${hashtags}
 شاهد العرض على BPS Chat:
 ${url}`;
 
-          const twitterText = `🔥 ${item.product_name}
+const twitterText = `${item.product_name}
 
-💰 السعر: ${item.price} ${currency}
+🌍 ${country}
 
-🌍 الدولة: ${country}
-
-${hashtags}
-
-من BPS Chat`;
+#BPSChat`;
 
           return (
             <article className="shareCard" key={item.id}>
@@ -185,15 +179,13 @@ ${hashtags}
                   </a>
 
                   <a
-                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                      url
-                    )}&text=${encodeURIComponent(twitterText)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="twitter"
-                  >
-                    X
-                  </a>
+  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="twitter"
+>
+  X
+</a>
                 </div>
               </div>
             </article>
