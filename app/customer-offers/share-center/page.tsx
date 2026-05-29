@@ -21,7 +21,7 @@ const countryNames: Record<string, string> = {
 const currencies: Record<string, string> = {
   sa: "ريال سعودي",
   ae: "درهم إماراتي",
-  kw: "دينار إماراتي",
+  kw: "دينار كويتي",
   qa: "ريال قطري",
   bh: "دينار بحريني",
   eg: "جنيه مصري",
@@ -115,7 +115,7 @@ export default async function ShareCenterPage({
         {offers.map((item: any) => {
           const url = cardUrl(item);
 
-          const shareText = `🔥 ${item.product_name}
+          const whatsappText = `🔥 ${item.product_name}
 
 💰 السعر: ${item.price} ${currency}
 
@@ -125,6 +125,16 @@ ${hashtags}
 
 شاهد العرض على BPS Chat:
 ${url}`;
+
+          const twitterText = `🔥 ${item.product_name}
+
+💰 السعر: ${item.price} ${currency}
+
+🌍 الدولة: ${country}
+
+${hashtags}
+
+من BPS Chat`;
 
           return (
             <article className="shareCard" key={item.id}>
@@ -142,13 +152,20 @@ ${url}`;
                   <span>{currency}</span>
                 </div>
 
-                <a href={url} target="_blank" className="mainBtn">
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mainBtn"
+                >
                   فتح صفحة الكارت
                 </a>
 
                 <div className="shareBtns">
                   <a
-                    href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
+                    href={`https://wa.me/?text=${encodeURIComponent(
+                      whatsappText
+                    )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="whatsapp"
@@ -159,7 +176,7 @@ ${url}`;
                   <a
                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
                       url
-                    )}&quote=${encodeURIComponent(shareText)}`}
+                    )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="facebook"
@@ -170,7 +187,7 @@ ${url}`;
                   <a
                     href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
                       url
-                    )}&text=${encodeURIComponent(shareText)}`}
+                    )}&text=${encodeURIComponent(twitterText)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="twitter"
