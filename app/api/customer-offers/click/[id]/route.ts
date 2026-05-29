@@ -33,7 +33,15 @@ export async function GET(req: Request, context: any) {
         click_count: Number(data.click_count || 0) + 1,
       })
       .eq("id", id);
-
+try {
+  await supabase.from("analytics_events").insert({
+    event_type: "offer_click",
+    offer_id: id,
+    path: "/customer-offers",
+    referrer: req.headers.get("referer") || "",
+    user_agent: req.headers.get("user-agent") || "",
+  });
+} catch {}
     return NextResponse.redirect(data.product_url);
   } catch (err) {
     console.error("CLICK ROUTE ERROR:", err);

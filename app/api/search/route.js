@@ -58,6 +58,16 @@ const isAdmin = ADMIN_EMAILS.includes(userEmail || "");
 const rawIp = getClientIP(req);
 const realIp = rawIp && rawIp !== "unknown" ? rawIp : null;
 const visitorId = req.headers.get("x-bps-visitor-id");
+await supabase.from("analytics_events").insert({
+  visitor_id: visitorId || "unknown",
+  session_id: "search",
+  event_type: "search",
+  query: cleanQuery,
+  country: cleanCountry,
+  path: "/api/search",
+  referrer: req.headers.get("referer") || "",
+  user_agent: req.headers.get("user-agent") || "",
+});
 
 const searchKey = realIp || (visitorId ? `visitor:${visitorId}` : "unknown");
 

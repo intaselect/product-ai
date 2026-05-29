@@ -9,6 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Footer from "./components/Footer";
 import InternalLinksBoost from "./components/InternalLinksBoost";
 import TrustedSourcesBar from "@/app/components/TrustedSourcesBar";
+import AnalyticsTracker from "@/app/components/AnalyticsTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -169,7 +170,7 @@ export default function RootLayout({
 
   <Analytics />
   <SpeedInsights />
-  
+  <AnalyticsTracker />
 </body>
     </html>
   );
