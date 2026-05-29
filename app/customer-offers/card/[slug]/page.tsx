@@ -150,6 +150,17 @@ export default async function OfferCardSeoPage({
 
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
+  const countryHashtags: Record<string, string> = {
+  sa: "#السعودية #عروض_السعودية #تسوق_السعودية",
+  ae: "#الإمارات #عروض_الإمارات #تسوق_الإمارات",
+  kw: "#الكويت #عروض_الكويت",
+  qa: "#قطر #عروض_قطر",
+  bh: "#البحرين #عروض_البحرين",
+  eg: "#مصر #عروض_مصر #تسوق_مصر",
+};
+
+const shareHashtags =
+  `${countryHashtags[offer.country || "sa"] || ""} #BPSChat #بي_بي_اس_شات #عروض`;
 
   return (
     <main className="cardSeoPage" dir="rtl">
@@ -195,47 +206,70 @@ export default async function OfferCardSeoPage({
 
   <div className="premiumShareButtons">
     <a
-      href={`https://wa.me/?text=${encodeURIComponent(
-        `🔥 ${offer.product_name}\nالسعر: ${offer.price} ${currency}\nالدولة: ${country}\nشاهد العرض على BPS Chat:\n${SITE_URL}/customer-offers/card/${slug}`
-      )}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="premiumShareBtn whatsapp"
-    >
-      <span>📱</span>
-      <div>
-        <strong>واتساب</strong>
-        <small>WhatsApp</small>
-      </div>
-    </a>
+    href={`https://wa.me/?text=${encodeURIComponent(
+  `🔥 ${offer.product_name}
 
-    <a
-      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-        `${SITE_URL}/customer-offers/card/${slug}`
-      )}&quote=${encodeURIComponent(
-        `🔥 ${offer.product_name} - السعر: ${offer.price} ${currency}`
-      )}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="premiumShareBtn facebook"
-    >
-      <span>👍</span>
-      <div>
-        <strong>فيسبوك</strong>
-        <small>Facebook</small>
-      </div>
-    </a>
+💰 السعر: ${offer.price} ${currency}
 
-    <a
-      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-        `${SITE_URL}/customer-offers/card/${slug}`
-      )}&text=${encodeURIComponent(
-        `🔥 ${offer.product_name}\nالسعر: ${offer.price} ${currency}\nمن BPS Chat`
-      )}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="premiumShareBtn twitter"
-    >
+🌍 الدولة: ${country}
+
+${shareHashtags}
+
+شاهد العرض على BPS Chat:
+${SITE_URL}/customer-offers/card/${slug}`
+)}`}
+target="_blank"
+rel="noopener noreferrer"
+className="premiumShareBtn whatsapp"
+>
+  <span>📱</span>
+  <div>
+    <strong>واتساب</strong>
+    <small>WhatsApp</small>
+  </div>
+</a>
+
+<a
+  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    `${SITE_URL}/customer-offers/card/${slug}`
+  )}&quote=${encodeURIComponent(
+    `🔥 ${offer.product_name}
+
+💰 السعر: ${offer.price} ${currency}
+
+🌍 ${country}
+
+${shareHashtags}`
+  )}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="premiumShareBtn facebook"
+>
+  <span>👍</span>
+  <div>
+    <strong>فيسبوك</strong>
+    <small>Facebook</small>
+  </div>
+</a>
+
+<a
+  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+    `${SITE_URL}/customer-offers/card/${slug}`
+  )}&text=${encodeURIComponent(
+    `🔥 ${offer.product_name}
+
+💰 السعر: ${offer.price} ${currency}
+
+🌍 ${country}
+
+${shareHashtags}
+
+من BPS Chat`
+  )}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="premiumShareBtn twitter"
+>
       <span>𝕏</span>
       <div>
         <strong>X</strong>
