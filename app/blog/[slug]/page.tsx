@@ -139,6 +139,19 @@ export default async function BlogPostPage({ params }: any) {
   const countryName = countryNames[country] || "السعودية";
   const currency = currencies[country] || "ريال سعودي";
   const products = Array.isArray(post.results) ? post.results.slice(0, 12) : [];
+  const stores = [
+  ...new Set(
+    products
+      .map((p: any) => productStore(p))
+      .filter(Boolean)
+      .slice(0, 8)
+  ),
+];
+
+const relatedProducts = products
+  .slice(0, 6)
+  .map((p: any) => productTitle(p))
+  .filter(Boolean);
 
   return (
     <main className="postPage" dir="rtl">
@@ -216,6 +229,42 @@ export default async function BlogPostPage({ params }: any) {
             </div>
           </>
         )}
+        <h2>تحليل أسعار {query} في {countryName}</h2>
+
+<p>
+  تختلف أسعار {query} في {countryName} حسب المتجر والبائع والعروض الموسمية.
+  لذلك من المهم مقارنة الأسعار بشكل مستمر قبل اتخاذ قرار الشراء.
+</p>
+
+<p>
+  يساعدك BPS Chat في اكتشاف الفروقات بين الأسعار والعروض المتاحة، مما يمنحك
+  فرصة أفضل للحصول على قيمة أعلى مقابل المال.
+</p>
+
+<p>
+  كما أن بعض المتاجر تقدم شحنًا أسرع أو ضمانًا أفضل، لذلك لا يجب الاعتماد
+  على السعر فقط عند المقارنة.
+</p>
+
+<h2>أشهر المتاجر التي تعرض {query}</h2>
+
+<p>
+  أثناء تحليل نتائج البحث الخاصة بـ {query} في {countryName} ظهرت متاجر متعددة
+  توفر المنتج بأسعار مختلفة.
+</p>
+
+<div className="storesGrid">
+  {stores.map((store) => (
+    <span key={store} className="storeBadge">
+      {store}
+    </span>
+  ))}
+</div>
+
+<p>
+  مقارنة الأسعار بين هذه المتاجر تساعد المستخدم في الوصول إلى أفضل عرض متاح
+  بدلًا من الاعتماد على متجر واحد فقط.
+</p>
 
         <h2>نصائح قبل شراء {query}</h2>
 
@@ -235,28 +284,64 @@ export default async function BlogPostPage({ params }: any) {
           البيع. لذلك نعرض في BPS Chat روابط بحث وعروض تساعدك تشوف الصورة
           الكاملة قبل الشراء.
         </p>
+<h2>منتجات وبدائل مشابهة</h2>
 
+<p>
+  إذا لم تجد المنتج المناسب، يمكنك أيضًا مقارنة المنتجات المشابهة أو البدائل
+  المتوفرة في نفس الفئة السعرية.
+</p>
+
+<div className="relatedGrid">
+  {relatedProducts.map((item) => (
+    <Link
+      key={item}
+      href={`/?q=${encodeURIComponent(item)}&country=${country}`}
+      className="relatedItem"
+    >
+      {item}
+    </Link>
+  ))}
+</div>
+
+<p>
+  مراجعة البدائل المختلفة قبل الشراء تساعد في اختيار المنتج الأفضل حسب
+  الميزانية والاحتياجات الفعلية.
+</p>
         <h2>أسئلة شائعة عن {query}</h2>
 
-        <div className="faq">
-          <h3>كيف أعرف أفضل سعر؟</h3>
-          <p>
-            ابحث عن المنتج داخل BPS Chat، ثم قارن بين النتائج والعروض الموجودة
-            من المتاجر والعملاء.
-          </p>
+     <div className="faq">
 
-          <h3>هل BPS Chat يبيع المنتجات مباشرة؟</h3>
-          <p>
-            BPS Chat يساعدك في البحث والمقارنة، وبعض العروض تأتي من BPS Market
-            وروابط مباشرة للمتاجر أو البائعين.
-          </p>
+  <h3>كيف أجد أفضل سعر لـ {query}؟</h3>
+  <p>قارن بين أكثر من متجر ولا تعتمد على أول نتيجة تظهر لك.</p>
 
-          <h3>هل الأسعار ثابتة؟</h3>
-          <p>
-            لا، الأسعار ممكن تتغير حسب المتجر والعروض اليومية، لذلك الأفضل
-            مراجعة الرابط النهائي قبل الشراء.
-          </p>
-        </div>
+  <h3>هل تختلف الأسعار بين المتاجر؟</h3>
+  <p>نعم، وقد يكون الفرق كبيرًا في بعض المنتجات.</p>
+
+  <h3>هل السعر الأقل هو الأفضل دائمًا؟</h3>
+  <p>ليس بالضرورة، يجب مراجعة الضمان وخدمة ما بعد البيع.</p>
+
+  <h3>هل يمكن أن تتغير الأسعار يوميًا؟</h3>
+  <p>نعم، خاصة أثناء العروض والمواسم.</p>
+
+  <h3>هل BPS Chat يبيع المنتجات مباشرة؟</h3>
+  <p>لا، يساعدك في المقارنة والوصول إلى أفضل العروض.</p>
+
+  <h3>هل يمكن مقارنة أكثر من منتج؟</h3>
+  <p>نعم، ويمكنك البحث عن أي منتج ومقارنة نتائجه.</p>
+
+  <h3>هل توجد عروض خاصة من العملاء؟</h3>
+  <p>نعم، عبر BPS Market ومتجر العملاء.</p>
+
+  <h3>هل الأسعار تشمل الشحن؟</h3>
+  <p>يعتمد ذلك على المتجر وسياسة البيع الخاصة به.</p>
+
+  <h3>هل توجد مراجعات للمنتجات؟</h3>
+  <p>يمكنك مشاهدة الفيديوهات والمراجعات قبل الشراء.</p>
+
+  <h3>كيف أستفيد من البحث الذكي؟</h3>
+  <p>حدد ميزانيتك وسيعرض لك المنتجات المناسبة لها.</p>
+
+</div>
 
         <ProductVideos query={query} country={country} />
 
@@ -408,7 +493,29 @@ export default async function BlogPostPage({ params }: any) {
           margin-bottom: 5px;
           color: #111827;
         }
+.storesGrid,
+.relatedGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0;
+}
 
+.storeBadge,
+.relatedItem {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #166534;
+  text-decoration: none;
+  font-weight: 900;
+  border: 1px solid #bbf7d0;
+}
+
+.relatedItem:hover {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
         @media (max-width: 900px) {
           .postArticle {
             padding: 18px;
