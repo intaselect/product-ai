@@ -19,5 +19,14 @@ export default async function sitemap() {
     { url: "https://www.bpschat.com/brands" },
     { url: "https://www.bpschat.com/stores" },
     { url: "https://www.bpschat.com/trending" },
+
+    // Advertisers SEO Pages
+    { url: "https://www.bpschat.com/advertisers" },
+    { url: "https://www.bpschat.com/advertisers/advertise-store-saudi" },
+    { url: "https://www.bpschat.com/advertisers/advertise-products-uae" },
+    { url: "https://www.bpschat.com/advertisers/advertise-handmade-egypt" },
+    { url: "https://www.bpschat.com/advertisers/advertise-perfume-store-saudi" },
+    { url: "https://www.bpschat.com/advertisers/advertise-mobile-store-saudi" },
+    { url: "https://www.bpschat.com/advertisers/increase-store-sales" },
   ];
 }
