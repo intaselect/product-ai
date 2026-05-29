@@ -100,6 +100,7 @@ export async function generateMetadata({
   const country = countryNames[offer.country || ""] || "السوق العربي";
   const currency = currencies[offer.country || ""] || "";
   const pageUrl = `${SITE_URL}/customer-offers/card/${slug}`;
+  const ogImage = `${SITE_URL}/api/customer-offers/og?slug=${encodeURIComponent(slug)}`;
 
   return {
     title: `كارت عرض ${offer.product_name} في ${country} | BPS Chat Market`,
@@ -113,16 +114,14 @@ export async function generateMetadata({
   }. شاهد العرض على BPS Chat.`,
   url: pageUrl,
   siteName: "BPS Chat | بي بي اس شات",
-  images: offer.image_url
-    ? [
-        {
-          url: offer.image_url,
-          width: 1200,
-          height: 630,
-          alt: offer.product_name,
-        },
-      ]
-    : [],
+images: [
+  {
+    url: ogImage,
+    width: 1200,
+    height: 630,
+    alt: offer.product_name,
+  },
+],
   type: "website",
 },
 twitter: {
@@ -131,7 +130,7 @@ twitter: {
   description: `🔥 عرض في ${country} بسعر ${offer.price} ${currency} من ${
     offer.store_name || "BPS Market"
   }.`,
-  images: offer.image_url ? [offer.image_url] : [],
+  images: [ogImage],
 },
   };
 }
@@ -150,6 +149,7 @@ export default async function OfferCardSeoPage({
 
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
+  
   const countryHashtags: Record<string, string> = {
   sa: "#السعودية #عروض_السعودية #تسوق_السعودية",
   ae: "#الإمارات #عروض_الإمارات #تسوق_الإمارات",
@@ -161,6 +161,7 @@ export default async function OfferCardSeoPage({
 
 const shareHashtags =
   `${countryHashtags[offer.country || "sa"] || ""} #BPSChat #بي_بي_اس_شات #عروض`;
+  
 
   return (
     <main className="cardSeoPage" dir="rtl">
