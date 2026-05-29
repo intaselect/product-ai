@@ -22,17 +22,26 @@ export default async function sitemap() {
     .order("updated_at", { ascending: false })
     .limit(50000);
 
-  return (
-    data?.map((item) => {
-      const name = slugify(item.product_name || "product");
-      const country = item.country || "sa";
+return (
+  data?.flatMap((item) => {
+    const name = slugify(item.product_name || "product");
+    const country = item.country || "sa";
 
-      return {
+    return [
+      {
         url: `https://www.bpschat.com/customer-offers/product/${name}-${country}-${item.id}`,
         lastModified: item.updated_at
           ? new Date(item.updated_at)
           : new Date(),
-      };
-    }) || []
-  );
+      },
+
+      {
+        url: `https://www.bpschat.com/customer-offers/card/${name}-${country}-${item.id}`,
+        lastModified: item.updated_at
+          ? new Date(item.updated_at)
+          : new Date(),
+      },
+    ];
+  }) || []
+);
 }
