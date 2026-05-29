@@ -100,7 +100,7 @@ export async function generateMetadata({
   const country = countryNames[offer.country || ""] || "السوق العربي";
   const currency = currencies[offer.country || ""] || "";
   const pageUrl = `${SITE_URL}/customer-offers/card/${slug}`;
-  const ogImage = `${SITE_URL}/api/customer-offers/og?slug=${encodeURIComponent(slug)}`;
+ const ogImage = offer.image_url || `${SITE_URL}/og-image.png`;
 
   return {
     title: `كارت عرض ${offer.product_name} في ${country} | BPS Chat Market`,
