@@ -1,12 +1,6 @@
 import { ImageResponse } from "next/og";
-import { createClient } from "@supabase/supabase-js";
 
-export const runtime = "nodejs";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export const runtime = "edge";
 
 function getIdFromSlug(slug: string) {
   const parts = slug.split("-");
@@ -17,23 +11,32 @@ function getIdFromSlug(slug: string) {
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const slug = searchParams.get("slug") || "";
-
   const id = getIdFromSlug(slug);
 
-  if (!id) {
-    return new Response("Invalid slug", { status: 400 });
-  }
+  if (!id) return new Response("Invalid slug", { status: 400 });
 
-  const { data: offer } = await supabase
-    .from("customer_offers")
-    .select("product_name, price")
-    .eq("id", id)
-    .eq("status", "approved")
-    .single();
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-  if (!offer) {
-    return new Response("Not found", { status: 404 });
-  }
+  const res = await fetch(
+    `${supabaseUrl}/rest/v1/customer_offers?id=eq.${id}&status=eq.approved&select=product_name,price,store_name`,
+    {
+      headers: {
+        apikey: serviceKey,
+        Authorization: `Bearer ${serviceKey}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  const data = await res.json();
+  const offer = data?.[0];
+
+  if (!offer) return new Response("Not found", { status: 404 });
+
+  const productName = String(offer.product_name || "BPS Chat Market").slice(0, 80);
+  const price = String(offer.price || "");
+  const storeName = String(offer.store_name || "BPS Market");
 
   return new ImageResponse(
     (
@@ -47,38 +50,45 @@ export async function GET(req: Request) {
           alignItems: "center",
           background: "#071b14",
           color: "white",
-          padding: "40px",
+          padding: "50px",
         }}
       >
-        <div style={{ fontSize: 42 }}>
+        <div style={{ fontSize: 42, color: "#22c55e", fontWeight: 900 }}>
           BPS Chat Market
         </div>
 
         <div
           style={{
-            fontSize: 58,
+            fontSize: 56,
             fontWeight: 900,
             marginTop: 30,
             textAlign: "center",
+            lineHeight: 1.3,
           }}
         >
-          {offer.product_name}
+          {productName}
         </div>
 
         <div
           style={{
-            fontSize: 50,
+            fontSize: 52,
             color: "#facc15",
-            marginTop: 30,
+            marginTop: 32,
+            fontWeight: 900,
           }}
         >
-          {offer.price}
+          {price}
+        </div>
+
+        <div style={{ fontSize: 28, marginTop: 24 }}>
+          {storeName}
+        </div>
+
+        <div style={{ fontSize: 24, marginTop: 34, color: "#a7f3d0" }}>
+          www.bpschat.com
         </div>
       </div>
     ),
-    {
-      width: 1200,
-      height: 630,
-    }
+    { width: 1200, height: 630 }
   );
 }
