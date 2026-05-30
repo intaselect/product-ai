@@ -23,6 +23,7 @@ export default async function sitemap() {
     { url: "https://www.bpschat.com/trending" },
 
     { url: "https://www.bpschat.com/advertisers" },
+    { url: "https://www.bpschat.com/sell-online" },
   ];
 
   const advertiserUrls = advertiserPages.map((page) => ({

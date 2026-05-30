@@ -54,6 +54,20 @@ export default function Navbar({ user }: { user?: any }) {
 
   <span style={styles.quickBrowseArrow}>←</span>
 </Link>
+<Link
+  href="/sell-online"
+  style={styles.sellOnlineBtn}
+  className="sellOnlineHover"
+>
+  <span style={styles.sellOnlineIcon}>🚀</span>
+
+  <div style={styles.customerStoreContent}>
+    <span style={styles.sellOnlineText}>بيع منتجاتك</span>
+    <span style={styles.sellOnlineSub}>مجاناً للتجار والهاند ميد</span>
+  </div>
+
+  <span style={styles.sellOnlineArrow}>←</span>
+</Link>
           <Link
   href="/customer-offers/dashboard"
   style={styles.sellerDashboardBtn}
@@ -235,7 +249,34 @@ animation-play-state: paused;
   filter: brightness(1.04);
 }
 
+@keyframes sellOnlinePulse {
+  0%,100%{
+    transform:translateY(0) scale(1);
+    box-shadow:
+      0 12px 28px rgba(15,23,42,.18),
+      0 0 0 5px rgba(249,115,22,.08);
+  }
 
+  50%{
+    transform:translateY(-2px) scale(1.035);
+    box-shadow:
+      0 18px 40px rgba(15,23,42,.24),
+      0 0 0 7px rgba(251,146,60,.10),
+      0 0 46px rgba(249,115,22,.35);
+  }
+}
+
+.sellOnlineHover{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  animation:sellOnlinePulse 3.2s ease-in-out infinite;
+}
+
+.sellOnlineHover:hover{
+  animation-play-state:paused;
+  transform:translateY(-4px) scale(1.06);
+}
         nav a {
           color: #ccc;
           text-decoration: none;
@@ -382,6 +423,61 @@ quickBrowseArrow: {
   fontSize: "16px",
   fontWeight: 950,
   boxShadow: "0 8px 18px rgba(249,115,22,0.24)",
+},
+sellOnlineBtn: {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "10px",
+  minWidth: "220px",
+  padding: "9px 13px",
+  borderRadius: "999px",
+  background:
+    "linear-gradient(135deg,#ffffff 0%,#fff7ed 55%,#ffedd5 100%)",
+  color: "#111827",
+  textDecoration: "none",
+  border: "1px solid rgba(251,146,60,.35)",
+  boxShadow:
+    "0 14px 32px rgba(15,23,42,.18),0 0 0 5px rgba(249,115,22,.06)",
+  transition: "all .25s ease",
+  overflow: "hidden",
+  position: "relative",
+},
+
+sellOnlineIcon: {
+  width: "42px",
+  height: "42px",
+  borderRadius: "16px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "linear-gradient(135deg,#fed7aa,#fdba74)",
+  color: "#111827",
+  fontSize: "22px",
+},
+
+sellOnlineText: {
+  fontSize: "15px",
+  fontWeight: 950,
+  color: "#111827",
+},
+
+sellOnlineSub: {
+  fontSize: "11px",
+  fontWeight: 900,
+  color: "#ea580c",
+},
+
+sellOnlineArrow: {
+  width: "27px",
+  height: "27px",
+  borderRadius: "999px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "linear-gradient(135deg,#f97316,#fb923c)",
+  color: "#fff",
+  fontSize: "16px",
+  fontWeight: 950,
 },
 sellerDashboardBtn: {
   background: "linear-gradient(135deg, #7c3aed, #2563eb)",

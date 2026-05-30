@@ -91,6 +91,19 @@ export default function SidebarMenu() {
     </span>
   </span>
 </a>
+<a
+  href="/sell-online"
+  className="menuItem sidebarSellOnlineGlow"
+>
+  <span className="sellOnlineSidebarIcon">🚀</span>
+
+  <span>
+    بيع منتجاتك مجاناً
+    <span className="sellOnlineSidebarSub">
+      إنستجرام • تيك توك • هاند ميد
+    </span>
+  </span>
+</a>
 
         <a href="/about" className="menuItem">عن الموقع</a>
         <a href="/contact" className="menuItem">تواصل معنا</a>
@@ -495,6 +508,92 @@ export default function SidebarMenu() {
               0 0 38px rgba(0, 180, 255, 0.28);
           }
         }
+          .sidebarSellOnlineGlow {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 12px;
+  min-height: 68px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #fff7ed 55%,
+      #ffedd5 100%
+    );
+
+  border: 1px solid rgba(251,146,60,.35);
+
+  color: #111827 !important;
+
+  box-shadow:
+    0 14px 32px rgba(15,23,42,.18),
+    0 0 0 5px rgba(249,115,22,.05);
+
+  animation: sellOnlineSidebarPulse 3.1s ease-in-out infinite;
+
+  transition: all .25s ease;
+}
+
+.sellOnlineSidebarIcon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: linear-gradient(135deg,#fed7aa,#fdba74);
+
+  color: #111827;
+
+  font-size: 22px;
+
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,.8),
+    0 8px 18px rgba(15,23,42,.10);
+}
+
+.sellOnlineSidebarSub {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+  color: #ea580c;
+  font-weight: 900;
+}
+
+.sidebarSellOnlineGlow:hover {
+  transform: translateX(-5px) scale(1.03);
+  box-shadow: 0 0 30px rgba(249,115,22,.35);
+  cursor: pointer;
+}
+
+@keyframes sellOnlineSidebarPulse {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 14px 32px rgba(15,23,42,.18),
+      0 0 0 5px rgba(249,115,22,.05);
+  }
+
+  50% {
+    transform: scale(1.035);
+    box-shadow:
+      0 18px 42px rgba(15,23,42,.22),
+      0 0 0 7px rgba(251,146,60,.08),
+      0 0 40px rgba(249,115,22,.22);
+  }
+}
           .sidebarQuickBrowseGlow {
   position: relative;
   overflow: hidden;
