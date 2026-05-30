@@ -59,7 +59,8 @@ const relatedPages = Object.entries(pages).map(([slug, item]) => ({
 }));
 
 export async function generateMetadata({ params }: any) {
-  const item = pages[params.slug];
+  const { slug } = await params;
+const item = pages[slug];
 
   if (!item) {
     return {
@@ -71,17 +72,18 @@ export async function generateMetadata({ params }: any) {
     title: `${item.title} | BPS Chat`,
     description: `${item.title} عبر BPS Chat. اعرض منتجاتك، أضف عروضك، ووصل لعملاء يبحثون عن الشراء.`,
     alternates: {
-      canonical: `https://www.bpschat.com/advertisers/${params.slug}`,
+      canonical: `https://www.bpschat.com/advertisers/${slug}`,
     },
   };
 }
 
-export default function AdvertiserLandingPage({ params }: any) {
-  const item = pages[params.slug];
+export default async function AdvertiserLandingPage({ params }: any) {
+  const { slug } = await params;
+  const item = pages[slug];
 
   if (!item) return notFound();
 
-  const related = relatedPages.filter((p) => p.slug !== params.slug).slice(0, 5);
+  const related = relatedPages.filter((p) => p.slug !== slug).slice(0, 5);
 
   return (
     <main className="advertiserPage" dir="rtl">
