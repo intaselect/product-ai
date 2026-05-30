@@ -643,7 +643,7 @@ return (
   </div>
 </section>
 
-    <style jsx>{`
+     <style>{`
 
 .seoLinksSection {
   max-width: 1320px;
