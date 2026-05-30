@@ -486,7 +486,15 @@ async function handleSearch() {
     console.log("API RESULT:", data);
 
     // ✅ عرض النتائج الأساسية فورًا
-    setResults(data?.value || data?.products || data || []);
+   const searchResults =
+  Array.isArray(data?.results) ? data.results :
+  Array.isArray(data?.shopping_results) ? data.shopping_results :
+  Array.isArray(data?.value) ? data.value :
+  Array.isArray(data?.products) ? data.products :
+  Array.isArray(data) ? data :
+  [];
+
+setResults(searchResults);
 
     setErrorMessage("");
 
