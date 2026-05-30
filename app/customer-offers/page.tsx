@@ -607,9 +607,87 @@ return (
             </article>
           ))}
         </section>
+        
       )}
+      <section className="seoLinksSection">
+  <h2>🔥 تصفح العروض حسب التصنيف</h2>
 
-     <style>{`
+  <div className="seoLinksGrid">
+    {Object.entries(categoryCards)
+      .filter(([key]) => key !== "all")
+      .map(([key, cat]) => (
+        <a
+          key={key}
+          href={`/customer-offers?category=${key}`}
+          className="seoLinkCard"
+        >
+          {cat.icon} {cat.ar}
+        </a>
+      ))}
+  </div>
+
+  <h2 style={{ marginTop: "40px" }}>
+    🌍 تصفح العروض حسب الدولة
+  </h2>
+
+  <div className="seoLinksGrid">
+    {Object.entries(countryNames).map(([key, label]) => (
+      <a
+        key={key}
+        href={`/customer-offers?country=${key}`}
+        className="seoLinkCard"
+      >
+        {label}
+      </a>
+    ))}
+  </div>
+</section>
+
+    <style jsx>{`
+
+.seoLinksSection {
+  max-width: 1320px;
+  margin: 35px auto 20px;
+  padding: 28px;
+  border-radius: 28px;
+  background: linear-gradient(135deg,#ffffff,#f8fafc);
+  border: 1px solid #dbeafe;
+  box-shadow: 0 15px 40px rgba(15,23,42,.08);
+}
+
+.seoLinksSection h2 {
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.seoLinksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+  gap: 14px;
+}
+
+.seoLinkCard {
+  text-decoration: none;
+  color: #111827;
+  font-weight: 900;
+  background: white;
+  border: 1px solid #e5e7eb;
+  padding: 16px;
+  border-radius: 18px;
+  transition: all .25s ease;
+  text-align: center;
+  display: block;
+}
+
+.seoLinkCard:hover {
+  transform: translateY(-4px);
+  border-color: #22c55e;
+  box-shadow: 0 12px 25px rgba(34,197,94,.15);
+}
+
     .offersSearchBox {
   max-width: 1120px;
   margin: 22px auto 18px;
