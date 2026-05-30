@@ -1,7 +1,9 @@
+import { advertiserPages } from "@/app/advertisers/data";
+
 export const dynamic = "force-dynamic";
 
 export default async function sitemap() {
-  return [
+  const staticPages = [
     { url: "https://www.bpschat.com" },
 
     { url: "https://www.bpschat.com/about" },
@@ -20,13 +22,12 @@ export default async function sitemap() {
     { url: "https://www.bpschat.com/stores" },
     { url: "https://www.bpschat.com/trending" },
 
-    // Advertisers SEO Pages
     { url: "https://www.bpschat.com/advertisers" },
-    { url: "https://www.bpschat.com/advertisers/advertise-store-saudi" },
-    { url: "https://www.bpschat.com/advertisers/advertise-products-uae" },
-    { url: "https://www.bpschat.com/advertisers/advertise-handmade-egypt" },
-    { url: "https://www.bpschat.com/advertisers/advertise-perfume-store-saudi" },
-    { url: "https://www.bpschat.com/advertisers/advertise-mobile-store-saudi" },
-    { url: "https://www.bpschat.com/advertisers/increase-store-sales" },
   ];
+
+  const advertiserUrls = advertiserPages.map((page) => ({
+    url: `https://www.bpschat.com/advertisers/${page.slug}`,
+  }));
+
+  return [...staticPages, ...advertiserUrls];
 }
