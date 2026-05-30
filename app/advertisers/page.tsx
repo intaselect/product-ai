@@ -4,6 +4,7 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import InternalLinksBoost from "@/app/components/InternalLinksBoost";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 import PopularSearches from "@/app/components/PopularSearches";
+import { advertiserPages } from "@/app/advertisers/data";
 
 export const metadata = {
   title: "اعلن عن متجرك ومنتجاتك | BPS Chat",
@@ -11,38 +12,6 @@ export const metadata = {
     "صفحات مخصصة لأصحاب المتاجر والمعلنين لعرض المنتجات وجذب العملاء عبر BPS Chat في السعودية والخليج ومصر.",
 };
 
-const advertiserPages = [
-  {
-    slug: "advertise-store-saudi",
-    title: "اعلن عن متجرك في السعودية",
-    desc: "اعرض منتجاتك أمام عملاء يبحثون عن الشراء داخل السعودية.",
-  },
-  {
-    slug: "advertise-products-uae",
-    title: "اعلن عن منتجاتك في الإمارات",
-    desc: "وصل منتجاتك لعملاء يبحثون عن الأسعار والعروض في الإمارات.",
-  },
-  {
-    slug: "advertise-handmade-egypt",
-    title: "اعلن عن منتجات الهاند ميد في مصر",
-    desc: "صفحة مخصصة لأصحاب الكروشيه، الريزن، الشموع، والإكسسوارات.",
-  },
-  {
-    slug: "advertise-perfume-store-saudi",
-    title: "اعلن عن متجر عطور في السعودية",
-    desc: "استهدف عملاء يبحثون عن العطور والأسعار والعروض.",
-  },
-  {
-    slug: "advertise-mobile-store-saudi",
-    title: "اعلن عن متجر جوالات في السعودية",
-    desc: "اعرض الجوالات والإكسسوارات أمام عملاء جاهزين للمقارنة والشراء.",
-  },
-  {
-    slug: "increase-store-sales",
-    title: "كيف تزيد مبيعات متجرك أونلاين",
-    desc: "دليل عملي للتجار لزيادة الظهور والمبيعات عبر BPS Chat.",
-  },
-];
 
 export default function AdvertisersPage() {
   return (

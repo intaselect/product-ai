@@ -5,62 +5,23 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import InternalLinksBoost from "@/app/components/InternalLinksBoost";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 import PopularSearches from "@/app/components/PopularSearches";
+import {
+  advertiserPages,
+  getAdvertiserPage,
+} from "@/app/advertisers/data";
 
 export const dynamic = "force-dynamic";
 
-const pages: Record<string, any> = {
-  "advertise-store-saudi": {
-    title: "اعلن عن متجرك في السعودية",
-    country: "السعودية",
-    target: "أصحاب المتاجر في السعودية",
-    productType: "المنتجات والعروض",
-    keyword: "اعلن عن متجرك في السعودية",
-  },
-  "advertise-products-uae": {
-    title: "اعلن عن منتجاتك في الإمارات",
-    country: "الإمارات",
-    target: "أصحاب المتاجر والمشاريع في الإمارات",
-    productType: "المنتجات والخدمات",
-    keyword: "اعلن عن منتجاتك في الإمارات",
-  },
-  "advertise-handmade-egypt": {
-    title: "اعلن عن منتجات الهاند ميد في مصر",
-    country: "مصر",
-    target: "أصحاب الهاند ميد والمشاريع الصغيرة في مصر",
-    productType: "منتجات الهاند ميد",
-    keyword: "اعلن عن منتجات الهاند ميد",
-  },
-  "advertise-perfume-store-saudi": {
-    title: "اعلن عن متجر عطور في السعودية",
-    country: "السعودية",
-    target: "أصحاب متاجر العطور في السعودية",
-    productType: "العطور الرجالية والنسائية",
-    keyword: "اعلن عن متجر عطور",
-  },
-  "advertise-mobile-store-saudi": {
-    title: "اعلن عن متجر جوالات في السعودية",
-    country: "السعودية",
-    target: "أصحاب متاجر الجوالات والإكسسوارات",
-    productType: "الجوالات والإكسسوارات",
-    keyword: "اعلن عن متجر جوالات",
-  },
-  "increase-store-sales": {
-    title: "كيف تزيد مبيعات متجرك أونلاين",
-    country: "السعودية والخليج ومصر",
-    target: "أصحاب المتاجر والمشاريع",
-    productType: "كل أنواع المنتجات",
-    keyword: "زيادة مبيعات المتجر",
-  },
-};
 
-const relatedPages = Object.entries(pages).map(([slug, item]) => ({
-  slug,
+
+const relatedPages = advertiserPages.map((item) => ({
+  slug: item.slug,
   title: item.title,
 }));
 
 export async function generateMetadata({ params }: any) {
   const { slug } = await params;
-const item = pages[slug];
+const item = getAdvertiserPage(slug);
 
   if (!item) {
     return {
@@ -79,7 +40,7 @@ const item = pages[slug];
 
 export default async function AdvertiserLandingPage({ params }: any) {
   const { slug } = await params;
-  const item = pages[slug];
+const item = getAdvertiserPage(slug);
 
   if (!item) return notFound();
 
