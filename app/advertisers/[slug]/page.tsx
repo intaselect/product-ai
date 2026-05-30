@@ -5,12 +5,26 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import InternalLinksBoost from "@/app/components/InternalLinksBoost";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 import PopularSearches from "@/app/components/PopularSearches";
+import { createClient } from "@supabase/supabase-js";
 import {
   advertiserPages,
   getAdvertiserPage,
 } from "@/app/advertisers/data";
 
 export const dynamic = "force-dynamic";
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+const countryToCode: Record<string, string> = {
+  السعودية: "sa",
+  الإمارات: "ae",
+  الكويت: "kw",
+  قطر: "qa",
+  البحرين: "bh",
+  مصر: "eg",
+};
 
 
 
@@ -43,6 +57,15 @@ export default async function AdvertiserLandingPage({ params }: any) {
 const item = getAdvertiserPage(slug);
 
   if (!item) return notFound();
+  const countryCode = countryToCode[item.country] || "sa";
+
+const { data: offers } = await supabase
+  .from("customer_offers")
+  .select("id, product_name, price, image_url, store_name, country")
+  .eq("status", "approved")
+  .eq("country", countryCode)
+  .order("created_at", { ascending: false })
+  .limit(6);
 
   const related = relatedPages.filter((p) => p.slug !== slug).slice(0, 5);
 
@@ -182,6 +205,48 @@ const item = getAdvertiserPage(slug);
             أقوى في أماكن بارزة داخل الموقع.
           </p>
         </div>
+        {offers && offers.length > 0 && (
+  <section className="realOffers">
+    <h2>عروض حقيقية من BPS Market في {item.country}</h2>
+
+    <p>
+      هذه أمثلة من المنتجات والعروض الموجودة داخل BPS Market، وهي توضح كيف يمكن
+      لمنتجات التجار أن تظهر داخل صفحات BPS Chat وتصل لعملاء يبحثون عن الشراء.
+    </p>
+
+    <div className="offersGrid">
+      {offers.map((offer: any) => (
+        <Link
+          href={`/customer-offers?country=${offer.country}`}
+          className="offerCard"
+          key={offer.id}
+        >
+          {offer.image_url ? (
+            <img src={offer.image_url} alt={offer.product_name} />
+          ) : (
+            <div className="offerNoImage">BPS</div>
+          )}
+
+          <div>
+            <span>{offer.store_name || "BPS Market"}</span>
+            <h3>{offer.product_name}</h3>
+            <strong>{offer.price}</strong>
+          </div>
+        </Link>
+      ))}
+    </div>
+
+    <div className="actions">
+      <Link href={`/customer-offers?country=${countryCode}`} className="secondaryBtn">
+        🛍️ شاهد عروض {item.country}
+      </Link>
+
+      <Link href="/customer-offers/add" className="primaryBtn">
+        + أضف منتجك مثل هذه العروض
+      </Link>
+    </div>
+  </section>
+)}
 
         <section className="related">
           <h2>صفحات مفيدة للتجار</h2>
@@ -400,8 +465,80 @@ const item = getAdvertiserPage(slug);
         .finalCta p {
           color: white;
         }
+          .realOffers {
+  margin-top: 34px;
+  padding: 24px;
+  border-radius: 26px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.offersGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.offerCard {
+  display: block;
+  overflow: hidden;
+  border-radius: 22px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  text-decoration: none;
+  color: #111827;
+  transition: all .25s ease;
+}
+
+.offerCard:hover {
+  transform: translateY(-5px);
+  border-color: #22c55e;
+}
+
+.offerCard img,
+.offerNoImage {
+  width: 100%;
+  height: 170px;
+  object-fit: contain;
+  background: white;
+}
+
+.offerNoImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #16a34a;
+  font-size: 30px;
+  font-weight: 950;
+}
+
+.offerCard div {
+  padding: 14px;
+}
+
+.offerCard span {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.offerCard h3 {
+  color: #111827;
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 70px;
+}
+
+.offerCard strong {
+  color: #16a34a;
+  font-size: 18px;
+}
 
         @media (max-width: 900px) {
+        .offersGrid {
+  grid-template-columns: 1fr;
+}
           .article {
             margin: 18px 12px;
             padding: 18px;
