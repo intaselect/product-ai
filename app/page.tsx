@@ -444,7 +444,7 @@ async function handleSearch() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-bps-visitor-id": getVisitorId(),
+       // "x-bps-visitor-id": getVisitorId(),
         "x-bps-user-email": user?.email || "",
       },
       body: JSON.stringify({
