@@ -7,13 +7,27 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-export default async function AnalyticsDashboard() {
-  const { data: events } = await supabase
-    .from("analytics_events")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(1000);
+export default async function AnalyticsDashboard({
+  searchParams,
+}: {
+  searchParams?: { range?: string };
+}) {
+  const range = searchParams?.range || "7d";
 
+  const now = new Date();
+  const fromDate = new Date();
+
+  if (range === "30d") fromDate.setDate(now.getDate() - 30);
+  else if (range === "6m") fromDate.setMonth(now.getMonth() - 6);
+  else if (range === "all") fromDate.setFullYear(2020);
+  else fromDate.setDate(now.getDate() - 7);
+
+  const { data: events, count } = await supabase
+    .from("analytics_events")
+    .select("*", { count: "exact" })
+    .gte("created_at", fromDate.toISOString())
+    .order("created_at", { ascending: false })
+    .limit(10000);
   const rows = events || [];
 
   const pageViews = rows.filter((e) => e.event_type === "page_view");
@@ -54,9 +68,28 @@ export default async function AnalyticsDashboard() {
   return (
     <main style={styles.page}>
       <h1 style={styles.title}>📊 لوحة تحليلات BPS Chat</h1>
+      <h1 style={styles.title}>📊 لوحة تحليلات BPS Chat</h1>
+
+<div style={styles.filters}>
+  <a href="/admin/analytics?range=7d" style={range === "7d" ? styles.activeFilter : styles.filter}>
+    آخر 7 أيام
+  </a>
+
+  <a href="/admin/analytics?range=30d" style={range === "30d" ? styles.activeFilter : styles.filter}>
+    آخر شهر
+  </a>
+
+  <a href="/admin/analytics?range=6m" style={range === "6m" ? styles.activeFilter : styles.filter}>
+    آخر 6 شهور
+  </a>
+
+  <a href="/admin/analytics?range=all" style={range === "all" ? styles.activeFilter : styles.filter}>
+    الكل
+  </a>
+</div>
 
       <div style={styles.grid}>
-        <Card title="إجمالي الأحداث" value={rows.length} />
+       <Card title="إجمالي الأحداث" value={count || rows.length} />
         <Card title="زوار مميزين" value={uniqueVisitors} />
         <Card title="زيارات الصفحات" value={pageViews.length} />
         <Card title="عمليات البحث" value={searches.length} />
@@ -220,4 +253,31 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 13,
     minWidth: 900,
   },
+  filters: {
+  display: "flex",
+  justifyContent: "center",
+  gap: 10,
+  flexWrap: "wrap",
+  marginBottom: 28,
+},
+
+filter: {
+  padding: "10px 16px",
+  borderRadius: 999,
+  textDecoration: "none",
+  color: "#cbd5e1",
+  background: "rgba(15,23,42,.8)",
+  border: "1px solid rgba(148,163,184,.25)",
+  fontWeight: 800,
+},
+
+activeFilter: {
+  padding: "10px 16px",
+  borderRadius: 999,
+  textDecoration: "none",
+  color: "#020617",
+  background: "#22d3ee",
+  border: "1px solid #22d3ee",
+  fontWeight: 900,
+},
 };
