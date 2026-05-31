@@ -45,19 +45,22 @@ export default function ImportAmazonPage() {
 
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
+useEffect(() => {
+  async function checkUser() {
+    const { data } = await supabase.auth.getSession();
 
-  useEffect(() => {
-    async function checkUser() {
-      const { data } = await supabase.auth.getSession();
-      setAccessToken(data.session?.access_token || "");
-      if (data.session?.access_token) {
-  localStorage.setItem("bps_import_token", data.session.access_token);
-}
-      setChecking(false);
+    const token = data.session?.access_token || "";
+    setAccessToken(token);
+
+    if (token) {
+      localStorage.setItem("bps_import_token", token);
     }
 
-    checkUser();
-  }, []);
+    setChecking(false);
+  }
+
+  checkUser();
+}, []);
 
   function updateInput(index: number, value: string) {
     setInputs((prev) => {
