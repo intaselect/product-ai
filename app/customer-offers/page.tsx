@@ -650,6 +650,14 @@ return (
                 >
                   عرض المنتج
                 </a>
+                <a
+  href={`/customer-offers/product/bps-chat-${offer.product_name
+    .toLowerCase()
+    .replace(/\s+/g, "-")}-${offer.country || "sa"}-${offer.id}`}
+  className="detailsBtn"
+>
+  👀 شاهد صفحة المنتج على BPS Chat
+</a>
               </div>
             </article>
           ))}
@@ -2089,6 +2097,23 @@ return (
 .hotDetailsBtn:hover,
 .hotBuyBtn:hover {
   transform: translateY(-2px);
+}
+  .detailsBtn {
+  display: block;
+  text-align: center;
+  margin-top: 9px;
+  padding: 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg,#2563eb,#0f172a);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 900;
+  transition: all .25s ease;
+}
+
+.detailsBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(37,99,235,.25);
 }
 `}</style>
     </main>
