@@ -9,173 +9,126 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-const categories = [
-  ["electronics", "إلكترونيات"],
-  ["mobiles", "موبايلات"],
-  ["mobile_accessories", "إكسسوارات جوالات"],
-  ["smart_watch", "ساعات ذكية"],
-  ["power_bank", "باور بانك"],
-  ["chargers", "شواحن وكابلات"],
-  ["headphones", "سماعات"],
-  ["computers", "كمبيوتر ولابتوب"],
-  ["computer_accessories", "إكسسوارات كمبيوتر"],
-  ["gaming", "ألعاب وجيمينج"],
-  ["home", "المنزل والمطبخ"],
-  ["fashion", "ملابس"],
-  ["shoes", "أحذية"],
-  ["bags", "شنط"],
-  ["beauty", "جمال وعناية"],
-  ["cars", "سيارات وإكسسوارات"],
-  ["kids", "أطفال"],
-  ["sports", "رياضة"],
-  ["other", "أخرى"],
-];
+const categoryLabels: Record<string, string> = {
+  electronics: "إلكترونيات",
+  mobiles: "موبايلات",
+  mobile_accessories: "إكسسوارات جوالات",
+  smart_watch: "ساعات ذكية",
+  power_bank: "باور بانك",
+  chargers: "شواحن وكابلات",
+  headphones: "سماعات",
+  computers: "كمبيوتر ولابتوب",
+  computer_accessories: "إكسسوارات كمبيوتر",
+  gaming: "ألعاب وجيمينج",
+  home: "المنزل والمطبخ",
+  fashion: "أزياء",
+  shoes: "أحذية",
+  bags: "شنط",
+  beauty: "جمال وعناية",
+  cars: "سيارات وإكسسوارات",
+  kids: "أطفال",
+  sports: "رياضة",
+  cameras: "كاميرات",
+  camera_accessories: "ملحقات كاميرات",
+  other: "أخرى",
+};
+
+const countryLabels: Record<string, string> = {
+  sa: "السعودية",
+  ae: "الإمارات",
+  eg: "مصر",
+  kw: "الكويت",
+  qa: "قطر",
+  bh: "البحرين",
+};
 
 export default function ImportAmazonPage() {
   const [accessToken, setAccessToken] = useState("");
   const [checking, setChecking] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const [inputs, setInputs] = useState<string[]>(
-    Array.from({ length: 50 }, () => "")
-  );
-
-  const [country, setCountry] = useState("sa");
-  const [category, setCategory] = useState("electronics");
-
-  const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState("");
   const [bulkItems, setBulkItems] = useState<any[]>([]);
-useEffect(() => {
-  async function checkUser() {
-    const { data } = await supabase.auth.getSession();
+  const [error, setError] = useState("");
 
-    const token = data.session?.access_token || "";
-    setAccessToken(token);
-
-    if (token) {
-      localStorage.setItem("bps_import_token", token);
+  useEffect(() => {
+    async function checkUser() {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token || "";
+      setAccessToken(token);
+      setChecking(false);
     }
 
-    setChecking(false);
-  }
+    checkUser();
+  }, []);
 
-  checkUser();
-}, []);
-useEffect(() => {
-  const saved = JSON.parse(localStorage.getItem("bps_bulk_items") || "[]");
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("bps_bulk_items") || "[]");
 
-  const params = new URLSearchParams(window.location.search);
-  const rawItem = params.get("item");
+    const params = new URLSearchParams(window.location.search);
+    const rawItem = params.get("item");
 
-  if (rawItem) {
-    try {
-      const item = JSON.parse(decodeURIComponent(rawItem));
-      const updated = [...saved, item];
+    if (rawItem) {
+      try {
+        const item = JSON.parse(decodeURIComponent(rawItem));
+        const updated = [...saved, item];
 
-      localStorage.setItem("bps_bulk_items", JSON.stringify(updated));
-      setBulkItems(updated);
+        localStorage.setItem("bps_bulk_items", JSON.stringify(updated));
+        setBulkItems(updated);
 
-      window.history.replaceState({}, "", "/customer-offers/import-amazon");
-      alert("اتضاف المنتج للقائمة ✅");
-    } catch {
+        window.history.replaceState({}, "", "/customer-offers/import-amazon");
+      } catch {
+        setBulkItems(saved);
+      }
+    } else {
       setBulkItems(saved);
     }
-  } else {
-    setBulkItems(saved);
-  }
-}, []);
+  }, []);
 
-  function updateInput(index: number, value: string) {
-    setInputs((prev) => {
-      const copy = [...prev];
-      copy[index] = value;
-      return copy;
-    });
+  function removeItem(index: number) {
+    const updated = bulkItems.filter((_, i) => i !== index);
+    localStorage.setItem("bps_bulk_items", JSON.stringify(updated));
+    setBulkItems(updated);
   }
 
-  function clearInputs() {
-    setInputs(Array.from({ length: 50 }, () => ""));
-    setResult(null);
-    setError("");
-  }
-async function uploadBulkItems() {
-  const items = JSON.parse(localStorage.getItem("bps_bulk_items") || "[]");
-
-  if (!items.length) {
-    alert("مفيش منتجات مجمعة");
-    return;
-  }
-
-  if (!confirm(`هترفع ${items.length} منتج. تكمل؟`)) return;
-
-  setLoading(true);
-  setError("");
-
-  try {
-    const res = await fetch("/api/customer-offers/import-manual", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ items }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok || !data.ok) {
-      setError(data.error || "فشل رفع المنتجات");
-      return;
-    }
-
+  function clearAll() {
+    if (!confirm("تمسح كل المنتجات المجمعة؟")) return;
     localStorage.removeItem("bps_bulk_items");
     setBulkItems([]);
-    alert(data.message || "تم رفع المنتجات بنجاح ✅");
-  } catch {
-    setError("حدث خطأ أثناء رفع المنتجات");
-  } finally {
-    setLoading(false);
+    setError("");
   }
-}
-  async function handleImport(e: React.FormEvent) {
-    e.preventDefault();
 
-    const urls = inputs.map((u) => u.trim()).filter(Boolean);
-
-    if (!urls.length) {
-      setError("حط رابط أفلييت واحد على الأقل");
+  async function uploadBulkItems() {
+    if (!bulkItems.length) {
+      alert("مفيش منتجات مجمعة");
       return;
     }
+
+    if (!confirm(`هترفع ${bulkItems.length} منتج للمراجعة. تكمل؟`)) return;
 
     setLoading(true);
     setError("");
-    setResult(null);
 
     try {
-      const res = await fetch("/api/customer-offers/import-amazon", {
+      const res = await fetch("/api/customer-offers/import-manual", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({
-          urls,
-          country,
-          category,
-        }),
+        body: JSON.stringify({ items: bulkItems }),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.ok) {
-        setError(data.error || "حدث خطأ أثناء الاستيراد");
+        setError(data.error || "فشل رفع المنتجات");
         return;
       }
 
-      setResult(data);
+      localStorage.removeItem("bps_bulk_items");
+      setBulkItems([]);
+      alert(data.message || "تم رفع المنتجات بنجاح ✅");
     } catch {
-      setError("حدث خطأ غير متوقع");
+      setError("حدث خطأ أثناء رفع المنتجات");
     } finally {
       setLoading(false);
     }
@@ -193,9 +146,9 @@ async function uploadBulkItems() {
   if (!accessToken) {
     return (
       <main className="page" dir="rtl">
-        <div className="card">
+        <div className="card center">
           <h1>سجّل دخول الأول</h1>
-          <p>لازم تسجل دخول علشان تستورد منتجات أمازون.</p>
+          <p>لازم تسجل دخول علشان ترفع المنتجات المجمعة.</p>
           <Link href="/login" className="btn">
             تسجيل الدخول
           </Link>
@@ -205,8 +158,6 @@ async function uploadBulkItems() {
     );
   }
 
-  const filledCount = inputs.filter((u) => u.trim()).length;
-
   return (
     <main className="page" dir="rtl">
       <section className="hero">
@@ -214,136 +165,91 @@ async function uploadBulkItems() {
           ← رجوع لإضافة عرض يدوي
         </Link>
 
-        <h1>استيراد منتجات أمازون بالأفلييت</h1>
+        <h1>استيراد منتجات أمازون من البوكمارك</h1>
 
         <p>
-          حط روابط أفلييت جاهزة من Amazon SiteStripe أو روابط amzn.to. كل رابط
-          في خانة مستقلة. السيستم يحاول يجيب الاسم والصورة والسعر، والمنتجات
-          الناجحة تتحفظ Pending للمراجعة.
+          افتح منتج أمازون واضغط BPS Add To List. المنتجات هتظهر هنا بالاسم
+          والسعر والصورة والكاتيجري، وبعدها ارفعهم كلهم مرة واحدة.
         </p>
       </section>
 
-      <form onSubmit={handleImport} className="form">
-        <div className="topGrid">
-          <label>
-            الدولة
-            <select value={country} onChange={(e) => setCountry(e.target.value)}>
-              <option value="sa">السعودية</option>
-              <option value="ae">الإمارات</option>
-              <option value="eg">مصر</option>
-            </select>
-          </label>
-
-          <label>
-            الكاتيجري لكل المنتجات
-            <select value={category} onChange={(e) => setCategory(e.target.value)}>
-              {categories.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <div className="inputsHeader">
+      <section className="card">
+        <div className="topBar">
           <div>
-            <h2>روابط الأفلييت</h2>
-            <p>الممتلئ الآن: {filledCount} / 50</p>
+            <h2>المنتجات المجمعة</h2>
+            <p>العدد الحالي: {bulkItems.length}</p>
           </div>
 
-          <button type="button" className="clearBtn" onClick={clearInputs}>
+          <button type="button" className="clearBtn" onClick={clearAll}>
             مسح الكل
           </button>
         </div>
-<button type="button" className="submitBtn" onClick={uploadBulkItems}>
-  رفع المنتجات المجمعة ({bulkItems.length})
-</button>
-        <div className="tipsBox">
-          <strong>مهم جدًا:</strong>
-          <span>
-            استخدم رابط أفلييت جاهز فيه tag أو رابط amzn.to من SiteStripe.
-            المنتجات اللي تفشل في جلب الاسم أو الصورة أو السعر لن يتم إضافتها.
-          </span>
-        </div>
 
-        <div className="inputsList">
-          {inputs.map((value, index) => (
-            <label key={index} className="urlRow">
-              <span>رابط أفلييت رقم {index + 1}</span>
-              <input
-                type="text"
-                value={value}
-                onChange={(e) => updateInput(index, e.target.value)}
-                placeholder="https://www.amazon.sa/.../dp/B0XXXXXXXX?...&tag=xxxx أو https://amzn.to/xxxx"
-                dir="ltr"
-              />
-            </label>
-          ))}
-        </div>
+        <button
+          type="button"
+          className="uploadBtn"
+          onClick={uploadBulkItems}
+          disabled={loading || !bulkItems.length}
+        >
+          {loading
+            ? "جاري رفع المنتجات..."
+            : `🚀 رفع ${bulkItems.length} منتج للمراجعة`}
+        </button>
 
         {error && <div className="error">{error}</div>}
 
-        <button disabled={loading} type="submit" className="submitBtn">
-          {loading ? "جاري جلب المنتجات..." : "🚀 استيراد المنتجات"}
-        </button>
-
-        <p className="note">
-          الرابط اللي هيتحفظ هو نفس رابط الأفلييت اللي أنت حطيته، علشان العمولة
-          ماتضيعش.
-        </p>
-      </form>
-
-      {result && (
-        <section className="result">
-          <h2>نتيجة الاستيراد</h2>
-
-          <div className="stats">
-            <div>
-              <strong>{result.imported}</strong>
-              <span>تم استيرادها</span>
-            </div>
-            <div>
-              <strong>{result.failed}</strong>
-              <span>فشلت</span>
-            </div>
+        {!bulkItems.length ? (
+          <div className="empty">
+            <h3>مفيش منتجات لسه</h3>
+            <p>
+              افتح منتج أمازون واضغط على بوكمارك BPS Add To List، وبعدها ارجع
+              هنا.
+            </p>
           </div>
+        ) : (
+          <div className="products">
+            {bulkItems.map((item, index) => {
+              const cats = Array.isArray(item.category)
+                ? item.category
+                : [item.category];
 
-          {result.success?.length > 0 && (
-            <>
-              <h3>المنتجات الناجحة</h3>
+              return (
+                <div className="product" key={index}>
+                  <img src={item.image_url} alt={item.product_name} />
 
-              <div className="grid">
-                {result.success.map((item: any) => (
-                  <div className="product" key={item.asin}>
-                    <img src={item.image_url} alt={item.product_name} />
-                    <div>
-                      <b>{item.product_name}</b>
-                      <span>{item.price}</span>
-                      <small>{item.asin}</small>
+                  <div className="productInfo">
+                    <h3>{item.product_name}</h3>
+
+                    <div className="meta">
+                      <span>💰 {item.price}</span>
+                      <span>🌍 {countryLabels[item.country] || item.country}</span>
+                      <span>🏪 {item.store_name}</span>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
 
-          {result.failedItems?.length > 0 && (
-            <>
-              <h3>روابط فشلت</h3>
+                    <div className="cats">
+                      {cats.map((cat: string) => (
+                        <span key={cat}>{categoryLabels[cat] || cat}</span>
+                      ))}
+                    </div>
 
-              <div className="failed">
-                {result.failedItems.map((item: any, index: number) => (
-                  <div key={index}>
-                    <b>{item.reason}</b>
-                    <small>{item.url}</small>
+                    <a href={item.product_url} target="_blank">
+                      فتح رابط الأفلييت
+                    </a>
                   </div>
-                ))}
-              </div>
-            </>
-          )}
-        </section>
-      )}
+
+                  <button
+                    type="button"
+                    className="removeBtn"
+                    onClick={() => removeItem(index)}
+                  >
+                    حذف
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
       <style>{style}</style>
     </main>
@@ -362,10 +268,8 @@ const style = `
 }
 
 .hero,
-.form,
-.result,
 .card {
-  max-width: 920px;
+  max-width: 980px;
   margin: 0 auto 22px;
   border-radius: 28px;
   background: rgba(255,255,255,0.055);
@@ -375,6 +279,14 @@ const style = `
 
 .hero {
   padding: 34px 22px;
+  text-align: center;
+}
+
+.card {
+  padding: 22px;
+}
+
+.center {
   text-align: center;
 }
 
@@ -393,51 +305,13 @@ const style = `
   color: transparent;
 }
 
-.hero p {
-  margin: 0 auto;
-  max-width: 740px;
+.hero p,
+.card p {
   color: #ddd;
   line-height: 1.9;
 }
 
-.form {
-  padding: 22px;
-  display: grid;
-  gap: 18px;
-}
-
-.topGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-.form label {
-  display: grid;
-  gap: 8px;
-  font-weight: 900;
-}
-
-.form input,
-.form select {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid rgba(255,255,255,0.13);
-  background: #151515;
-  color: white;
-  border-radius: 16px;
-  padding: 14px 15px;
-  font-size: 15px;
-  outline: none;
-}
-
-.form input:focus,
-.form select:focus {
-  border-color: rgba(34,197,94,0.75);
-  box-shadow: 0 0 0 4px rgba(34,197,94,0.12);
-}
-
-.inputsHeader {
+.topBar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -446,21 +320,21 @@ const style = `
   border-radius: 18px;
   background: rgba(0,0,0,0.20);
   border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 16px;
 }
 
-.inputsHeader h2 {
+.topBar h2 {
   margin: 0 0 4px;
-  font-size: 20px;
 }
 
-.inputsHeader p {
+.topBar p {
   margin: 0;
   color: #bbf7d0;
   font-weight: 900;
-  font-size: 13px;
 }
 
-.clearBtn {
+.clearBtn,
+.removeBtn {
   border: 0;
   border-radius: 999px;
   padding: 10px 16px;
@@ -470,79 +344,26 @@ const style = `
   font-weight: 950;
 }
 
-.tipsBox {
-  display: grid;
-  gap: 6px;
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: rgba(250,204,21,0.10);
-  border: 1px solid rgba(250,204,21,0.26);
-  color: #fef3c7;
-  line-height: 1.8;
-}
-
-.tipsBox strong {
-  color: #fde68a;
-}
-
-.inputsList {
-  display: grid;
-  gap: 10px;
-  max-height: 580px;
-  overflow-y: auto;
-  padding: 12px;
-  border-radius: 20px;
-  background: rgba(0,0,0,0.18);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.urlRow {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: 10px;
-  align-items: center;
-  padding: 10px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.045);
-  border: 1px solid rgba(255,255,255,0.07);
-}
-
-.urlRow span {
-  color: #d1fae5;
-  font-size: 13px;
-  font-weight: 950;
-}
-
-.urlRow input {
-  direction: ltr;
-  text-align: left;
-  font-size: 13px;
-}
-
-.submitBtn,
+.uploadBtn,
 .btn {
+  width: 100%;
   border: 0;
   cursor: pointer;
-  padding: 15px 20px;
+  padding: 16px 20px;
   border-radius: 999px;
   background: linear-gradient(135deg, #16a34a, #22c55e, #2563eb);
   color: white;
   font-weight: 950;
-  font-size: 16px;
+  font-size: 17px;
   text-decoration: none;
   text-align: center;
+  display: block;
+  margin-bottom: 18px;
 }
 
-.submitBtn:disabled {
-  opacity: 0.6;
+.uploadBtn:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
-}
-
-.note {
-  margin: 0;
-  color: #fef3c7;
-  line-height: 1.8;
-  font-size: 13px;
 }
 
 .error {
@@ -552,112 +373,91 @@ const style = `
   padding: 12px;
   border-radius: 14px;
   font-weight: 900;
+  margin-bottom: 16px;
 }
 
-.result,
-.card {
-  padding: 22px;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin: 16px 0;
-}
-
-.stats div {
-  background: rgba(0,0,0,0.25);
-  border-radius: 18px;
-  padding: 16px;
+.empty {
   text-align: center;
+  padding: 40px 16px;
+  border-radius: 22px;
+  background: rgba(0,0,0,0.22);
+  border: 1px dashed rgba(255,255,255,0.18);
 }
 
-.stats strong {
-  display: block;
-  font-size: 34px;
-  color: #86efac;
-}
-
-.stats span {
-  color: #ddd;
-}
-
-.grid {
+.products {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .product {
   display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 12px;
+  grid-template-columns: 110px 1fr auto;
+  gap: 14px;
+  align-items: center;
   background: rgba(255,255,255,0.055);
-  border-radius: 16px;
-  padding: 10px;
-}
-
-.product img {
-  width: 90px;
-  height: 90px;
-  object-fit: contain;
-  background: #111;
-  border-radius: 12px;
-}
-
-.product b {
-  display: block;
-  line-height: 1.6;
-}
-
-.product span {
-  display: block;
-  color: #86efac;
-  font-weight: 900;
-  margin-top: 8px;
-}
-
-.product small {
-  display: block;
-  color: #aaa;
-  margin-top: 6px;
-  direction: ltr;
-  text-align: left;
-}
-
-.failed {
-  display: grid;
-  gap: 10px;
-}
-
-.failed div {
-  background: rgba(239,68,68,0.12);
-  border: 1px solid rgba(239,68,68,0.25);
-  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 20px;
   padding: 12px;
 }
 
-.failed b {
-  display: block;
-  color: #fecaca;
-  margin-bottom: 6px;
+.product img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  background: #111;
+  border-radius: 14px;
 }
 
-.failed small {
-  display: block;
-  color: #ddd;
-  direction: ltr;
-  text-align: left;
-  word-break: break-all;
+.productInfo h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.meta span {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: #d1fae5;
+  font-weight: 900;
+}
+
+.cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.cats span {
+  background: rgba(37,99,235,0.18);
+  border: 1px solid rgba(96,165,250,0.25);
+  color: #bfdbfe;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.product a {
+  color: #86efac;
+  font-weight: 900;
+  text-decoration: none;
 }
 
 @media (max-width: 800px) {
-  .topGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .urlRow {
-    grid-template-columns: 1fr;
+  .topBar {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .product {
@@ -666,7 +466,11 @@ const style = `
 
   .product img {
     width: 100%;
-    height: 170px;
+    height: 180px;
+  }
+
+  .removeBtn {
+    width: 100%;
   }
 }
 `;
