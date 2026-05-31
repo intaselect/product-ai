@@ -83,13 +83,12 @@ async function getRelatedOffers(offer: any) {
   const category = Array.isArray(offer.category) ? offer.category : [];
   const country = offer.country || "sa";
 
-  // 1️⃣ نحاول نفس الكاتيجري + نفس الدولة
   if (category.length > 0) {
     const { data } = await supabase
       .from("customer_offers")
       .select("id, product_name, price, image_url, store_name, country, category")
       .eq("status", "approved")
-      .eq("country", country) // ✅ مهم جدا
+      .eq("country", country)
       .neq("id", offer.id)
       .overlaps("category", category)
       .limit(6);
@@ -97,12 +96,11 @@ async function getRelatedOffers(offer: any) {
     if (data && data.length > 0) return data;
   }
 
-  // 2️⃣ fallback: نفس الدولة فقط
   const { data } = await supabase
     .from("customer_offers")
     .select("id, product_name, price, image_url, store_name, country, category")
     .eq("status", "approved")
-    .eq("country", country) // ✅ برضو هنا
+    .eq("country", country)
     .neq("id", offer.id)
     .limit(6);
 
@@ -128,32 +126,32 @@ export async function generateMetadata({
   const pageUrl = `${SITE_URL}/customer-offers/product/${slug}`;
 
   return {
-  title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat بي بي اس شات`,
-  description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat (بي بي اس شات). شاهد العرض بسعر ${offer.price} ${currency} من ${
-    offer.store_name || "متجر موثوق"
-  } مع رابط شراء مباشر.`,
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: pageUrl,
-  },
-   openGraph: {
-  title: `${offer.product_name} | BPS Chat بي بي اس شات`,
-  description: `أفضل عرض ${offer.product_name} في ${country} بسعر ${offer.price} ${currency}.`,
-  url: pageUrl,
-  images: offer.image_url
-    ? [
-        {
-          url: offer.image_url,
-          width: 1200,
-          height: 630,
-        },
-      ]
-    : [],
-  type: "website",
-}
+    title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat بي بي اس شات`,
+    description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat (بي بي اس شات). شاهد العرض بسعر ${offer.price} ${currency} من ${
+      offer.store_name || "متجر موثوق"
+    } مع رابط شراء مباشر.`,
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: pageUrl,
+    },
+    openGraph: {
+      title: `${offer.product_name} | BPS Chat بي بي اس شات`,
+      description: `أفضل عرض ${offer.product_name} في ${country} بسعر ${offer.price} ${currency}.`,
+      url: pageUrl,
+      images: offer.image_url
+        ? [
+            {
+              url: offer.image_url,
+              width: 1200,
+              height: 630,
+            },
+          ]
+        : [],
+      type: "website",
+    },
   };
 }
 
@@ -174,114 +172,135 @@ export default async function ProductSeoPage({
   const currencyCode = currencyCodes[offer.country || ""] || "USD";
   const pageUrl = `${SITE_URL}/customer-offers/product/${slug}`;
 
+  const galleryImages = Array.isArray(offer.gallery_images)
+    ? offer.gallery_images.filter(Boolean)
+    : [];
+
+  const productImages = [
+    offer.image_url,
+    ...galleryImages,
+    offer.image_url_2,
+    offer.image_url_3,
+  ].filter(Boolean);
+
+  const productFeatures = Array.isArray(offer.features)
+    ? offer.features.filter(Boolean)
+    : [];
+
+  const productSpecs =
+    offer.specifications && typeof offer.specifications === "object"
+      ? Object.entries(offer.specifications).filter(([key, value]) => key && value)
+      : [];
+
   const schema = {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  name: offer.product_name,
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: offer.product_name,
 
-  image: [offer.image_url, offer.image_url_2, offer.image_url_3].filter(Boolean),
+    image: productImages.length > 0 ? productImages : [offer.image_url].filter(Boolean),
 
-  description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}.`,
+    description:
+      offer.description ||
+      `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}.`,
 
-  brand: {
-    "@type": "Brand",
-    name: offer.store_name || "BPS Chat Customer Offer",
-  },
-
-  // ✅ الجديد
-  seller: {
-    "@type": "Organization",
-    name: offer.store_name || "BPS Chat",
-  },
-
-  // ✅ مهم جدا (النجوم)
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.4",
-    reviewCount: "87",
-  },
-
-  offers: {
-    "@type": "Offer",
-    url: pageUrl,
-    priceCurrency: currencyCode,
-    price: cleanPrice(offer.price),
-    availability: "https://schema.org/InStock",
-
-    // ✅ جديد
-    itemCondition: "https://schema.org/NewCondition",
-  },
-};
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "الرئيسية",
-      item: SITE_URL,
+    brand: {
+      "@type": "Brand",
+      name: offer.source_brand || offer.store_name || "BPS Chat Customer Offer",
     },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "عروض العملاء",
-      item: `${SITE_URL}/customer-offers`,
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: offer.product_name,
-      item: pageUrl,
-    },
-  ],
-};
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: `ما هو سعر ${offer.product_name} في ${country}؟`,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: `السعر المعروض لمنتج ${offer.product_name} هو ${offer.price} ${currency}، وقد يختلف السعر النهائي حسب المتجر والتوفر والشحن.`,
+    seller: {
+      "@type": "Organization",
+      name: offer.store_name || "BPS Chat",
+    },
+
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.4",
+      reviewCount: "87",
+    },
+
+    offers: {
+      "@type": "Offer",
+      url: pageUrl,
+      priceCurrency: currencyCode,
+      price: cleanPrice(offer.price),
+      availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "الرئيسية",
+        item: SITE_URL,
       },
-    },
-    {
-      "@type": "Question",
-      name: `أين أشتري ${offer.product_name} في ${country}؟`,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: `يمكنك الضغط على زر عرض المنتج داخل صفحة BPS Chat للانتقال إلى رابط الشراء المباشر من ${offer.store_name || "البائع"}.`,
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "عروض العملاء",
+        item: `${SITE_URL}/customer-offers`,
       },
-    },
-    {
-      "@type": "Question",
-      name: `هل عرض ${offer.product_name} موثوق؟`,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: `هذا العرض يظهر ضمن عروض العملاء في BPS Chat بعد المراجعة، لكن يجب دائمًا مراجعة السعر النهائي والتوفر وسياسة الشحن داخل موقع البائع قبل الشراء.`,
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: offer.product_name,
+        item: pageUrl,
       },
-    },
-  ],
-};
+    ],
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `ما هو سعر ${offer.product_name} في ${country}؟`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `السعر المعروض لمنتج ${offer.product_name} هو ${offer.price} ${currency}، وقد يختلف السعر النهائي حسب المتجر والتوفر والشحن.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `أين أشتري ${offer.product_name} في ${country}؟`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `يمكنك الضغط على زر عرض المنتج داخل صفحة BPS Chat للانتقال إلى رابط الشراء المباشر من ${offer.store_name || "البائع"}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `هل عرض ${offer.product_name} موثوق؟`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `هذا العرض يظهر ضمن عروض العملاء في BPS Chat بعد المراجعة، لكن يجب دائمًا مراجعة السعر النهائي والتوفر وسياسة الشحن داخل موقع البائع قبل الشراء.`,
+        },
+      },
+    ],
+  };
+
   return (
     <main className="seoProductPage" dir="rtl">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-/>
 
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-/>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       <section className="hero">
         <div className="badge">BPS Chat | بي بي اس شات</div>
@@ -298,102 +317,124 @@ const faqSchema = {
           والوصول لأفضل العروض بسهولة.
         </p>
       </section>
+
       <SearchBeforeBuyBanner />
 
-
       <section className="premiumProductBox">
-  <div className="premiumImageBox">
-    <img src={offer.image_url} alt={offer.product_name} />
-    <span className="imageBadge">🔥 عرض مميز</span>
-  </div>
+        <div className="premiumImageBox">
+          <img src={offer.image_url} alt={offer.product_name} />
+          <span className="imageBadge">🔥 عرض مميز</span>
 
-  <div className="premiumDetailsBox">
-    <span className="premiumCountryBadge">🌍 {country}</span>
+          {productImages.length > 1 && (
+            <div className="productGalleryMini">
+              {productImages.slice(0, 5).map((image: string, index: number) => (
+                <img
+                  key={`${image}-${index}`}
+                  src={image}
+                  alt={`${offer.product_name} صورة ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
-    <h2>{offer.product_name}</h2>
+        <div className="premiumDetailsBox">
+          <span className="premiumCountryBadge">🌍 {country}</span>
 
-    <div className="premiumPriceBox">
-      <strong>{offer.price}</strong>
-      <span>{currency}</span>
-    </div>
+          <h2>{offer.product_name}</h2>
 
-    <div className="premiumMetaGrid">
-      <div>
-        <small>المتجر</small>
-        <b>{offer.store_name || "عرض عميل BPS Chat"}</b>
-      </div>
+          <div className="premiumPriceBox">
+            <strong>{offer.price}</strong>
+            <span>{currency}</span>
+          </div>
 
-      <div>
-        <small>الدولة</small>
-        <b>{country}</b>
-      </div>
-    </div>
+          <div className="premiumMetaGrid">
+            <div>
+              <small>المتجر</small>
+              <b>{offer.store_name || "عرض عميل BPS Chat"}</b>
+            </div>
 
-    <a
-      href={`/api/customer-offers/click/${offer.id}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="premiumBuyBtn"
-    >
-      🔥 عرض المنتج الآن
-    </a>
+            <div>
+              <small>الدولة</small>
+              <b>{country}</b>
+            </div>
 
-    <Link href="/customer-offers" className="premiumBackBtn">
-      مشاهدة باقي عروض العملاء
-    </Link>
-    <div className="premiumShareBox">
-  <h3>📢 شارك المنتج</h3>
+            {offer.source_brand && (
+              <div>
+                <small>العلامة التجارية</small>
+                <b>{offer.source_brand}</b>
+              </div>
+            )}
+          </div>
 
-  <div className="premiumShareButtons">
-    <a
-      href={`https://wa.me/?text=${encodeURIComponent(
-        `${offer.product_name} - ${pageUrl}`
-      )}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="premiumShareBtn whatsapp"
-    >
-      <span>📱</span>
-      <div>
-        <strong>واتساب</strong>
-        <small>WhatsApp</small>
-      </div>
-    </a>
+          <a
+            href={`/api/customer-offers/click/${offer.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="premiumBuyBtn"
+          >
+            🔥 عرض المنتج الآن
+          </a>
 
-    <a
-      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-        pageUrl
-      )}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="premiumShareBtn facebook"
-    >
-      <span>👍</span>
-      <div>
-        <strong>فيسبوك</strong>
-        <small>Facebook</small>
-      </div>
-    </a>
+          <Link href="/customer-offers" className="premiumBackBtn">
+            مشاهدة باقي عروض العملاء
+          </Link>
 
-    <a
-      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-        pageUrl
-      )}&text=${encodeURIComponent(offer.product_name)}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="premiumShareBtn twitter"
-    >
-      <span>𝕏</span>
-      <div>
-        <strong>X</strong>
-        <small>Twitter</small>
-      </div>
-    </a>
-  </div>
-</div>
-  </div>
-</section>
-<MarketPromoSection />
+          <div className="premiumShareBox">
+            <h3>📢 شارك المنتج</h3>
+
+            <div className="premiumShareButtons">
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(
+                  `${offer.product_name} - ${pageUrl}`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="premiumShareBtn whatsapp"
+              >
+                <span>📱</span>
+                <div>
+                  <strong>واتساب</strong>
+                  <small>WhatsApp</small>
+                </div>
+              </a>
+
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                  pageUrl
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="premiumShareBtn facebook"
+              >
+                <span>👍</span>
+                <div>
+                  <strong>فيسبوك</strong>
+                  <small>Facebook</small>
+                </div>
+              </a>
+
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                  pageUrl
+                )}&text=${encodeURIComponent(offer.product_name)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="premiumShareBtn twitter"
+              >
+                <span>𝕏</span>
+                <div>
+                  <strong>X</strong>
+                  <small>Twitter</small>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <MarketPromoSection />
+
       <section className="content">
         <h2>أفضل سعر {offer.product_name} في {country}</h2>
 
@@ -413,12 +454,16 @@ const faqSchema = {
           </strong>
           .
         </p>
+
         <p>
-  يمكنك أيضًا معرفة المزيد عن الأسعار من خلال:
-  <a href={`/search/${offer.product_name}-${offer.country}`} style={{ color: "#22c55e", marginRight: "6px" }}>
-    مقارنة أسعار {offer.product_name} في {country}
-  </a>
-</p>
+          يمكنك أيضًا معرفة المزيد عن الأسعار من خلال:
+          <a
+            href={`/search/${offer.product_name}-${offer.country}`}
+            style={{ color: "#22c55e", marginRight: "6px" }}
+          >
+            مقارنة أسعار {offer.product_name} في {country}
+          </a>
+        </p>
 
         <div className="cardsGrid">
           <div className="infoCard">
@@ -446,6 +491,38 @@ const faqSchema = {
           </div>
         </div>
 
+        {offer.description && (
+          <>
+            <h2>وصف {offer.product_name}</h2>
+            <p>{offer.description}</p>
+          </>
+        )}
+
+        {productFeatures.length > 0 && (
+          <>
+            <h2>مميزات {offer.product_name}</h2>
+            <ul className="featuresList">
+              {productFeatures.map((feature: string, index: number) => (
+                <li key={index}>{feature}</li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {productSpecs.length > 0 && (
+          <>
+            <h2>مواصفات {offer.product_name}</h2>
+            <div className="specsTable">
+              {productSpecs.map(([key, value]: any) => (
+                <div key={key}>
+                  <strong>{key}</strong>
+                  <span>{String(value)}</span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
         <h2>قبل شراء {offer.product_name}</h2>
         <ul>
           <li>راجع السعر النهائي داخل موقع البائع قبل إتمام الشراء.</li>
@@ -453,59 +530,61 @@ const faqSchema = {
           <li>قارن العرض مع منتجات مشابهة داخل BPS Chat قبل اتخاذ القرار.</li>
           <li>تأكد أن رابط المنتج والمتجر مناسبين لك قبل الدفع.</li>
         </ul>
-<h2>معلومات عن عرض {offer.product_name}</h2>
 
-<p>
-  صفحة <strong>{offer.product_name}</strong> على BPS Chat مصممة لمساعدة
-  المستخدمين في الوصول إلى سعر واضح ورابط مباشر للمنتج داخل {country}.
-  يظهر هذا العرض ضمن قسم عروض العملاء في <strong>بي بي اس شات</strong> حتى
-  يتمكن الزوار من اكتشاف منتجات وأسعار من متاجر وبائعين مختلفين.
-</p>
+        <h2>معلومات عن عرض {offer.product_name}</h2>
 
-<p>
-  عند البحث عن <strong>سعر {offer.product_name} في {country}</strong> قد تجد
-  اختلافًا بين المتاجر حسب حالة المنتج، التوفر، الضمان، الشحن، والعروض
-  الحالية. لذلك ننصح دائمًا بمراجعة تفاصيل المنتج داخل موقع البائع قبل إتمام
-  الشراء.
-</p>
+        <p>
+          صفحة <strong>{offer.product_name}</strong> على BPS Chat مصممة لمساعدة
+          المستخدمين في الوصول إلى سعر واضح ورابط مباشر للمنتج داخل {country}.
+          يظهر هذا العرض ضمن قسم عروض العملاء في <strong>بي بي اس شات</strong>{" "}
+          حتى يتمكن الزوار من اكتشاف منتجات وأسعار من متاجر وبائعين مختلفين.
+        </p>
 
-<h2>كلمات بحث مرتبطة بـ {offer.product_name}</h2>
+        <p>
+          عند البحث عن <strong>سعر {offer.product_name} في {country}</strong> قد
+          تجد اختلافًا بين المتاجر حسب حالة المنتج، التوفر، الضمان، الشحن،
+          والعروض الحالية. لذلك ننصح دائمًا بمراجعة تفاصيل المنتج داخل موقع
+          البائع قبل إتمام الشراء.
+        </p>
 
-<p>
-  سعر {offer.product_name} في {country} - شراء {offer.product_name} أونلاين -
-  أفضل عرض {offer.product_name} - أرخص سعر {offer.product_name} - عروض{" "}
-  {offer.product_name} في {country} - {offer.product_name} من{" "}
-  {offer.store_name || "متجر موثوق"} - مقارنة سعر {offer.product_name} عبر
-  BPS Chat - بي بي اس شات.
-</p>
+        <h2>كلمات بحث مرتبطة بـ {offer.product_name}</h2>
 
-<h2>أسئلة شائعة عن {offer.product_name}</h2>
+        <p>
+          سعر {offer.product_name} في {country} - شراء {offer.product_name}{" "}
+          أونلاين - أفضل عرض {offer.product_name} - أرخص سعر{" "}
+          {offer.product_name} - عروض {offer.product_name} في {country} -{" "}
+          {offer.product_name} من {offer.store_name || "متجر موثوق"} - مقارنة
+          سعر {offer.product_name} عبر BPS Chat - بي بي اس شات.
+        </p>
 
-<div className="faqBox">
-  <div>
-    <h3>هل السعر المعروض نهائي؟</h3>
-    <p>
-      السعر المعروض هو السعر الذي أضافه البائع، وقد يختلف السعر النهائي حسب
-      الشحن أو التوفر أو تحديثات المتجر.
-    </p>
-  </div>
+        <h2>أسئلة شائعة عن {offer.product_name}</h2>
 
-  <div>
-    <h3>هل يمكن مقارنة هذا المنتج مع منتجات أخرى؟</h3>
-    <p>
-      نعم، يمكنك الرجوع إلى صفحة عروض العملاء أو استخدام بحث BPS Chat لمقارنة
-      منتجات وأسعار أخرى في {country}.
-    </p>
-  </div>
+        <div className="faqBox">
+          <div>
+            <h3>هل السعر المعروض نهائي؟</h3>
+            <p>
+              السعر المعروض هو السعر الذي أضافه البائع، وقد يختلف السعر النهائي
+              حسب الشحن أو التوفر أو تحديثات المتجر.
+            </p>
+          </div>
 
-  <div>
-    <h3>هل BPS Chat يبيع المنتج مباشرة؟</h3>
-    <p>
-      لا، BPS Chat يساعدك على الوصول للعرض ورابط المنتج، والشراء يتم من خلال
-      البائع أو المتجر صاحب الرابط.
-    </p>
-  </div>
-</div>
+          <div>
+            <h3>هل يمكن مقارنة هذا المنتج مع منتجات أخرى؟</h3>
+            <p>
+              نعم، يمكنك الرجوع إلى صفحة عروض العملاء أو استخدام بحث BPS Chat
+              لمقارنة منتجات وأسعار أخرى في {country}.
+            </p>
+          </div>
+
+          <div>
+            <h3>هل BPS Chat يبيع المنتج مباشرة؟</h3>
+            <p>
+              لا، BPS Chat يساعدك على الوصول للعرض ورابط المنتج، والشراء يتم من
+              خلال البائع أو المتجر صاحب الرابط.
+            </p>
+          </div>
+        </div>
+
         {relatedOffers.length > 0 && (
           <>
             <h2>منتجات مشابهة قد تهمك</h2>
@@ -947,296 +1026,368 @@ const faqSchema = {
             font-size: 30px;
           }
         }
-          .faqBox {
-  display: grid;
-  gap: 14px;
-  margin-top: 18px;
-}
 
-.faqBox div {
-  background: rgba(40,40,40,0.72);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px;
-  padding: 18px;
-}
+        .faqBox {
+          display: grid;
+          gap: 14px;
+          margin-top: 18px;
+        }
 
-.faqBox h3 {
-  margin: 0 0 8px;
-  color: #fff;
-}
-  .premiumProductBox {
-  max-width: 1120px;
-  margin: 18px auto 0;
-  padding: 22px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 26px;
-  border-radius: 34px;
-  background: linear-gradient(135deg, #ffffff, #f8fafc);
-  border: 1px solid #dbeafe;
-  box-shadow:
-    0 24px 70px rgba(15,23,42,0.16),
-    0 0 0 6px rgba(34,197,94,0.04);
-}
+        .faqBox div {
+          background: rgba(40,40,40,0.72);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 18px;
+          padding: 18px;
+        }
 
-.premiumImageBox {
-  position: relative;
-  min-height: 430px;
-  border-radius: 28px;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 22px;
-  border: 1px solid #e5e7eb;
-  box-shadow: inset 0 0 30px rgba(15,23,42,0.04);
-}
+        .faqBox h3 {
+          margin: 0 0 8px;
+          color: #fff;
+        }
 
-.premiumImageBox img {
-  max-width: 100%;
-  max-height: 390px;
-  object-fit: contain;
-  transition: transform .3s ease;
-}
+        .premiumProductBox {
+          max-width: 1120px;
+          margin: 18px auto 0;
+          padding: 22px;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 26px;
+          border-radius: 34px;
+          background: linear-gradient(135deg, #ffffff, #f8fafc);
+          border: 1px solid #dbeafe;
+          box-shadow:
+            0 24px 70px rgba(15,23,42,0.16),
+            0 0 0 6px rgba(34,197,94,0.04);
+        }
 
-.premiumImageBox:hover img {
-  transform: scale(1.05);
-}
+        .premiumImageBox {
+          position: relative;
+          min-height: 430px;
+          border-radius: 28px;
+          background: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 22px;
+          border: 1px solid #e5e7eb;
+          box-shadow: inset 0 0 30px rgba(15,23,42,0.04);
+        }
 
-.imageBadge {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #0f172a, #2563eb, #22c55e);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 950;
-  box-shadow: 0 10px 24px rgba(37,99,235,0.25);
-}
+        .premiumImageBox img {
+          max-width: 100%;
+          max-height: 390px;
+          object-fit: contain;
+          transition: transform .3s ease;
+        }
 
-.premiumDetailsBox {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 16px;
-  color: #111827;
-}
+        .premiumImageBox:hover img {
+          transform: scale(1.05);
+        }
 
-.premiumCountryBadge {
-  width: fit-content;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: #dcfce7;
-  color: #166534;
-  font-weight: 950;
-  margin-bottom: 14px;
-}
+        .imageBadge {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          padding: 8px 14px;
+          border-radius: 999px;
+          background: linear-gradient(135deg, #0f172a, #2563eb, #22c55e);
+          color: #fff;
+          font-size: 12px;
+          font-weight: 950;
+          box-shadow: 0 10px 24px rgba(37,99,235,0.25);
+        }
 
-.premiumDetailsBox h2 {
-  margin: 0 0 18px;
-  font-size: clamp(24px, 3vw, 34px);
-  line-height: 1.45;
-  color: #111827;
-  font-weight: 950;
-}
+        .premiumDetailsBox {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 16px;
+          color: #111827;
+        }
 
-.premiumPriceBox {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
+        .premiumCountryBadge {
+          width: fit-content;
+          padding: 8px 14px;
+          border-radius: 999px;
+          background: #dcfce7;
+          color: #166534;
+          font-weight: 950;
+          margin-bottom: 14px;
+        }
 
-.premiumPriceBox strong {
-  color: #16a34a;
-  font-size: 44px;
-  font-weight: 950;
-}
+        .premiumDetailsBox h2 {
+          margin: 0 0 18px;
+          font-size: clamp(24px, 3vw, 34px);
+          line-height: 1.45;
+          color: #111827;
+          font-weight: 950;
+        }
 
-.premiumPriceBox span {
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 950;
-}
+        .premiumPriceBox {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 20px;
+        }
 
-.premiumMetaGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 20px;
-}
+        .premiumPriceBox strong {
+          color: #16a34a;
+          font-size: 44px;
+          font-weight: 950;
+        }
 
-.premiumMetaGrid div {
-  padding: 16px;
-  border-radius: 20px;
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-}
+        .premiumPriceBox span {
+          padding: 7px 12px;
+          border-radius: 999px;
+          background: linear-gradient(135deg, #16a34a, #22c55e);
+          color: #fff;
+          font-size: 12px;
+          font-weight: 950;
+        }
 
-.premiumMetaGrid small {
-  display: block;
-  color: #64748b;
-  margin-bottom: 6px;
-  font-weight: 900;
-}
+        .premiumMetaGrid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 14px;
+          margin-bottom: 20px;
+        }
 
-.premiumMetaGrid b {
-  color: #111827;
-  word-break: break-word;
-}
+        .premiumMetaGrid div {
+          padding: 16px;
+          border-radius: 20px;
+          background: #f8fafc;
+          border: 1px solid #e5e7eb;
+        }
 
-.premiumBuyBtn,
-.premiumBackBtn {
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  font-weight: 950;
-  border-radius: 16px;
-  padding: 15px 18px;
-  transition: all .25s ease;
-}
+        .premiumMetaGrid small {
+          display: block;
+          color: #64748b;
+          margin-bottom: 6px;
+          font-weight: 900;
+        }
 
-.premiumBuyBtn {
-  background: linear-gradient(135deg, #16a34a, #2563eb);
-  color: #fff;
-  box-shadow: 0 14px 32px rgba(37,99,235,0.24);
-  margin-bottom: 12px;
-}
+        .premiumMetaGrid b {
+          color: #111827;
+          word-break: break-word;
+        }
 
-.premiumBuyBtn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 44px rgba(37,99,235,0.35);
-}
+        .premiumBuyBtn,
+        .premiumBackBtn {
+          display: block;
+          text-align: center;
+          text-decoration: none;
+          font-weight: 950;
+          border-radius: 16px;
+          padding: 15px 18px;
+          transition: all .25s ease;
+        }
 
-.premiumBackBtn {
-  background: #111827;
-  color: #fff;
-}
+        .premiumBuyBtn {
+          background: linear-gradient(135deg, #16a34a, #2563eb);
+          color: #fff;
+          box-shadow: 0 14px 32px rgba(37,99,235,0.24);
+          margin-bottom: 12px;
+        }
 
-.premiumBackBtn:hover {
-  background: #2563eb;
-  transform: translateY(-2px);
-}
+        .premiumBuyBtn:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 20px 44px rgba(37,99,235,0.35);
+        }
 
-@media (max-width: 850px) {
-  .premiumProductBox {
-    grid-template-columns: 1fr;
-    margin: 14px 12px 0;
-    padding: 16px;
-    border-radius: 26px;
-  }
+        .premiumBackBtn {
+          background: #111827;
+          color: #fff;
+        }
 
-  .premiumImageBox {
-    min-height: 300px;
-  }
+        .premiumBackBtn:hover {
+          background: #2563eb;
+          transform: translateY(-2px);
+        }
 
-  .premiumImageBox img {
-    max-height: 280px;
-  }
+        @media (max-width: 850px) {
+          .premiumProductBox {
+            grid-template-columns: 1fr;
+            margin: 14px 12px 0;
+            padding: 16px;
+            border-radius: 26px;
+          }
 
-  .premiumMetaGrid {
-    grid-template-columns: 1fr;
-  }
+          .premiumImageBox {
+            min-height: 300px;
+          }
 
-  .premiumPriceBox {
-    flex-wrap: wrap;
-  }
+          .premiumImageBox img {
+            max-height: 280px;
+          }
 
-  .premiumPriceBox strong {
-    font-size: 34px;
-  }
-}
-  .premiumShareBox {
-  margin-top: 18px;
-  padding: 18px;
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(37,99,235,.08), transparent 30%),
-    linear-gradient(135deg,#ffffff,#f8fafc);
-  border: 1px solid #dbeafe;
-  box-shadow:
-    0 12px 35px rgba(15,23,42,.08),
-    0 0 0 4px rgba(34,197,94,.03);
-}
+          .premiumMetaGrid {
+            grid-template-columns: 1fr;
+          }
 
-.premiumShareBox h3 {
-  margin: 0 0 14px;
-  color: #111827;
-  font-size: 18px;
-  font-weight: 950;
-}
+          .premiumPriceBox {
+            flex-wrap: wrap;
+          }
 
-.premiumShareButtons {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 12px;
-}
+          .premiumPriceBox strong {
+            font-size: 34px;
+          }
+        }
 
-.premiumShareBtn {
-  text-decoration: none;
-  color: #111827;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 20px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all .25s ease;
-  box-shadow: 0 8px 22px rgba(15,23,42,.05);
-}
+        .premiumShareBox {
+          margin-top: 18px;
+          padding: 18px;
+          border-radius: 22px;
+          background:
+            radial-gradient(circle at 15% 20%, rgba(37,99,235,.08), transparent 30%),
+            linear-gradient(135deg,#ffffff,#f8fafc);
+          border: 1px solid #dbeafe;
+          box-shadow:
+            0 12px 35px rgba(15,23,42,.08),
+            0 0 0 4px rgba(34,197,94,.03);
+        }
 
-.premiumShareBtn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 36px rgba(15,23,42,.12);
-}
+        .premiumShareBox h3 {
+          margin: 0 0 14px;
+          color: #111827;
+          font-size: 18px;
+          font-weight: 950;
+        }
 
-.premiumShareBtn span {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: white;
-  font-weight: 900;
-}
+        .premiumShareButtons {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 12px;
+        }
 
-.premiumShareBtn strong {
-  display: block;
-  font-size: 14px;
-  font-weight: 950;
-}
+        .premiumShareBtn {
+          text-decoration: none;
+          color: #111827;
+          background: #fff;
+          border: 1px solid #e5e7eb;
+          border-radius: 20px;
+          padding: 14px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          transition: all .25s ease;
+          box-shadow: 0 8px 22px rgba(15,23,42,.05);
+        }
 
-.premiumShareBtn small {
-  color: #64748b;
-  font-size: 12px;
-  font-weight: 800;
-}
+        .premiumShareBtn:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 18px 36px rgba(15,23,42,.12);
+        }
 
-.whatsapp span {
-  background: linear-gradient(135deg,#16a34a,#22c55e);
-}
+        .premiumShareBtn span {
+          width: 48px;
+          height: 48px;
+          border-radius: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          color: white;
+          font-weight: 900;
+        }
 
-.facebook span {
-  background: linear-gradient(135deg,#2563eb,#3b82f6);
-}
+        .premiumShareBtn strong {
+          display: block;
+          font-size: 14px;
+          font-weight: 950;
+        }
 
-.twitter span {
-  background: linear-gradient(135deg,#111827,#000);
-}
+        .premiumShareBtn small {
+          color: #64748b;
+          font-size: 12px;
+          font-weight: 800;
+        }
 
-@media (max-width: 700px) {
-  .premiumShareButtons {
-    grid-template-columns: 1fr;
-  }
-}
+        .whatsapp span {
+          background: linear-gradient(135deg,#16a34a,#22c55e);
+        }
+
+        .facebook span {
+          background: linear-gradient(135deg,#2563eb,#3b82f6);
+        }
+
+        .twitter span {
+          background: linear-gradient(135deg,#111827,#000);
+        }
+
+        @media (max-width: 700px) {
+          .premiumShareButtons {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .productGalleryMini {
+          position: absolute;
+          left: 16px;
+          bottom: 16px;
+          display: flex;
+          gap: 8px;
+          max-width: calc(100% - 32px);
+          overflow-x: auto;
+        }
+
+        .productGalleryMini img {
+          width: 58px;
+          height: 58px;
+          object-fit: contain;
+          background: #fff;
+          border: 1px solid #e5e7eb;
+          border-radius: 12px;
+          padding: 4px;
+        }
+
+        .featuresList {
+          display: grid;
+          gap: 10px;
+          padding-right: 22px;
+        }
+
+        .featuresList li {
+          background: rgba(40,40,40,0.72);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 14px;
+          padding: 10px 14px;
+        }
+
+        .specsTable {
+          display: grid;
+          gap: 10px;
+          margin-top: 16px;
+        }
+
+        .specsTable div {
+          display: grid;
+          grid-template-columns: 220px 1fr;
+          gap: 12px;
+          background: rgba(40,40,40,0.72);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 14px;
+          padding: 12px 14px;
+        }
+
+        .specsTable strong {
+          color: #7fffe0;
+        }
+
+        .specsTable span {
+          color: #e8e8e8;
+        }
+
+        @media (max-width: 700px) {
+          .specsTable div {
+            grid-template-columns: 1fr;
+          }
+
+          .productGalleryMini {
+            position: static;
+            margin-top: 12px;
+            justify-content: center;
+          }
+        }
       `}</style>
     </main>
   );

@@ -100,7 +100,12 @@ export async function generateMetadata({
   const country = countryNames[offer.country || ""] || "السوق العربي";
   const currency = currencies[offer.country || ""] || "";
   const pageUrl = `${SITE_URL}/customer-offers/card/${slug}`;
- const ogImage = offer.image_url || `${SITE_URL}/og-image.png`;
+
+  const galleryImages = Array.isArray(offer.gallery_images)
+    ? offer.gallery_images.filter(Boolean)
+    : [];
+
+  const ogImage = galleryImages[0] || offer.image_url || `${SITE_URL}/og-image.png`;
 
   return {
     title: `كارت عرض ${offer.product_name} في ${country} | BPS Chat Market`,
@@ -108,30 +113,30 @@ export async function generateMetadata({
     alternates: { canonical: pageUrl },
     robots: { index: true, follow: true },
     openGraph: {
-  title: `${offer.product_name} | ${offer.price} ${currency}`,
-  description: `🔥 عرض في ${country} بسعر ${offer.price} ${currency} من ${
-    offer.store_name || "BPS Market"
-  }. شاهد العرض على BPS Chat.`,
-  url: pageUrl,
-  siteName: "BPS Chat | بي بي اس شات",
-images: [
-  {
-    url: ogImage,
-    width: 1200,
-    height: 630,
-    alt: offer.product_name,
-  },
-],
-  type: "website",
-},
-twitter: {
-  card: "summary_large_image",
-  title: `${offer.product_name} | ${offer.price} ${currency}`,
-  description: `🔥 عرض في ${country} بسعر ${offer.price} ${currency} من ${
-    offer.store_name || "BPS Market"
-  }.`,
-  images: [ogImage],
-},
+      title: `${offer.product_name} | ${offer.price} ${currency}`,
+      description: `🔥 عرض في ${country} بسعر ${offer.price} ${currency} من ${
+        offer.store_name || "BPS Market"
+      }. شاهد العرض على BPS Chat.`,
+      url: pageUrl,
+      siteName: "BPS Chat | بي بي اس شات",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: offer.product_name,
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${offer.product_name} | ${offer.price} ${currency}`,
+      description: `🔥 عرض في ${country} بسعر ${offer.price} ${currency} من ${
+        offer.store_name || "BPS Market"
+      }.`,
+      images: [ogImage],
+    },
   };
 }
 
@@ -149,32 +154,54 @@ export default async function OfferCardSeoPage({
 
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
-  
+
+  const galleryImages = Array.isArray(offer.gallery_images)
+    ? offer.gallery_images.filter(Boolean)
+    : [];
+
+  const cardImages = [offer.image_url, ...galleryImages].filter(Boolean);
+  const mainImage = offer.image_url || galleryImages[0] || "/og-image.png";
+
   const countryHashtags: Record<string, string> = {
-  sa: "#السعودية #عروض_السعودية #تسوق_السعودية",
-  ae: "#الإمارات #عروض_الإمارات #تسوق_الإمارات",
-  kw: "#الكويت #عروض_الكويت",
-  qa: "#قطر #عروض_قطر",
-  bh: "#البحرين #عروض_البحرين",
-  eg: "#مصر #عروض_مصر #تسوق_مصر",
-};
+    sa: "#السعودية #عروض_السعودية #تسوق_السعودية",
+    ae: "#الإمارات #عروض_الإمارات #تسوق_الإمارات",
+    kw: "#الكويت #عروض_الكويت",
+    qa: "#قطر #عروض_قطر",
+    bh: "#البحرين #عروض_البحرين",
+    eg: "#مصر #عروض_مصر #تسوق_مصر",
+  };
 
-const shareHashtags =
-  `${countryHashtags[offer.country || "sa"] || ""} #BPSChat #بي_بي_اس_شات #عروض`;
-  const shareUrl = `${SITE_URL}/customer-offers/card/${offer.country || "sa"}-${offer.id}`;
+  const shareHashtags = `${
+    countryHashtags[offer.country || "sa"] || ""
+  } #BPSChat #بي_بي_اس_شات #عروض`;
 
-const shortTitle =
-  offer.product_name.length > 85
-    ? `${offer.product_name.slice(0, 85)}...`
-    : offer.product_name;
-  
+  const shareUrl = `${SITE_URL}/customer-offers/card/${offer.country || "sa"}-${
+    offer.id
+  }`;
+
+  const shortTitle =
+    offer.product_name.length > 85
+      ? `${offer.product_name.slice(0, 85)}...`
+      : offer.product_name;
 
   return (
     <main className="cardSeoPage" dir="rtl">
       <section className="topProductCard">
         <div className="productImageBox">
-          <img src={offer.image_url} alt={offer.product_name} />
+          <img src={mainImage} alt={offer.product_name} />
           <span className="floatingLabel">🔥 عرض مميز</span>
+
+          {cardImages.length > 1 && (
+            <div className="cardGalleryMini">
+              {cardImages.slice(0, 5).map((image: string, index: number) => (
+                <img
+                  key={`${image}-${index}`}
+                  src={image}
+                  alt={`${offer.product_name} صورة ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="productInfoBox">
@@ -197,6 +224,13 @@ const shortTitle =
               <small>الدولة</small>
               <b>{country}</b>
             </div>
+
+            {offer.source_brand && (
+              <div>
+                <small>العلامة التجارية</small>
+                <b>{offer.source_brand}</b>
+              </div>
+            )}
           </div>
 
           <a
@@ -206,15 +240,15 @@ const shortTitle =
             className="affiliateBtn"
           >
             🔥 عرض المنتج من المتجر
-        </a>
+          </a>
 
-<div className="premiumShareBox">
-  <h3>📢 شارك العرض</h3>
+          <div className="premiumShareBox">
+            <h3>📢 شارك العرض</h3>
 
-  <div className="premiumShareButtons">
-    <a
-    href={`https://wa.me/?text=${encodeURIComponent(
-  `🔥 ${shortTitle}
+            <div className="premiumShareButtons">
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(
+                  `🔥 ${shortTitle}
 
 💰 ${offer.price} ${currency}
 
@@ -223,68 +257,68 @@ const shortTitle =
 ${shareHashtags}
 
 ${shareUrl}`
-)}`}
-target="_blank"
-rel="noopener noreferrer"
-className="premiumShareBtn whatsapp"
->
-  <span>📱</span>
-  <div>
-    <strong>واتساب</strong>
-    <small>WhatsApp</small>
-  </div>
-</a>
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="premiumShareBtn whatsapp"
+              >
+                <span>📱</span>
+                <div>
+                  <strong>واتساب</strong>
+                  <small>WhatsApp</small>
+                </div>
+              </a>
 
-<a
- href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-  shareUrl
-)}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="premiumShareBtn facebook"
->
-  <span>👍</span>
-  <div>
-    <strong>فيسبوك</strong>
-    <small>Facebook</small>
-  </div>
-</a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                  shareUrl
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="premiumShareBtn facebook"
+              >
+                <span>👍</span>
+                <div>
+                  <strong>فيسبوك</strong>
+                  <small>Facebook</small>
+                </div>
+              </a>
 
-<a
-href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-  shareUrl
-)}&text=${encodeURIComponent(
-  `🔥 ${shortTitle}
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                  shareUrl
+                )}&text=${encodeURIComponent(
+                  `🔥 ${shortTitle}
 
 💰 ${offer.price} ${currency}
 
 🌍 ${country}
 
 #BPSChat`
-)}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="premiumShareBtn twitter"
->
-      <span>𝕏</span>
-      <div>
-        <strong>X</strong>
-        <small>Twitter</small>
-      </div>
-    </a>
-  </div>
-</div>
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="premiumShareBtn twitter"
+              >
+                <span>𝕏</span>
+                <div>
+                  <strong>X</strong>
+                  <small>Twitter</small>
+                </div>
+              </a>
+            </div>
+          </div>
 
-<Link href={productSeoUrl(offer)} className="detailsBtn">
-  🚀 تفاصيل المنتج داخل BPS Chat
-</Link>
+          <Link href={productSeoUrl(offer)} className="detailsBtn">
+            🚀 تفاصيل المنتج داخل BPS Chat
+          </Link>
 
-<div className="shareMiniText">
-  كارت مختصر للمنتج داخل BPS Market مع رابط مباشر للشراء ومنتجات
-  مشابهة من نفس الدولة.
-</div>
-</div>
-</section>
+          <div className="shareMiniText">
+            كارت مختصر للمنتج داخل BPS Market مع رابط مباشر للشراء ومنتجات
+            مشابهة من نفس الدولة.
+          </div>
+        </div>
+      </section>
 
       <SearchBeforeBuyBanner />
 
@@ -640,6 +674,26 @@ href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
           font-weight: 800;
         }
 
+        .cardGalleryMini {
+          position: absolute;
+          left: 16px;
+          bottom: 16px;
+          display: flex;
+          gap: 8px;
+          max-width: calc(100% - 32px);
+          overflow-x: auto;
+        }
+
+        .cardGalleryMini img {
+          width: 56px;
+          height: 56px;
+          object-fit: contain;
+          background: #fff;
+          border: 1px solid #e5e7eb;
+          border-radius: 12px;
+          padding: 4px;
+        }
+
         @media (max-width: 900px) {
           .topProductCard {
             grid-template-columns: 1fr;
@@ -667,6 +721,12 @@ href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
             flex-direction: column;
             align-items: flex-start;
           }
+
+          .cardGalleryMini {
+            position: static;
+            margin-top: 12px;
+            justify-content: center;
+          }
         }
 
         @media (max-width: 600px) {
@@ -682,74 +742,75 @@ href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
             grid-template-columns: 1fr;
           }
         }
-          .premiumShareBox {
-  margin: 14px 0;
-  padding: 18px;
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(37,99,235,.08), transparent 30%),
-    linear-gradient(135deg,#ffffff,#f8fafc);
-  border: 1px solid #dbeafe;
-}
 
-.premiumShareBox h3 {
-  margin: 0 0 14px;
-  color: #111827;
-  font-size: 17px;
-  font-weight: 950;
-}
+        .premiumShareBox {
+          margin: 14px 0;
+          padding: 18px;
+          border-radius: 22px;
+          background:
+            radial-gradient(circle at 15% 20%, rgba(37,99,235,.08), transparent 30%),
+            linear-gradient(135deg,#ffffff,#f8fafc);
+          border: 1px solid #dbeafe;
+        }
 
-.premiumShareButtons {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 10px;
-}
+        .premiumShareBox h3 {
+          margin: 0 0 14px;
+          color: #111827;
+          font-size: 17px;
+          font-weight: 950;
+        }
 
-.premiumShareBtn {
-  text-decoration: none;
-  color: #111827;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: .25s;
-}
+        .premiumShareButtons {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 10px;
+        }
 
-.premiumShareBtn:hover {
-  transform: translateY(-3px);
-}
+        .premiumShareBtn {
+          text-decoration: none;
+          color: #111827;
+          background: #fff;
+          border: 1px solid #e5e7eb;
+          border-radius: 18px;
+          padding: 12px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          transition: .25s;
+        }
 
-.premiumShareBtn span {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 900;
-}
+        .premiumShareBtn:hover {
+          transform: translateY(-3px);
+        }
 
-.whatsapp span {
-  background: linear-gradient(135deg,#16a34a,#22c55e);
-}
+        .premiumShareBtn span {
+          width: 42px;
+          height: 42px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 900;
+        }
 
-.facebook span {
-  background: linear-gradient(135deg,#2563eb,#3b82f6);
-}
+        .whatsapp span {
+          background: linear-gradient(135deg,#16a34a,#22c55e);
+        }
 
-.twitter span {
-  background: linear-gradient(135deg,#111827,#000);
-}
+        .facebook span {
+          background: linear-gradient(135deg,#2563eb,#3b82f6);
+        }
 
-@media (max-width:700px) {
-  .premiumShareButtons {
-    grid-template-columns: 1fr;
-  }
-}
+        .twitter span {
+          background: linear-gradient(135deg,#111827,#000);
+        }
+
+        @media (max-width:700px) {
+          .premiumShareButtons {
+            grid-template-columns: 1fr;
+          }
+        }
       `}</style>
     </main>
   );
