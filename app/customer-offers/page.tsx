@@ -562,13 +562,36 @@ return (
           </div>
 
           <div className="hotOfferInfo">
-            <strong>{offer.product_name}</strong>
-            <span>
-              {offer.price} {countryCurrencies[offer.country || ""]}
-            </span>
-            <small>{offer.store_name || "BPS Market"}</small>
-          </div>
+  <strong>{offer.product_name}</strong>
+
+  <span>
+    {offer.price} {countryCurrencies[offer.country || ""]}
+  </span>
+
+  <small>{offer.store_name || "BPS Market"}</small>
+
+  <div className="hotOfferActions">
+    <a
+      href={`/customer-offers/product/bps-chat-${offer.product_name
+        .toLowerCase()
+        .replace(/\s+/g, "-")}-${offer.country || "sa"}-${offer.id}`}
+      className="hotDetailsBtn"
+    >
+      👀 شاهد صفحة المنتج
+    </a>
+
+    <a
+      href={`/api/customer-offers/click/${offer.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="hotBuyBtn"
+    >
+      🛒 عرض المنتج
+    </a>
+  </div>
+</div>
         </a>
+        
       ))}
     </div>
   </section>
@@ -2034,6 +2057,38 @@ return (
 
   box-shadow:
     0 10px 28px rgba(15,23,42,0.06);
+}
+    .hotOfferActions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.hotDetailsBtn,
+.hotBuyBtn {
+  text-decoration: none;
+  text-align: center;
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 900;
+  transition: .25s;
+}
+
+.hotDetailsBtn {
+  background: linear-gradient(135deg,#2563eb,#0f172a);
+  color: #fff;
+}
+
+.hotBuyBtn {
+  background: linear-gradient(135deg,#16a34a,#22c55e);
+  color: #fff;
+}
+
+.hotDetailsBtn:hover,
+.hotBuyBtn:hover {
+  transform: translateY(-2px);
 }
 `}</style>
     </main>
