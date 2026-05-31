@@ -286,19 +286,19 @@ export async function POST(req: Request) {
         }
 
         const { error } = await supabaseAdmin.from("customer_offers").insert({
-          product_name: fetched.title,
-          price: fetched.price,
-          image_url: fetched.image,
-          image_url_2: null,
-          image_url_3: null,
-          product_url: rawUrl,
-          store_name: storeNameByCountry(country),
-          country,
-          category,
-          status: "pending",
-          user_id: user.id,
-          seller_email: user.email || "",
-        });
+  product_name: fetched.title,
+  price: fetched.price,
+  image_url: fetched.image,
+  image_url2: null,
+  image_url3: null,
+  product_url: rawUrl,
+  store_name: storeNameByCountry(country),
+  country,
+  category,
+  status: "pending",
+  user_id: user.id,
+  email: user.email || "",
+});
 
         if (error) {
           failed.push({
