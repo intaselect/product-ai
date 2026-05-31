@@ -4,6 +4,7 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import { fetchRealProducts } from "@/lib/fetchRealProducts";
 import MarketPromoSection from "@/app/components/MarketPromoSection";
+export const dynamic = "force-dynamic";
 
 export const revalidate = 300;
 
