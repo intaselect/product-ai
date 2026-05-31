@@ -717,33 +717,33 @@ async function handleSearch() {
   مئات المستخدمين يكتشفون عروض BPS Chat
   <span className="aiSpark">AI</span>
 </a>
+{results.length === 0 && (
+  <div className="adsWrapper" ref={sliderRef}>
+    {ads.map((ad: any, i: number) => (
+      <a
+        key={i}
+        href={ad.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="adCard"
+      >
+        <img src={ad.image} className="adImage" alt={ad.title} />
 
-        {/* 🔥 Ads Slider */}
-        <div className="adsWrapper" ref={sliderRef}>
-          {ads.map((ad: any, i: number) => (
-            <a
-              key={i}
-              href={ad.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="adCard"
-            >
-             <img src={ad.image} className="adImage" alt={ad.title} />
+        <div className="adInfo">
+          <div className="adTitle">{ad.title}</div>
 
-<div className="adInfo">
-  <div className="adTitle">{ad.title}</div>
+          {ad.price && (
+            <div className="adPrice">{ad.price}</div>
+          )}
 
-  {ad.price && (
-    <div className="adPrice">{ad.price}</div>
-  )}
-
-  <div className="adFooter">
-    <span className="adTag">إعلان</span>
-  </div>
-</div>
-            </a>
-          ))}
+          <div className="adFooter">
+            <span className="adTag">إعلان</span>
+          </div>
         </div>
+      </a>
+    ))}
+  </div>
+)}
 
 
      
