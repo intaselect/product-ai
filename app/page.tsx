@@ -444,7 +444,7 @@ async function handleSearch() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-       // "x-bps-visitor-id": getVisitorId(),
+       "x-bps-visitor-id": getVisitorId(),
         "x-bps-user-email": user?.email || "",
       },
       body: JSON.stringify({
@@ -746,15 +746,7 @@ async function handleSearch() {
         </div>
 
 
-       {loading && (
-  <div className="searchLoadingOverlay">
-    <div className="searchLoadingBox">
-      <div className="aiSpinner"></div>
-      <h3>جاري البحث عن أفضل الأسعار...</h3>
-      <p>ثواني ونجيب لك أفضل المنتجات من المتاجر</p>
-    </div>
-  </div>
-)}
+     
 
 {results.length === 0 && (
   <>
