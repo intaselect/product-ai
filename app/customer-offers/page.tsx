@@ -76,6 +76,18 @@ function formatOfferPrice(price: string, country?: string | null) {
   const currency = countryCurrencies[country || ""] || "";
   return currency ? `${price} ${currency}` : price;
 }
+function slugify(text: string) {
+  return String(text || "product")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
+}
+
+function productSeoUrl(offer: any) {
+  return `/customer-offers/product/bps-chat-${slugify(
+    offer.product_name
+  )}-${offer.country || "sa"}-${offer.id}`;
+}
 const categoryCards: Record<string, { ar: string; en: string; icon: string }> = {
   all: { ar: "كل العروض", en: "All Deals", icon: "🛍️" },
   mobiles: { ar: "جوالات وتابلت", en: "Mobiles", icon: "📱" },
@@ -572,9 +584,7 @@ return (
 
   <div className="hotOfferActions">
     <a
-      href={`/customer-offers/product/bps-chat-${offer.product_name
-        .toLowerCase()
-        .replace(/\s+/g, "-")}-${offer.country || "sa"}-${offer.id}`}
+     href={productSeoUrl(offer)}
       className="hotDetailsBtn"
     >
       👀 شاهد صفحة المنتج
@@ -651,9 +661,7 @@ return (
                   عرض المنتج
                 </a>
                 <a
-  href={`/customer-offers/product/bps-chat-${offer.product_name
-    .toLowerCase()
-    .replace(/\s+/g, "-")}-${offer.country || "sa"}-${offer.id}`}
+ href={productSeoUrl(offer)}
   className="detailsBtn"
 >
   👀 شاهد صفحة المنتج على BPS Chat
