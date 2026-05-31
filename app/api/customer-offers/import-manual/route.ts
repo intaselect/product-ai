@@ -59,7 +59,9 @@ export async function POST(req: Request) {
       product_url: cleanText(item.product_url),
       store_name: cleanText(item.store_name || "amazon.sa"),
       country: cleanText(item.country || "sa"),
-      category: [cleanText(item.category || "electronics")],
+      category: Array.isArray(item.category)
+  ? item.category
+  : [cleanText(item.category || "electronics")],
       status: "pending",
       user_id: user.id,
       email: user.email || "",
