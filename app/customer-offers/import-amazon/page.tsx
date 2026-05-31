@@ -45,6 +45,7 @@ export default function ImportAmazonPage() {
 
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
+  const [bulkItems, setBulkItems] = useState<any[]>([]);
 useEffect(() => {
   async function checkUser() {
     const { data } = await supabase.auth.getSession();
@@ -61,6 +62,29 @@ useEffect(() => {
 
   checkUser();
 }, []);
+useEffect(() => {
+  const saved = JSON.parse(localStorage.getItem("bps_bulk_items") || "[]");
+
+  const params = new URLSearchParams(window.location.search);
+  const rawItem = params.get("item");
+
+  if (rawItem) {
+    try {
+      const item = JSON.parse(decodeURIComponent(rawItem));
+      const updated = [...saved, item];
+
+      localStorage.setItem("bps_bulk_items", JSON.stringify(updated));
+      setBulkItems(updated);
+
+      window.history.replaceState({}, "", "/customer-offers/import-amazon");
+      alert("اتضاف المنتج للقائمة ✅");
+    } catch {
+      setBulkItems(saved);
+    }
+  } else {
+    setBulkItems(saved);
+  }
+}, []);
 
   function updateInput(index: number, value: string) {
     setInputs((prev) => {
@@ -75,7 +99,45 @@ useEffect(() => {
     setResult(null);
     setError("");
   }
+async function uploadBulkItems() {
+  const items = JSON.parse(localStorage.getItem("bps_bulk_items") || "[]");
 
+  if (!items.length) {
+    alert("مفيش منتجات مجمعة");
+    return;
+  }
+
+  if (!confirm(`هترفع ${items.length} منتج. تكمل؟`)) return;
+
+  setLoading(true);
+  setError("");
+
+  try {
+    const res = await fetch("/api/customer-offers/import-manual", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ items }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      setError(data.error || "فشل رفع المنتجات");
+      return;
+    }
+
+    localStorage.removeItem("bps_bulk_items");
+    setBulkItems([]);
+    alert(data.message || "تم رفع المنتجات بنجاح ✅");
+  } catch {
+    setError("حدث خطأ أثناء رفع المنتجات");
+  } finally {
+    setLoading(false);
+  }
+}
   async function handleImport(e: React.FormEvent) {
     e.preventDefault();
 
@@ -194,7 +256,9 @@ useEffect(() => {
             مسح الكل
           </button>
         </div>
-
+<button type="button" className="submitBtn" onClick={uploadBulkItems}>
+  رفع المنتجات المجمعة ({bulkItems.length})
+</button>
         <div className="tipsBox">
           <strong>مهم جدًا:</strong>
           <span>
