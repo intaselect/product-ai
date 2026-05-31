@@ -712,6 +712,12 @@ async function handleSearch() {
     </div>
   </div>
 </section>
+ {loading && (
+    <div className="topLoader">
+      <div className="aiSpinner"></div>
+      <p className="aiText">جاري الحصول على أفضل نتائج ...</p>
+    </div>
+  )}
 <a href="/customer-offers" className="liveStorePulse">
   <span className="liveDot"></span>
   مئات المستخدمين يكتشفون عروض BPS Chat
@@ -770,12 +776,7 @@ async function handleSearch() {
 
 <section className="results">
 
-  {loading && (
-    <div className="topLoader">
-      <div className="aiSpinner"></div>
-      <p className="aiText">جاري الحصول على أفضل نتائج ...</p>
-    </div>
-  )}
+ 
 
   {!loading && results.length === 0 && (
     <p className="empty">ابدأ البحث أو جرّب اسم منتج آخر</p>
