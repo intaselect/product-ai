@@ -37,38 +37,34 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+const items = Array.isArray(body.items) ? body.items : [];
 
-    const product_name = cleanText(body.product_name);
-    const price = cleanText(body.price);
-    const image_url = cleanText(body.image_url);
-    const product_url = cleanText(body.product_url);
-    const country = cleanText(body.country || "sa");
-    const category = [cleanText(body.category || "electronics")];
-    const store_name = cleanText(body.store_name || "amazon.sa");
-
-    if (!product_name || !price || !image_url || !product_url) {
-      return NextResponse.json(
-        { ok: false, error: "بيانات المنتج ناقصة" },
-        { status: 400 }
-      );
-    }
-
+if (!items.length) {
+  return NextResponse.json(
+    { ok: false, error: "لا توجد منتجات للإضافة" },
+    { status: 400 }
+  );
+}
     const user = userData.user;
 
-    const { error } = await supabaseAdmin.from("customer_offers").insert({
-      product_name,
-      price,
-      image_url,
-      image_url2: null,
-      image_url3: null,
-      product_url,
-      store_name,
-      country,
-      category,
-      status: "pending",
-      user_id: user.id,
-      email: user.email || "",
-    });
+   const rows = items.map((item: any) => ({
+  product_name: cleanText(item.product_name),
+  price: cleanText(item.price),
+  image_url: cleanText(item.image_url),
+  image_url2: null,
+  image_url3: null,
+  product_url: cleanText(item.product_url),
+  store_name: cleanText(item.store_name),
+  country: cleanText(item.country),
+  category: [cleanText(item.category)],
+  status: "pending",
+  user_id: user.id,
+  email: user.email || "",
+}));
+
+const { error } = await supabaseAdmin
+  .from("customer_offers")
+  .insert(rows);
 
     if (error) {
       return NextResponse.json(
@@ -79,7 +75,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       ok: true,
-      message: "تم رفع المنتج بنجاح وهو الآن قيد المراجعة",
+     message: `تم رفع ${rows.length} منتج بنجاح`
     });
   } catch (error) {
     console.error("IMPORT_MANUAL_ERROR:", error);
