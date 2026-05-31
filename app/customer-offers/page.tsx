@@ -164,13 +164,37 @@ const heroCountryUrl =
   const searchQuery = String(params?.q || "").trim().toLowerCase();
   const selectedBrand = String(params?.brand || "").trim().toLowerCase();
 const isCountrySelected = selectedCountry !== "all";
-  const { data: offers, error } = await supabase
+let allOffers: any[] = [];
+let error: any = null;
+
+let from = 0;
+const batchSize = 1000;
+
+while (true) {
+  const { data, error: batchError } = await supabase
     .from("customer_offers")
     .select(
-  "id, product_name, price, image_url, image_url_2, image_url_3, product_url, store_name, country, category, created_at"
-)
+      "id, product_name, price, image_url, image_url_2, image_url_3, product_url, store_name, country, category, created_at"
+    )
     .eq("status", "approved")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(from, from + batchSize - 1);
+
+  if (batchError) {
+    error = batchError;
+    break;
+  }
+
+  if (!data || data.length === 0) break;
+
+  allOffers = [...allOffers, ...data];
+
+  if (data.length < batchSize) break;
+
+  from += batchSize;
+}
+
+const offers = allOffers;
 const approvedOffers = (offers || []) as CustomerOffer[];
 let finalOffers = approvedOffers;
 
