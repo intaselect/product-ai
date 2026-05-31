@@ -60,28 +60,38 @@ export default function ImportAmazonPage() {
     checkUser();
   }, []);
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("bps_bulk_items") || "[]");
+useEffect(() => {
+  const saved = JSON.parse(localStorage.getItem("bps_bulk_items") || "[]");
 
-    const params = new URLSearchParams(window.location.search);
-    const rawItem = params.get("item");
+  const params = new URLSearchParams(window.location.search);
+  const rawItem = params.get("item");
 
-    if (rawItem) {
-      try {
-        const item = JSON.parse(decodeURIComponent(rawItem));
-        const updated = [...saved, item];
+  if (!rawItem) {
+    setBulkItems(saved);
+    return;
+  }
 
-        localStorage.setItem("bps_bulk_items", JSON.stringify(updated));
-        setBulkItems(updated);
+  try {
+    let item;
 
-        window.history.replaceState({}, "", "/customer-offers/import-amazon");
-      } catch {
-        setBulkItems(saved);
-      }
-    } else {
-      setBulkItems(saved);
+    try {
+      item = JSON.parse(rawItem);
+    } catch {
+      item = JSON.parse(decodeURIComponent(rawItem));
     }
-  }, []);
+
+    const updated = [...saved, item];
+
+    localStorage.setItem("bps_bulk_items", JSON.stringify(updated));
+    setBulkItems(updated);
+
+    window.history.replaceState({}, "", "/customer-offers/import-amazon");
+  } catch (err) {
+    console.error("BPS_IMPORT_ITEM_PARSE_ERROR:", err);
+    setBulkItems(saved);
+    alert("المنتج وصل للصفحة لكن حصل خطأ في قراءته");
+  }
+}, []);
 
   function removeItem(index: number) {
     const updated = bulkItems.filter((_, i) => i !== index);
