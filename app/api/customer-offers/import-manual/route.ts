@@ -64,7 +64,7 @@ export async function POST(req: Request) {
   : [cleanText(item.category || "electronics")],
       status: "pending",
       user_id: user.id,
-      email: user.email || "",
+    
     };
   })
   .filter((item: any) => {
