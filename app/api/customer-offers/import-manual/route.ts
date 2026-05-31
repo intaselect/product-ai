@@ -37,34 +37,51 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-const items = Array.isArray(body.items) ? body.items : [];
-
-if (!items.length) {
-  return NextResponse.json(
-    { ok: false, error: "لا توجد منتجات للإضافة" },
-    { status: 400 }
-  );
-}
     const user = userData.user;
 
-   const rows = items.map((item: any) => ({
-  product_name: cleanText(item.product_name),
-  price: cleanText(item.price),
-  image_url: cleanText(item.image_url),
-  image_url2: null,
-  image_url3: null,
-  product_url: cleanText(item.product_url),
-  store_name: cleanText(item.store_name),
-  country: cleanText(item.country),
-  category: [cleanText(item.category)],
-  status: "pending",
-  user_id: user.id,
-  email: user.email || "",
-}));
+    const items = Array.isArray(body.items) ? body.items.slice(0, 50) : [];
 
-const { error } = await supabaseAdmin
-  .from("customer_offers")
-  .insert(rows);
+    if (!items.length) {
+      return NextResponse.json(
+        { ok: false, error: "لا توجد منتجات للإضافة" },
+        { status: 400 }
+      );
+    }
+
+ const rows = items
+  .map((item: any) => {
+    return {
+      product_name: cleanText(item.product_name),
+      price: cleanText(item.price),
+      image_url: cleanText(item.image_url),
+      image_url2: null,
+      image_url3: null,
+      product_url: cleanText(item.product_url),
+      store_name: cleanText(item.store_name || "amazon.sa"),
+      country: cleanText(item.country || "sa"),
+      category: [cleanText(item.category || "electronics")],
+      status: "pending",
+      user_id: user.id,
+      email: user.email || "",
+    };
+  })
+  .filter((item: any) => {
+    return (
+      item.product_name &&
+      item.price &&
+      item.image_url &&
+      item.product_url
+    );
+  });
+
+    if (!rows.length) {
+      return NextResponse.json(
+        { ok: false, error: "كل المنتجات بياناتها ناقصة" },
+        { status: 400 }
+      );
+    }
+
+    const { error } = await supabaseAdmin.from("customer_offers").insert(rows);
 
     if (error) {
       return NextResponse.json(
@@ -75,7 +92,8 @@ const { error } = await supabaseAdmin
 
     return NextResponse.json({
       ok: true,
-     message: `تم رفع ${rows.length} منتج بنجاح`
+      imported: rows.length,
+      message: `تم رفع ${rows.length} منتج بنجاح وهو الآن قيد المراجعة`,
     });
   } catch (error) {
     console.error("IMPORT_MANUAL_ERROR:", error);
