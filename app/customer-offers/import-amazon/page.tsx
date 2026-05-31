@@ -50,6 +50,9 @@ export default function ImportAmazonPage() {
     async function checkUser() {
       const { data } = await supabase.auth.getSession();
       setAccessToken(data.session?.access_token || "");
+      if (data.session?.access_token) {
+  localStorage.setItem("bps_import_token", data.session.access_token);
+}
       setChecking(false);
     }
 
