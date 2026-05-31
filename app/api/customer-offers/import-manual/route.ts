@@ -14,6 +14,15 @@ function cleanText(value: any) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
 
+function cleanCategories(value: any) {
+  if (Array.isArray(value)) {
+    return value.map((v) => cleanText(v)).filter(Boolean);
+  }
+
+  const single = cleanText(value || "electronics");
+  return single ? [single] : ["electronics"];
+}
+
 export async function POST(req: Request) {
   try {
     const authHeader = req.headers.get("authorization");
@@ -48,33 +57,28 @@ export async function POST(req: Request) {
       );
     }
 
- const rows = items
-  .map((item: any) => {
-    return {
-      product_name: cleanText(item.product_name),
-      price: cleanText(item.price),
-      image_url: cleanText(item.image_url),
-      image_url2: null,
-      image_url3: null,
-      product_url: cleanText(item.product_url),
-      store_name: cleanText(item.store_name || "amazon.sa"),
-      country: cleanText(item.country || "sa"),
-      category: Array.isArray(item.category)
-  ? item.category
-  : [cleanText(item.category || "electronics")],
-      status: "pending",
-      user_id: user.id,
-    
-    };
-  })
-  .filter((item: any) => {
-    return (
-      item.product_name &&
-      item.price &&
-      item.image_url &&
-      item.product_url
-    );
-  });
+    const rows = items
+      .map((item: any) => {
+        return {
+          product_name: cleanText(item.product_name),
+          price: cleanText(item.price),
+          image_url: cleanText(item.image_url),
+          product_url: cleanText(item.product_url),
+          store_name: cleanText(item.store_name || "amazon.sa"),
+          country: cleanText(item.country || "sa"),
+          category: cleanCategories(item.category),
+          status: "pending",
+          user_id: user.id,
+        };
+      })
+      .filter((item: any) => {
+        return (
+          item.product_name &&
+          item.price &&
+          item.image_url &&
+          item.product_url
+        );
+      });
 
     if (!rows.length) {
       return NextResponse.json(
