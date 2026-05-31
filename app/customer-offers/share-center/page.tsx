@@ -154,6 +154,16 @@ const twitterText = `${item.product_name}
                 >
                   فتح صفحة الكارت
                 </a>
+                <a
+  href={`/customer-offers/product/bps-chat-${slugify(
+    item.product_name
+  )}-${item.country || "sa"}-${item.id}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="detailsBtn"
+>
+  👀 شاهد صفحة المنتج على BPS Chat
+</a>
 
                 <div className="shareBtns">
                   <a
@@ -446,6 +456,23 @@ const twitterText = `${item.product_name}
             grid-template-columns: 1fr;
           }
         }
+          .detailsBtn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg,#2563eb,#0f172a);
+  color: white;
+  font-weight: 950;
+  margin-bottom: 10px;
+  transition: .25s;
+}
+
+.detailsBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(37,99,235,.25);
+}
       `}</style>
     </main>
   );
