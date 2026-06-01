@@ -365,21 +365,46 @@ export default function SidebarMenu() {
         }
 
         .sidebar {
-          position: fixed;
-          top: 0;
-          left: -280px;
-          z-index: 10001;
+  position: fixed;
+  top: 0;
+  left: -280px;
+  z-index: 10001;
 
-          width: 260px;
-          height: 100vh;
-          padding: 18px;
+  width: 260px;
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 18px;
+  padding-bottom: 34px;
 
-          background: #171717;
-          border-right: 1px solid #2f2f2f;
+  background: #171717;
+  border-right: 1px solid #2f2f2f;
 
-          transition: left 0.25s ease;
-          box-shadow: 12px 0 40px rgba(0, 0, 0, 0.45);
-        }
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  transition: left 0.25s ease;
+  box-shadow: 12px 0 40px rgba(0, 0, 0, 0.45);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #22c55e, #2563eb);
+  border-radius: 20px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #34d399, #3b82f6);
+}
 
         .sidebar.open {
           left: 0;
@@ -690,6 +715,14 @@ export default function SidebarMenu() {
 }
 
         @media (max-width: 600px) {
+        .sidebar {
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 46px;
+  -webkit-overflow-scrolling: touch;
+}
           .menuButton {
             top: 76px;
             left: 18px;
