@@ -6,6 +6,14 @@ export default function robots() {
         allow: "/",
       },
     ],
-    sitemap: "https://www.bpschat.com/sitemap.xml"
+
+    sitemap: [
+      "https://www.bpschat.com/sitemap.xml",
+      "https://www.bpschat.com/sitemaps/products.xml",
+      "https://www.bpschat.com/sitemaps/search.xml",
+      "https://www.bpschat.com/sitemaps/blog.xml",
+      "https://www.bpschat.com/sitemaps/categories.xml",
+      "https://www.bpschat.com/sitemaps/pages.xml",
+    ],
   };
 }
