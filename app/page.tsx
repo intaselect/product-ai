@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import PopularSearches from "@/app/components/PopularSearches";
 import type React from "react";
 import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
+import ComparePricesSection from "@/app/components/ComparePricesSection";
 
 
 
@@ -944,6 +945,7 @@ async function handleSearch() {
     </section>
   </>
 )}
+<ComparePricesSection />
 </main>
 
 <style jsx>{`

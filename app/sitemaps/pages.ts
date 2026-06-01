@@ -24,11 +24,32 @@ export default async function sitemap() {
 
     { url: "https://www.bpschat.com/advertisers" },
     { url: "https://www.bpschat.com/sell-online" },
+    { url: "https://www.bpschat.com/compare" },
   ];
 
   const advertiserUrls = advertiserPages.map((page) => ({
     url: `https://www.bpschat.com/advertisers/${page.slug}`,
   }));
+  const compareCountries = ["sa", "eg", "ae", "kw", "qa", "bh"];
 
-  return [...staticPages, ...advertiserUrls];
+const compareProducts = [
+  "samsung",
+  "xiaomi",
+  "iphone-16",
+  "laptop",
+  "airpods",
+  "ps5",
+  "watch",
+  "perfume",
+  "headphones",
+  "camera",
+];
+
+const compareUrls = compareCountries.flatMap((country) =>
+  compareProducts.map((product) => ({
+    url: `https://www.bpschat.com/compare/${country}/${product}`,
+  }))
+);
+
+ return [...staticPages, ...advertiserUrls, ...compareUrls];
 }
