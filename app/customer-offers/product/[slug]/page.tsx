@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import MarketPromoSection from "@/app/components/MarketPromoSection";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
+import ComparePricesSection from "@/app/components/ComparePricesSection";
 
 export const dynamic = "force-dynamic";
 
@@ -649,7 +650,7 @@ export default async function ProductSeoPage({
           </Link>
         </div>
       </section>
-
+<ComparePricesSection />
       <style>{`
         .seoProductPage {
           color: white;

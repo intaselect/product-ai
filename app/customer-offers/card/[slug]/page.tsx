@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
+import ComparePricesSection from "@/app/components/ComparePricesSection";
 
 export const dynamic = "force-dynamic";
 
@@ -360,6 +361,7 @@ ${shareUrl}`
           ))}
         </div>
       </section>
+      <ComparePricesSection />
 
       <section className="seoTextBox">
         <h2>كارت عرض {offer.product_name} داخل BPS Chat</h2>
