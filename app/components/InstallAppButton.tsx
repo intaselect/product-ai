@@ -34,7 +34,7 @@ export default function InstallAppButton() {
 
   return (
     <button className="installAppFloatingBtn" onClick={installApp}>
-      <span className="installAppIcon">⚡</span>
+      <span className="installAppIcon">🔍</span>
       <span>
         ثبّت البحث السريع
         <small>ادخل لـ BPS Chat كأنه تطبيق</small>
