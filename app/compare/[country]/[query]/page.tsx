@@ -94,9 +94,10 @@ function productSeoUrl(offer: any) {
 export async function generateMetadata({
   params,
 }: {
-  params: { country: string; query: string }
+  params: Promise<{ country: string; query: string }>;
 }): Promise<Metadata> {
-  const { country, query } = params;
+  const { country, query } = await params;
+
   const cleanQuery = cleanText(query);
   const countryName = countryNames[country] || country;
 
@@ -112,9 +113,9 @@ export async function generateMetadata({
 export default async function ComparePage({
   params,
 }: {
-  params: { country: string; query: string }
+  params: Promise<{ country: string; query: string }>;
 }) {
-  const { country, query } = params;
+  const { country, query } = await params;
 
   const countryCode = country || "sa";
   const countryName = countryNames[countryCode] || countryCode;
