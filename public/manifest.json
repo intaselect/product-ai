@@ -1,0 +1,23 @@
+{
+  "name": "BPS Chat - بي بي اس شات",
+  "short_name": "BPS Chat",
+  "description": "ابحث عن أفضل الأسعار والمنتجات بسرعة",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

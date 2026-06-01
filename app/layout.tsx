@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import InternalLinksBoost from "./components/InternalLinksBoost";
 import TrustedSourcesBar from "@/app/components/TrustedSourcesBar";
 import AnalyticsTracker from "@/app/components/AnalyticsTracker";
+import InstallAppButton from "@/app/components/InstallAppButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -102,7 +103,13 @@ export default function RootLayout({
       lang="ar"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
+  <head>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="BPS Chat" />
+  <link rel="apple-touch-icon" href="/logo-icon.png" />
+
   <script
     async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4886224668719787"
@@ -158,9 +165,10 @@ export default function RootLayout({
 />
 </head>
 
-   <body className="min-h-screen flex flex-col">
+ <body className="min-h-screen flex flex-col">
  <Navbar />
 <TrustedSourcesBar />
+<InstallAppButton />
 <SidebarMenu />
   <div className="flex-1">
     {children}
