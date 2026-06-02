@@ -54,14 +54,15 @@ if (secret !== process.env.CRON_SECRET) {
     const uploaded: any[] = [];
 
     for (const offer of offers || []) {
-      const already = await supabase
-        .from("youtube_shorts_log")
-        .select("id")
-        .eq("source_type", "customer_offer")
-        .eq("source_id", String(offer.id))
-        .maybeSingle();
+ const alreadyUploaded = await supabase
+  .from("youtube_shorts_log")
+  .select("id")
+  .eq("source_type", "customer_offer")
+  .eq("source_id", String(offer.id))
+  .eq("status", "uploaded")
+  .maybeSingle();
 
-      if (already.data) continue;
+if (alreadyUploaded.data) continue;
 
       const title = offer.product_name;
       const country = offer.country || "sa";
