@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/youtube-shorts?secret=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",
+      "schedule": "0 7 * * *"
+    }
+  ]
+}

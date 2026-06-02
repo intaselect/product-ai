@@ -36,9 +36,10 @@ function toNodeStream(buffer: Buffer) {
 
 export async function GET(req: Request) {
   try {
-    const auth = req.headers.get("authorization");
+    const { searchParams } = new URL(req.url);
+const secret = searchParams.get("secret");
 
-    if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
+if (secret !== process.env.CRON_SECRET) {
       return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
     }
 
