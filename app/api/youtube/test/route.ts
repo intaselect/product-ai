@@ -15,19 +15,12 @@ export async function GET() {
       refresh_token: process.env.GOOGLE_REFRESH_TOKEN!,
     });
 
-    const youtube = google.youtube({
-      version: "v3",
-      auth: oauth2Client,
-    });
-
-    const res = await youtube.channels.list({
-      part: ["snippet", "statistics"],
-      mine: true,
-    });
+    const { token } = await oauth2Client.getAccessToken();
 
     return NextResponse.json({
       ok: true,
-      channel: res.data.items?.[0] || null,
+      message: "YouTube OAuth token works",
+      has_access_token: !!token,
     });
   } catch (e: any) {
     return NextResponse.json(
