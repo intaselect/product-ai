@@ -58,7 +58,7 @@ function shortText(v: any, max = 90) {
 }
 
 function makeTitle(categoryName: string, countryName: string) {
-  return `أفضل عروض ${categoryName} في ${countryName} | فيديو دعائي من BPS Chat`;
+  return `🔥 قارن أفضل عروض ${categoryName} في ${countryName} قبل الشراء | BPS Chat`;
 }
 
 function makeDescription(categoryName: string, countryName: string, country: string, offers: any[]) {
@@ -76,7 +76,7 @@ function makeDescription(categoryName: string, countryName: string, country: str
 
   return `🔥 فيديو دعائي لأفضل عروض ${categoryName} في ${countryName}
 
-BPS Chat يساعدك تكتشف المنتجات والعروض وتقارن قبل ما تشتري.
+BPS Chat محرك بحث ومقارنة أسعار يساعدك تكتشف أفضل المنتجات والعروض من المتاجر المختلفة في السعودية والإمارات والكويت وقطر والبحرين ومصر.
 
 المنتجات الموجودة في الفيديو:
 
