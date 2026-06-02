@@ -15,21 +15,24 @@ export async function GET() {
       refresh_token: process.env.GOOGLE_REFRESH_TOKEN!,
     });
 
-    const { token } = await oauth2Client.getAccessToken();
+    const youtube = google.youtube({
+      version: "v3",
+      auth: oauth2Client,
+    });
+
+    const channel = await youtube.channels.list({
+      mine: true,
+      part: ["snippet"],
+    });
 
     return NextResponse.json({
       ok: true,
-      version: "token-test-v2",
-      has_access_token: !!token,
+      channel: channel.data.items?.[0]?.snippet?.title || null,
     });
   } catch (e: any) {
-    return NextResponse.json(
-      {
-        ok: false,
-        version: "token-test-v2",
-        error: e.message || "YouTube test failed",
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      ok: false,
+      error: e.message,
+    });
   }
 }
