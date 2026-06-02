@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/cron/youtube-shorts?secret=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",
+      "path": "/api/cron/youtube-shorts?secret=bpschat-youtube-secret-2026",
       "schedule": "0 7 * * *"
     }
   ]
