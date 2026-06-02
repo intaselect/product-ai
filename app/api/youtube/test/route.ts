@@ -19,12 +19,16 @@ export async function GET() {
 
     return NextResponse.json({
       ok: true,
-      message: "YouTube OAuth token works",
+      version: "token-test-v2",
       has_access_token: !!token,
     });
   } catch (e: any) {
     return NextResponse.json(
-      { ok: false, error: e.message || "YouTube test failed" },
+      {
+        ok: false,
+        version: "token-test-v2",
+        error: e.message || "YouTube test failed",
+      },
       { status: 500 }
     );
   }
