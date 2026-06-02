@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "youtube:store-shorts": "tsx scripts/youtube-store-shorts.ts"
+    "youtube:store-shorts": "tsx scripts/youtube-store-shorts.ts",
+    "youtube:store-videos": "tsx scripts/youtube-store-videos.ts"
+    
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.462",
