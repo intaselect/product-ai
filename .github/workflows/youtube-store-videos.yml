@@ -1,9 +1,10 @@
 name: YouTube Store Videos
 
 on:
-  schedule:
-   - cron: "*/5 * * * *"
   workflow_dispatch:
+
+  schedule:
+    - cron: "*/5 * * * *"
 
 jobs:
   render-and-upload:
