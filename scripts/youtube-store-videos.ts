@@ -148,41 +148,72 @@ async function uploadToYouTube(videoPath: string, title: string, description: st
 async function getPickedOffers() {
   const day = todayKey();
 
-  for (const country of Object.keys(countryNames)) {
-    for (const category of Object.keys(categoryNames)) {
-      const logTitle = `${day}:store-video:${country}:${category}`;
+  const combinations = [
+    { country: "sa", category: "mobiles" },
+    { country: "eg", category: "beauty" },
+    { country: "ae", category: "electronics" },
+    { country: "kw", category: "home" },
+    { country: "qa", category: "fashion" },
+    { country: "bh", category: "watches" },
+    { country: "sa", category: "computers" },
+    { country: "eg", category: "home" },
+    { country: "ae", category: "beauty" },
+    { country: "kw", category: "electronics" },
+    { country: "qa", category: "perfumes" },
+    { country: "bh", category: "phone_accessories" },
+    { country: "sa", category: "gaming" },
+    { country: "eg", category: "mobiles" },
+    { country: "ae", category: "fashion" },
+  ];
 
-      const already = await supabase
-        .from("youtube_shorts_log")
-        .select("id")
-        .eq("source_type", "store_promo_video")
-        .eq("title", logTitle)
-        .eq("status", "uploaded")
-        .maybeSingle();
+  const startIndex = Math.floor(Date.now() / (1000 * 60 * 60 * 6)) % combinations.length;
+  const ordered = [
+    ...combinations.slice(startIndex),
+    ...combinations.slice(0, startIndex),
+  ];
 
-      if (already.data) continue;
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-      const { data: offers, error } = await supabase
-        .from("customer_offers")
-        .select("id, product_name, price, image_url, product_url, store_name, country, category, created_at")
-        .eq("status", "approved")
-        .eq("country", country)
-        .contains("category", [category])
-        .not("image_url", "is", null)
-        .order("created_at", { ascending: false })
-        .limit(10);
+  for (const combo of ordered) {
+    const { country, category } = combo;
+    const comboKey = `store-video:${country}:${category}`;
 
-      if (error) throw error;
+    const { data: recentSame } = await supabase
+      .from("youtube_shorts_log")
+      .select("id")
+      .eq("source_type", "store_promo_video")
+      .eq("title", comboKey)
+      .eq("status", "uploaded")
+      .gte("created_at", thirtyDaysAgo)
+      .maybeSingle();
 
-      if (offers && offers.length >= 5) {
-        return {
-          country,
-          category,
-          offers,
-          logTitle,
-        };
-      }
+    if (recentSame) {
+      console.log("⏭️ Skipping repeated combo in last 30 days:", comboKey);
+      continue;
     }
+
+    const { data: offers, error } = await supabase
+      .from("customer_offers")
+      .select("id, product_name, price, image_url, product_url, store_name, country, category, created_at")
+      .eq("status", "approved")
+      .eq("country", country)
+      .contains("category", [category])
+      .not("image_url", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(10);
+
+    if (error) throw error;
+
+    if (offers && offers.length >= 5) {
+      return {
+        country,
+        category,
+        offers,
+        logTitle: comboKey,
+      };
+    }
+
+    console.log("⚠️ Not enough offers:", country, category, offers?.length || 0);
   }
 
   return null;
