@@ -1,5 +1,10 @@
 import Link from "next/link";
 import styles from "./videos.module.css";
+import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
+import SeoSearchBar from "@/app/components/SeoSearchBar";
+import PopularSearches from "@/app/components/PopularSearches";
+import ComparePricesSection from "@/app/components/ComparePricesSection";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +33,9 @@ export default async function VideosPage() {
         <h1>🎬 فيديوهات BPS Chat</h1>
         <p>أحدث فيديوهات العروض والمنتجات ومقارنة الأسعار من بي بي اس شات.</p>
       </section>
+      <SearchBeforeBuyBanner />
+<SeoSearchBar />
+<MarketPromoSection />
 
       <section className={styles.grid}>
         {videos.map((video: any) => (
@@ -50,6 +58,9 @@ export default async function VideosPage() {
           </Link>
         ))}
       </section>
+      <ComparePricesSection />
+<PopularSearches />
+      
     </main>
   );
 }

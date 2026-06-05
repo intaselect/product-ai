@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import VideoSharePanel from "@/app/components/VideoSharePanel";
 import styles from "../videos.module.css";
-
+import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
+import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
+import MarketPromoSection from "@/app/components/MarketPromoSection";
+import PopularSearches from "@/app/components/PopularSearches";
 export const dynamic = "force-dynamic";
 
 const supabase = createClient(
@@ -252,6 +255,10 @@ const firstCategory = Array.isArray(offers?.[0]?.category)
   country={video.country}
   category={firstCategory}
 />
+<BpsMarketAdSection
+  products={offers}
+  country={video.country || "sa"}
+/>
 
         <section className={styles.seoBox}>
           <h2>عن هذا الفيديو</h2>
@@ -313,6 +320,14 @@ const firstCategory = Array.isArray(offers?.[0]?.category)
             </div>
           </section>
         )}
+        <MarketPromoSection
+  countryCode={video.country || "sa"}
+  title={`عروض ومنتجات مرتبطة بهذا الفيديو في ${countryName}`}
+  query={video.displayTitle}
+/>
+
+<SearchBeforeBuyBanner />
+<PopularSearches />
 
         <section className={styles.links}>
           <Link href="/customer-offers">🛍️ متجر BPS</Link>
