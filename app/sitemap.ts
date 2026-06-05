@@ -13,7 +13,10 @@ export default async function sitemap() {
       url: "https://www.bpschat.com/sitemaps/categories.xml",
     },
     {
-  url: "https://www.bpschat.com/sitemaps/blog.xml",
-}
+      url: "https://www.bpschat.com/sitemaps/blog.xml",
+    },
+    {
+      url: "https://www.bpschat.com/sitemaps/videos.xml",
+    },
   ];
 }
