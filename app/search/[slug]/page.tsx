@@ -293,9 +293,39 @@ const { data: marketOffers } = await supabase
   .eq("status", "approved")
   .eq("country", countryCode)
   .order("created_at", { ascending: false })
-  .limit(4);
+  .limit(10);
 
 const slugMarketOffers = (marketOffers || []) as MarketOffer[];
+const mainQuery = data?.query || query;
+
+const relatedSearchLinks = [
+  `سعر ${mainQuery}`,
+  `أفضل سعر ${mainQuery}`,
+  `عروض ${mainQuery}`,
+  `أرخص ${mainQuery}`,
+  `شراء ${mainQuery}`,
+  `${mainQuery} جديد`,
+  `${mainQuery} مستعمل`,
+  `مقارنة أسعار ${mainQuery}`,
+  `${mainQuery} أونلاين`,
+  `${mainQuery} تقسيط`,
+].map((text) => ({
+  text,
+  href: `/search/${encodeURIComponent(cleanSlug(`${text}-${countryCode}`))}`,
+}));
+
+const categoryLinks = [
+  { title: "جوالات وموبايلات", href: `/categories?category=mobiles&country=${countryCode}` },
+  { title: "لابتوبات وكمبيوتر", href: `/categories?category=laptop&country=${countryCode}` },
+  { title: "سماعات وإكسسوارات", href: `/categories?category=earphones&country=${countryCode}` },
+  { title: "ساعات ذكية", href: `/categories?category=smartwatches&country=${countryCode}` },
+  { title: "ألعاب وجيمينج", href: `/categories?category=gaming&country=${countryCode}` },
+  { title: "عطور", href: `/categories?category=perfumes&country=${countryCode}` },
+  { title: "أجهزة منزلية", href: `/categories?category=home&country=${countryCode}` },
+  { title: "جمال وعناية", href: `/categories?category=beauty&country=${countryCode}` },
+  { title: "أحذية وموضة", href: `/categories?category=fashion&country=${countryCode}` },
+  { title: "عروض المتجر", href: `/customer-offers?country=${countryCode}` },
+];
 return (
   <>
     <SidebarMenu />
@@ -503,7 +533,59 @@ return (
             </div>
           </div>
         ))}
-      </div>
+           </div>
+
+      <section className="seoInternalLinksBoost" dir="rtl">
+        <div className="seoLinksHeader">
+          <h2>روابط تساعدك تكمل البحث عن {mainQuery}</h2>
+          <p>
+            روابط داخلية ذكية تساعد جوجل والزوار على اكتشاف صفحات أكثر داخل BPS Chat.
+          </p>
+        </div>
+
+        <div className="seoLinksGrid">
+          <div className="seoLinksBox">
+            <h3>🔎 عمليات بحث مشابهة</h3>
+            <div className="seoLinksList">
+              {relatedSearchLinks.map((item) => (
+                <a key={item.href} href={item.href}>
+                  {item.text} في {countryName}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="seoLinksBox">
+            <h3>📂 فئات قد تهمك</h3>
+            <div className="seoLinksList">
+              {categoryLinks.map((item) => (
+                <a key={item.href} href={item.href}>
+                  {item.title}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {slugMarketOffers.length > 0 && (
+            <div className="seoLinksBox">
+              <h3>🛒 منتجات من BPS Market</h3>
+              <div className="seoLinksList">
+                {slugMarketOffers.map((offer) => (
+                  <a
+                    key={offer.id}
+                    href={`/customer-offers/product/bps-chat-${cleanSlug(
+                      offer.product_name
+                    )}-${offer.country || countryCode}-${offer.id}`}
+                  >
+                    {offer.product_name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       <div style={{ marginTop: "40px", marginBottom: "30px" }}>
   <h2>🎥 فيديو مقارنة الأسعار</h2>
 
@@ -686,6 +768,77 @@ return (
   position: relative;
   z-index: 2;
 }
+    .seoInternalLinksBoost {
+    margin: 34px 0 20px;
+    padding: 24px;
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at top right, rgba(34,197,94,0.12), transparent 35%),
+      rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 0 35px rgba(16,163,127,0.10);
+  }
+
+  .seoLinksHeader h2 {
+    margin: 0 0 8px;
+    color: #7fffe0;
+    font-size: 25px;
+  }
+
+  .seoLinksHeader p {
+    margin: 0 0 20px;
+    color: #d1d5db;
+    line-height: 1.8;
+  }
+
+  .seoLinksGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .seoLinksBox {
+    padding: 18px;
+    border-radius: 18px;
+    background: rgba(15,23,42,0.72);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .seoLinksBox h3 {
+    margin: 0 0 14px;
+    color: #fff;
+    font-size: 18px;
+  }
+
+  .seoLinksList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .seoLinksList a {
+    color: #bbf7d0;
+    text-decoration: none;
+    font-weight: 800;
+    line-height: 1.6;
+    padding: 9px 10px;
+    border-radius: 12px;
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.12);
+    transition: all .2s ease;
+  }
+
+  .seoLinksList a:hover {
+    transform: translateX(-4px);
+    background: rgba(34,197,94,0.16);
+    color: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .seoLinksGrid {
+      grid-template-columns: 1fr;
+    }
+  }
 
   .seoProductCard {
   position: relative;
