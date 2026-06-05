@@ -663,6 +663,12 @@ async function handleSearch() {
       </div>
     </div>
   </div>
+  {loading && (
+    <div className="topLoader">
+      <div className="aiSpinner"></div>
+      <p className="aiText">جاري الحصول على أفضل نتائج ...</p>
+    </div>
+  )}
 </section>
     <div className="heroLeft">
       <div className="heroBadge">
@@ -713,12 +719,7 @@ async function handleSearch() {
     </div>
   </div>
 </section>
- {loading && (
-    <div className="topLoader">
-      <div className="aiSpinner"></div>
-      <p className="aiText">جاري الحصول على أفضل نتائج ...</p>
-    </div>
-  )}
+ 
 <a href="/customer-offers" className="liveStorePulse">
   <span className="liveDot"></span>
   مئات المستخدمين يكتشفون عروض BPS Chat
@@ -949,6 +950,52 @@ async function handleSearch() {
 </main>
 
 <style jsx>{`
+.searchLoaderInline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 12px;
+  margin-bottom: 4px;
+
+  animation: fadeIn .25s ease;
+}
+
+.aiSpinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  border: 4px solid rgba(255,255,255,.15);
+  border-top-color: #00ffd5;
+
+  animation: spin 0.8s linear infinite;
+}
+
+.aiText {
+  margin-top: 8px;
+  color: #00ffd5;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .topLoader {
   display: flex;
   flex-direction: column;
