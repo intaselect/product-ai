@@ -14,23 +14,13 @@ function getYoutubeId(url: string) {
 }
 
 function cleanTitle(title: string) {
-  return String(title || "")
+  return String(title || "فيديو BPS Chat")
     .trim()
     .replace(/\s+/g, " ");
 }
 
-function isInternalTitle(title: string) {
-  const t = cleanTitle(title);
-  return (
-    !t ||
-    /^store-video:/i.test(t) ||
-    /^\d{4}-\d{2}-\d{2}:store:/i.test(t) ||
-    /^store:/i.test(t)
-  );
-}
-
 function makeSlug(title: string, id: string) {
-  return `${title}-${id}`
+  return `${title || "bps-chat-video"}-${id}`
     .toLowerCase()
     .replace(/[^\u0600-\u06FFa-z0-9]+/gi, "-")
     .replace(/^-+|-+$/g, "")
@@ -41,23 +31,29 @@ export async function GET() {
   const { data, error } = await supabase
     .from("youtube_shorts_log")
     .select("*")
-    .eq("status", "uploaded")
-    .not("youtube_url", "is", null)
+    .in("status", ["uploaded", "success", "published"])
     .order("created_at", { ascending: false })
-    .limit(200);
+    .limit(1000);
 
   if (error) {
     return NextResponse.json({ ok: false, videos: [] }, { status: 500 });
   }
 
   const videos = (data || [])
-    .filter((v: any) => !isInternalTitle(v.title))
+    .filter((v: any) => v.youtube_url || v.youtube_video_id)
     .map((v: any) => {
-      const youtubeId = getYoutubeId(v.youtube_url);
+      const youtubeUrl =
+        v.youtube_url ||
+        (v.youtube_video_id
+          ? `https://www.youtube.com/watch?v=${v.youtube_video_id}`
+          : "");
+
+      const youtubeId = getYoutubeId(youtubeUrl) || v.youtube_video_id || "";
       const displayTitle = cleanTitle(v.title);
 
       return {
         ...v,
+        youtube_url: youtubeUrl,
         displayTitle,
         youtubeId,
         thumbnail: youtubeId
