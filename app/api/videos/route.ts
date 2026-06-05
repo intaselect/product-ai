@@ -31,7 +31,8 @@ export async function GET() {
   const { data, error } = await supabase
     .from("youtube_shorts_log")
     .select("*")
-    .in("status", ["uploaded", "success", "published"])
+    .in("source_type", ["store_country_short", "store_promo_video"])
+    .eq("status", "uploaded")
     .order("created_at", { ascending: false })
     .limit(1000);
 

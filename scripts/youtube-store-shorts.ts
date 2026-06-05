@@ -265,7 +265,7 @@ async function run() {
     await supabase.from("youtube_shorts_log").insert({
       source_type: "store_country_short",
       source_id: offers.map((o: any) => o.id).join(","),
-      title: logTitle,
+      title: ytTitle,
       country,
       page_url: `https://www.bpschat.com/customer-offers?country=${country}`,
       video_url: outputLocation,
