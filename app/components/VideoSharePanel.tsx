@@ -7,24 +7,28 @@ export default function VideoSharePanel({
   title: string;
   url: string;
 }) {
-  const text = encodeURIComponent(title);
+  const shareText = `${title}
+
+شاهد الفيديو على BPS Chat واكتشف المنتجات والأسعار وروابط الشراء 👇`;
+
+  const text = encodeURIComponent(shareText);
   const pageUrl = encodeURIComponent(url);
 
   return (
     <div className="shareBox">
-      <a target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`}>
+      <a target="_blank" rel="noopener noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`}>
         فيسبوك
       </a>
 
-      <a target="_blank" href={`https://twitter.com/intent/tweet?text=${text}&url=${pageUrl}`}>
+      <a target="_blank" rel="noopener noreferrer" href={`https://twitter.com/intent/tweet?text=${text}&url=${pageUrl}`}>
         X
       </a>
 
-      <a target="_blank" href={`https://t.me/share/url?url=${pageUrl}&text=${text}`}>
+      <a target="_blank" rel="noopener noreferrer" href={`https://t.me/share/url?url=${pageUrl}&text=${text}`}>
         تيليجرام
       </a>
 
-      <a target="_blank" href={`https://wa.me/?text=${text}%20${pageUrl}`}>
+      <a target="_blank" rel="noopener noreferrer" href={`https://wa.me/?text=${text}%20${pageUrl}`}>
         واتساب
       </a>
 
