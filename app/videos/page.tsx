@@ -32,11 +32,21 @@ export default async function VideosPage() {
       <section className={styles.grid}>
         {videos.map((video: any) => (
           <Link key={video.id} href={`/videos/${video.slug}`} className={styles.card}>
-            <div className={styles.thumb}>▶</div>
-            <h2 className={styles.videoTitle}>
-              {video.title || "فيديو عروض BPS Chat"}
-            </h2>
-            <span className={styles.country}>{video.country?.toUpperCase()}</span>
+            <div className={styles.thumb}>
+              {video.thumbnail ? (
+                <img src={video.thumbnail} alt={video.displayTitle} />
+              ) : (
+                <span>▶</span>
+              )}
+
+              <div className={styles.playIcon}>▶</div>
+            </div>
+
+            <h2 className={styles.videoTitle}>{video.displayTitle}</h2>
+
+            <span className={styles.country}>
+              {video.country?.toUpperCase() || "BPS"}
+            </span>
           </Link>
         ))}
       </section>
