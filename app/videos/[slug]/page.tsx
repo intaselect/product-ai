@@ -23,23 +23,10 @@ const countryNames: Record<string, string> = {
 const currencyNames: Record<string, string> = {
   sa: "ريال سعودي",
   ae: "درهم إماراتي",
-  kw: "دينار إماراتي",
+  kw: "دينار كويتي",
   qa: "ريال قطري",
   bh: "دينار بحريني",
   eg: "جنيه مصري",
-};
-
-const categoryNames: Record<string, string> = {
-  mobiles: "الموبايلات",
-  electronics: "الإلكترونيات",
-  computers: "اللابتوبات والكمبيوتر",
-  beauty: "الجمال والعناية",
-  fashion: "الموضة",
-  home: "المنزل",
-  gaming: "الألعاب والجيمينج",
-  perfumes: "العطور",
-  watches: "الساعات",
-  phone_accessories: "إكسسوارات الموبايل",
 };
 
 function getYoutubeId(url: string) {
@@ -47,20 +34,10 @@ function getYoutubeId(url: string) {
   return match?.[1] || "";
 }
 
-function makeNiceTitle(v: any) {
-  const raw = String(v.title || "");
-  const match = raw.match(/(?:\d{4}-\d{2}-\d{2}:)?store:([a-z]{2}):([a-z_]+)/i);
-
-  if (match) {
-    const country = match[1];
-    const category = match[2];
-
-    return `🔥 أفضل عروض ${categoryNames[category] || category} في ${
-      countryNames[country] || country
-    } | BPS Chat`;
-  }
-
-  return raw || "فيديو عروض BPS Chat";
+function cleanTitle(title: string) {
+  return String(title || "فيديو BPS Chat")
+    .trim()
+    .replace(/\s+/g, " ");
 }
 
 function makeSlug(title: string, id: string) {
@@ -91,25 +68,34 @@ async function getVideos() {
   const { data } = await supabase
     .from("youtube_shorts_log")
     .select("*")
+    .in("source_type", ["store_country_short", "store_promo_video"])
     .eq("status", "uploaded")
-    .not("youtube_url", "is", null)
     .order("created_at", { ascending: false })
-    .limit(200);
+    .limit(1000);
 
-  return (data || []).map((v: any) => {
-    const displayTitle = makeNiceTitle(v);
-    const youtubeId = getYoutubeId(v.youtube_url);
+  return (data || [])
+    .filter((v: any) => v.youtube_url || v.youtube_video_id)
+    .map((v: any) => {
+      const youtubeUrl =
+        v.youtube_url ||
+        (v.youtube_video_id
+          ? `https://www.youtube.com/watch?v=${v.youtube_video_id}`
+          : "");
 
-    return {
-      ...v,
-      displayTitle,
-      youtubeId,
-      thumbnail: youtubeId
-        ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
-        : "",
-      slug: makeSlug(displayTitle, v.id),
-    };
-  });
+      const youtubeId = getYoutubeId(youtubeUrl) || v.youtube_video_id || "";
+      const displayTitle = cleanTitle(v.title);
+
+      return {
+        ...v,
+        youtube_url: youtubeUrl,
+        displayTitle,
+        youtubeId,
+        thumbnail: youtubeId
+          ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+          : "",
+        slug: makeSlug(displayTitle, v.id),
+      };
+    });
 }
 
 async function getOffersByIds(ids: string[]) {
@@ -166,10 +152,10 @@ export async function generateMetadata({
   const desc = makeSeoDescription(video, offers);
 
   return {
-    title: `${video.displayTitle || "فيديو عروض BPS Chat"} | BPS Chat`,
+    title: `${video.displayTitle} | BPS Chat`,
     description: desc,
     openGraph: {
-      title: `${video.displayTitle || "فيديو عروض BPS Chat"} | BPS Chat`,
+      title: `${video.displayTitle} | BPS Chat`,
       description: desc,
       url: `https://www.bpschat.com/videos/${video.slug}`,
       siteName: "BPS Chat",
@@ -202,7 +188,7 @@ export default async function VideoPage({
   const videoSchema = {
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    name: video.displayTitle || "فيديو عروض BPS Chat",
+    name: video.displayTitle,
     description: seoDescription,
     uploadDate: video.created_at,
     thumbnailUrl: video.thumbnail ? [video.thumbnail] : undefined,
@@ -218,7 +204,7 @@ export default async function VideoPage({
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `منتجات موجودة في فيديو ${video.displayTitle || "BPS Chat"}`,
+    name: `منتجات موجودة في فيديو ${video.displayTitle}`,
     itemListElement: offers.map((offer: any, index: number) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -253,12 +239,12 @@ export default async function VideoPage({
         <div className={styles.videoBox}>
           <iframe
             src={`https://www.youtube.com/embed/${youtubeId}`}
-            title={video.displayTitle || "BPS Chat Video"}
+            title={video.displayTitle}
             allowFullScreen
           />
         </div>
 
-        <VideoSharePanel title={video.displayTitle || "فيديو BPS Chat"} url={pageUrl} />
+        <VideoSharePanel title={video.displayTitle} url={pageUrl} />
 
         <section className={styles.seoBox}>
           <h2>عن هذا الفيديو</h2>
