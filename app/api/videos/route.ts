@@ -8,56 +8,33 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-const countryNames: Record<string, string> = {
-  sa: "السعودية",
-  ae: "الإمارات",
-  kw: "الكويت",
-  qa: "قطر",
-  bh: "البحرين",
-  eg: "مصر",
-};
-
-const categoryNames: Record<string, string> = {
-  mobiles: "الموبايلات",
-  electronics: "الإلكترونيات",
-  computers: "اللابتوبات والكمبيوتر",
-  beauty: "الجمال والعناية",
-  fashion: "الموضة",
-  home: "المنزل",
-  gaming: "الألعاب والجيمينج",
-  perfumes: "العطور",
-  watches: "الساعات",
-  phone_accessories: "إكسسوارات الموبايل",
-};
-
 function getYoutubeId(url: string) {
   const match = url?.match(/(?:v=|youtu\.be\/|shorts\/)([a-zA-Z0-9_-]{6,})/);
   return match?.[1] || "";
 }
 
+function cleanTitle(title: string) {
+  return String(title || "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function isInternalTitle(title: string) {
+  const t = cleanTitle(title);
+  return (
+    !t ||
+    /^store-video:/i.test(t) ||
+    /^\d{4}-\d{2}-\d{2}:store:/i.test(t) ||
+    /^store:/i.test(t)
+  );
+}
+
 function makeSlug(title: string, id: string) {
-  return `${title || "bps-chat-video"}-${id}`
+  return `${title}-${id}`
     .toLowerCase()
     .replace(/[^\u0600-\u06FFa-z0-9]+/gi, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 150);
-}
-
-function makeNiceTitle(v: any) {
-  const raw = String(v.title || "");
-
-  const match = raw.match(/(?:\d{4}-\d{2}-\d{2}:)?store:([a-z]{2}):([a-z_]+)/i);
-
-  if (match) {
-    const country = match[1];
-    const category = match[2];
-
-    return `🔥 أفضل عروض ${categoryNames[category] || category} في ${
-      countryNames[country] || country
-    } | BPS Chat`;
-  }
-
-  return raw || "فيديو عروض BPS Chat";
 }
 
 export async function GET() {
@@ -73,20 +50,22 @@ export async function GET() {
     return NextResponse.json({ ok: false, videos: [] }, { status: 500 });
   }
 
-  const videos = (data || []).map((v: any) => {
-    const youtubeId = getYoutubeId(v.youtube_url);
-    const displayTitle = makeNiceTitle(v);
+  const videos = (data || [])
+    .filter((v: any) => !isInternalTitle(v.title))
+    .map((v: any) => {
+      const youtubeId = getYoutubeId(v.youtube_url);
+      const displayTitle = cleanTitle(v.title);
 
-    return {
-      ...v,
-      displayTitle,
-      youtubeId,
-      thumbnail: youtubeId
-        ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
-        : "",
-      slug: makeSlug(displayTitle, v.id),
-    };
-  });
+      return {
+        ...v,
+        displayTitle,
+        youtubeId,
+        thumbnail: youtubeId
+          ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+          : "",
+        slug: makeSlug(displayTitle, v.id),
+      };
+    });
 
   return NextResponse.json({ ok: true, videos });
 }
