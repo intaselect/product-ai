@@ -212,7 +212,9 @@ export default async function VideoPage({
       name: offer.product_name,
     })),
   };
-
+const firstCategory = Array.isArray(offers?.[0]?.category)
+  ? offers[0].category[0]
+  : "";
   return (
     <main className={styles.page}>
       <script
@@ -244,7 +246,12 @@ export default async function VideoPage({
           />
         </div>
 
-        <VideoSharePanel title={video.displayTitle} url={pageUrl} />
+        <VideoSharePanel
+  title={video.displayTitle}
+  url={pageUrl}
+  country={video.country}
+  category={firstCategory}
+/>
 
         <section className={styles.seoBox}>
           <h2>عن هذا الفيديو</h2>

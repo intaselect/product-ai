@@ -3,13 +3,42 @@
 export default function VideoSharePanel({
   title,
   url,
+  category,
+  country,
 }: {
   title: string;
   url: string;
+  category?: string;
+  country?: string;
 }) {
-  const shareText = `${title}
+  const countryNames: Record<string, string> = {
+    sa: "السعودية",
+    ae: "الإمارات",
+    kw: "الكويت",
+    qa: "قطر",
+    bh: "البحرين",
+    eg: "مصر",
+  };
 
-شاهد الفيديو على BPS Chat واكتشف المنتجات والأسعار وروابط الشراء 👇`;
+  const categoryNames: Record<string, string> = {
+    mobiles: "الجوالات",
+    electronics: "الإلكترونيات",
+    computers: "اللابتوبات والكمبيوتر",
+    beauty: "الجمال والعناية",
+    fashion: "الموضة",
+    home: "المنزل",
+    gaming: "الألعاب والجيمينج",
+    perfumes: "العطور",
+    watches: "الساعات",
+    phone_accessories: "إكسسوارات الجوال",
+  };
+
+  const countryName = countryNames[country || ""] || "مصر والخليج";
+  const categoryName = categoryNames[category || ""] || "المنتجات";
+
+  const shareText = `🔥 أفضل عروض ${categoryName} في ${countryName}
+
+شاهد الفيديو واكتشف المنتجات والأسعار وروابط الشراء قبل ما تشتري 👇`;
 
   const text = encodeURIComponent(shareText);
   const pageUrl = encodeURIComponent(url);
@@ -32,7 +61,7 @@ export default function VideoSharePanel({
         واتساب
       </a>
 
-      <button onClick={() => navigator.clipboard.writeText(url)}>
+      <button onClick={() => navigator.clipboard.writeText(`${shareText}\n\n${url}`)}>
         نسخ الرابط
       </button>
 
