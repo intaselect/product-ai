@@ -329,6 +329,24 @@ return (
     </div>
   </div>
 </section>
+<section className="fireMarketStrip">
+  <div className="fireMarketContent">
+    <div>
+      <span className="fireMarketBadge">🔥 BPS Market</span>
+
+      <h2>تصفح المتجر حسب الدولة والتصنيف</h2>
+
+      <p>
+        جوالات، إلكترونيات، لابتوبات، أطفال، جمال وعناية،
+        مع صفحات SEO قوية لكل دولة وقسم.
+      </p>
+    </div>
+
+    <a href="/bps-market" className="fireMarketBtn">
+      🔥 تصفح المتجر
+    </a>
+  </div>
+</section>
 <SearchBeforeBuyBanner />
 
       <section className="marketCategorySection">
@@ -2122,6 +2140,125 @@ return (
 .detailsBtn:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 26px rgba(37,99,235,.25);
+}
+  .fireMarketStrip {
+  max-width: 1320px;
+  margin: 18px auto;
+  padding: 0 20px;
+}
+
+.fireMarketContent {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 22px 26px;
+
+  border-radius: 28px;
+
+  background:
+    radial-gradient(circle at 15% 50%,
+      rgba(251,146,60,.25),
+      transparent 30%),
+    linear-gradient(
+      135deg,
+      #7f1d1d 0%,
+      #dc2626 25%,
+      #f97316 60%,
+      #facc15 100%
+    );
+
+  box-shadow:
+    0 0 25px rgba(249,115,22,.35),
+    0 0 65px rgba(239,68,68,.22);
+
+  animation: fireMarketGlow 2s ease-in-out infinite;
+}
+
+.fireMarketBadge {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.15);
+  color: #fff;
+
+  font-size: 12px;
+  font-weight: 950;
+
+  margin-bottom: 8px;
+}
+
+.fireMarketContent h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 950;
+}
+
+.fireMarketContent p {
+  margin: 8px 0 0;
+  color: rgba(255,255,255,.9);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.fireMarketBtn {
+  flex-shrink: 0;
+
+  text-decoration: none;
+
+  padding: 16px 28px;
+
+  border-radius: 999px;
+
+  background: #fff;
+  color: #dc2626;
+
+  font-size: 15px;
+  font-weight: 950;
+
+  box-shadow:
+    0 10px 30px rgba(255,255,255,.25);
+
+  transition: .25s;
+}
+
+.fireMarketBtn:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+@keyframes fireMarketGlow {
+  0%,100% {
+    box-shadow:
+      0 0 25px rgba(249,115,22,.35),
+      0 0 65px rgba(239,68,68,.22);
+  }
+
+  50% {
+    box-shadow:
+      0 0 40px rgba(249,115,22,.55),
+      0 0 90px rgba(239,68,68,.35);
+  }
+}
+
+@media (max-width: 700px) {
+  .fireMarketContent {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .fireMarketContent h2 {
+    font-size: 22px;
+  }
+
+  .fireMarketBtn {
+    width: 100%;
+  }
 }
 `}</style>
     </main>
