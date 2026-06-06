@@ -25,6 +25,14 @@ export default function Navbar({ user }: { user?: any }) {
           <Link href="/privacy">سياسة الخصوصية</Link>
           <Link href="/terms">الشروط</Link>
           <Link href="/seller-tools">📝 أدوات البائع</Link>
+          <Link
+  href="/bps-market"
+  style={styles.fireMarketBtn}
+  className="fireMarketHover"
+>
+  <span style={styles.fireMarketIcon}>🔥</span>
+  <span style={styles.fireMarketText}>ماركت</span>
+</Link>
 
   <Link
   href="/customer-offers"
@@ -97,6 +105,32 @@ export default function Navbar({ user }: { user?: any }) {
       {false && open && <div style={styles.mobileMenu}></div>}
 
       <style>{`
+      @keyframes fireMarketPulse {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 14px rgba(249,115,22,.65),
+      0 0 34px rgba(239,68,68,.35),
+      0 0 60px rgba(250,204,21,.22);
+  }
+
+  50% {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 24px rgba(249,115,22,.95),
+      0 0 58px rgba(239,68,68,.58),
+      0 0 90px rgba(250,204,21,.42);
+  }
+}
+
+.fireMarketHover {
+  animation: fireMarketPulse 1.8s ease-in-out infinite;
+}
+
+.fireMarketHover:hover {
+  transform: scale(1.12) rotate(-3deg) !important;
+  filter: brightness(1.12);
+}
         @keyframes advertisePulse {
           0%, 100% {
             transform: scale(1);
@@ -305,7 +339,35 @@ const styles: any = {
   flexDirection: "column",
   lineHeight: 1.05,
 },
+fireMarketBtn: {
+  width: "74px",
+  height: "74px",
+  borderRadius: "999px",
+  display: "inline-flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "2px",
+  textDecoration: "none",
+  color: "#fff",
+  background:
+    "radial-gradient(circle at 35% 20%, #fef3c7 0%, #fb923c 28%, #ef4444 58%, #7f1d1d 100%)",
+  border: "2px solid rgba(254,215,170,.9)",
+  boxShadow:
+    "0 0 20px rgba(249,115,22,.7), 0 0 48px rgba(239,68,68,.38)",
+  transition: "all .25s ease",
+},
 
+fireMarketIcon: {
+  fontSize: "26px",
+  lineHeight: 1,
+},
+
+fireMarketText: {
+  fontSize: "12px",
+  fontWeight: 950,
+  lineHeight: 1,
+},
 customerStoreIcon: {
   width: "42px",
   height: "42px",

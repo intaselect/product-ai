@@ -71,6 +71,13 @@ export default function SidebarMenu() {
         <a href="/seller-tools" className="menuItem sidebarSellerGlow">
           📝 أدوات البائع
         </a>
+        <a href="/bps-market" className="menuItem sidebarFireMarketGlow">
+  <span className="fireMarketSideIcon">🔥</span>
+  <span>
+    BPS Market
+    <span className="fireMarketSideSub">تسوق حسب الدولة والقسم</span>
+  </span>
+</a>
        <a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
   <span className="storeIcon">🛍️</span>
   <span>
@@ -191,7 +198,61 @@ export default function SidebarMenu() {
   transform: translateX(-140%);
   animation: menuShine 3.5s linear infinite;
 }
+.sidebarFireMarketGlow {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 68px;
+  border-radius: 999px;
+  color: #fff !important;
+  background:
+    radial-gradient(circle at 25% 20%, #fef3c7 0%, #fb923c 24%, #ef4444 58%, #7f1d1d 100%);
+  border: 2px solid rgba(254,215,170,.75);
+  box-shadow:
+    0 0 18px rgba(249,115,22,.7),
+    0 0 48px rgba(239,68,68,.35);
+  animation: sidebarFirePulse 1.8s ease-in-out infinite;
+}
 
+.fireMarketSideIcon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.18);
+  font-size: 25px;
+}
+
+.fireMarketSideSub {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+  color: #fff7ed;
+  font-weight: 900;
+}
+
+.sidebarFireMarketGlow:hover {
+  transform: translateX(-5px) scale(1.04);
+}
+
+@keyframes sidebarFirePulse {
+  0%,100% {
+    box-shadow:
+      0 0 18px rgba(249,115,22,.65),
+      0 0 48px rgba(239,68,68,.35);
+  }
+
+  50% {
+    box-shadow:
+      0 0 30px rgba(249,115,22,.95),
+      0 0 72px rgba(239,68,68,.55);
+  }
+}
 .menuButton:hover {
   transform: scale(1.08);
 
