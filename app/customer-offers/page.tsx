@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 export const dynamic = "force-dynamic";
-
+import ScrollTextActivator from "@/app/components/ScrollTextActivator";
 export const metadata: Metadata = {
   title: "أفضل عروض العملاء | BPS Chat - بي بي اس شات",
   description:
@@ -284,6 +284,7 @@ const featuredSliderOffers = filteredOffers
 
 return (
   <main className="customerOffersPage" dir="rtl">
+    <ScrollTextActivator />
       <section className="hero marketplaceHero">
   <div className="heroText">
     <div className="badge">🛒 BPS Market | بي بي اس ماركت</div>
@@ -664,7 +665,9 @@ return (
                   {offer.store_name || "عرض عميل BPS Chat"}
                 </p>
 
-                <h2>{offer.product_name}</h2>
+                <h2 className="mobileProductTitle">
+  <span>{offer.product_name}</span>
+</h2>
 
                <div className="priceRow">
   <strong>{offer.price}</strong>
@@ -728,6 +731,38 @@ return (
 </section>
 
      <style>{`
+     .mobileProductTitle {
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0 7px;
+  margin: 6px 0 8px !important;
+  font-size: 11.5px !important;
+  line-height: 1 !important;
+}
+
+.mobileProductTitle span {
+  display: inline-block;
+  white-space: nowrap;
+  animation: productNameScroll 7s linear infinite;
+  animation-play-state: paused;
+}
+
+body.isScrollingProductText .mobileProductTitle span {
+  animation-play-state: running;
+}
+
+@keyframes productNameScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(55%); }
+}
 .mobileQuickFilterBtn {
   display: none;
 }

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MobileMarketFilterFab from "@/app/components/MobileMarketFilterFab";
+import ScrollTextActivator from "@/app/components/ScrollTextActivator";
 
 export const dynamic = "force-dynamic";
 
@@ -220,6 +221,7 @@ export default async function BpsMarketCategoryPage({
   return (
     <main className="marketCategoryPage" dir="rtl">
         <MobileMarketFilterFab country={country} category={category} />
+        <ScrollTextActivator />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
@@ -343,7 +345,9 @@ export default async function BpsMarketCategoryPage({
 
                     <div className="cardContent">
                       <small>{offer.store_name || "BPS Market"}</small>
-                      <h3>{offer.product_name}</h3>
+                      <h3 className="mobileProductTitle">
+  <span>{offer.product_name}</span>
+</h3>
 
                       <div className="priceRow">
                         <strong>{offer.price}</strong>
@@ -398,7 +402,38 @@ export default async function BpsMarketCategoryPage({
           color: #111827;
           padding-bottom: 70px;
         }
+.mobileProductTitle {
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0 7px;
+  margin: 6px 0 8px !important;
+  font-size: 11.5px !important;
+  line-height: 1 !important;
+}
 
+.mobileProductTitle span {
+  display: inline-block;
+  white-space: nowrap;
+  animation: productNameScroll 7s linear infinite;
+  animation-play-state: paused;
+}
+
+body.isScrollingProductText .mobileProductTitle span {
+  animation-play-state: running;
+}
+
+@keyframes productNameScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(55%); }
+}
         .hero {
           max-width: 1320px;
           margin: 0 auto 24px;
@@ -938,5 +973,6 @@ export default async function BpsMarketCategoryPage({
 }
       `}</style>
     </main>
+    
   );
 }
