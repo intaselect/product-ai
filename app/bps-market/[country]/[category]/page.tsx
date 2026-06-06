@@ -238,7 +238,14 @@ export default async function BpsMarketCategoryPage({
           صفحة مخصصة للسيو تجمع المنتجات الحقيقية والأسعار والروابط المباشرة
           حسب الدولة والقسم.
         </p>
-
+<div className="heroInternalLinks">
+  <Link href={`/bps-market/${country}/mobiles`}>📱 جوالات</Link>
+  <Link href={`/bps-market/${country}/electronics`}>🎧 إلكترونيات</Link>
+  <Link href={`/bps-market/${country}/computers`}>💻 لابتوبات</Link>
+  <Link href={`/bps-market/${country}/home`}>🏠 منزل</Link>
+  <Link href={`/bps-market/${country}/kids`}>🧸 أطفال</Link>
+  <Link href={`/bps-market/${country}/beauty`}>💄 عناية</Link>
+</div>
         <div className="heroActions">
           <Link href="/bps-market" className="secondaryBtn">
             كل الأسواق
@@ -393,7 +400,7 @@ export default async function BpsMarketCategoryPage({
         .hero {
           max-width: 1320px;
           margin: 0 auto 24px;
-          padding: 58px 26px;
+          padding: 46px 26px;
           border-radius: 0 0 36px 36px;
           text-align: center;
           background:
@@ -435,7 +442,41 @@ export default async function BpsMarketCategoryPage({
           line-height: 1.9;
           font-weight: 800;
         }
+.heroInternalLinks {
+  max-width: 820px;
+  margin: 16px auto 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 4px 0 2px;
+  scrollbar-width: none;
+}
 
+.heroInternalLinks::-webkit-scrollbar {
+  display: none;
+}
+
+.heroInternalLinks a {
+  flex-shrink: 0;
+  text-decoration: none;
+  color: #ffffff;
+  background: rgba(255,255,255,.11);
+  border: 1px solid rgba(255,255,255,.16);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 950;
+  backdrop-filter: blur(10px);
+  transition: .25s;
+}
+
+.heroInternalLinks a:hover {
+  background: rgba(34,197,94,.22);
+  border-color: rgba(34,197,94,.45);
+  transform: translateY(-2px);
+}
         .heroActions {
           display: flex;
           justify-content: center;
