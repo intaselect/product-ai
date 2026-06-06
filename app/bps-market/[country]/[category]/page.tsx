@@ -480,11 +480,15 @@ export default async function BpsMarketCategoryPage({
         }
 
         .sideBar {
-          position: sticky;
-          top: 88px;
-          display: grid;
-          gap: 16px;
-        }
+  position: sticky;
+  top: 88px;
+  display: grid;
+  gap: 16px;
+
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding-left: 4px;
+}
 
         .sideBox,
         .seoBox,
@@ -813,6 +817,27 @@ export default async function BpsMarketCategoryPage({
             grid-template-columns: 1fr;
           }
         }
+          .sideBar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sideBar::-webkit-scrollbar-track {
+  background: #eef2f7;
+  border-radius: 999px;
+}
+
+.sideBar::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #2563eb,
+    #22c55e
+  );
+  border-radius: 999px;
+}
+
+.sideBar::-webkit-scrollbar-thumb:hover {
+  opacity: .8;
+}
       `}</style>
     </main>
   );
