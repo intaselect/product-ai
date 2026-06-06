@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import MobileMarketFilterFab from "@/app/components/MobileMarketFilterFab";
 
 export const dynamic = "force-dynamic";
 
@@ -218,6 +219,7 @@ export default async function BpsMarketCategoryPage({
 
   return (
     <main className="marketCategoryPage" dir="rtl">
+        <MobileMarketFilterFab country={country} category={category} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}

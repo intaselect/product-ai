@@ -349,7 +349,10 @@ return (
 </section>
 <SearchBeforeBuyBanner />
 
-      <section className="marketCategorySection">
+     <section
+  id="market-filters"
+  className="marketCategorySection"
+>
   <div className="sectionTitleRow">
     <div>
       <h2>تسوق حسب القسم</h2>
@@ -725,7 +728,60 @@ return (
 </section>
 
      <style>{`
+.mobileQuickFilterBtn {
+  display: none;
+}
 
+@media (max-width:700px){
+
+  .mobileQuickFilterBtn{
+    position: fixed;
+    right: 16px;
+    bottom: 22px;
+
+    width: 58px;
+    height: 58px;
+
+    border-radius: 999px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-decoration:none;
+
+    z-index:9999;
+
+    font-size:28px;
+
+    background:
+      radial-gradient(
+        circle at 30% 20%,
+        #fef3c7,
+        #fb923c 35%,
+        #ef4444 65%,
+        #7f1d1d
+      );
+
+    border:2px solid rgba(254,215,170,.9);
+
+    box-shadow:
+      0 0 20px rgba(249,115,22,.8),
+      0 0 50px rgba(239,68,68,.4);
+
+    animation:marketFabPulse 2s infinite;
+  }
+
+  @keyframes marketFabPulse{
+    0%,100%{
+      transform:scale(1);
+    }
+
+    50%{
+      transform:scale(1.08);
+    }
+  }
+}
 .seoLinksSection {
   max-width: 1320px;
   margin: 35px auto 20px;
