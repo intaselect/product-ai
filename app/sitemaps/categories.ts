@@ -47,8 +47,18 @@ export default async function sitemap() {
     }))
   );
 
-  return [
-    ...customerOfferCategoryPages,
-    ...bestCategoryPages,
-  ];
+ const bpsMarketPages = countries.flatMap((c) =>
+  categories.map((cat) => ({
+    url: `https://www.bpschat.com/bps-market/${c}/${cat}`,
+    lastModified: new Date(),
+    changeFrequency: "daily",
+    priority: 0.95,
+  }))
+);
+
+return [
+  ...customerOfferCategoryPages,
+  ...bestCategoryPages,
+  ...bpsMarketPages,
+];
 }

@@ -132,7 +132,29 @@ export default async function BpsMarketPage() {
           </a>
         </div>
       </section>
+<section className="boxSection">
+  <div className="sectionHeader">
+    <div>
+      <h2>🔥 أشهر الأقسام</h2>
+      <p>روابط سريعة لأقوى صفحات BPS Market.</p>
+    </div>
+  </div>
 
+  <div className="topSeoLinks">
+    <Link href="/bps-market/sa/mobiles">📱 جوالات السعودية</Link>
+    <Link href="/bps-market/ae/mobiles">📱 جوالات الإمارات</Link>
+    <Link href="/bps-market/sa/computers">💻 لابتوبات السعودية</Link>
+    <Link href="/bps-market/sa/beauty">💄 عناية وجمال السعودية</Link>
+    <Link href="/bps-market/sa/kids">🧸 ألعاب وأطفال السعودية</Link>
+    <Link href="/bps-market/eg/electronics">🎧 إلكترونيات مصر</Link>
+    <Link href="/bps-market/sa/cameras">📷 كاميرات السعودية</Link>
+    <Link href="/bps-market/sa/home">🏠 المنزل والمطبخ</Link>
+    <Link href="/bps-market/kw/mobiles">📱 جوالات الكويت</Link>
+    <Link href="/bps-market/qa/mobiles">📱 جوالات قطر</Link>
+    <Link href="/bps-market/bh/mobiles">📱 جوالات البحرين</Link>
+    <Link href="/bps-market/eg/mobiles">📱 جوالات مصر</Link>
+  </div>
+</section>
       <section id="countries" className="boxSection">
         <div className="sectionHeader">
           <div>
@@ -356,7 +378,30 @@ export default async function BpsMarketPage() {
           font-weight: 950;
           text-decoration: none;
         }
+.topSeoLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
+.topSeoLinks a {
+  text-decoration: none;
+  color: #111827;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 950;
+  transition: .25s;
+}
+
+.topSeoLinks a:hover {
+  transform: translateY(-3px);
+  background: #dcfce7;
+  border-color: #22c55e;
+  box-shadow: 0 12px 25px rgba(34,197,94,.14);
+}
         .countryGrid {
           display: grid;
           grid-template-columns: repeat(3,1fr);

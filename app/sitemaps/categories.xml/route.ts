@@ -40,14 +40,19 @@ function xmlEscape(value: string) {
 }
 
 export async function GET() {
-  const urls = [
-    ...countries.flatMap((c) =>
-      categories.map((cat) => `${SITE_URL}/customer-offers/${c}/${cat}`)
-    ),
-    ...countries.flatMap((c) =>
-      categories.map((cat) => `${SITE_URL}/best/${c}/${cat}`)
-    ),
-  ];
+const urls = [
+  ...countries.flatMap((c) =>
+    categories.map((cat) => `${SITE_URL}/customer-offers/${c}/${cat}`)
+  ),
+
+  ...countries.flatMap((c) =>
+    categories.map((cat) => `${SITE_URL}/best/${c}/${cat}`)
+  ),
+
+  ...countries.flatMap((c) =>
+    categories.map((cat) => `${SITE_URL}/bps-market/${c}/${cat}`)
+  ),
+];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
