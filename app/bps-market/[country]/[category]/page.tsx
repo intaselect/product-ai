@@ -850,9 +850,64 @@ export default async function BpsMarketCategoryPage({
             grid-template-columns: 1fr;
           }
 
-          .offersGrid {
-            grid-template-columns: 1fr;
-          }
+         .offersGrid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 0 8px;
+}
+
+.offerCard {
+  border-radius: 14px;
+}
+
+.imageWrap {
+  height: 155px;
+  padding: 8px;
+}
+
+.cardContent {
+  padding: 9px;
+}
+
+.cardContent h2 {
+  font-size: 11.5px;
+  line-height: 1.55;
+  min-height: 54px;
+  margin-bottom: 8px;
+}
+
+.storeName {
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+
+.priceRow {
+  gap: 5px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.priceRow strong {
+  font-size: 18px;
+}
+
+.currency,
+.bestLabel {
+  font-size: 9px;
+  padding: 4px 7px;
+}
+
+.buyBtn,
+.detailsBtn {
+  padding: 9px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+
+.floatingLabel {
+  font-size: 9px;
+  padding: 5px 8px;
+}
 
           .cardActions {
             grid-template-columns: 1fr;
