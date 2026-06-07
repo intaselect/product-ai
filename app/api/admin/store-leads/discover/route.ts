@@ -258,7 +258,7 @@ async function searchGoogle(query: string) {
     url.searchParams.set("hl", "ar");
     url.searchParams.set("num", "200");
     url.searchParams.set("start", String(start));
-    url.searchParams.set("api_key", SERPAPI_KEY);
+    //url.searchParams.set("api_key", SERPAPI_KEY);
 
     const res = await fetch(url.toString(), { cache: "no-store" });
     const data = await res.json();
