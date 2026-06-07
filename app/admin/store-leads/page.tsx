@@ -186,13 +186,17 @@ https://store-name.com/contact`}
 
     <td>
       {lead.whatsapp ? (
-        <a
-          href={lead.whatsapp}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          واتساب
-        </a>
+   <a
+  href={
+    lead.whatsapp?.startsWith("http")
+      ? lead.whatsapp
+      : `https://wa.me/${lead.whatsapp.replace(/\D/g, "")}`
+  }
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  واتساب
+</a>
       ) : (
         "-"
       )}

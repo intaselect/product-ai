@@ -113,7 +113,6 @@ async function fetchHtml(url: string) {
 
   return await res.text();
 }
-
 function extractContacts(html: string) {
   const badEmails = ["name@example.com", "email@example.com", "test@test.com"];
 
@@ -123,12 +122,17 @@ function extractContacts(html: string) {
   const cleanEmail =
     email && !badEmails.includes(email.toLowerCase()) ? email : null;
 
-  const whatsapp =
-    html.match(/https?:\/\/wa\.me\/[0-9]+/i)?.[0] ||
-    html.match(/https?:\/\/api\.whatsapp\.com\/send\?phone=[0-9]+/i)?.[0] ||
+  const phone =
     html.match(/(?:\+966|00966|966)5[0-9]{8}/)?.[0] ||
     html.match(/05[0-9]{8}/)?.[0] ||
     null;
+
+  const whatsapp =
+    html.match(/https?:\/\/wa\.me\/[0-9]+/i)?.[0] ||
+    html.match(/https?:\/\/api\.whatsapp\.com\/send\?phone=[0-9]+/i)?.[0] ||
+    (phone
+      ? `https://wa.me/${phone.replace(/\D/g, "")}`
+      : null);
 
   const instagram =
     html.match(/https?:\/\/(?:www\.)?instagram\.com\/[A-Za-z0-9._-]+/i)?.[0] ||
@@ -221,7 +225,7 @@ async function searchGoogle(query: string) {
   url.searchParams.set("google_domain", "google.com.sa");
   url.searchParams.set("gl", "sa");
   url.searchParams.set("hl", "ar");
-  url.searchParams.set("num", "10");
+  url.searchParams.set("num", "20");
   url.searchParams.set("api_key", SERPAPI_KEY);
 
   const res = await fetch(url.toString(), { cache: "no-store" });
@@ -252,7 +256,7 @@ export async function POST(req: Request) {
 
     const results = [];
 
-    for (const website of Array.from(links).slice(0, 30)) {
+    for (const website of Array.from(links).slice(0, 60)) {
       try {
         const lead = await extractLead(website);
 
