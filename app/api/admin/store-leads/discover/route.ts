@@ -45,6 +45,34 @@ const discoveryQueries: Record<string, string[]> = {
   "بيع منتجات السعودية واتساب",
   "اطلب عبر الواتساب السعودية متجر",
   "للطلب واتساب السعودية منتجات",
+   "متجر سعودي واتساب",
+  "بائع سعودي واتساب",
+  "بائعة سعودية واتساب",
+  "هاند ميد السعودية واتساب",
+  "مشروع منزلي السعودية واتساب",
+  "منتجات منزلية السعودية واتساب",
+  "متجر انستقرام سعودي واتساب",
+  "متجر فيسبوك سعودي واتساب",
+  "متجر تويتر سعودي واتساب",
+  "اطلب عبر الواتساب السعودية",
+  "للطلب واتساب السعودية",
+  "بيع منتجات واتساب السعودية",
+  "عطور واتساب السعودية",
+  "ملابس واتساب السعودية",
+  "عبايات واتساب السعودية",
+  "مكياج واتساب السعودية",
+  "ساعات واتساب السعودية",
+  "هدايا واتساب السعودية",
+  "حلويات واتساب السعودية",
+  "قهوة واتساب السعودية",
+  "شموع واتساب السعودية",
+  "إكسسوارات واتساب السعودية",
+  "أطفال واتساب السعودية",
+  "ألعاب واتساب السعودية",
+  "أحذية واتساب السعودية",
+  "شنط واتساب السعودية",
+  "منتجات رقمية واتساب السعودية",
+  "متجر إلكتروني سعودي واتساب",
   ],
   perfumes: [
     "متجر عطور السعودية تواصل واتساب",
@@ -219,21 +247,30 @@ async function extractLead(website: string) {
 }
 
 async function searchGoogle(query: string) {
-  const url = new URL("https://serpapi.com/search.json");
-  url.searchParams.set("engine", "google");
-  url.searchParams.set("q", query);
-  url.searchParams.set("google_domain", "google.com.sa");
-  url.searchParams.set("gl", "sa");
-  url.searchParams.set("hl", "ar");
-  url.searchParams.set("num", "30");
-  url.searchParams.set("api_key", SERPAPI_KEY);
+  const allLinks: string[] = [];
 
-  const res = await fetch(url.toString(), { cache: "no-store" });
-  const data = await res.json();
+  for (const start of [0, 10, 20, 30, 40, 50]) {
+    const url = new URL("https://serpapi.com/search.json");
+    url.searchParams.set("engine", "google");
+    url.searchParams.set("q", query);
+    url.searchParams.set("google_domain", "google.com.sa");
+    url.searchParams.set("gl", "sa");
+    url.searchParams.set("hl", "ar");
+    url.searchParams.set("num", "200");
+    url.searchParams.set("start", String(start));
+    url.searchParams.set("api_key", SERPAPI_KEY);
 
-  return (data.organic_results || [])
-    .map((x: any) => x.link)
-    .filter(Boolean);
+    const res = await fetch(url.toString(), { cache: "no-store" });
+    const data = await res.json();
+
+    const links = (data.organic_results || [])
+      .map((x: any) => x.link)
+      .filter(Boolean);
+
+    allLinks.push(...links);
+  }
+
+  return allLinks;
 }
 
 export async function POST(req: Request) {
@@ -256,7 +293,7 @@ export async function POST(req: Request) {
 
     const results = [];
 
-    for (const website of Array.from(links).slice(0, 200)) {
+    for (const website of Array.from(links).slice(0, 2000)) {
       try {
         const lead = await extractLead(website);
 
