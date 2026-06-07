@@ -18,20 +18,28 @@ export default function BpsForStoresPage() {
             عند ضغط الزائر على صورة المنتج ينتقل مباشرة إلى متجرك لإتمام الشراء.
           </p>
 
-          <div className="heroActions">
-            <Link href="/customer-offers/add" className="primaryBtn">
-              🚀 أضف منتجك الآن
-            </Link>
+          <div className="heroCtaBox">
+  <div className="limitedBadge">🔥 أول 100 متجر فقط</div>
 
-            <a
-              href="https://wa.me/966549330606?text=مرحبًا، أريد إضافة منتجي مجانًا على BPS Chat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="whatsappBtn"
-            >
-              أرسل رابط المنتج على واتساب
-            </a>
-          </div>
+  <Link href="/customer-offers/add" className="heroAddBtn">
+    🚀 أضف منتجك مجاناً الآن
+  </Link>
+
+  <div className="ctaBenefits">
+    <span>✅ إضافة مجانية</span>
+    <span>✅ ظهور لمدة 6 أشهر</span>
+    <span>✅ تحويل الزوار مباشرة إلى متجرك</span>
+  </div>
+
+  <a
+    href="https://wa.me/966549330606?text=مرحبًا، أريد إضافة منتجي مجانًا على BPS Chat"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="whatsappBtn bigWhatsapp"
+  >
+    أرسل رابط المنتج على واتساب
+  </a>
+</div>
         </div>
 
         <div className="flowBox">
@@ -188,7 +196,89 @@ export default function BpsForStoresPage() {
           flex-wrap: wrap;
           margin-top: 28px;
         }
+.heroCtaBox {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
 
+.limitedBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 950;
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.35);
+}
+
+.heroAddBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 19px 46px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #16a34a, #2563eb);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 950;
+  text-decoration: none;
+  box-shadow:
+    0 0 0 0 rgba(34, 197, 94, 0.65),
+    0 14px 42px rgba(34, 197, 94, 0.35);
+  animation: pulseBtn 1.7s infinite;
+  transition: 0.25s ease;
+}
+
+.heroAddBtn:hover {
+  transform: translateY(-4px) scale(1.04);
+}
+
+@keyframes pulseBtn {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(34, 197, 94, 0.65),
+      0 14px 42px rgba(34, 197, 94, 0.35);
+  }
+
+  70% {
+    box-shadow:
+      0 0 0 18px rgba(34, 197, 94, 0),
+      0 14px 42px rgba(34, 197, 94, 0.35);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(34, 197, 94, 0),
+      0 14px 42px rgba(34, 197, 94, 0.35);
+  }
+}
+
+.ctaBenefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: #dbeafe;
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.ctaBenefits span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.bigWhatsapp {
+  padding: 14px 26px;
+  font-size: 17px;
+}
         .heroActions.center {
           justify-content: center;
         }
@@ -378,7 +468,20 @@ export default function BpsForStoresPage() {
             grid-template-columns: 1fr;
             text-align: center;
           }
+.heroCtaBox {
+  align-items: center;
+}
 
+.heroAddBtn {
+  width: 100%;
+  max-width: 360px;
+  font-size: 21px;
+  padding: 18px 24px;
+}
+
+.ctaBenefits {
+  justify-content: center;
+}
           .heroActions {
             justify-content: center;
           }
