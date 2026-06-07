@@ -23,13 +23,16 @@ function cleanUrl(url: string) {
 
 async function extractLead(url: string) {
   const website = cleanUrl(url);
+const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 8000);
 
-  const res = await fetch(website, {
-    headers: {
-      "user-agent": "Mozilla/5.0 BPSChatBot/1.0",
-    },
-    cache: "no-store",
-  });
+const res = await fetch(website, {
+  headers: {
+    "user-agent": "Mozilla/5.0 BPSChatBot/1.0",
+  },
+  cache: "no-store",
+  signal: controller.signal,
+}).finally(() => clearTimeout(timeout));
 
   const html = await res.text();
 
@@ -91,17 +94,25 @@ export async function POST(req: Request) {
 
     const results = [];
 
-    for (const url of urls.filter(Boolean)) {
-      const lead = await extractLead(url);
+   for (const url of urls.filter(Boolean)) {
+  try {
+    const lead = await extractLead(url);
 
-      const { data, error } = await supabase
-        .from("store_leads")
-        .upsert(lead, { onConflict: "website" })
-        .select()
-        .single();
+    const { data, error } = await supabase
+      .from("store_leads")
+      .upsert(lead, { onConflict: "website" })
+      .select()
+      .single();
 
-      results.push({ url, data, error: error?.message || null });
-    }
+    results.push({ url, data, error: error?.message || null });
+  } catch (e: any) {
+    results.push({
+      url,
+      data: null,
+      error: e.message || "failed to import",
+    });
+  }
+}
 
     return NextResponse.json({ ok: true, results });
   } catch (e: any) {
