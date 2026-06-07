@@ -73,7 +73,7 @@ async function discoverStores(type: string) {
   return (
     <main dir="rtl" style={{ padding: 24, maxWidth: 1300, margin: "0 auto" }}>
       <h1>إدارة أصحاب المتاجر</h1>
-      <div
+<div
   style={{
     display: "flex",
     gap: 10,
@@ -81,20 +81,20 @@ async function discoverStores(type: string) {
     margin: "18px 0",
   }}
 >
-  <button onClick={() => discoverStores("salla")} disabled={loading}>
-    🔍 جلب متاجر سلة
-  </button>
-
-  <button onClick={() => discoverStores("zid")} disabled={loading}>
-    🔍 جلب متاجر زد
-  </button>
+ <button onClick={() => discoverStores("sa")} disabled={loading}>
+  {loading ? "جاري الجلب..." : "🔍 جلب متاجر السعودية"}
+</button>
 
   <button onClick={() => discoverStores("perfumes")} disabled={loading}>
-    🔍 جلب متاجر العطور
+    🌸 جلب متاجر العطور
   </button>
 
   <button onClick={() => discoverStores("mobiles")} disabled={loading}>
-    🔍 جلب متاجر الجوالات
+    📱 جلب متاجر الجوالات
+  </button>
+
+  <button onClick={() => discoverStores("fashion")} disabled={loading}>
+    👗 جلب متاجر الملابس
   </button>
 </div>
 
@@ -113,8 +113,8 @@ async function discoverStores(type: string) {
           value={urls}
           onChange={(e) => setUrls(e.target.value)}
           placeholder={`ضع روابط المتاجر هنا، كل رابط في سطر
-https://example.salla.sa
-https://example.zid.store`}
+https://example.com
+https://store-name.com/contact`}
           style={{
             width: "100%",
             minHeight: 150,
@@ -169,48 +169,68 @@ https://example.zid.store`}
           </thead>
 
           <tbody>
-            {leads.map((lead) => (
-              <tr key={lead.id} style={{ borderTop: "1px solid #eee" }}>
-                <td>{lead.store_name}</td>
-                <td>{lead.platform}</td>
-                <td>
-                  <a href={lead.website} target="_blank">
-                    فتح
-                  </a>
-                </td>
-                <td>
-                  {lead.whatsapp ? (
-                    <a href={lead.whatsapp} target="_blank">
-                      واتساب
-                    </a>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-                <td>{lead.email || "-"}</td>
-                <td>
-                  {lead.instagram ? (
-                    <a href={lead.instagram} target="_blank">
-                      Instagram
-                    </a>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-                <td>{lead.status}</td>
-                <td style={{ display: "flex", gap: 6 }}>
-                  <button onClick={() => updateStatus(lead.id, "contacted")}>
-                    تم التواصل
-                  </button>
-                  <button onClick={() => updateStatus(lead.id, "interested")}>
-                    مهتم
-                  </button>
-                  <button onClick={() => updateStatus(lead.id, "customer")}>
-                    عميل
-                  </button>
-                </td>
-              </tr>
-            ))}
+           {leads.map((lead) => (
+  <tr key={lead.id} style={{ borderTop: "1px solid #eee" }}>
+    <td>{lead.store_name}</td>
+    <td>{lead.platform}</td>
+
+    <td>
+      <a
+        href={lead.website}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        فتح
+      </a>
+    </td>
+
+    <td>
+      {lead.whatsapp ? (
+        <a
+          href={lead.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          واتساب
+        </a>
+      ) : (
+        "-"
+      )}
+    </td>
+
+    <td>{lead.email || "-"}</td>
+
+    <td>
+      {lead.instagram ? (
+        <a
+          href={lead.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Instagram
+        </a>
+      ) : (
+        "-"
+      )}
+    </td>
+
+    <td>{lead.status}</td>
+
+    <td style={{ display: "flex", gap: 6 }}>
+      <button onClick={() => updateStatus(lead.id, "contacted")}>
+        تم التواصل
+      </button>
+
+      <button onClick={() => updateStatus(lead.id, "interested")}>
+        مهتم
+      </button>
+
+      <button onClick={() => updateStatus(lead.id, "customer")}>
+        عميل
+      </button>
+    </td>
+  </tr>
+))}
           </tbody>
         </table>
       </section>

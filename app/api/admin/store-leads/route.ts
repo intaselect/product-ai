@@ -12,6 +12,10 @@ function getPlatform(url: string) {
   if (url.includes("salla")) return "salla";
   if (url.includes("zid")) return "zid";
   if (url.includes("shahbandr")) return "shahbandr";
+  if (url.includes("shopify")) return "shopify";
+  if (url.includes("instagram")) return "instagram";
+  if (url.includes("facebook")) return "facebook";
+  if (url.includes("twitter") || url.includes("x.com")) return "twitter";
   return "custom";
 }
 
@@ -21,55 +25,121 @@ function cleanUrl(url: string) {
   return u.replace(/\/$/, "");
 }
 
-async function extractLead(url: string) {
-  const website = cleanUrl(url);
-const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 8000);
+async function fetchHtml(url: string) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
 
-const res = await fetch(website, {
-  headers: {
-    "user-agent": "Mozilla/5.0 BPSChatBot/1.0",
-  },
-  cache: "no-store",
-  signal: controller.signal,
-}).finally(() => clearTimeout(timeout));
+  const res = await fetch(url, {
+    headers: {
+      "user-agent": "Mozilla/5.0 BPSChatBot/1.0",
+    },
+    cache: "no-store",
+    signal: controller.signal,
+  }).finally(() => clearTimeout(timeout));
 
-  const html = await res.text();
+  return await res.text();
+}
 
-  const title =
-    html.match(/<title[^>]*>(.*?)<\/title>/i)?.[1]
-      ?.replace(/\s+/g, " ")
-      .trim() || website;
+function absolutizeUrl(base: string, href: string) {
+  try {
+    return new URL(href, base).toString();
+  } catch {
+    return null;
+  }
+}
+
+function extractContacts(html: string) {
+  const badEmails = ["name@example.com", "email@example.com", "test@test.com"];
+
+  const foundEmail =
+    html.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0] || null;
 
   const email =
-    html.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0] || null;
+    foundEmail && !badEmails.includes(foundEmail.toLowerCase())
+      ? foundEmail
+      : null;
 
   const whatsapp =
     html.match(/https?:\/\/wa\.me\/[0-9]+/i)?.[0] ||
     html.match(/https?:\/\/api\.whatsapp\.com\/send\?phone=[0-9]+/i)?.[0] ||
     html.match(/(?:\+966|00966|966)5[0-9]{8}/)?.[0] ||
+    html.match(/05[0-9]{8}/)?.[0] ||
     null;
 
   const instagram =
     html.match(/https?:\/\/(?:www\.)?instagram\.com\/[A-Za-z0-9._-]+/i)?.[0] ||
     null;
 
-  const contactPage =
-    html.match(/href=["']([^"']*(?:contact|تواصل|اتصل)[^"']*)["']/i)?.[1] ||
-    null;
+  return { email, whatsapp, instagram };
+}
+
+function findContactLinks(base: string, html: string) {
+  const matches = [...html.matchAll(/href=["']([^"']+)["']/gi)];
+
+  const keywords = [
+    "contact",
+    "contact-us",
+    "customer-care",
+    "support",
+    "about",
+    "whatsapp",
+    "تواصل",
+    "اتصل",
+    "الدعم",
+    "من-نحن",
+    "من_نحن",
+  ];
+
+  return matches
+    .map((m) => m[1])
+    .filter((href) => keywords.some((k) => href.toLowerCase().includes(k)))
+    .map((href) => absolutizeUrl(base, href))
+    .filter(Boolean)
+    .slice(0, 5) as string[];
+}
+
+async function extractLead(url: string) {
+  const website = cleanUrl(url);
+
+  const homeHtml = await fetchHtml(website);
+
+  const title =
+    homeHtml.match(/<title[^>]*>(.*?)<\/title>/i)?.[1]
+      ?.replace(/\s+/g, " ")
+      .trim() || website;
+
+  let contacts = extractContacts(homeHtml);
+  let contactPage: string | null = null;
+
+  const contactLinks = findContactLinks(website, homeHtml);
+
+  for (const link of contactLinks) {
+    try {
+      const contactHtml = await fetchHtml(link);
+      const pageContacts = extractContacts(contactHtml);
+
+      contactPage = link;
+
+      contacts = {
+        email: contacts.email || pageContacts.email,
+        whatsapp: contacts.whatsapp || pageContacts.whatsapp,
+        instagram: contacts.instagram || pageContacts.instagram,
+      };
+
+      if (contacts.whatsapp || contacts.email || contacts.instagram) {
+        break;
+      }
+    } catch {}
+  }
 
   return {
     store_name: title,
     website,
     platform: getPlatform(website),
-    email,
-    whatsapp,
-    instagram,
-    contact_page: contactPage
-      ? contactPage.startsWith("http")
-        ? contactPage
-        : website + "/" + contactPage.replace(/^\//, "")
-      : null,
+    email: contacts.email,
+    whatsapp: contacts.whatsapp,
+    instagram: contacts.instagram,
+    contact_page: contactPage,
   };
 }
 

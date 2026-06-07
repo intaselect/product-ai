@@ -10,7 +10,58 @@ const supabase = createClient(
 
 const SERPAPI_KEY = process.env.SERPAPI_KEY!;
 
-function cleanUrl(url: string) {
+const BLOCKED_HOSTS = [
+  "google.",
+  "youtube.",
+  "tiktok.",
+  "amazon.",
+  "noon.",
+  "jarir.",
+  "extra.",
+];
+const discoveryQueries: Record<string, string[]> = {
+  sa: [
+    "متجر سعودي واتساب منتجات",
+    "متجر عطور سعودي واتساب",
+    "متجر ملابس سعودي واتساب",
+    "متجر جوالات سعودي واتساب",
+    "متجر إلكترونيات سعودي واتساب",
+    "متجر هدايا سعودي واتساب",
+    "متجر مكياج سعودي واتساب",
+    "متجر أطفال سعودي واتساب",
+    "بائع سعودي واتساب",
+"حساب متجر سعودي واتساب",
+"متجر انستقرام سعودي واتساب",
+"متجر تويتر سعودي واتساب",
+"متجر فيسبوك سعودي واتساب",
+"بيع منتجات السعودية واتساب",
+"بائع سعودي واتساب منتجات",
+  "بائعة سعودية واتساب منتجات",
+  "متجر سعودي واتساب",
+  "حساب متجر سعودي واتساب",
+  "متجر انستقرام سعودي واتساب",
+  "متجر تويتر سعودي واتساب",
+  "متجر فيسبوك سعودي واتساب",
+  "بيع منتجات السعودية واتساب",
+  "اطلب عبر الواتساب السعودية متجر",
+  "للطلب واتساب السعودية منتجات",
+  ],
+  perfumes: [
+    "متجر عطور السعودية تواصل واتساب",
+    "متجر عطور الرياض واتساب",
+    "متجر عطور جدة واتساب",
+  ],
+  mobiles: [
+    "متجر جوالات السعودية تواصل واتساب",
+    "متجر اكسسوارات جوال السعودية واتساب",
+  ],
+  fashion: [
+    "متجر ملابس السعودية تواصل واتساب",
+    "متجر عبايات السعودية واتساب",
+  ],
+};
+
+function cleanRootUrl(url: string) {
   try {
     const u = new URL(url);
     return `${u.protocol}//${u.hostname}`.replace(/\/$/, "");
@@ -19,56 +70,149 @@ function cleanUrl(url: string) {
   }
 }
 
-function isRealStore(url: string) {
+function isGoodStoreUrl(url: string) {
   try {
     const u = new URL(url);
-    const host = u.hostname.replace(/^www\./, "");
+    const host = u.hostname.replace(/^www\./, "").toLowerCase();
 
-    if (host === "salla.sa") return false;
-    if (host === "zid.store") return false;
-    if (host === "shahbandr.com") return false;
+    if (BLOCKED_HOSTS.some((x) => host.includes(x))) return false;
 
-    if (host.endsWith(".salla.sa")) return true;
-    if (host.endsWith(".zid.store")) return true;
-    if (host.endsWith(".shahbandr.com")) return true;
+    if (url.includes("/product") || url.includes("/products")) return true;
+    if (url.includes("/store")) return true;
+    if (url.includes("/shop")) return true;
+    if (url.includes("/collections")) return true;
 
-    return false;
+    return true;
   } catch {
     return false;
   }
 }
 
 function getPlatform(url: string) {
-  if (url.includes("salla.sa")) return "salla";
-  if (url.includes("zid.store")) return "zid";
+  if (url.includes("salla")) return "salla";
+  if (url.includes("zid")) return "zid";
   if (url.includes("shahbandr")) return "shahbandr";
+  if (url.includes("shopify")) return "shopify";
+  if (url.includes("instagram")) return "instagram";
+  if (url.includes("facebook")) return "facebook";
+  if (url.includes("twitter") || url.includes("x.com")) return "twitter";
   return "custom";
 }
 
-const discoveryQueries: Record<string, string[]> = {
- salla: [
-  "site:*.salla.sa متجر عطور السعودية",
-  "site:*.salla.sa متجر ملابس السعودية",
-  "site:*.salla.sa متجر جوالات السعودية",
-  "site:*.salla.sa متجر هدايا السعودية",
-],
-zid: [
-  "site:*.zid.store متجر عطور السعودية",
-  "site:*.zid.store متجر ملابس السعودية",
-  "site:*.zid.store متجر جوالات السعودية",
-  "site:*.zid.store متجر هدايا السعودية",
-],
-  perfumes: [
-    "متجر عطور السعودية واتساب",
-    "متجر عطور سلة السعودية",
-    "متجر عطور زد السعودية",
-  ],
-  mobiles: [
-    "متجر جوالات السعودية واتساب",
-    "متجر اكسسوارات جوال السعودية",
-    "متجر موبايلات سلة السعودية",
-  ],
-};
+async function fetchHtml(url: string) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+
+  const res = await fetch(url, {
+    headers: {
+      "user-agent": "Mozilla/5.0 BPSChatBot/1.0",
+    },
+    cache: "no-store",
+    signal: controller.signal,
+  }).finally(() => clearTimeout(timeout));
+
+  return await res.text();
+}
+
+function extractContacts(html: string) {
+  const badEmails = ["name@example.com", "email@example.com", "test@test.com"];
+
+  const email =
+    html.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0] || null;
+
+  const cleanEmail =
+    email && !badEmails.includes(email.toLowerCase()) ? email : null;
+
+  const whatsapp =
+    html.match(/https?:\/\/wa\.me\/[0-9]+/i)?.[0] ||
+    html.match(/https?:\/\/api\.whatsapp\.com\/send\?phone=[0-9]+/i)?.[0] ||
+    html.match(/(?:\+966|00966|966)5[0-9]{8}/)?.[0] ||
+    html.match(/05[0-9]{8}/)?.[0] ||
+    null;
+
+  const instagram =
+    html.match(/https?:\/\/(?:www\.)?instagram\.com\/[A-Za-z0-9._-]+/i)?.[0] ||
+    null;
+
+  return { email: cleanEmail, whatsapp, instagram };
+}
+
+function findContactLinks(base: string, html: string) {
+  const matches = [...html.matchAll(/href=["']([^"']+)["']/gi)];
+
+  const keywords = [
+    "contact",
+    "contact-us",
+    "customer-care",
+    "support",
+    "about",
+    "تواصل",
+    "اتصل",
+    "الدعم",
+    "من-نحن",
+    "من_نحن",
+    "whatsapp",
+  ];
+
+  return matches
+    .map((m) => m[1])
+    .filter((href) => keywords.some((k) => href.toLowerCase().includes(k)))
+    .map((href) => {
+      try {
+        return new URL(href, base).toString();
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean)
+    .slice(0, 5) as string[];
+}
+
+async function extractLead(website: string) {
+  const root = cleanRootUrl(website);
+  const homeHtml = await fetchHtml(root);
+
+  const title =
+    homeHtml.match(/<title[^>]*>(.*?)<\/title>/i)?.[1]
+      ?.replace(/\s+/g, " ")
+      .trim() || root;
+
+  let contacts = extractContacts(homeHtml);
+  let contactPage: string | null = null;
+
+  const contactLinks = findContactLinks(root, homeHtml);
+
+  for (const link of contactLinks) {
+    try {
+      const contactHtml = await fetchHtml(link);
+      const pageContacts = extractContacts(contactHtml);
+
+      contactPage = link;
+
+      contacts = {
+        email: contacts.email || pageContacts.email,
+        whatsapp: contacts.whatsapp || pageContacts.whatsapp,
+        instagram: contacts.instagram || pageContacts.instagram,
+      };
+
+      if (contacts.whatsapp || contacts.email || contacts.instagram) break;
+    } catch {}
+  }
+
+  return {
+    store_name: title,
+    website: root,
+    platform: getPlatform(root),
+    country: "sa",
+    email: contacts.email,
+    whatsapp: contacts.whatsapp,
+    instagram: contacts.instagram,
+    contact_page: contactPage,
+    status: "new",
+    notes: "Auto discovered Saudi store",
+    updated_at: new Date().toISOString(),
+  };
+}
 
 async function searchGoogle(query: string) {
   const url = new URL("https://serpapi.com/search.json");
@@ -91,47 +235,48 @@ async function searchGoogle(query: string) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const type = body.type || "salla";
+    const type = body.type || "sa";
 
-    const queries = discoveryQueries[type] || discoveryQueries.salla;
+    const queries = discoveryQueries[type] || discoveryQueries.sa;
 
     const links = new Set<string>();
 
     for (const q of queries) {
       const found = await searchGoogle(q);
-      found.forEach((link: string) => links.add(cleanUrl(link)));
+
+      found
+        .filter(isGoodStoreUrl)
+        .map(cleanRootUrl)
+        .forEach((link: string) => links.add(link));
     }
 
-   const rows = Array.from(links)
-  .filter((url) => url.startsWith("http"))
-  .filter(isRealStore)
-      .map((website) => ({
-        website,
-        store_name: website,
-        platform: getPlatform(website),
-        country: "sa",
-        status: "new",
-        notes: `Auto discovered: ${type}`,
-        updated_at: new Date().toISOString(),
-      }));
+    const results = [];
 
-    if (!rows.length) {
-      return NextResponse.json({ ok: true, inserted: 0, leads: [] });
-    }
+    for (const website of Array.from(links).slice(0, 30)) {
+      try {
+        const lead = await extractLead(website);
 
-    const { data, error } = await supabase
-      .from("store_leads")
-      .upsert(rows, { onConflict: "website" })
-      .select();
+        const { data, error } = await supabase
+          .from("store_leads")
+          .upsert(lead, { onConflict: "website" })
+          .select()
+          .single();
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+        results.push({ website, data, error: error?.message || null });
+      } catch (e: any) {
+        results.push({
+          website,
+          data: null,
+          error: e.message || "failed",
+        });
+      }
     }
 
     return NextResponse.json({
       ok: true,
-      inserted: data?.length || 0,
-      leads: data,
+      found: links.size,
+      saved: results.filter((x) => x.data).length,
+      results,
     });
   } catch (e: any) {
     return NextResponse.json(
