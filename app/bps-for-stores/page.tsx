@@ -1,11 +1,6 @@
 "use client";
-import Link from "next/link";
 
-export const metadata = {
-  title: "أضف منتجك مجانًا | BPS Chat للتجار",
-  description:
-    "أضف منتجك مجانًا على BPS Chat واحصل على ظهور إضافي وزيارات مباشرة إلى متجرك. أول 100 متجر يحصلون على ظهور مجاني لمدة 6 أشهر.",
-};
+import Link from "next/link";
 
 export default function BpsForStoresPage() {
   return (
