@@ -422,17 +422,25 @@ export default async function BpsMarketCategoryPage({
 .mobileProductTitle span {
   display: inline-block;
   white-space: nowrap;
-  animation: productNameScroll 7s linear infinite;
-  animation-play-state: paused;
+  transform: translateX(0);
 }
 
-body.isScrollingProductText .mobileProductTitle span {
-  animation-play-state: running;
+body.playProductTextOnce .mobileProductTitle span {
+  animation: productNamePeek 2s ease-in-out 1;
 }
 
-@keyframes productNameScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(55%); }
+@keyframes productNamePeek {
+  0% {
+    transform: translateX(0);
+  }
+
+  45% {
+    transform: translateX(45%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
         .hero {
           max-width: 1320px;

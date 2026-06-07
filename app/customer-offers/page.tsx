@@ -749,7 +749,29 @@ return (
 }
 
 .mobileProductTitle span {
+  display: inlin.mobileProductTitle span {
   display: inline-block;
+  white-space: nowrap;
+  transform: translateX(0);
+}
+
+body.playProductTextOnce .mobileProductTitle span {
+  animation: productNamePeek 2s ease-in-out 1;
+}
+
+@keyframes productNamePeek {
+  0% {
+    transform: translateX(0);
+  }
+
+  45% {
+    transform: translateX(45%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}e-block;
   white-space: nowrap;
   animation: productNameScroll 7s linear infinite;
   animation-play-state: paused;

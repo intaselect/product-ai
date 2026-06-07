@@ -7,12 +7,17 @@ export default function ScrollTextActivator() {
     let timer: any;
 
     const onScroll = () => {
-      document.body.classList.add("isScrollingProductText");
+      document.body.classList.remove("playProductTextOnce");
+
+      requestAnimationFrame(() => {
+        document.body.classList.add("playProductTextOnce");
+      });
 
       clearTimeout(timer);
+
       timer = setTimeout(() => {
-        document.body.classList.remove("isScrollingProductText");
-      }, 180);
+        document.body.classList.remove("playProductTextOnce");
+      }, 2100);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
