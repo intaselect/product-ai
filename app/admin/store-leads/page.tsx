@@ -58,10 +58,45 @@ export default function StoreLeadsPage() {
   useEffect(() => {
     loadLeads();
   }, []);
+async function discoverStores(type: string) {
+  setLoading(true);
 
+  await fetch("/api/admin/store-leads/discover", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type }),
+  });
+
+  await loadLeads();
+  setLoading(false);
+}
   return (
     <main dir="rtl" style={{ padding: 24, maxWidth: 1300, margin: "0 auto" }}>
       <h1>إدارة أصحاب المتاجر</h1>
+      <div
+  style={{
+    display: "flex",
+    gap: 10,
+    flexWrap: "wrap",
+    margin: "18px 0",
+  }}
+>
+  <button onClick={() => discoverStores("salla")} disabled={loading}>
+    🔍 جلب متاجر سلة
+  </button>
+
+  <button onClick={() => discoverStores("zid")} disabled={loading}>
+    🔍 جلب متاجر زد
+  </button>
+
+  <button onClick={() => discoverStores("perfumes")} disabled={loading}>
+    🔍 جلب متاجر العطور
+  </button>
+
+  <button onClick={() => discoverStores("mobiles")} disabled={loading}>
+    🔍 جلب متاجر الجوالات
+  </button>
+</div>
 
       <section
         style={{
