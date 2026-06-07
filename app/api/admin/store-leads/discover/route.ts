@@ -19,6 +19,25 @@ function cleanUrl(url: string) {
   }
 }
 
+function isRealStore(url: string) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+
+    if (host === "salla.sa") return false;
+    if (host === "zid.store") return false;
+    if (host === "shahbandr.com") return false;
+
+    if (host.endsWith(".salla.sa")) return true;
+    if (host.endsWith(".zid.store")) return true;
+    if (host.endsWith(".shahbandr.com")) return true;
+
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 function getPlatform(url: string) {
   if (url.includes("salla.sa")) return "salla";
   if (url.includes("zid.store")) return "zid";
@@ -27,18 +46,18 @@ function getPlatform(url: string) {
 }
 
 const discoveryQueries: Record<string, string[]> = {
-  salla: [
-    "site:salla.sa متجر عطور السعودية",
-    "site:salla.sa متجر ملابس السعودية",
-    "site:salla.sa متجر جوالات السعودية",
-    "site:salla.sa متجر هدايا السعودية",
-  ],
-  zid: [
-    "site:zid.store متجر عطور السعودية",
-    "site:zid.store متجر ملابس السعودية",
-    "site:zid.store متجر جوالات السعودية",
-    "site:zid.store متجر هدايا السعودية",
-  ],
+ salla: [
+  "site:*.salla.sa متجر عطور السعودية",
+  "site:*.salla.sa متجر ملابس السعودية",
+  "site:*.salla.sa متجر جوالات السعودية",
+  "site:*.salla.sa متجر هدايا السعودية",
+],
+zid: [
+  "site:*.zid.store متجر عطور السعودية",
+  "site:*.zid.store متجر ملابس السعودية",
+  "site:*.zid.store متجر جوالات السعودية",
+  "site:*.zid.store متجر هدايا السعودية",
+],
   perfumes: [
     "متجر عطور السعودية واتساب",
     "متجر عطور سلة السعودية",
@@ -83,8 +102,9 @@ export async function POST(req: Request) {
       found.forEach((link: string) => links.add(cleanUrl(link)));
     }
 
-    const rows = Array.from(links)
-      .filter((url) => url.startsWith("http"))
+   const rows = Array.from(links)
+  .filter((url) => url.startsWith("http"))
+  .filter(isRealStore)
       .map((website) => ({
         website,
         store_name: website,
