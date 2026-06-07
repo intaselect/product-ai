@@ -148,7 +148,7 @@ export async function GET() {
     .from("store_leads")
     .select("*")
     .order("created_at", { ascending: false })
-    .limit(500);
+    .limit(5000);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

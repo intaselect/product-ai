@@ -225,7 +225,7 @@ async function searchGoogle(query: string) {
   url.searchParams.set("google_domain", "google.com.sa");
   url.searchParams.set("gl", "sa");
   url.searchParams.set("hl", "ar");
-  url.searchParams.set("num", "20");
+  url.searchParams.set("num", "30");
   url.searchParams.set("api_key", SERPAPI_KEY);
 
   const res = await fetch(url.toString(), { cache: "no-store" });
@@ -256,7 +256,7 @@ export async function POST(req: Request) {
 
     const results = [];
 
-    for (const website of Array.from(links).slice(0, 60)) {
+    for (const website of Array.from(links).slice(0, 200)) {
       try {
         const lead = await extractLead(website);
 
