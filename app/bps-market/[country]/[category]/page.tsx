@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MobileMarketFilterFab from "@/app/components/MobileMarketFilterFab";
-import ScrollTextActivator from "@/app/components/ScrollTextActivator";
+
 
 export const dynamic = "force-dynamic";
 
@@ -221,7 +221,7 @@ export default async function BpsMarketCategoryPage({
   return (
     <main className="marketCategoryPage" dir="rtl">
         <MobileMarketFilterFab country={country} category={category} />
-        <ScrollTextActivator />
+        
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
@@ -419,28 +419,39 @@ export default async function BpsMarketCategoryPage({
   line-height: 1 !important;
 }
 
+.mobileProductTitle {
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  padding: 0 7px;
+  margin: 6px 0 8px !important;
+
+  font-size: 11.5px !important;
+  line-height: 1 !important;
+
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobileProductTitle::-webkit-scrollbar {
+  display: none;
+}
+
 .mobileProductTitle span {
   display: inline-block;
   white-space: nowrap;
-  transform: translateX(0);
-}
-
-body.playProductTextOnce .mobileProductTitle span {
-  animation: productNamePeek 2s ease-in-out 1;
-}
-
-@keyframes productNamePeek {
-  0% {
-    transform: translateX(0);
-  }
-
-  45% {
-    transform: translateX(45%);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
 }
         .hero {
           max-width: 1320px;
