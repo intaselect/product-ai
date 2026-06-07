@@ -70,6 +70,25 @@ async function discoverStores(type: string) {
   await loadLeads();
   setLoading(false);
 }
+const [openedWhatsapp, setOpenedWhatsapp] = useState<string[]>([]);
+
+useEffect(() => {
+  const saved = localStorage.getItem("openedWhatsapp");
+  if (saved) {
+    setOpenedWhatsapp(JSON.parse(saved));
+  }
+}, []);
+
+function markWhatsappOpened(id: string) {
+  const updated = [...openedWhatsapp, id];
+
+  setOpenedWhatsapp(updated);
+
+  localStorage.setItem(
+    "openedWhatsapp",
+    JSON.stringify(updated)
+  );
+}
   return (
     <main dir="rtl" style={{ padding: 24, maxWidth: 1300, margin: "0 auto" }}>
       <h1>إدارة أصحاب المتاجر</h1>
@@ -184,23 +203,34 @@ https://store-name.com/contact`}
       </a>
     </td>
 
-    <td>
-      {lead.whatsapp ? (
-   <a
-  href={
-    lead.whatsapp?.startsWith("http")
-      ? lead.whatsapp
-      : `https://wa.me/${lead.whatsapp.replace(/\D/g, "")}`
-  }
-  target="_blank"
-  rel="noopener noreferrer"
->
-  واتساب
-</a>
-      ) : (
-        "-"
-      )}
-    </td>
+   <td>
+  {lead.whatsapp ? (
+    <a
+      href={
+        lead.whatsapp.startsWith("http")
+          ? lead.whatsapp
+          : `https://wa.me/${lead.whatsapp.replace(/\D/g, "")}`
+      }
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => markWhatsappOpened(lead.id)}
+      style={{
+        background: openedWhatsapp.includes(lead.id)
+          ? "#f97316"
+          : "#22c55e",
+        color: "#fff",
+        padding: "6px 12px",
+        borderRadius: 999,
+        textDecoration: "none",
+        fontWeight: 700,
+      }}
+    >
+      واتساب
+    </a>
+  ) : (
+    "-"
+  )}
+</td>
 
     <td>{lead.email || "-"}</td>
 
