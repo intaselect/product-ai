@@ -172,7 +172,7 @@ export default async function BpsMarketPage() {
               </strong>
 
               <div className="miniCats">
-                {Object.entries(categories).slice(0, 8).map(([cat, item]) => (
+                {Object.entries(categories).map(([cat, item]) => (
                   <Link key={cat} href={`/bps-market/${code}/${cat}`}>
                     {item.icon} {item.ar}
                   </Link>
