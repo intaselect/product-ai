@@ -164,6 +164,12 @@ export async function generateMetadata({
         : [],
       type: "website",
     },
+    twitter: {
+  card: "summary_large_image",
+  title: `${offer.product_name} | ${offer.price} ${currency}`,
+  description: `أفضل عرض في ${country} بسعر ${offer.price} ${currency} عبر BPS Chat.`,
+  images: offer.image_url ? [offer.image_url] : [`${SITE_URL}/og-image.png`],
+},
   };
 }
 
