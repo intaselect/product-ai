@@ -52,96 +52,110 @@ export default function GlobalAdsSlider() {
         ))}
       </div>
 
-      <style jsx>{`
-        .globalAdsBox {
-          width: 100%;
-          background: #ffffff;
-          border-bottom: 1px solid #e5e7eb;
-          padding: 8px 10px;
-          overflow: hidden;
-        }
+    <style jsx>{`
+  .globalAdsBox {
+    width: 100%;
+    background: rgba(255,255,255,.96);
+    border-bottom: 1px solid #e5e7eb;
+    padding: 4px 0;
+    overflow: hidden;
+  }
 
-        .globalAdsTitle {
-          max-width: 1200px;
-          margin: 0 auto 6px;
-          font-size: 13px;
-          font-weight: 950;
-          color: #111827;
-        }
+  .globalAdsTitle {
+    display: none;
+  }
 
-        .globalAdsScroll {
-          max-width: 1200px;
-          margin: 0 auto;
-          display: flex;
-          gap: 10px;
-          overflow-x: auto;
-          padding-bottom: 4px;
-        }
+  .globalAdsScroll {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    padding: 2px 8px 4px;
+    scrollbar-width: none;
+  }
 
-        .globalAdMiniCard {
-          min-width: 92px;
-          max-width: 92px;
-          height: 118px;
-          background: #f8fafc;
-          border: 1px solid #e5e7eb;
-          border-radius: 14px;
-          text-decoration: none;
-          color: #111827;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: space-between;
-          padding: 7px;
-          flex-shrink: 0;
-        }
+  .globalAdsScroll::-webkit-scrollbar {
+    display: none;
+  }
 
-        .globalAdMiniCard img {
-          width: 72px;
-          height: 62px;
-          object-fit: contain;
-          display: block;
-        }
+  .globalAdMiniCard {
+    min-width: 70px;
+    max-width: 70px;
+    height: 86px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #111827;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(15,23,42,.06);
+  }
 
-        .globalAdMiniCard div {
-          width: 100%;
-          text-align: center;
-        }
+  .globalAdMiniCard img {
+    width: 52px;
+    height: 42px;
+    object-fit: contain;
+    display: block;
+  }
 
-        .globalAdMiniCard span {
-          display: block;
-          font-size: 10px;
-          color: #f59e0b;
-          font-weight: 950;
-          margin-bottom: 2px;
-        }
+  .globalAdMiniCard div {
+    width: 100%;
+    text-align: center;
+    line-height: 1.1;
+  }
 
-        .globalAdMiniCard strong {
-          display: block;
-          font-size: 12px;
-          color: #16a34a;
-          font-weight: 950;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
+  .globalAdMiniCard span {
+    display: inline-block;
+    font-size: 8px;
+    color: #f59e0b;
+    font-weight: 950;
+    margin-bottom: 1px;
+  }
 
-        @media (max-width: 700px) {
-          .globalAdsBox {
-            padding: 7px 8px;
-          }
+  .globalAdMiniCard strong {
+    display: block;
+    font-size: 10px;
+    color: #16a34a;
+    font-weight: 950;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-          .globalAdMiniCard {
-            min-width: 82px;
-            max-width: 82px;
-            height: 108px;
-          }
+  @media (max-width: 700px) {
+    .globalAdsBox {
+      padding: 3px 0;
+    }
 
-          .globalAdMiniCard img {
-            width: 64px;
-            height: 55px;
-          }
-        }
-      `}</style>
+    .globalAdsScroll {
+      gap: 6px;
+      padding: 2px 7px 3px;
+    }
+
+    .globalAdMiniCard {
+      min-width: 64px;
+      max-width: 64px;
+      height: 80px;
+      border-radius: 11px;
+      padding: 4px;
+    }
+
+    .globalAdMiniCard img {
+      width: 48px;
+      height: 38px;
+    }
+
+    .globalAdMiniCard strong {
+      font-size: 9px;
+    }
+  }
+`}</style>
     </section>
   );
 }
