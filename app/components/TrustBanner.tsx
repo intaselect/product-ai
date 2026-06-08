@@ -1,3 +1,5 @@
+"use client";
+
 export default function TrustBanner() {
   return (
     <section className="trustBanner">
