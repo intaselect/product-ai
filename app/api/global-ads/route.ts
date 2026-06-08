@@ -15,12 +15,16 @@ function slugify(text: string) {
     .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const country = url.searchParams.get("country") || "sa";
+
   const { data, error } = await supabase
     .from("customer_offers")
     .select("id, product_name, price, image_url, country, store_name")
     .eq("status", "approved")
     .eq("is_ad", true)
+    .eq("country", country)
     .order("updated_at", { ascending: false })
     .limit(12);
 
