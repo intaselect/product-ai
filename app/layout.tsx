@@ -128,6 +128,15 @@ export default function RootLayout({
           name: "BPS Chat",
           alternateName: ["بي بي اس شات", "bpschat", "BPSChat"],
           url: "https://www.bpschat.com",
+          foundingDate: "2026",
+          areaServed: [
+  "SA",
+  "AE",
+  "KW",
+  "QA",
+  "BH",
+  "EG",
+],
           logo: {
             "@type": "ImageObject",
             url: "https://www.bpschat.com/logo-icon.png",
@@ -141,7 +150,7 @@ export default function RootLayout({
             "https://www.facebook.com/bpschat",
             "https://www.instagram.com/bpschat",
             "https://www.tiktok.com/@bpschat",
-            "https://www.youtube.com/watch?v=fyAa0yQWUoU"
+            "https://www.youtube.com/@bpschat"
           ],
         },
         {
