@@ -176,9 +176,7 @@ export default async function OfferCardSeoPage({
     countryHashtags[offer.country || "sa"] || ""
   } #BPSChat #بي_بي_اس_شات #عروض`;
 
-  const shareUrl = `${SITE_URL}/customer-offers/card/${offer.country || "sa"}-${
-    offer.id
-  }`;
+  const shareUrl = `${SITE_URL}/customer-offers/card/${slug}`;
 
   const shortTitle =
     offer.product_name.length > 85

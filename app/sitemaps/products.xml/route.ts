@@ -66,7 +66,7 @@ export async function GET() {
     <loc>${xmlEscape(`${SITE_URL}/customer-offers/card/${name}-${country}-${item.id}`)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>`,
       ];
     }) || [];

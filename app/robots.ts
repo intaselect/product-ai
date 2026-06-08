@@ -1,11 +1,16 @@
 export default function robots() {
   return {
-    rules: [
-      {
-        userAgent: "*",
-        allow: "/",
-      },
+   rules: [
+  {
+    userAgent: "*",
+    allow: "/",
+    disallow: [
+      "/api/",
+      "/customer-offers/dashboard",
+      "/admin",
     ],
+  },
+],
 
     sitemap: [
       "https://www.bpschat.com/sitemap.xml",

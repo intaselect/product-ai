@@ -39,8 +39,8 @@ ${(data || [])
   <url>
     <loc>${xmlEscape(`${SITE_URL}/search/${item.slug}`)}</loc>
     <lastmod>${lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>`;
   })
   .join("")}

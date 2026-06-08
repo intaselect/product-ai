@@ -66,15 +66,36 @@ async function getSearchData(slug: string) {
 
   return data;
 }
-
 export async function generateMetadata({ params }: any) {
   const { slug } = await params;
-  const { query, countryName } = parseSlug(slug);
+  const { query, countryName, clean } = parseSlug(slug);
+  const pageUrl = `https://www.bpschat.com/search/${clean}`;
 
- return {
-  title: `${query} في ${countryName} | مقارنة أسعار وعروض | BPS Chat | بي بي اس شات`,
-  description: `ابحث عن ${query} في ${countryName} وقارن الأسعار والعروض بسهولة عبر بي بي اس شات (BPS Chat) أفضل موقع لمقارنة الأسعار.`,
-};
+  return {
+    title: `أفضل سعر ${query} في ${countryName} اليوم | مقارنة أسعار BPS Chat`,
+    description: `قارن سعر ${query} في ${countryName} اليوم من عدة متاجر، وشاهد أرخص العروض قبل الشراء عبر BPS Chat بي بي اس شات.`,
+    alternates: {
+      canonical: pageUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      title: `أفضل سعر ${query} في ${countryName} | BPS Chat`,
+      description: `قارن أسعار ${query} في ${countryName} واعرف أرخص عرض قبل الشراء.`,
+      url: pageUrl,
+      siteName: "BPS Chat | بي بي اس شات",
+      images: [
+        {
+          url: "https://www.bpschat.com/og-image.png",
+          width: 1200,
+          height: 630,
+        },
+      ],
+      type: "website",
+    },
+  };
 }
 
 export default async function Page({ params }: any) {
@@ -224,6 +245,30 @@ const storeSummary = stores
     };
   })
   .filter((x: any) => x.price);
+  const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "الرئيسية",
+      item: "https://www.bpschat.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: countryName,
+      item: `https://www.bpschat.com/${countryCode}`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: query,
+      item: `https://www.bpschat.com/search/${slug}`,
+    },
+  ],
+};
   const schema = {
   "@context": "https://schema.org",
   "@type": "Product",
@@ -332,6 +377,13 @@ return (
       uploadDate: new Date().toISOString(),
     }),
   }}
+  
+/>
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(breadcrumbSchema),
+  }}
 />
     <SeoSearchBar />
     <section className="slugMarketHero" dir="rtl">
@@ -423,6 +475,24 @@ return (
       <h1>
   أفضل سعر {data?.query || query} في {countryName} عبر BPS Chat (بي بي اس شات)
 </h1>
+<section className="faqSeoSection">
+  <h2>أسئلة شائعة حول {data?.query || query}</h2>
+
+  <h3>ما أفضل سعر {data?.query || query} في {countryName}؟</h3>
+  <p>
+    يعرض BPS Chat الأسعار المتوفرة من عدة متاجر لمساعدتك في الوصول إلى أفضل سعر.
+  </p>
+
+  <h3>أين يمكن شراء {data?.query || query} في {countryName}؟</h3>
+  <p>
+    يمكنك مقارنة العروض المتاحة ثم الانتقال مباشرة إلى المتجر المناسب.
+  </p>
+
+  <h3>هل تختلف الأسعار بين المتاجر؟</h3>
+  <p>
+    نعم، تختلف حسب العروض والتخفيضات والشحن والتوفر.
+  </p>
+</section>
 <p>
   موقع <strong>BPS Chat (بي بي اس شات)</strong> هو أفضل موقع لمقارنة أسعار المنتجات
   في {countryName}، حيث يمكنك البحث عن <strong>{data?.query || query}</strong>

@@ -547,6 +547,20 @@ export default async function ProductSeoPage({
           والعروض الحالية. لذلك ننصح دائمًا بمراجعة تفاصيل المنتج داخل موقع
           البائع قبل إتمام الشراء.
         </p>
+        <h2>لماذا يبحث المستخدمون عن {offer.product_name} ؟</h2>
+
+<p>
+يعتبر {offer.product_name} من المنتجات التي يبحث عنها المستخدمون في {country}
+بسبب المميزات والسعر وتوفره لدى أكثر من متجر.
+ويقوم BPS Chat بمساعدة المستخدمين في مقارنة الأسعار والعثور على أفضل العروض.
+</p>
+
+<h2>مقارنة سعر {offer.product_name}</h2>
+
+<p>
+قد يختلف سعر {offer.product_name} بين المتاجر حسب العروض المتاحة وتكاليف الشحن
+وسياسات البيع، لذلك يفضل دائماً مقارنة الأسعار قبل اتخاذ قرار الشراء.
+</p>
 
         <h2>كلمات بحث مرتبطة بـ {offer.product_name}</h2>
 
@@ -557,6 +571,28 @@ export default async function ProductSeoPage({
           {offer.product_name} من {offer.store_name || "متجر موثوق"} - مقارنة
           سعر {offer.product_name} عبر BPS Chat - بي بي اس شات.
         </p>
+        <h2>كلمات بحث مرتبطة بـ {offer.product_name}</h2>
+
+<p>
+  سعر {offer.product_name} في {country} - شراء {offer.product_name}
+  أونلاين - أفضل عرض ...
+</p>
+
+<div className="quickLinks">
+  <Link href={`/search/${offer.product_name}-${offer.country}`}>
+    سعر {offer.product_name}
+  </Link>
+
+  <Link href={`/search/${offer.product_name} عروض-${offer.country}`}>
+    عروض {offer.product_name}
+  </Link>
+
+  <Link href={`/search/${offer.product_name} ارخص سعر-${offer.country}`}>
+    أرخص سعر {offer.product_name}
+  </Link>
+</div>
+
+<h2>أسئلة شائعة عن {offer.product_name}</h2>
 
         <h2>أسئلة شائعة عن {offer.product_name}</h2>
 

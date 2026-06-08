@@ -69,13 +69,13 @@ export default function InternalLinksBoost() {
             </a>
           ))}
 
-          {dynamicSeoLinks.slice(0, 12).map((item, i) => (
+          {dynamicSeoLinks.slice(0, 50).map((item, i) => (
             <a key={`dynamic-seo-${i}`} href={item.href} className="seoLink">
               {item.title}
             </a>
           ))}
 
-          {links.slice(0, 16).map((item, i) => (
+          {links.slice(0, 100).map((item, i) => (
             <a key={`search-${i}`} href={`/search/${item.slug}`}>
               {item.query}
             </a>
