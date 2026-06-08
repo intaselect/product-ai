@@ -56,6 +56,27 @@ export async function PATCH(req: Request) {
   }
 
   const body = await req.json();
+  if (body.action === "toggle_ad") {
+  const id = Number(body.id);
+  const is_ad = Boolean(body.is_ad);
+
+  const { error } = await supabase
+    .from("customer_offers")
+    .update({
+      is_ad,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  if (error) {
+    return NextResponse.json(
+      { ok: false, error: error.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ ok: true });
+}
 
   // ✅ تحديث حالة العرض: approved / rejected / pending
   if (body.action === "update_offer_status") {

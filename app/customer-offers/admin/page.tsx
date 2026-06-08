@@ -15,6 +15,7 @@ type Offer = {
   user_id: string | null;
   seller_email: string | null;
   click_count?: number;
+  is_ad?: boolean;
 };
 
 type Limit = {
@@ -135,7 +136,40 @@ export default function CustomerOffersAdminPage() {
       setActionLoading("");
     }
   }
+async function toggleAd(id: number, is_ad: boolean) {
+  setActionLoading(`ad-${id}`);
+  setError("");
 
+  try {
+    const res = await fetch(
+      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "toggle_ad",
+          id,
+          is_ad,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      setError(data.error || "حدث خطأ أثناء تحديث الإعلان");
+      return;
+    }
+
+    setOffers((prev) =>
+      prev.map((offer) => (offer.id === id ? { ...offer, is_ad } : offer))
+    );
+  } catch {
+    setError("حدث خطأ غير متوقع أثناء تحديث الإعلان");
+  } finally {
+    setActionLoading("");
+  }
+}
   async function updateUserLimit(
     user_id: string,
     email: string,
@@ -366,6 +400,17 @@ export default function CustomerOffersAdminPage() {
                 >
                   فتح رابط المنتج
                 </a>
+                <button
+  className={offer.is_ad ? "adOffBtn" : "adOnBtn"}
+  disabled={actionLoading === `ad-${offer.id}`}
+  onClick={() => toggleAd(offer.id, !offer.is_ad)}
+>
+  {actionLoading === `ad-${offer.id}`
+    ? "جاري..."
+    : offer.is_ad
+    ? "⭐ إلغاء الإعلان"
+    : "⭐ تفعيل كإعلان"}
+</button>
 
                 <div className="actions">
                   <button
@@ -696,6 +741,25 @@ export default function CustomerOffersAdminPage() {
           text-decoration: none;
           font-weight: 900;
         }
+          .adOnBtn,
+.adOffBtn {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px;
+  color: white;
+  font-weight: 950;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.adOnBtn {
+  background: linear-gradient(135deg, #f59e0b, #16a34a);
+}
+
+.adOffBtn {
+  background: linear-gradient(135deg, #64748b, #dc2626);
+}
 
         .actions {
           display: grid;

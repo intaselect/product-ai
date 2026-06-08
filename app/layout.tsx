@@ -11,6 +11,7 @@ import InternalLinksBoost from "./components/InternalLinksBoost";
 import TrustedSourcesBar from "@/app/components/TrustedSourcesBar";
 import AnalyticsTracker from "@/app/components/AnalyticsTracker";
 import InstallAppButton from "@/app/components/InstallAppButton";
+import GlobalAdsSlider from "@/app/components/GlobalAdsSlider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -177,6 +178,7 @@ export default function RootLayout({
  <body className="min-h-screen flex flex-col">
  <Navbar />
 <TrustedSourcesBar />
+<GlobalAdsSlider />
 
 <div className="storesPromoBanner">
   <a href="/bps-for-stores" className="storesPromoLink">
