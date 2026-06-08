@@ -12,6 +12,7 @@ import TrustedSourcesBar from "@/app/components/TrustedSourcesBar";
 import AnalyticsTracker from "@/app/components/AnalyticsTracker";
 import InstallAppButton from "@/app/components/InstallAppButton";
 import GlobalAdsSlider from "@/app/components/GlobalAdsSlider";
+import TrustBanner from "@/app/components/TrustBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -178,6 +179,7 @@ export default function RootLayout({
  <body className="min-h-screen flex flex-col">
  <Navbar />
 <TrustedSourcesBar />
+<TrustBanner />
 <GlobalAdsSlider />
 
 <div className="storesPromoBanner">
