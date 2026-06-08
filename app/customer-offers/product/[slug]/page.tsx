@@ -92,7 +92,7 @@ async function getRelatedOffers(offer: any) {
       .eq("country", country)
       .neq("id", offer.id)
       .overlaps("category", category)
-      .limit(6);
+      .limit(20);
 
     if (data && data.length > 0) return data;
   }
@@ -103,11 +103,22 @@ async function getRelatedOffers(offer: any) {
     .eq("status", "approved")
     .eq("country", country)
     .neq("id", offer.id)
-    .limit(6);
+    .limit(20);
 
   return data || [];
 }
+async function getCountryOffers(country: string, currentId: number) {
+  const { data } = await supabase
+    .from("customer_offers")
+    .select("id, product_name, price, image_url, store_name, country")
+    .eq("status", "approved")
+    .eq("country", country)
+    .neq("id", currentId)
+    .order("created_at", { ascending: false })
+    .limit(20);
 
+  return data || [];
+}
 export async function generateMetadata({
   params,
 }: {
@@ -167,6 +178,10 @@ export default async function ProductSeoPage({
   if (!offer) notFound();
 
   const relatedOffers = await getRelatedOffers(offer);
+  const countryOffers = await getCountryOffers(
+  offer.country || "sa",
+  offer.id
+);
 
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
@@ -655,6 +670,37 @@ export default async function ProductSeoPage({
             </div>
           </>
         )}
+        {countryOffers.length > 0 && (
+  <>
+    <h2>أحدث منتجات {country}</h2>
+
+    <div className="relatedGrid">
+      {countryOffers.map((item: any) => (
+        <Link
+          key={item.id}
+          href={offerSeoUrl(item)}
+          className="relatedCard"
+        >
+          <div className="relatedImage">
+            <img src={item.image_url} alt={item.product_name} />
+          </div>
+
+          <div className="relatedContent">
+            <h3>{item.product_name}</h3>
+
+            <strong>
+              {item.price}
+            </strong>
+
+            <span>
+              {item.store_name || "عرض عميل"}
+            </span>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </>
+)}
 
         <h2>روابط مفيدة داخل BPS Chat</h2>
         <div className="quickLinks">
