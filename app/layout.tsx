@@ -168,6 +168,17 @@ export default function RootLayout({
  <body className="min-h-screen flex flex-col">
  <Navbar />
 <TrustedSourcesBar />
+
+<div className="storesPromoBanner">
+  <a href="/bps-for-stores" className="storesPromoLink">
+    <span className="storesPromoIcon">🎁</span>
+    <span className="storesPromoText">
+      للتجار: أضف أول منتج مجاناً بالكامل على BPS Chat
+    </span>
+    <span className="storesPromoBtn">ابدأ الآن 🚀</span>
+  </a>
+</div>
+
 <InstallAppButton />
 <SidebarMenu />
   <div className="flex-1">
