@@ -19,7 +19,9 @@ export default function BpsForStoresPage() {
           </p>
 
           <div className="heroCtaBox">
-  <div className="limitedBadge">🔥 أول 100 متجر فقط</div>
+ <div className="limitedBadge">
+  🚀 أول منتج مجاني بالكامل
+</div>
 
   <Link href="/customer-offers/add" className="heroAddBtn">
     🚀 أضف منتجك مجاناً الآن
@@ -42,6 +44,30 @@ export default function BpsForStoresPage() {
 </div>
         </div>
 
+        <div className="heroMiddleCard">
+          <div className="middleBadge">🚀 بدون رسوم أو عمولات</div>
+
+          <h2>
+            أضف أول منتج
+            <span> مجاناً بالكامل</span>
+          </h2>
+
+          <p>
+            أرسل رابط منتج واحد من متجرك، وسنضيفه داخل BPS Chat ليصل الزوار
+            مباشرة إلى متجرك.
+          </p>
+
+          <Link href="/customer-offers/add" className="middleAddBtn">
+            🚀 أضف أول منتج مجاناً الآن
+          </Link>
+
+          <div className="middleMiniBenefits">
+            <span>✅ إضافة مجانية</span>
+            <span>✅ بدون عمولات</span>
+            <span>✅ تحويل مباشر لمتجرك</span>
+          </div>
+        </div>
+
         <div className="flowBox">
           <div className="flowItem">📦 منتجك</div>
           <div className="arrow">←</div>
@@ -54,8 +80,13 @@ export default function BpsForStoresPage() {
       </section>
 
       <section className="offerBanner">
-        <h2>أول 100 متجر يحصلون على ظهور مجاني لمدة 6 أشهر</h2>
-        <p>بدون رسوم، بدون عمولات، وبدون عقود. أرسل رابط منتجك فقط.</p>
+       <h2>
+  أضف أول منتج مجاناً بالكامل
+</h2>
+
+<p>
+  بدون رسوم أو عمولات. أرسل رابط منتجك وسيظهر داخل BPS Chat ويقود الزوار مباشرة إلى متجرك.
+</p>
       </section>
 
       <section className="features">
@@ -104,7 +135,9 @@ export default function BpsForStoresPage() {
 
       <section className="cta">
         <h2>جاهز لزيادة ظهور منتجاتك؟</h2>
-        <p>ابدأ الآن مجانًا قبل انتهاء فرصة أول 100 متجر.</p>
+        <p>
+🚀 أضف أول منتج مجاناً الآن
+</p>
 
         <div className="heroActions center">
           <Link href="/customer-offers/add" className="primaryBtn">
@@ -144,17 +177,157 @@ export default function BpsForStoresPage() {
         }
 
         .hero {
-          padding: 90px 20px 70px;
-          background:
-            radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.25), transparent 30%),
-            radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.25), transparent 30%),
-            linear-gradient(135deg, #020617, #0f172a);
-          color: white;
-          display: grid;
-          grid-template-columns: 1.1fr 1fr;
-          gap: 30px;
-          align-items: center;
-        }
+  position: relative;
+  padding: 90px 20px 70px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.25), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.25), transparent 30%),
+    linear-gradient(135deg, #020617, #0f172a);
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+  .heroMiddleCard {
+  position: relative;
+  z-index: 4;
+  padding: 34px 28px;
+  border-radius: 36px;
+  text-align: center;
+  overflow: hidden;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.13),
+    rgba(255,255,255,0.045)
+  );
+
+  border: 1px solid rgba(255,255,255,0.18);
+
+  backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 0 45px rgba(34,197,94,0.28),
+    0 0 90px rgba(37,99,235,0.22),
+    inset 0 0 30px rgba(255,255,255,0.06);
+
+  animation: middleFloat 3.2s ease-in-out infinite;
+}
+
+.heroMiddleCard::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 36px;
+  padding: 2px;
+  background: linear-gradient(135deg, #22c55e, #60a5fa, #a78bfa);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.heroMiddleCard::after {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 999px;
+  background: rgba(34,197,94,0.22);
+  filter: blur(55px);
+  right: -70px;
+  top: -80px;
+  z-index: -1;
+}
+
+.middleBadge {
+  display: inline-flex;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(15,23,42,0.55);
+  border: 1px solid rgba(255,255,255,0.16);
+  color: #bbf7d0;
+  font-size: 14px;
+  font-weight: 950;
+  margin-bottom: 16px;
+}
+
+.heroMiddleCard h2 {
+  margin: 0;
+  color: white;
+  font-size: clamp(32px, 4vw, 54px);
+  line-height: 1.25;
+  font-weight: 950;
+}
+
+.heroMiddleCard h2 span {
+  display: block;
+  background: linear-gradient(135deg, #22c55e, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.heroMiddleCard p {
+  color: #dbeafe;
+  line-height: 1.9;
+  font-size: 16px;
+  margin: 18px auto 0;
+  max-width: 520px;
+}
+
+.middleAddBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22px;
+  padding: 18px 34px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #16a34a, #2563eb);
+  color: white;
+  font-size: 21px;
+  font-weight: 950;
+  text-decoration: none;
+  box-shadow:
+    0 0 0 0 rgba(34,197,94,.65),
+    0 15px 45px rgba(34,197,94,.35);
+  animation: pulseBtn 1.7s infinite;
+  transition: 0.25s ease;
+}
+
+.middleAddBtn:hover {
+  transform: translateY(-4px) scale(1.04);
+}
+
+.middleMiniBenefits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.middleMiniBenefits span {
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #dbeafe;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+@keyframes middleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
 
         .heroText {
           max-width: 720px;
@@ -468,6 +641,24 @@ export default function BpsForStoresPage() {
             grid-template-columns: 1fr;
             text-align: center;
           }
+            .heroMiddleCard {
+  order: 1;
+}
+
+.heroText {
+  order: 2;
+}
+
+.flowBox {
+  order: 3;
+}
+
+.middleAddBtn {
+  width: 100%;
+  max-width: 360px;
+  font-size: 19px;
+  padding: 17px 20px;
+}
 .heroCtaBox {
   align-items: center;
 }
