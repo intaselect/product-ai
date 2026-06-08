@@ -279,26 +279,44 @@ export default function BpsForStoresPage() {
 }
 
 .middleAddBtn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 22px;
-  padding: 18px 34px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #22c55e, #16a34a, #2563eb);
-  color: white;
-  font-size: 21px;
-  font-weight: 950;
+
+  width: fit-content;
+  min-width: 340px;
+
+  margin: 28px auto;
+
+  padding: 22px 42px;
+
+  border-radius: 18px;
+
+  background: linear-gradient(
+    135deg,
+    #22c55e,
+    #16a34a,
+    #2563eb
+  );
+
+  color: #fff;
+
+  font-size: 24px;
+  font-weight: 900;
+
   text-decoration: none;
+
   box-shadow:
-    0 0 0 0 rgba(34,197,94,.65),
-    0 15px 45px rgba(34,197,94,.35);
+    0 0 25px rgba(34,197,94,.5),
+    0 0 60px rgba(37,99,235,.35);
+
+  transition: all .25s ease;
+
   animation: pulseBtn 1.7s infinite;
-  transition: 0.25s ease;
 }
 
 .middleAddBtn:hover {
-  transform: translateY(-4px) scale(1.04);
+  transform: translateY(-4px) scale(1.05);
 }
 
 .middleMiniBenefits {
