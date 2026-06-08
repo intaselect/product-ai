@@ -4,6 +4,12 @@ export default async function sitemap() {
       url: "https://www.bpschat.com/sitemaps/pages.xml",
     },
     {
+      url: "https://www.bpschat.com/bps-for-stores",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: "https://www.bpschat.com/sitemaps/search.xml",
     },
     {
