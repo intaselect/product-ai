@@ -67,6 +67,15 @@ export default function BpsForStoresPage() {
             <span>✅ تحويل مباشر لمتجرك</span>
           </div>
         </div>
+        <div className="heroMegaAdd">
+  <Link href="/customer-offers/add" className="heroMegaAddBtn">
+    🚀 أضف منتجك الآن مجاناً
+
+    <span>
+      أرسل رابط المنتج وابدأ الحصول على زيارات لمتجرك
+    </span>
+  </Link>
+</div>
 
         <div className="flowBox">
           <div className="flowItem">📦 منتجك</div>
@@ -505,6 +514,64 @@ export default function BpsForStoresPage() {
         .secondaryBtn:hover {
           transform: translateY(-3px);
         }
+          .heroMegaAdd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroMegaAddBtn {
+  width: 100%;
+  max-width: 520px;
+
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 14px;
+
+  text-decoration: none;
+
+  border-radius: 34px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(34,197,94,.18),
+      rgba(37,99,235,.18)
+    );
+
+  backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  box-shadow:
+    0 0 40px rgba(34,197,94,.35),
+    0 0 90px rgba(37,99,235,.25);
+
+  color: white;
+
+  font-size: 42px;
+  font-weight: 950;
+
+  transition: .25s;
+
+  animation: pulseBtn 1.8s infinite;
+}
+
+.heroMegaAddBtn:hover {
+  transform: scale(1.04);
+}
+
+.heroMegaAddBtn span {
+  font-size: 18px;
+  color: #dbeafe;
+  text-align: center;
+  max-width: 380px;
+}
 
         .flowBox {
           display: grid;
