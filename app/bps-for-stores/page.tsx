@@ -601,12 +601,31 @@ export default function BpsForStoresPage() {
 
 .storesPromoMini a {
   display: inline-flex;
-  padding: 14px 32px;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 22px;
+  padding: 20px 48px;
+
   border-radius: 999px;
-  text-decoration: none;
-  background: linear-gradient(135deg, #22c55e, #2563eb);
-  color: white;
+
+  background: linear-gradient(135deg, #22c55e, #16a34a, #2563eb);
+  color: #fff;
+
+  font-size: 26px;
   font-weight: 950;
+  text-decoration: none;
+
+  box-shadow:
+    0 0 35px rgba(34, 197, 94, 0.65),
+    0 0 80px rgba(37, 99, 235, 0.35);
+
+  animation: pulseBtn 1.7s infinite;
+  transition: 0.25s ease;
+}
+
+.storesPromoMini a:hover {
+  transform: translateY(-4px) scale(1.06);
 }
 
         .offerBanner {
