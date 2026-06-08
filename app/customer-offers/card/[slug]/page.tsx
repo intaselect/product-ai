@@ -79,9 +79,10 @@ async function getSameCountryOffers(offer: any) {
       "id, product_name, price, image_url, image_url_2, image_url_3, store_name, country, category"
     )
     .eq("status", "approved")
-    .eq("country", offer.country || "sa")
-    .neq("id", offer.id)
-    .limit(12);
+.eq("country", offer.country || "sa")
+.neq("id", offer.id)
+.order("created_at", { ascending: false })
+.limit(20);
 
   return data || [];
 }
@@ -342,7 +343,7 @@ ${shareUrl}`
 
         <div className="relatedGrid">
           {relatedOffers.map((item: any) => (
-            <Link href={cardSeoUrl(item)} className="relatedCard" key={item.id}>
+            <Link href={productSeoUrl(item)} className="relatedCard" key={item.id}>
               <div className="relatedImage">
                 <img src={item.image_url} alt={item.product_name} />
               </div>
@@ -359,6 +360,13 @@ ${shareUrl}`
           ))}
         </div>
       </section>
+      <div className="quickSeoLinks">
+  {relatedOffers.slice(0, 12).map((item: any) => (
+    <Link key={item.id} href={productSeoUrl(item)}>
+      {item.product_name}
+    </Link>
+  ))}
+</div>
       <ComparePricesSection />
 
       <section className="seoTextBox">
@@ -742,6 +750,29 @@ ${shareUrl}`
             grid-template-columns: 1fr;
           }
         }
+          .quickSeoLinks {
+  max-width: 1120px;
+  margin: 18px auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.quickSeoLinks a {
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  color: #111827;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+}
+
+.quickSeoLinks a:hover {
+  color: #16a34a;
+  border-color: #16a34a;
+}
 
         .premiumShareBox {
           margin: 14px 0;
