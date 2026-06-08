@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import MarketPromoSection from "@/app/components/MarketPromoSection";
+
 export default function BpsForStoresPage() {
   return (
     <main className="storesLanding" dir="rtl">
@@ -79,7 +79,18 @@ export default function BpsForStoresPage() {
           <div className="flowItem">🛒 متجرك</div>
         </div>
       </section>
-<MarketPromoSection />
+      <section className="storesPromoMini">
+        <h2>🚀 اعرض منتجاتك معنا</h2>
+
+        <p>
+          أضف أول منتج مجاناً بالكامل واحصل على زوار مباشرة إلى متجرك.
+        </p>
+
+        <Link href="/customer-offers/add">
+          أضف منتجك الآن
+        </Link>
+      </section>
+
       <section className="offerBanner">
        <h2>
   أضف أول منتج مجاناً بالكامل
@@ -564,6 +575,39 @@ export default function BpsForStoresPage() {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-8px); }
         }
+          .storesPromoMini {
+  margin: 35px auto 10px;
+  max-width: 950px;
+  padding: 32px 24px;
+  border-radius: 28px;
+  text-align: center;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #2563eb);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  box-shadow: 0 0 40px rgba(34, 197, 94, 0.22);
+  color: white;
+}
+
+.storesPromoMini h2 {
+  margin: 0 0 12px;
+  font-size: 34px;
+  font-weight: 950;
+}
+
+.storesPromoMini p {
+  color: #dbeafe;
+  margin: 0 0 22px;
+  font-size: 17px;
+}
+
+.storesPromoMini a {
+  display: inline-flex;
+  padding: 14px 32px;
+  border-radius: 999px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #22c55e, #2563eb);
+  color: white;
+  font-weight: 950;
+}
 
         .offerBanner {
           max-width: 1100px;
