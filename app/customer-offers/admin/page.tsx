@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 type Offer = {
   id: number;
@@ -235,6 +236,14 @@ async function toggleAd(id: number, is_ad: boolean) {
     <main className="adminPage" dir="rtl">
       <section className="adminHero">
         <h1>إدارة عروض العملاء</h1>
+        {secret && (
+  <Link
+    href={`/customer-offers/admin-ads?secret=${encodeURIComponent(secret)}`}
+    className="adsDashboardBtn"
+  >
+    ⭐ إدارة الإعلانات
+  </Link>
+)}
         <p>
           راجع العروض، وافق أو ارفض، وتحكم في عدد العروض المسموح بها لكل عميل.
         </p>
@@ -565,7 +574,19 @@ async function toggleAd(id: number, is_ad: boolean) {
     grid-template-columns: 1fr;
   }
 }
-
+.adsDashboardBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,#f59e0b,#16a34a);
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 950;
+  margin: 12px auto 16px;
+  box-shadow: 0 10px 28px rgba(245,158,11,.25);
+}
         .secretBox,
         .errorMsg {
           max-width: 700px;
