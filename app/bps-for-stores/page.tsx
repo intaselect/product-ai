@@ -67,15 +67,7 @@ export default function BpsForStoresPage() {
             <span>✅ تحويل مباشر لمتجرك</span>
           </div>
         </div>
-        <div className="heroMegaAdd">
-  <Link href="/customer-offers/add" className="heroMegaAddBtn">
-    🚀 أضف منتجك الآن مجاناً
-
-    <span>
-      أرسل رابط المنتج وابدأ الحصول على زيارات لمتجرك
-    </span>
-  </Link>
-</div>
+        
 
         <div className="flowBox">
           <div className="flowItem">📦 منتجك</div>
@@ -292,41 +284,33 @@ export default function BpsForStoresPage() {
   align-items: center;
   justify-content: center;
 
-  width: fit-content;
-  min-width: 340px;
+  width: 100%;
+  max-width: 460px;
 
-  margin: 28px auto;
+  margin: 30px auto 18px;
+  padding: 24px 30px;
 
-  padding: 22px 42px;
+  border-radius: 24px;
 
-  border-radius: 18px;
-
-  background: linear-gradient(
-    135deg,
-    #22c55e,
-    #16a34a,
-    #2563eb
-  );
+  background: linear-gradient(135deg, #22c55e, #16a34a, #2563eb);
 
   color: #fff;
-
-  font-size: 24px;
-  font-weight: 900;
-
+  font-size: 28px;
+  font-weight: 950;
   text-decoration: none;
 
   box-shadow:
-    0 0 25px rgba(34,197,94,.5),
-    0 0 60px rgba(37,99,235,.35);
-
-  transition: all .25s ease;
+    0 0 30px rgba(34,197,94,.65),
+    0 0 80px rgba(37,99,235,.35);
 
   animation: pulseBtn 1.7s infinite;
+  transition: .25s ease;
 }
 
 .middleAddBtn:hover {
-  transform: translateY(-4px) scale(1.05);
+  transform: translateY(-5px) scale(1.05);
 }
+
 
 .middleMiniBenefits {
   display: flex;
@@ -514,64 +498,6 @@ export default function BpsForStoresPage() {
         .secondaryBtn:hover {
           transform: translateY(-3px);
         }
-          .heroMegaAdd {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.heroMegaAddBtn {
-  width: 100%;
-  max-width: 520px;
-
-  min-height: 180px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  gap: 14px;
-
-  text-decoration: none;
-
-  border-radius: 34px;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(34,197,94,.18),
-      rgba(37,99,235,.18)
-    );
-
-  backdrop-filter: blur(20px);
-
-  border: 1px solid rgba(255,255,255,.15);
-
-  box-shadow:
-    0 0 40px rgba(34,197,94,.35),
-    0 0 90px rgba(37,99,235,.25);
-
-  color: white;
-
-  font-size: 42px;
-  font-weight: 950;
-
-  transition: .25s;
-
-  animation: pulseBtn 1.8s infinite;
-}
-
-.heroMegaAddBtn:hover {
-  transform: scale(1.04);
-}
-
-.heroMegaAddBtn span {
-  font-size: 18px;
-  color: #dbeafe;
-  text-align: center;
-  max-width: 380px;
-}
 
         .flowBox {
           display: grid;
