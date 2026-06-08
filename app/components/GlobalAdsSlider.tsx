@@ -55,9 +55,9 @@ export default function GlobalAdsSlider() {
     <style jsx>{`
   .globalAdsBox {
     width: 100%;
-    background: rgba(255,255,255,.96);
+    background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
-    padding: 4px 0;
+    padding: 8px 0 10px;
     overflow: hidden;
   }
 
@@ -69,58 +69,73 @@ export default function GlobalAdsSlider() {
     max-width: 1180px;
     margin: 0 auto;
     display: flex;
-    gap: 7px;
+    gap: 10px;
     overflow-x: auto;
-    padding: 2px 8px 4px;
-    scrollbar-width: none;
+    overflow-y: hidden;
+    padding: 4px 12px 12px;
+    scroll-snap-type: x mandatory;
   }
 
   .globalAdsScroll::-webkit-scrollbar {
-    display: none;
+    height: 7px;
+  }
+
+  .globalAdsScroll::-webkit-scrollbar-track {
+    background: #e5e7eb;
+    border-radius: 999px;
+  }
+
+  .globalAdsScroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #16a34a, #2563eb);
+    border-radius: 999px;
   }
 
   .globalAdMiniCard {
-    min-width: 70px;
-    max-width: 70px;
-    height: 86px;
+    width: 96px;
+    min-width: 96px;
+    height: 126px;
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border: 1px solid #dbeafe;
+    border-radius: 16px;
     text-decoration: none;
     color: #111827;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 72px 1fr;
     align-items: center;
-    justify-content: space-between;
-    padding: 4px;
+    overflow: hidden;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(15,23,42,.06);
+    scroll-snap-align: start;
+    box-shadow: 0 8px 20px rgba(15,23,42,.08);
   }
 
   .globalAdMiniCard img {
-    width: 52px;
-    height: 42px;
+    width: 100%;
+    height: 72px;
     object-fit: contain;
+    padding: 8px;
+    background: #f8fafc;
+    border-bottom: 1px solid #eef2f7;
     display: block;
   }
 
   .globalAdMiniCard div {
     width: 100%;
     text-align: center;
-    line-height: 1.1;
+    padding: 4px 5px 6px;
+    line-height: 1.2;
   }
 
   .globalAdMiniCard span {
-    display: inline-block;
-    font-size: 8px;
+    display: block;
+    font-size: 9px;
     color: #f59e0b;
     font-weight: 950;
-    margin-bottom: 1px;
+    margin-bottom: 2px;
   }
 
   .globalAdMiniCard strong {
     display: block;
-    font-size: 10px;
+    font-size: 11px;
     color: #16a34a;
     font-weight: 950;
     white-space: nowrap;
@@ -130,29 +145,30 @@ export default function GlobalAdsSlider() {
 
   @media (max-width: 700px) {
     .globalAdsBox {
-      padding: 3px 0;
+      padding: 6px 0 9px;
     }
 
     .globalAdsScroll {
-      gap: 6px;
-      padding: 2px 7px 3px;
+      max-width: 100%;
+      gap: 8px;
+      padding: 3px 10px 11px;
     }
 
     .globalAdMiniCard {
-      min-width: 64px;
-      max-width: 64px;
-      height: 80px;
-      border-radius: 11px;
-      padding: 4px;
+      width: 86px;
+      min-width: 86px;
+      height: 116px;
+      border-radius: 14px;
+      grid-template-rows: 66px 1fr;
     }
 
     .globalAdMiniCard img {
-      width: 48px;
-      height: 38px;
+      height: 66px;
+      padding: 7px;
     }
 
     .globalAdMiniCard strong {
-      font-size: 9px;
+      font-size: 10px;
     }
   }
 `}</style>
