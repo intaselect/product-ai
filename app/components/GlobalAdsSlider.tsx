@@ -108,15 +108,16 @@ export default function GlobalAdsSlider() {
     box-shadow: 0 8px 20px rgba(15,23,42,.08);
   }
 
-  .globalAdMiniCard img {
-    width: 100%;
-    height: 72px;
-    object-fit: contain;
-    padding: 8px;
-    background: #f8fafc;
-    border-bottom: 1px solid #eef2f7;
-    display: block;
-  }
+ .globalAdMiniCard img {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+  background: #f8fafc;
+  display: block;
+  margin: 7px auto 0;
+}
 
   .globalAdMiniCard div {
     width: 100%;
@@ -163,9 +164,10 @@ export default function GlobalAdsSlider() {
     }
 
     .globalAdMiniCard img {
-      height: 66px;
-      padding: 7px;
-    }
+  width: 52px;
+  height: 52px;
+  margin-top: 6px;
+}
 
     .globalAdMiniCard strong {
       font-size: 10px;
