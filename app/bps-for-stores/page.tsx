@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
+import MarketPromoSection from "@/app/components/MarketPromoSection";
 export default function BpsForStoresPage() {
   return (
     <main className="storesLanding" dir="rtl">
@@ -79,7 +79,7 @@ export default function BpsForStoresPage() {
           <div className="flowItem">🛒 متجرك</div>
         </div>
       </section>
-
+<MarketPromoSection />
       <section className="offerBanner">
        <h2>
   أضف أول منتج مجاناً بالكامل

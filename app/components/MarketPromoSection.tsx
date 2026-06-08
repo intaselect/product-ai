@@ -138,6 +138,18 @@ export default async function MarketPromoSection({
 
             <a href={`/customer-offers?country=${safeCountry}`}>عرض كل العروض</a>
           </div>
+          <div className="marketStoreMiniCTA">
+  <div>
+    <h3>🚀 أضف منتجك مجاناً</h3>
+    <p>
+      أرسل رابط منتج واحد فقط وسنضيفه داخل BPS Chat.
+    </p>
+  </div>
+
+  <a href="/customer-offers/add">
+    أضف منتجك الآن
+  </a>
+</div>
 
           <div className="marketPromoGrid">
             {offers.map((offer) => (
@@ -176,7 +188,67 @@ export default async function MarketPromoSection({
           margin: 28px auto;
           padding: 0 20px;
         }
+.marketStoreMiniCTA{
+  margin: 20px 0 24px;
+  padding: 18px 22px;
 
+  border-radius: 20px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(34,197,94,.12),
+    rgba(37,99,235,.12)
+  );
+
+  border: 1px solid rgba(34,197,94,.25);
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.marketStoreMiniCTA h3{
+  margin:0 0 6px;
+  color:#fff;
+  font-size:22px;
+  font-weight:950;
+}
+
+.marketStoreMiniCTA p{
+  margin:0;
+  color:#cbd5e1;
+}
+
+.marketStoreMiniCTA a{
+  white-space:nowrap;
+  text-decoration:none;
+
+  padding:12px 22px;
+  border-radius:999px;
+
+  background:linear-gradient(
+    135deg,
+    #22c55e,
+    #2563eb
+  );
+
+  color:#fff;
+  font-weight:950;
+
+  box-shadow:0 0 20px rgba(34,197,94,.3);
+}
+
+.marketStoreMiniCTA a:hover{
+  transform:translateY(-2px);
+}
+
+@media(max-width:700px){
+  .marketStoreMiniCTA{
+    flex-direction:column;
+    text-align:center;
+  }
+}
         .marketPromoHero {
           padding: 42px 32px;
           border-radius: 34px;
