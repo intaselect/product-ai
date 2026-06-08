@@ -136,9 +136,12 @@ export default function BpsForStoresPage() {
 
       <section className="cta">
         <h2>جاهز لزيادة ظهور منتجاتك؟</h2>
-        <p>
-🚀 أضف أول منتج مجاناً الآن
-</p>
+        <Link
+  href="/customer-offers/add"
+  className="miniAddBtn"
+>
+  🚀 أضف أول منتج مجاناً الآن
+</Link>
 
         <div className="heroActions center">
           <Link href="/customer-offers/add" className="primaryBtn">
@@ -189,6 +192,37 @@ export default function BpsForStoresPage() {
   grid-template-columns: 1fr 1.15fr 1fr;
   gap: 28px;
   align-items: center;
+}
+  .miniAddBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:12px 22px;
+  margin-top:10px;
+
+  border-radius:999px;
+
+  background:linear-gradient(
+    135deg,
+    #ff6b35,
+    #ff8c42
+  );
+
+  color:#fff;
+  text-decoration:none;
+
+  font-weight:900;
+  font-size:16px;
+
+  box-shadow:
+    0 0 20px rgba(255,107,53,.45);
+
+  transition:.25s ease;
+}
+
+.miniAddBtn:hover{
+  transform:translateY(-2px) scale(1.05);
 }
   .heroMiddleCard {
   position: relative;
