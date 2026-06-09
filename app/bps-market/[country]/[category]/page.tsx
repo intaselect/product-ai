@@ -112,7 +112,7 @@ async function getOffers(country: string, category: string) {
     .eq("country", country)
     .contains("category", [category])
     .order("created_at", { ascending: false })
-    .limit(80);
+    .limit(800);
 
   return (data || []) as Offer[];
 }

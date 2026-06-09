@@ -101,7 +101,7 @@ async function getOffers() {
     )
     .eq("status", "approved")
     .order("created_at", { ascending: false })
-    .limit(60);
+    .limit(1000);
 
   return (data || []) as Offer[];
 }
