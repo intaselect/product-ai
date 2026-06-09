@@ -86,6 +86,29 @@ async function getSameCountryOffers(offer: any) {
 
   return data || [];
 }
+
+function buildSmartSeoQueries(productName: string, countryName: string, country: string) {
+  const name = String(productName || "").trim();
+
+  if (!name) return [];
+
+  const queries = [
+    `مراجعة ${name}`,
+    `مميزات وعيوب ${name}`,
+    `هل ${name} يستحق الشراء`,
+    `أفضل بدائل ${name}`,
+    `مقارنة ${name} مع منتجات مشابهة`,
+    `${name} في ${countryName}`,
+    `أفضل عروض ${name}`,
+    `سعر ${name} اليوم`,
+  ];
+
+  return queries.map((query) => ({
+    query,
+    slug: `${slugify(query)}-${country}`,
+  }));
+}
+
 async function getRelatedSearchTerms(productName: string, country: string) {
   const queryWords = String(productName || "")
     .split(/\s+/)
@@ -93,7 +116,11 @@ async function getRelatedSearchTerms(productName: string, country: string) {
     .filter((w) => w.length > 2)
     .slice(0, 5);
 
-  if (!queryWords.length) return [];
+  const countryName = countryNames[country] || "السعودية";
+
+  const smartTerms = buildSmartSeoQueries(productName, countryName, country);
+
+  if (!queryWords.length) return smartTerms.slice(0, 8);
 
   const searchFilters = queryWords
     .map((w) => `query.ilike.%${w}%`)
@@ -105,11 +132,14 @@ async function getRelatedSearchTerms(productName: string, country: string) {
     .eq("country", country)
     .or(searchFilters)
     .order("search_count", { ascending: false })
-    .limit(30);
+    .limit(8);
 
-  return data || [];
+  const merged = [...(data || []), ...smartTerms];
+
+  return Array.from(
+    new Map(merged.map((item: any) => [item.query, item])).values()
+  ).slice(0, 8);
 }
-
 export async function generateMetadata({
   params,
 }: {
