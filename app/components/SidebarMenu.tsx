@@ -447,6 +447,19 @@ export default function SidebarMenu() {
 
   transition: left 0.25s ease;
   box-shadow: 12px 0 40px rgba(0, 0, 0, 0.45);
+  background:
+linear-gradient(
+135deg,
+rgba(15,23,42,.98),
+rgba(17,24,39,.96),
+rgba(2,6,23,.98)
+);
+
+backdrop-filter: blur(18px);
+
+box-shadow:
+18px 0 60px rgba(0,0,0,.55),
+0 0 60px rgba(37,99,235,.12);
 }
 
 .sidebar::-webkit-scrollbar {
@@ -475,6 +488,9 @@ export default function SidebarMenu() {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          padding-bottom: 16px;
+border-bottom: 1px solid rgba(148,163,184,.12);
+margin-bottom: 18px;
 
           color: white;
           margin-bottom: 22px;
@@ -488,6 +504,8 @@ export default function SidebarMenu() {
           font-size: 14px;
           opacity: 0.7;
           margin-top: 6px;
+          color: #60a5fa;
+font-weight: 700;
         }
 
         .closeButton {
@@ -497,29 +515,51 @@ export default function SidebarMenu() {
           font-size: 28px;
           cursor: pointer;
         }
+.menuItem {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 
-        .menuItem {
-          display: block;
-          width: 100%;
-          box-sizing: border-box;
+  padding: 13px 14px;
+  margin-bottom: 8px;
 
-          padding: 13px 12px;
-          margin-bottom: 8px;
-          border-radius: 12px;
+  border-radius: 16px;
 
-          color: #ffffff !important;
-          text-decoration: none;
-          background: transparent;
-          border: none;
+  color: #ffffff !important;
+  text-decoration: none;
 
-          text-align: right;
-          font-size: 15px;
-          cursor: pointer;
-        }
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.04),
+      rgba(255,255,255,.02)
+    );
+
+  border: 1px solid rgba(148,163,184,.12);
+
+  text-align: right;
+  font-size: 15px;
+  cursor: pointer;
+
+  transition: all .25s ease;
+}
 
         .menuItem:hover {
-          background: #2f2f2f;
-        }
+  transform: translateX(-6px) scale(1.02);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37,99,235,.18),
+      rgba(16,185,129,.12)
+    );
+
+  border-color: rgba(96,165,250,.35);
+
+  box-shadow:
+    0 0 24px rgba(37,99,235,.20),
+    0 0 40px rgba(16,185,129,.10);
+}
 
         .logoutButton {
           font-family: inherit;
