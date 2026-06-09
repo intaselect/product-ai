@@ -26,7 +26,7 @@ export async function GET(req: Request) {
     .eq("is_ad", true)
     .eq("country", country)
     .order("updated_at", { ascending: false })
-    .limit(12);
+    //.limit(12);
 
   if (error) {
     return NextResponse.json([]);
