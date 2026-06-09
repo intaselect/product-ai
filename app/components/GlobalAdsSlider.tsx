@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function getCountryFromUrl() {
   if (typeof window === "undefined") return "sa";
@@ -23,7 +23,27 @@ function getCountryFromUrl() {
 
 export default function GlobalAdsSlider() {
   const [ads, setAds] = useState<any[]>([]);
-const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const moveSlider = (direction: "next" | "prev") => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const amount = Math.floor(el.clientWidth * 0.8);
+    const current = Math.abs(el.scrollLeft);
+
+    if (direction === "next") {
+      el.scrollTo({
+        left: -(current + amount),
+        behavior: "smooth",
+      });
+    } else {
+      el.scrollTo({
+        left: -(Math.max(current - amount, 0)),
+        behavior: "smooth",
+      });
+    }
+  };
 
   useEffect(() => {
     const country = getCountryFromUrl();
@@ -37,60 +57,54 @@ const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   if (!ads.length) return null;
 
   return (
-  <section className="globalAdsBox" dir="rtl">
-    <div className="globalAdsInner">
-      <div className="globalAdsHeader">
-        <span>🔥 إعلانات مميزة</span>
-        <small>اسحب لمشاهدة المزيد</small>
+    <section className="globalAdsBox" dir="rtl">
+      <div className="globalAdsInner">
+        <div className="globalAdsHeader">
+          <span>🔥 إعلانات مميزة</span>
+
+          <div className="globalAdsHeaderActions">
+            <small>اسحب لمشاهدة المزيد</small>
+
+            <button
+              type="button"
+              className="globalAdsArrow"
+              onClick={() => moveSlider("prev")}
+              aria-label="Previous ads"
+            >
+              ❯
+            </button>
+
+            <button
+              type="button"
+              className="globalAdsArrow"
+              onClick={() => moveSlider("next")}
+              aria-label="Next ads"
+            >
+              ❮
+            </button>
+          </div>
+        </div>
+
+        <div className="globalAdsScroll" ref={scrollRef}>
+          {ads.map((item) => (
+            <Link
+              key={item.id}
+              href={`/customer-offers/product/bps-chat-${item.slug}`}
+              className="globalAdCard"
+            >
+              <div className="globalAdImageBox">
+                <img src={item.image_url} alt={item.product_name} />
+                <span>إعلان</span>
+              </div>
+
+              <div className="globalAdInfo">
+                <strong>{item.price}</strong>
+                <small>{item.store_name || "BPS Chat"}</small>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
-
-      <div className="globalAdsControls">
-       <button
-  type="button"
-  className="globalAdsArrow right"
-  onClick={() => {
-    if (!scrollEl) return;
-    scrollEl.scrollLeft -= 350;
-  }}
->
-  ❯
-</button>
-
-<button
-  type="button"
-  className="globalAdsArrow left"
-  onClick={() => {
-    if (!scrollEl) return;
-    scrollEl.scrollLeft += 350;
-  }}
->
-  ❮
-</button>
-      </div>
-
-      <div
-        className="globalAdsScroll"
-        ref={(el) => setScrollEl(el)}
-      >
-        {ads.map((item) => (
-          <Link
-            key={item.id}
-            href={`/customer-offers/product/bps-chat-${item.slug}`}
-            className="globalAdCard"
-          >
-            <div className="globalAdImageBox">
-              <img src={item.image_url} alt={item.product_name} />
-              <span>إعلان</span>
-            </div>
-
-            <div className="globalAdInfo">
-              <strong>{item.price}</strong>
-              <small>{item.store_name || "BPS Chat"}</small>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
 
       <style jsx>{`
         .globalAdsBox {
@@ -122,67 +136,56 @@ const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
           font-size: 14px;
           font-weight: 950;
         }
-.globalAdsControls {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-}
 
-.globalAdsArrow {
-  width: 34px;
-  height: 34px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
+        .globalAdsHeaderActions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
 
-  background:
-    linear-gradient(135deg,#16a34a,#2563eb);
-
-  color: #fff;
-  font-size: 18px;
-  font-weight: 900;
-
-  box-shadow:
-    0 8px 20px rgba(37,99,235,.25);
-
-  transition: all .25s ease;
-}
-
-.globalAdsArrow:hover {
-  transform: scale(1.12);
-}
-
-.globalAdsArrow:active {
-  transform: scale(.95);
-}
         .globalAdsHeader small {
           color: #64748b;
           font-size: 11px;
           font-weight: 800;
         }
 
+        .globalAdsArrow {
+          width: 32px;
+          height: 32px;
+          border: none;
+          border-radius: 12px;
+          cursor: pointer;
+          background: linear-gradient(135deg, #16a34a, #2563eb);
+          color: #fff;
+          font-size: 17px;
+          font-weight: 950;
+          box-shadow: 0 8px 20px rgba(37,99,235,.25);
+          transition: all .2s ease;
+        }
+
+        .globalAdsArrow:hover {
+          transform: scale(1.12);
+        }
+
+        .globalAdsArrow:active {
+          transform: scale(.94);
+        }
+
         .globalAdsScroll {
           display: flex;
+          flex-direction: row;
           gap: 12px;
           overflow-x: auto;
           overflow-y: hidden;
           padding: 4px 2px 14px;
           scroll-snap-type: x mandatory;
+          scroll-behavior: smooth;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
         }
 
         .globalAdsScroll::-webkit-scrollbar {
-  display: none;
-}
-
-        .globalAdsScroll::-webkit-scrollbar-track {
-          background: #e5e7eb;
-          border-radius: 999px;
-        }
-
-        .globalAdsScroll::-webkit-scrollbar-thumb {
-          background: linear-gradient(90deg, #16a34a, #2563eb);
-          border-radius: 999px;
+          display: none;
         }
 
         .globalAdCard {
