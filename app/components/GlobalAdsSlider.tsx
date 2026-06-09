@@ -50,7 +50,7 @@ const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   className="globalAdsArrow right"
   onClick={() => {
     if (!scrollEl) return;
-    scrollEl.scrollLeft += 350;
+    scrollEl.scrollLeft -= 350;
   }}
 >
   ❯
@@ -61,7 +61,7 @@ const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   className="globalAdsArrow left"
   onClick={() => {
     if (!scrollEl) return;
-    scrollEl.scrollLeft -= 350;
+    scrollEl.scrollLeft += 350;
   }}
 >
   ❮
