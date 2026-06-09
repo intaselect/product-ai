@@ -14,86 +14,69 @@ export default function Navbar({ user }: { user?: any }) {
         </Link>
 
         <nav style={styles.navDesktop}>
-          <Link href="/">الرئيسية</Link>
-
-          <Link href="/advertise" style={styles.adBtn} className="adBtnHover">
-            🚀 أعلن معنا
-          </Link>
-
-          <Link href="/about">عن الموقع</Link>
-          <Link href="/contact">تواصل</Link>
-          <Link href="/privacy">سياسة الخصوصية</Link>
-          <Link href="/terms">الشروط</Link>
-          <Link href="/seller-tools">📝 أدوات البائع</Link>
-          <Link
-  href="/bps-market"
-  style={styles.fireMarketBtn}
-  className="fireMarketHover"
->
-  <span style={styles.fireMarketIcon}>🔥</span>
-  <span style={styles.fireMarketText}>ماركت</span>
-</Link>
-
-  <Link
-  href="/customer-offers"
-  style={styles.customerStoreBtn}
-  className="customerStoreHover"
->
-  <span style={styles.customerStoreIcon}>🛒</span>
-
-  <div style={styles.customerStoreContent}>
-    <span style={styles.customerStoreText}>BPS Market</span>
-    <span style={styles.customerStoreSub}>تسوّق العروض الآن</span>
+  <div style={styles.navSmallGroup}>
+    <Link href="/" style={styles.navSmallBtn}>الرئيسية</Link>
+    <Link href="/about" style={styles.navSmallBtn}>عن الموقع</Link>
+    <Link href="/contact" style={styles.navSmallBtn}>تواصل</Link>
+    <Link href="/privacy" style={styles.navSmallBtn}>سياسة الخصوصية</Link>
+    <Link href="/terms" style={styles.navSmallBtn}>الشروط</Link>
+    <Link href="/seller-tools" style={styles.navSmallBtn}>📝 أدوات البائع</Link>
   </div>
 
-  <span style={styles.customerStoreArrow}>←</span>
-</Link>
-<Link
-  href="/customer-offers/share-center"
-  style={styles.quickBrowseBtn}
-  className="quickBrowseHover"
->
-  <span style={styles.quickBrowseIcon}>⚡</span>
+  <div style={styles.navMainGroup}>
+    <Link href="/advertise" style={styles.adBtn} className="adBtnHover">
+      🚀 أعلن معنا
+    </Link>
 
-  <div style={styles.customerStoreContent}>
-    <span style={styles.quickBrowseText}>تصفح سريع</span>
-    <span style={styles.quickBrowseSub}>كل المنتجات والشير</span>
+    <Link href="/bps-market" style={styles.fireMarketBtn} className="fireMarketHover">
+      <span style={styles.fireMarketIcon}>🔥</span>
+      <span style={styles.fireMarketText}>ماركت</span>
+    </Link>
+
+    <Link href="/customer-offers" style={styles.customerStoreBtn} className="customerStoreHover">
+      <span style={styles.customerStoreIcon}>🛒</span>
+      <div style={styles.customerStoreContent}>
+        <span style={styles.customerStoreText}>BPS Market</span>
+        <span style={styles.customerStoreSub}>تسوّق العروض الآن</span>
+      </div>
+      <span style={styles.customerStoreArrow}>←</span>
+    </Link>
+
+    <Link href="/customer-offers/share-center" style={styles.quickBrowseBtn} className="quickBrowseHover">
+      <span style={styles.quickBrowseIcon}>⚡</span>
+      <div style={styles.customerStoreContent}>
+        <span style={styles.quickBrowseText}>تصفح سريع</span>
+        <span style={styles.quickBrowseSub}>كل المنتجات والشير</span>
+      </div>
+      <span style={styles.quickBrowseArrow}>←</span>
+    </Link>
+
+    <Link href="/sell-online" style={styles.sellOnlineBtn} className="sellOnlineHover">
+      <span style={styles.sellOnlineIcon}>🚀</span>
+      <div style={styles.customerStoreContent}>
+        <span style={styles.sellOnlineText}>بيع منتجاتك</span>
+        <span style={styles.sellOnlineSub}>مجاناً للتجار والهاند ميد</span>
+      </div>
+      <span style={styles.sellOnlineArrow}>←</span>
+    </Link>
   </div>
 
-  <span style={styles.quickBrowseArrow}>←</span>
-</Link>
-<Link
-  href="/sell-online"
-  style={styles.sellOnlineBtn}
-  className="sellOnlineHover"
->
-  <span style={styles.sellOnlineIcon}>🚀</span>
+  <div style={styles.navUserGroup}>
+    <Link href="/customer-offers/dashboard" style={styles.sellerDashboardBtn} className="sellerDashboardHover">
+      👤 صفحة البائعين
+    </Link>
 
-  <div style={styles.customerStoreContent}>
-    <span style={styles.sellOnlineText}>بيع منتجاتك</span>
-    <span style={styles.sellOnlineSub}>مجاناً للتجار والهاند ميد</span>
+    <Link href="/smart-search" style={styles.smartBtn} className="smartBtnHover">
+      ⚡ البحث الذكي
+    </Link>
+
+    {user ? (
+      <span>👤 {user.first_name}</span>
+    ) : (
+      <Link href="/login" style={styles.navSmallBtn}>تسجيل الدخول</Link>
+    )}
   </div>
-
-  <span style={styles.sellOnlineArrow}>←</span>
-</Link>
-          <Link
-  href="/customer-offers/dashboard"
-  style={styles.sellerDashboardBtn}
-  className="sellerDashboardHover"
->
-  👤 صفحة البائعين
-</Link>
-
-          <Link href="/smart-search" style={styles.smartBtn} className="smartBtnHover">
-            ⚡ البحث الذكي
-          </Link>
-
-          {user ? (
-            <span>👤 {user.first_name}</span>
-          ) : (
-            <Link href="/login">تسجيل الدخول</Link>
-          )}
-        </nav>
+</nav>
 
         {false && (
           <button onClick={() => setOpen(!open)} style={styles.menuBtn}>
@@ -566,12 +549,64 @@ sellerDashboardBtn: {
     textDecoration: "none",
   },
 
-  navDesktop: {
-    display: "flex",
-    alignItems: "center",
-    gap: "20px",
-    color: "#ccc",
-  },
+ navDesktop: {
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+  color: "#ccc",
+  padding: "7px",
+  borderRadius: "24px",
+  background:
+    "linear-gradient(135deg, rgba(15,23,42,.92), rgba(17,24,39,.78))",
+  border: "1px solid rgba(148,163,184,.20)",
+  boxShadow:
+    "inset 0 0 0 1px rgba(255,255,255,.04), 0 14px 40px rgba(0,0,0,.30)",
+  backdropFilter: "blur(14px)",
+},
+
+navSmallGroup: {
+  display: "flex",
+  alignItems: "center",
+  gap: "6px",
+  padding: "6px",
+  borderRadius: "18px",
+  background: "rgba(255,255,255,.045)",
+  border: "1px solid rgba(148,163,184,.14)",
+},
+
+navMainGroup: {
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  padding: "6px",
+  borderRadius: "20px",
+  background:
+    "linear-gradient(135deg, rgba(34,197,94,.08), rgba(37,99,235,.08))",
+  border: "1px solid rgba(34,211,238,.16)",
+},
+
+navUserGroup: {
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  padding: "6px",
+  borderRadius: "18px",
+  background: "rgba(124,58,237,.08)",
+  border: "1px solid rgba(167,139,250,.16)",
+},
+
+navSmallBtn: {
+  padding: "8px 10px",
+  borderRadius: "12px",
+  color: "#dbeafe",
+  textDecoration: "none",
+  fontSize: "13px",
+  fontWeight: 850,
+  background:
+    "linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.025))",
+  border: "1px solid rgba(148,163,184,.14)",
+  whiteSpace: "nowrap",
+},
 
   adBtn: {
     background: "#10a37f",
