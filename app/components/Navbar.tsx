@@ -15,12 +15,18 @@ export default function Navbar({ user }: { user?: any }) {
 
         <nav style={styles.navDesktop}>
   <div style={styles.navSmallGroup}>
-    <Link href="/" style={styles.navSmallBtn}>الرئيسية</Link>
-    <Link href="/about" style={styles.navSmallBtn}>عن الموقع</Link>
-    <Link href="/contact" style={styles.navSmallBtn}>تواصل</Link>
-    <Link href="/privacy" style={styles.navSmallBtn}>سياسة الخصوصية</Link>
-    <Link href="/terms" style={styles.navSmallBtn}>الشروط</Link>
-    <Link href="/seller-tools" style={styles.navSmallBtn}>📝 أدوات البائع</Link>
+    <Link href="/" style={styles.navSmallBtn}
+className="navSmallHover">الرئيسية</Link>
+    <Link href="/about" style={styles.navSmallBtn}
+className="navSmallHover">عن الموقع</Link>
+    <Link href="/contact" style={styles.navSmallBtn}
+className="navSmallHover">تواصل</Link>
+    <Link href="/privacy" style={styles.navSmallBtn}
+className="navSmallHover">سياسة الخصوصية</Link>
+    <Link href="/terms" style={styles.navSmallBtn}
+className="navSmallHover">الشروط</Link>
+    <Link href="/seller-tools" style={styles.navSmallBtn}
+className="navSmallHover">📝 أدوات البائع</Link>
   </div>
 
   <div style={styles.navMainGroup}>
@@ -73,7 +79,8 @@ export default function Navbar({ user }: { user?: any }) {
     {user ? (
       <span>👤 {user.first_name}</span>
     ) : (
-      <Link href="/login" style={styles.navSmallBtn}>تسجيل الدخول</Link>
+      <Link href="/login" style={styles.navSmallBtn}
+className="navSmallHover">تسجيل الدخول</Link>
     )}
   </div>
 </nav>
@@ -304,6 +311,19 @@ animation-play-state: paused;
         nav a:hover {
           color: #fff;
         }
+          .navSmallHover {
+  transition: all .25s ease;
+}
+
+.navSmallHover:hover {
+  transform: translateY(-3px) scale(1.08);
+  background: rgba(37,99,235,.18);
+  border-color: rgba(96,165,250,.35);
+  box-shadow:
+    0 0 20px rgba(37,99,235,.25),
+    0 8px 22px rgba(0,0,0,.25);
+  color: #fff !important;
+}
       `}</style>
     </header>
   );
