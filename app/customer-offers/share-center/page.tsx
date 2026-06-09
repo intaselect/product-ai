@@ -61,7 +61,7 @@ export default async function ShareCenterPage({
     .eq("status", "approved")
     .eq("country", selectedCountry)
     .order("created_at", { ascending: false })
-    .limit(300);
+    .limit(30000);
 
   const offers = data || [];
   const country = countryNames[selectedCountry] || "السعودية";
