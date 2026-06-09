@@ -92,7 +92,7 @@ async function getRelatedOffers(offer: any) {
       .eq("country", country)
       .neq("id", offer.id)
       .overlaps("category", category)
-      .limit(20);
+      .limit(40);
 
     if (data && data.length > 0) return data;
   }
@@ -103,7 +103,7 @@ async function getRelatedOffers(offer: any) {
     .eq("status", "approved")
     .eq("country", country)
     .neq("id", offer.id)
-    .limit(20);
+    .limit(40);
 
   return data || [];
 }
@@ -115,7 +115,7 @@ async function getCountryOffers(country: string, currentId: number) {
     .eq("country", country)
     .neq("id", currentId)
     .order("created_at", { ascending: false })
-    .limit(20);
+    .limit(40);
 
   return data || [];
 }

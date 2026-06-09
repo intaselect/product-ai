@@ -78,7 +78,7 @@ export default async function MarketPromoSection({
     .eq("status", "approved")
     .eq("country", safeCountry)
     .order("created_at", { ascending: false })
-    .limit(4);
+    .limit(12);
 
   const offers = (data || []) as MarketOffer[];
 

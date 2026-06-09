@@ -45,7 +45,7 @@ export default async function BlogPage() {
     .from("product_cache")
     .select("query, country, updated_at, results")
     .order("updated_at", { ascending: false })
-    .limit(60);
+    .limit(220);
 
   const validPosts = (cachePosts || []).filter((item: any) => {
     return item?.query && item?.country && Array.isArray(item?.results) && item.results.length > 0;
@@ -56,7 +56,7 @@ export default async function BlogPage() {
     .select("product_name, country, updated_at")
     .eq("status", "approved")
     .order("updated_at", { ascending: false })
-    .limit(24);
+    .limit(30);
 
   return (
     <main dir="rtl" className="blogPage">

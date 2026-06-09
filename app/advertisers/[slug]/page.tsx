@@ -65,7 +65,7 @@ const { data: offers } = await supabase
   .eq("status", "approved")
   .eq("country", countryCode)
   .order("created_at", { ascending: false })
-  .limit(6);
+  .limit(24);
 
   const related = relatedPages.filter((p) => p.slug !== slug).slice(0, 5);
 

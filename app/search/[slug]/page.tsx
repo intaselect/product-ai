@@ -338,7 +338,7 @@ const { data: marketOffers } = await supabase
   .eq("status", "approved")
   .eq("country", countryCode)
   .order("created_at", { ascending: false })
-  .limit(10);
+  .limit(40);
 
 const slugMarketOffers = (marketOffers || []) as MarketOffer[];
 return (

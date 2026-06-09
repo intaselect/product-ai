@@ -146,7 +146,7 @@ export default async function ComparePage({
     .eq("country", countryCode)
     .ilike("product_name", `%${cleanQuery}%`)
     .order("created_at", { ascending: false })
-    .limit(40);
+    .limit(80);
 
   const marketProducts = marketRows || [];
 

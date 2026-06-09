@@ -152,7 +152,7 @@ async function getMarketOffers(productName: string, countryCode: string) {
     .eq("status", "approved")
     .eq("country", countryCode)
     .order("created_at", { ascending: false })
-    .limit(8);
+    .limit(40);
 
   if (firstWord) {
     query = query.ilike("product_name", `%${firstWord}%`);
@@ -173,7 +173,7 @@ async function getRelatedSearches(productName: string, countryCode: string) {
     .eq("country", countryCode)
     .ilike("query", `%${firstWord}%`)
     .order("search_count", { ascending: false })
-    .limit(14);
+    .limit(40);
 
   return data || [];
 }

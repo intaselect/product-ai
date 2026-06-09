@@ -82,7 +82,7 @@ async function getSameCountryOffers(offer: any) {
 .eq("country", offer.country || "sa")
 .neq("id", offer.id)
 .order("created_at", { ascending: false })
-.limit(20);
+.limit(40);
 
   return data || [];
 }

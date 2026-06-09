@@ -101,7 +101,7 @@ async function getPost(slug: string) {
     .eq("status", "approved")
     .eq("country", parsed.country)
     .ilike("product_name", `%${parsed.query}%`)
-    .limit(12);
+    .limit(32);
 
   if (offers && offers.length > 0) {
     return {

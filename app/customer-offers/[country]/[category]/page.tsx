@@ -117,7 +117,7 @@ export default async function CategoryCountryOffersPage({
     .eq("country", country)
     .overlaps("category", [category])
     .order("updated_at", { ascending: false })
-    .limit(60);
+    .limit(1000);
 
   const list = offers || [];
 

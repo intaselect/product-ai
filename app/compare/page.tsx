@@ -59,25 +59,25 @@ export default async function CompareHomePage() {
       .from("search_terms")
       .select("query, country, search_count, updated_at")
       .order("search_count", { ascending: false })
-      .limit(60),
+      .limit(120),
 
     supabase
       .from("customer_offers")
       .select("product_name, country, created_at")
       .eq("status", "approved")
       .order("created_at", { ascending: false })
-      .limit(60),
+      .limit(120),
   ]);
 
   const dynamicSearches =
     (searches || [])
       .filter((item: any) => item?.query && item?.country)
-      .slice(0, 18) || [];
+      .slice(0, 30) || [];
 
   const dynamicOffers =
     (offers || [])
       .filter((item: any) => item?.product_name && item?.country)
-      .slice(0, 18) || [];
+      .slice(0, 30) || [];
 
   return (
     <main className="compareHomePage" dir="rtl">

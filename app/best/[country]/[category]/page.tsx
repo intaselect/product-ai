@@ -105,7 +105,7 @@ export default async function BestCategoryPage({
     .eq("country", safeCountry)
     .overlaps("category", [safeCategory])
     .order("created_at", { ascending: false })
-    .limit(30);
+    .limit(400);
 
   const products = offers || [];
 

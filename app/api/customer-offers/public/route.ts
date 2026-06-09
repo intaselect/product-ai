@@ -20,7 +20,7 @@ export async function GET() {
           .eq("status", "approved")
           .eq("country", country)
           .order("created_at", { ascending: false })
-          .limit(20);
+          .limit(600);
 
         return data || [];
       })
