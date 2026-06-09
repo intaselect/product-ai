@@ -341,6 +341,22 @@ const { data: marketOffers } = await supabase
   .limit(40);
 
 const slugMarketOffers = (marketOffers || []) as MarketOffer[];
+const queryWords = String(query || "")
+  .split(/\s+/)
+  .filter((w) => w.length > 2)
+  .slice(0, 4);
+
+const searchFilters = queryWords
+  .map((w) => `query.ilike.%${w}%`)
+  .join(",");
+
+const { data: relatedSearchTerms } = await supabase
+  .from("search_terms")
+  .select("query, slug, search_count")
+  .eq("country", countryCode)
+  .or(searchFilters)
+  .order("search_count", { ascending: false })
+  .limit(30);
 return (
   <>
     <SidebarMenu />
@@ -657,6 +673,25 @@ return (
 
 <section style={{ marginTop: "20px" }}>
   <h2>كلمات مرتبطة بـ {data?.query || query}</h2>
+  {relatedSearchTerms && relatedSearchTerms.length > 0 && (
+  <>
+    <h3 style={{ marginTop: "20px" }}>
+      عمليات بحث حقيقية مرتبطة بـ {data?.query || query}
+    </h3>
+
+    <div className="relatedSearchLinks">
+      {relatedSearchTerms.map((item: any) => (
+        <a
+          key={item.slug}
+          href={`/search/${item.slug}`}
+          className="relatedSearchLink"
+        >
+          {item.query}
+        </a>
+      ))}
+    </div>
+  </>
+)}
 
   <p style={{ lineHeight: "2" }}>
     سعر {data?.query || query} في {countryName} - 
@@ -1150,6 +1185,28 @@ overflow: hidden;
     flex-direction: column;
     align-items: flex-start;
   }
+}
+  .relatedSearchLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.relatedSearchLink {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(0,255,200,0.25);
+  color: #7fffe0;
+  text-decoration: none;
+  font-weight: 800;
+  transition: .25s;
+}
+
+.relatedSearchLink:hover {
+  background: rgba(0,255,200,0.12);
+  transform: translateY(-2px);
 }
 `}</style>
      </main>

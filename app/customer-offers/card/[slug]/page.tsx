@@ -86,6 +86,29 @@ async function getSameCountryOffers(offer: any) {
 
   return data || [];
 }
+async function getRelatedSearchTerms(productName: string, country: string) {
+  const queryWords = String(productName || "")
+    .split(/\s+/)
+    .map((w) => w.trim())
+    .filter((w) => w.length > 2)
+    .slice(0, 5);
+
+  if (!queryWords.length) return [];
+
+  const searchFilters = queryWords
+    .map((w) => `query.ilike.%${w}%`)
+    .join(",");
+
+  const { data } = await supabase
+    .from("search_terms")
+    .select("query, slug, search_count, country")
+    .eq("country", country)
+    .or(searchFilters)
+    .order("search_count", { ascending: false })
+    .limit(30);
+
+  return data || [];
+}
 
 export async function generateMetadata({
   params,
@@ -153,6 +176,10 @@ export default async function OfferCardSeoPage({
   if (!offer) notFound();
 
   const relatedOffers = await getSameCountryOffers(offer);
+  const relatedSearchTerms = await getRelatedSearchTerms(
+  offer.product_name,
+  offer.country || "sa"
+);
 
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
@@ -360,14 +387,29 @@ ${shareUrl}`
           ))}
         </div>
       </section>
-      <div className="quickSeoLinks">
+    <div className="quickSeoLinks">
   {relatedOffers.slice(0, 12).map((item: any) => (
     <Link key={item.id} href={productSeoUrl(item)}>
       {item.product_name}
     </Link>
   ))}
 </div>
-      <ComparePricesSection />
+
+{relatedSearchTerms.length > 0 && (
+  <section className="seoTextBox">
+    <h2>عمليات بحث مرتبطة بـ {offer.product_name}</h2>
+
+    <div className="quickSeoLinks insideBox">
+      {relatedSearchTerms.map((item: any) => (
+        <Link key={`${item.slug}-${item.query}`} href={`/search/${item.slug}`}>
+          {item.query}
+        </Link>
+      ))}
+    </div>
+  </section>
+)}
+
+<ComparePricesSection />
 
       <section className="seoTextBox">
         <h2>كارت عرض {offer.product_name} داخل BPS Chat</h2>
@@ -772,6 +814,9 @@ ${shareUrl}`
 .quickSeoLinks a:hover {
   color: #16a34a;
   border-color: #16a34a;
+}
+  .quickSeoLinks.insideBox {
+  margin: 16px 0 0;
 }
 
         .premiumShareBox {
