@@ -45,25 +45,27 @@ const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
       </div>
 
       <div className="globalAdsControls">
-        <button
-          type="button"
-          className="globalAdsArrow right"
-          onClick={() =>
-            scrollEl?.scrollBy({ left: -350, behavior: "smooth" })
-          }
-        >
-          ❯
-        </button>
+       <button
+  type="button"
+  className="globalAdsArrow right"
+  onClick={() => {
+    if (!scrollEl) return;
+    scrollEl.scrollLeft += 350;
+  }}
+>
+  ❯
+</button>
 
-        <button
-          type="button"
-          className="globalAdsArrow left"
-          onClick={() =>
-            scrollEl?.scrollBy({ left: 350, behavior: "smooth" })
-          }
-        >
-          ❮
-        </button>
+<button
+  type="button"
+  className="globalAdsArrow left"
+  onClick={() => {
+    if (!scrollEl) return;
+    scrollEl.scrollLeft -= 350;
+  }}
+>
+  ❮
+</button>
       </div>
 
       <div
