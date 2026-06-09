@@ -23,6 +23,7 @@ function getCountryFromUrl() {
 
 export default function GlobalAdsSlider() {
   const [ads, setAds] = useState<any[]>([]);
+const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const country = getCountryFromUrl();
@@ -36,33 +37,58 @@ export default function GlobalAdsSlider() {
   if (!ads.length) return null;
 
   return (
-    <section className="globalAdsBox" dir="rtl">
-      <div className="globalAdsInner">
-        <div className="globalAdsHeader">
-          <span>🔥 إعلانات مميزة</span>
-          <small>اسحب لمشاهدة المزيد</small>
-        </div>
-
-        <div className="globalAdsScroll">
-          {ads.map((item) => (
-            <Link
-              key={item.id}
-              href={`/customer-offers/product/bps-chat-${item.slug}`}
-              className="globalAdCard"
-            >
-              <div className="globalAdImageBox">
-                <img src={item.image_url} alt={item.product_name} />
-                <span>إعلان</span>
-              </div>
-
-              <div className="globalAdInfo">
-                <strong>{item.price}</strong>
-                <small>{item.store_name || "BPS Chat"}</small>
-              </div>
-            </Link>
-          ))}
-        </div>
+  <section className="globalAdsBox" dir="rtl">
+    <div className="globalAdsInner">
+      <div className="globalAdsHeader">
+        <span>🔥 إعلانات مميزة</span>
+        <small>اسحب لمشاهدة المزيد</small>
       </div>
+
+      <div className="globalAdsControls">
+        <button
+          type="button"
+          className="globalAdsArrow right"
+          onClick={() =>
+            scrollEl?.scrollBy({ left: -350, behavior: "smooth" })
+          }
+        >
+          ❯
+        </button>
+
+        <button
+          type="button"
+          className="globalAdsArrow left"
+          onClick={() =>
+            scrollEl?.scrollBy({ left: 350, behavior: "smooth" })
+          }
+        >
+          ❮
+        </button>
+      </div>
+
+      <div
+        className="globalAdsScroll"
+        ref={(el) => setScrollEl(el)}
+      >
+        {ads.map((item) => (
+          <Link
+            key={item.id}
+            href={`/customer-offers/product/bps-chat-${item.slug}`}
+            className="globalAdCard"
+          >
+            <div className="globalAdImageBox">
+              <img src={item.image_url} alt={item.product_name} />
+              <span>إعلان</span>
+            </div>
+
+            <div className="globalAdInfo">
+              <strong>{item.price}</strong>
+              <small>{item.store_name || "BPS Chat"}</small>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
 
       <style jsx>{`
         .globalAdsBox {
@@ -94,7 +120,40 @@ export default function GlobalAdsSlider() {
           font-size: 14px;
           font-weight: 950;
         }
+.globalAdsControls {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
 
+.globalAdsArrow {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+
+  background:
+    linear-gradient(135deg,#16a34a,#2563eb);
+
+  color: #fff;
+  font-size: 18px;
+  font-weight: 900;
+
+  box-shadow:
+    0 8px 20px rgba(37,99,235,.25);
+
+  transition: all .25s ease;
+}
+
+.globalAdsArrow:hover {
+  transform: scale(1.12);
+}
+
+.globalAdsArrow:active {
+  transform: scale(.95);
+}
         .globalAdsHeader small {
           color: #64748b;
           font-size: 11px;
@@ -111,8 +170,8 @@ export default function GlobalAdsSlider() {
         }
 
         .globalAdsScroll::-webkit-scrollbar {
-          height: 8px;
-        }
+  display: none;
+}
 
         .globalAdsScroll::-webkit-scrollbar-track {
           background: #e5e7eb;
