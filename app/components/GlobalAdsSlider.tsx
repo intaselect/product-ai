@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 function getCountryFromUrl() {
   if (typeof window === "undefined") return "sa";
@@ -23,27 +23,6 @@ function getCountryFromUrl() {
 
 export default function GlobalAdsSlider() {
   const [ads, setAds] = useState<any[]>([]);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  const moveSlider = (direction: "next" | "prev") => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const amount = Math.floor(el.clientWidth * 0.8);
-    const current = Math.abs(el.scrollLeft);
-
-    if (direction === "next") {
-      el.scrollTo({
-        left: -(current + amount),
-        behavior: "smooth",
-      });
-    } else {
-      el.scrollTo({
-        left: -(Math.max(current - amount, 0)),
-        behavior: "smooth",
-      });
-    }
-  };
 
   useEffect(() => {
     const country = getCountryFromUrl();
@@ -61,31 +40,10 @@ export default function GlobalAdsSlider() {
       <div className="globalAdsInner">
         <div className="globalAdsHeader">
           <span>🔥 إعلانات مميزة</span>
-
-          <div className="globalAdsHeaderActions">
-            <small>اسحب لمشاهدة المزيد</small>
-
-            <button
-              type="button"
-              className="globalAdsArrow"
-              onClick={() => moveSlider("prev")}
-              aria-label="Previous ads"
-            >
-              ❯
-            </button>
-
-            <button
-              type="button"
-              className="globalAdsArrow"
-              onClick={() => moveSlider("next")}
-              aria-label="Next ads"
-            >
-              ❮
-            </button>
-          </div>
+          <small>اسحب لمشاهدة المزيد</small>
         </div>
 
-        <div className="globalAdsScroll" ref={scrollRef}>
+        <div className="globalAdsScroll">
           {ads.map((item) => (
             <Link
               key={item.id}
@@ -137,55 +95,33 @@ export default function GlobalAdsSlider() {
           font-weight: 950;
         }
 
-        .globalAdsHeaderActions {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
         .globalAdsHeader small {
           color: #64748b;
           font-size: 11px;
           font-weight: 800;
         }
 
-        .globalAdsArrow {
-          width: 32px;
-          height: 32px;
-          border: none;
-          border-radius: 12px;
-          cursor: pointer;
-          background: linear-gradient(135deg, #16a34a, #2563eb);
-          color: #fff;
-          font-size: 17px;
-          font-weight: 950;
-          box-shadow: 0 8px 20px rgba(37,99,235,.25);
-          transition: all .2s ease;
-        }
-
-        .globalAdsArrow:hover {
-          transform: scale(1.12);
-        }
-
-        .globalAdsArrow:active {
-          transform: scale(.94);
-        }
-
         .globalAdsScroll {
           display: flex;
-          flex-direction: row;
           gap: 12px;
           overflow-x: auto;
           overflow-y: hidden;
           padding: 4px 2px 14px;
           scroll-snap-type: x mandatory;
-          scroll-behavior: smooth;
-          scrollbar-width: none;
-          -ms-overflow-style: none;
         }
 
         .globalAdsScroll::-webkit-scrollbar {
-          display: none;
+          height: 8px;
+        }
+
+        .globalAdsScroll::-webkit-scrollbar-track {
+          background: #e5e7eb;
+          border-radius: 999px;
+        }
+
+        .globalAdsScroll::-webkit-scrollbar-thumb {
+          background: linear-gradient(90deg, #16a34a, #2563eb);
+          border-radius: 999px;
         }
 
         .globalAdCard {
