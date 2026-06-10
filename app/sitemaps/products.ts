@@ -25,7 +25,7 @@ export default async function sitemap() {
       .from("customer_offers")
       .select("id, product_name, country, updated_at")
       .eq("status", "approved")
-      .order("updated_at", { ascending: false })
+      .order("id", { ascending: false })
       .limit(50000),
 
     supabase
