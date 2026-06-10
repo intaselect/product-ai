@@ -829,7 +829,7 @@ return (
     {hasMore && (
       <div className="loadMoreBox">
         <a className="loadMoreBtn" href={buildOffersUrl(page + 1)}>
-          مشاهدة المزيد — تحميل 100 منتج إضافي
+        مشاهدة المزيد
         </a>
       </div>
     )}
@@ -904,7 +904,73 @@ return (
   justify-content: space-between;
   margin-bottom: 18px;
 }
+.loadMoreBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto 40px;
+}
 
+.loadMoreBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 320px;
+  height: 58px;
+
+  padding: 0 28px;
+
+  border-radius: 18px;
+
+  text-decoration: none;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #22c55e
+  );
+
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 900;
+
+  box-shadow:
+    0 12px 30px rgba(37,99,235,.25),
+    0 0 25px rgba(34,197,94,.18);
+
+  transition: all .25s ease;
+}
+
+.loadMoreBtn:hover {
+  transform: translateY(-4px) scale(1.03);
+
+  box-shadow:
+    0 18px 40px rgba(37,99,235,.35),
+    0 0 35px rgba(34,197,94,.25);
+}
+
+.loadMoreBtn::before {
+  content: "📦";
+  margin-left: 10px;
+}
+
+@media (max-width:700px) {
+  .loadMoreBox {
+    padding: 0 12px;
+  }
+
+  .loadMoreBtn {
+    width: 100%;
+    min-width: auto;
+    height: 54px;
+
+    font-size: 14px;
+    border-radius: 14px;
+  }
+}
 .categoryCircleHeader h2 {
   margin: 0;
   color: #111827;
