@@ -9,9 +9,9 @@
     "lint": "eslint",
     "youtube:store-shorts": "tsx scripts/youtube-store-shorts.ts",
     "youtube:store-videos": "tsx scripts/youtube-store-videos.ts"
-    
   },
   "dependencies": {
+    "@google/genai": "^2.8.0",
     "@remotion/bundler": "^4.0.462",
     "@remotion/player": "^4.0.462",
     "@remotion/renderer": "^4.0.462",
