@@ -8,9 +8,6 @@ export default function Head() {
         content="BPS Chat بي بي اس شات يساعدك على مقارنة أسعار المنتجات والعروض في السعودية والإمارات والكويت وقطر والبحرين ومصر قبل الشراء."
       />
 
-      <link rel="canonical" href="https://www.bpschat.com/" />
-
-      <meta property="og:title" content="BPS Chat | بي بي اس شات" />
       <meta
         property="og:description"
         content="قارن أسعار المنتجات والعروض في السعودية والخليج ومصر عبر BPS Chat."
