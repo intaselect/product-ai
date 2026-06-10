@@ -41,15 +41,15 @@ export default async function sitemap() {
       const country = item.country || "sa";
 
       return [
-        {
-          url: `${SITE_URL}/customer-offers/product/${name}-${country}-${item.id}`,
-          lastModified: item.updated_at ? new Date(item.updated_at) : new Date(),
-        },
-        {
-          url: `${SITE_URL}/customer-offers/card/${name}-${country}-${item.id}`,
-          lastModified: item.updated_at ? new Date(item.updated_at) : new Date(),
-        },
-      ];
+  {
+    url: `${SITE_URL}/customer-offers/product/bps-chat-${name}-${country}-${item.id}`,
+    lastModified: item.updated_at ? new Date(item.updated_at) : new Date(),
+  },
+  {
+    url: `${SITE_URL}/customer-offers/card/bps-chat-${name}-${country}-${item.id}`,
+    lastModified: item.updated_at ? new Date(item.updated_at) : new Date(),
+  },
+];
     }) || [];
 
   const productHubUrls =

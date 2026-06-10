@@ -56,14 +56,14 @@ export async function GET() {
       return [
         `
   <url>
-    <loc>${xmlEscape(`${SITE_URL}/customer-offers/product/${name}-${country}-${item.id}`)}</loc>
+    <loc>${xmlEscape(`${SITE_URL}/customer-offers/product/bps-chat-${name}-${country}-${item.id}`)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>`,
         `
   <url>
-    <loc>${xmlEscape(`${SITE_URL}/customer-offers/card/${name}-${country}-${item.id}`)}</loc>
+    <loc>${xmlEscape(`${SITE_URL}/customer-offers/card/bps-chat-${name}-${country}-${item.id}`)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
