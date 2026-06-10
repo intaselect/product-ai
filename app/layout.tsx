@@ -181,12 +181,6 @@ export default function RootLayout({
       <span>🛒</span>
       <b>المتجر</b>
     </a>
-
-    <a href="/advertise" className="mobileFloatingItem">
-      <span>🚀</span>
-      <b>أعلن معنا</b>
-    </a>
-
     <a href="/customer-offers/add" className="mobileFloatingItem highlight">
       <span>🎁</span>
       <b>أضف منتجك</b>
