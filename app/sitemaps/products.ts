@@ -18,22 +18,38 @@ function slugify(text: string) {
     .replace(/\s+/g, "-")
     .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
 }
+async function getAllApprovedOffers() {
+  const pageSize = 1000;
+  let from = 0;
+  let all: any[] = [];
 
-export default async function sitemap() {
-  const [{ data: offers }, { data: cachedProducts }] = await Promise.all([
-    supabase
+  while (true) {
+    const { data, error } = await supabase
       .from("customer_offers")
       .select("id, product_name, country, updated_at")
       .eq("status", "approved")
       .order("id", { ascending: false })
-      .limit(50000),
+      .range(from, from + pageSize - 1);
 
-    supabase
-      .from("product_cache")
-      .select("query, country, updated_at, results")
-      .order("updated_at", { ascending: false })
-      .limit(50000),
-  ]);
+    if (error || !data?.length) break;
+
+    all = [...all, ...data];
+
+    if (data.length < pageSize) break;
+
+    from += pageSize;
+  }
+
+  return all;
+}
+export default async function sitemap() {
+  const offers = await getAllApprovedOffers();
+
+  const { data: cachedProducts } = await supabase
+    .from("product_cache")
+    .select("query, country, updated_at, results")
+    .order("updated_at", { ascending: false })
+    .limit(50000);
 
   const offerUrls =
     offers?.flatMap((item) => {

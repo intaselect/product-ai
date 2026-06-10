@@ -28,23 +28,40 @@ function xmlEscape(value: string) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
 }
+async function getAllApprovedOffers() {
+  const pageSize = 1000;
+  let from = 0;
+  let all: any[] = [];
 
-export async function GET() {
-  const [{ data: offers }, { data: cachedProducts }] = await Promise.all([
-    supabase
+  while (true) {
+    const { data, error } = await supabase
       .from("customer_offers")
       .select("id, product_name, country, updated_at")
       .eq("status", "approved")
       .order("id", { ascending: false })
-      .limit(50000),
+      .range(from, from + pageSize - 1);
 
-    supabase
-      .from("product_cache")
-      .select("query, country, updated_at, results")
-      .order("updated_at", { ascending: false })
-      .limit(50000),
-  ]);
+    if (error || !data?.length) break;
 
+    all = [...all, ...data];
+
+    if (data.length < pageSize) break;
+
+    from += pageSize;
+  }
+
+  return all;
+}
+
+export async function GET() {
+  const offers = await getAllApprovedOffers();
+
+  const { data: cachedProducts } = await supabase
+    .from("product_cache")
+    .select("query, country, updated_at, results")
+    .order("updated_at", { ascending: false })
+    .limit(50000);
+    
   const offerUrls =
     offers?.flatMap((item: any) => {
       const name = slugify(item.product_name || "product");
