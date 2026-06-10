@@ -292,12 +292,9 @@ const categorySliderItems = Object.entries(categoryCards)
       key,
       ...cat,
       image: categoryOffer?.image_url || "",
-      count: filteredOffers.filter((offer) =>
-        (offer.category || []).includes(key)
-      ).length,
     };
-  })
-  .filter((item) => item.count > 0);
+  });
+ 
 return (
   <main className="customerOffersPage" dir="rtl">
     
@@ -655,30 +652,29 @@ return (
 
     <div className="categoryCircleTrack">
       {categorySliderItems.map((cat) => (
-        <a
-          key={cat.key}
-          href={
-            selectedCountry === "all"
-              ? `/customer-offers?category=${cat.key}`
-              : `/customer-offers?category=${cat.key}&country=${selectedCountry}`
-          }
-          className={
-            selectedCategory === cat.key
-              ? "categoryCircleCard active"
-              : "categoryCircleCard"
-          }
-        >
-          <div className="categoryCircleImage">
-            {cat.image ? (
-              <img src={cat.image} alt={cat.ar} />
-            ) : (
-              <span>{cat.icon}</span>
-            )}
-          </div>
+       <a
+  key={cat.key}
+  href={
+    selectedCountry === "all"
+      ? `/customer-offers?category=${cat.key}`
+      : `/customer-offers?category=${cat.key}&country=${selectedCountry}`
+  }
+  className={
+    selectedCategory === cat.key
+      ? "categoryCircleCard active"
+      : "categoryCircleCard"
+  }
+>
+  <div className="categoryCircleImage">
+    {cat.image ? (
+      <img src={cat.image} alt={cat.ar} />
+    ) : (
+      <span>{cat.icon}</span>
+    )}
+  </div>
 
-          <strong>{cat.ar}</strong>
-          <small>{cat.count} عرض</small>
-        </a>
+  <strong>{cat.ar}</strong>
+</a>
       ))}
     </div>
   </section>
