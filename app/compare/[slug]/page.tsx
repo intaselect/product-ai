@@ -34,15 +34,26 @@ async function getComparison(slug: string) {
 }
 
 async function getRelatedOffers(product1: string, product2: string) {
-  const p1 = product1.split(" ").slice(0, 3).join(" ");
-  const p2 = product2.split(" ").slice(0, 3).join(" ");
+  const p1 = product1.split(" ").slice(0, 2).join(" ");
+  const p2 = product2.split(" ").slice(0, 2).join(" ");
 
   const { data } = await supabaseAdmin
     .from("customer_offers")
     .select("*")
     .eq("status", "approved")
     .or(`product_name.ilike.%${p1}%,product_name.ilike.%${p2}%`)
-    .limit(8);
+    .limit(12);
+
+  return data || [];
+}
+
+async function getLatestCountryOffers() {
+  const { data } = await supabaseAdmin
+    .from("customer_offers")
+    .select("*")
+    .eq("status", "approved")
+    .order("created_at", { ascending: false })
+    .limit(24);
 
   return data || [];
 }
@@ -90,7 +101,8 @@ export default async function ComparePage({ params }: PageProps) {
     comparison.product1_name || "",
     comparison.product2_name || ""
   );
-
+  
+const latestOffers = await getLatestCountryOffers();
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -180,47 +192,98 @@ export default async function ComparePage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: comparison.content || "" }}
       />
 
-      {relatedOffers.length > 0 && (
-        <section className="relatedOffers">
-          <div className="sectionHead">
-            <h2>عروض مرتبطة بالمقارنة</h2>
-            <p>منتجات قريبة من نفس المقارنة ومتاحة داخل متجر عملاء BPS Chat.</p>
+    {relatedOffers.length > 0 && (
+  <section className="relatedOffers">
+    <div className="sectionHead">
+      <h2>عروض مرتبطة بالمقارنة</h2>
+      <p>منتجات قريبة من نفس المقارنة ومتاحة داخل متجر عملاء BPS Chat.</p>
+    </div>
+
+    <div className="offersGrid">
+      {relatedOffers.map((offer: any) => (
+        <article className="offerCard" key={offer.id}>
+          <div className="offerImage">
+            {offer.image_url ? (
+              <img src={offer.image_url} alt={offer.product_name} />
+            ) : (
+              <span>🛍️</span>
+            )}
           </div>
 
-          <div className="offersGrid">
-            {relatedOffers.map((offer: any) => (
-              <article className="offerCard" key={offer.id}>
-                <div className="offerImage">
-                  {offer.image_url ? (
-                    <img src={offer.image_url} alt={offer.product_name} />
-                  ) : (
-                    <span>🛍️</span>
-                  )}
-                </div>
+          <div className="offerBody">
+            <h3>{offer.product_name}</h3>
+            <strong>{offer.price}</strong>
+            <p>{offer.store_name || "متجر غير محدد"}</p>
 
-                <div className="offerBody">
-                  <h3>{offer.product_name}</h3>
-                  <strong>{offer.price}</strong>
-                  <p>{offer.store_name || "متجر غير محدد"}</p>
-
-                  <a
-                    href={
-                      offer.id
-                        ? `/api/customer-offers/click/${offer.id}`
-                        : offer.product_url
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    الذهاب للعرض
-                  </a>
-                </div>
-              </article>
-            ))}
+            <a
+              href={`/api/customer-offers/click/${offer.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              الذهاب للعرض
+            </a>
           </div>
-        </section>
-      )}
+        </article>
+      ))}
+    </div>
+  </section>
+)}
 
+<section className="storeCtaBox">
+  <h2>🛍️ تصفح عروض ومنتجات BPS Chat</h2>
+  <p>
+    بعد قراءة المقارنة، تقدر تشوف أحدث عروض المتاجر في السعودية والإمارات
+    ومصر والكويت وقطر والبحرين داخل متجر عملاء BPS Chat.
+  </p>
+
+  <div className="storeCtaActions">
+    <Link href="/customer-offers">ادخل متجر العملاء</Link>
+    <Link href="/customer-offers/add">أضف منتجك مجانًا</Link>
+    <Link href="/">ابحث عن أفضل سعر</Link>
+  </div>
+</section>
+        
+      
+{latestOffers.length > 0 && (
+  <section className="latestOffers">
+    <div className="sectionHead">
+      <h2>أحدث المنتجات من كل الدول</h2>
+      <p>
+        منتجات وعروض حديثة من متاجر العملاء داخل BPS Chat.
+      </p>
+    </div>
+
+    <div className="offersGrid">
+      {latestOffers.map((offer: any) => (
+        <article className="offerCard" key={offer.id}>
+          <div className="offerImage">
+            {offer.image_url ? (
+              <img src={offer.image_url} alt={offer.product_name} />
+            ) : (
+              <span>🛍️</span>
+            )}
+          </div>
+
+          <div className="offerBody">
+            <h3>{offer.product_name}</h3>
+            <strong>{offer.price}</strong>
+            <p>
+              {offer.store_name || "متجر غير محدد"} • {offer.country}
+            </p>
+
+            <a
+              href={`/api/customer-offers/click/${offer.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ادخل المتجر
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+)}
       <section className="seoBoost">
         <SearchBeforeBuyBanner />
         <TrustedSourcesBar />
@@ -254,7 +317,54 @@ const styles = `
   border: 1px solid rgba(255,255,255,.09);
   box-shadow: 0 25px 80px rgba(0,0,0,.35);
 }
+.storeCtaBox {
+  max-width: 1050px;
+  margin: 0 auto 26px;
+  padding: 28px;
+  text-align: center;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(37,99,235,.14));
+  border: 1px solid rgba(34,197,94,.35);
+  box-shadow: 0 0 45px rgba(34,197,94,.15);
+}
 
+.storeCtaBox h2 {
+  margin: 0 0 10px;
+  font-size: 32px;
+  color: #bbf7d0;
+}
+
+.storeCtaBox p {
+  max-width: 760px;
+  margin: 0 auto 18px;
+  color: #e5e7eb;
+  line-height: 1.9;
+}
+
+.storeCtaActions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.storeCtaActions a {
+  text-decoration: none;
+  color: white;
+  padding: 13px 20px;
+  border-radius: 999px;
+  font-weight: 950;
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+}
+
+.latestOffers {
+  max-width: 1050px;
+  margin: 0 auto 26px;
+  padding: 24px;
+  border-radius: 30px;
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.08);
+}
 .backLink {
   color: #bbf7d0;
   text-decoration: none;
