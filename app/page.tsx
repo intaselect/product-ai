@@ -946,6 +946,47 @@ async function handleSearch() {
     </section>
   </>
 )}
+<section className="homeAdsenseContent">
+
+  <h2>كيف يعمل BPS Chat؟</h2>
+
+  <p>
+    BPS Chat هو محرك بحث متخصص في مقارنة أسعار المنتجات
+    في السعودية والإمارات والكويت وقطر والبحرين ومصر.
+    يساعد المستخدمين على الوصول إلى أفضل الأسعار
+    والعروض من متاجر متعددة في مكان واحد.
+  </p>
+
+  <p>
+    بدلاً من زيارة عشرات المتاجر بشكل منفصل،
+    يمكن للمستخدم البحث مرة واحدة ومقارنة الأسعار
+    والعروض المتاحة بسرعة وسهولة.
+  </p>
+
+  <h2>لماذا تختلف الأسعار بين المتاجر؟</h2>
+
+  <p>
+    تختلف الأسعار بسبب العروض الموسمية،
+    وسياسات الشحن، وتوافر المخزون،
+    والعروض الخاصة بكل متجر.
+  </p>
+
+  <p>
+    لذلك تساعد مقارنة الأسعار قبل الشراء
+    في الحصول على أفضل قيمة ممكنة
+    وتجنب دفع مبالغ أعلى لنفس المنتج.
+  </p>
+
+  <h2>لماذا يثق المستخدمون في BPS Chat؟</h2>
+
+  <p>
+    يعمل BPS Chat على تنظيم نتائج المنتجات
+    وعرضها بطريقة سهلة تساعد المستخدم
+    على اتخاذ قرار شراء أفضل بناءً على السعر
+    والمتجر والعروض المتاحة.
+  </p>
+
+</section>
 <ComparePricesSection />
 </main>
 
@@ -1552,6 +1593,28 @@ async function handleSearch() {
       0 0 18px rgba(16,163,127,0.60),
       0 0 40px rgba(0,255,200,0.35);
   }
+}
+  .homeAdsenseContent{
+  margin-top:40px;
+  padding:28px;
+  border-radius:20px;
+
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+
+  line-height:2;
+  color:#d7d7d7;
+}
+
+.homeAdsenseContent h2{
+  color:#00ffd5;
+  margin-top:22px;
+  margin-bottom:12px;
+  font-size:22px;
+}
+
+.homeAdsenseContent p{
+  margin-bottom:14px;
 }
 @media (max-width: 600px) {
   .menuButton {

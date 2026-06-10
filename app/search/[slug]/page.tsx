@@ -774,6 +774,49 @@ return (
   </div>
     </section>
     </div>
+    <section className="adsenseContentBlock">
+
+<h2>
+كيف يساعدك BPS Chat في مقارنة الأسعار؟
+</h2>
+
+<p>
+يعتمد BPS Chat على تجميع وعرض الأسعار من متاجر متعددة لمساعدة المستخدم
+في الوصول إلى أفضل العروض المتاحة قبل الشراء.
+</p>
+
+<p>
+بدلاً من زيارة العديد من المواقع بشكل منفصل، يمكنك استخدام BPS Chat
+لمقارنة الأسعار والمنتجات في مكان واحد.
+</p>
+
+<p>
+كما يساعدك الموقع على اكتشاف فروقات الأسعار بين المتاجر المختلفة
+ومتابعة العروض والتخفيضات بشكل أسهل.
+</p>
+
+</section>
+<section className="adsenseContentBlock">
+
+<h2>
+لماذا تختلف الأسعار بين المتاجر؟
+</h2>
+
+<p>
+قد تختلف أسعار المنتجات بين المتاجر بسبب العروض الموسمية،
+وسياسات الشحن، والضمان، وتوافر المخزون.
+</p>
+
+<p>
+لهذا السبب يفضل دائماً مقارنة الأسعار قبل اتخاذ قرار الشراء
+للحصول على أفضل قيمة ممكنة.
+</p>
+<p>
+يساعد BPS Chat المستخدمين على توفير الوقت والمال من خلال مقارنة
+الأسعار ومتابعة العروض واكتشاف أفضل المتاجر قبل اتخاذ قرار الشراء.
+</p>
+
+</section>
     <PopularSearches />
     <style>{`
   .seoPage {
@@ -821,7 +864,27 @@ overflow: hidden;
     overflow: hidden;
     pointer-events: none;
   }
+.adsenseContentBlock{
+  margin:40px 0;
+  padding:28px;
+  border-radius:20px;
 
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+
+  line-height:2;
+  color:#d7d7d7;
+}
+
+.adsenseContentBlock h2{
+  color:#00ffd5;
+  margin-bottom:12px;
+  font-size:24px;
+}
+
+.adsenseContentBlock p{
+  margin-bottom:12px;
+}
   .brainCore {
     position: absolute;
     top: 10%;

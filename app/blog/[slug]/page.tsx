@@ -355,7 +355,24 @@ const relatedProducts = products
       </article>
 
       <InternalLinksBoost />
+<section className="authorBox">
+  <div className="authorIcon">📝</div>
 
+  <div>
+    <h2>عن الكاتب</h2>
+
+    <p>
+      تم إعداد هذا الدليل بواسطة فريق BPS Chat المختص في مقارنة الأسعار
+      وتحليل عروض المتاجر الإلكترونية في السعودية والإمارات والكويت وقطر
+      والبحرين ومصر.
+    </p>
+
+    <p>
+      يعتمد فريق BPS Chat على تحليل الأسعار والعروض ومراجعة نتائج البحث
+      لمساعدة المستخدمين في اتخاذ قرارات شراء أفضل.
+    </p>
+  </div>
+</section>
       <style>{`
         .postPage {
           background: #f8fafc;
@@ -392,6 +409,18 @@ const relatedProducts = products
           line-height: 2.1;
           color: #334155;
         }
+          .authorBox{
+  margin-top:40px;
+  padding:24px;
+  border-radius:20px;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+}
+
+.authorIcon{
+  font-size:32px;
+  margin-bottom:10px;
+}
 
         h2 {
           margin-top: 34px;
