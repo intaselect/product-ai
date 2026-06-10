@@ -101,8 +101,22 @@ export default async function ComparePage({ params }: PageProps) {
     comparison.product1_name || "",
     comparison.product2_name || ""
   );
-  
+
 const latestOffers = await getLatestCountryOffers();
+const product1Offer = await getOfferByName(comparison.product1_name || "");
+const product2Offer = await getOfferByName(comparison.product2_name || "");
+async function getOfferByName(productName: string) {
+  if (!productName) return null;
+
+  const { data } = await supabaseAdmin
+    .from("customer_offers")
+    .select("*")
+    .eq("status", "approved")
+    .eq("product_name", productName)
+    .maybeSingle();
+
+  return data;
+}
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -164,11 +178,61 @@ const latestOffers = await getLatestCountryOffers();
 
         <p>{comparison.meta_description}</p>
 
-        <div className="compareNames">
-          <span>{comparison.product1_name}</span>
-          <b>VS</b>
-          <span>{comparison.product2_name}</span>
-        </div>
+        <div className="compareProductsBox">
+  <div className="compareProductCard">
+    {product1Offer?.image_url && (
+      <img src={product1Offer.image_url} alt={comparison.product1_name} />
+    )}
+
+    <h2>{comparison.product1_name}</h2>
+
+    {product1Offer?.price && <strong>{product1Offer.price}</strong>}
+
+    <div className="productActions">
+      <Link href={`/search/${encodeURIComponent(comparison.product1_name || "")}`}>
+        🔎 ابحث عنه
+      </Link>
+
+      {product1Offer?.id && (
+        <a
+          href={`/api/customer-offers/click/${product1Offer.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          🛒 ادخل للمنتج
+        </a>
+      )}
+    </div>
+  </div>
+
+  <b className="vsBadge">VS</b>
+
+  <div className="compareProductCard">
+    {product2Offer?.image_url && (
+      <img src={product2Offer.image_url} alt={comparison.product2_name} />
+    )}
+
+    <h2>{comparison.product2_name}</h2>
+
+    {product2Offer?.price && <strong>{product2Offer.price}</strong>}
+
+    <div className="productActions">
+      <Link href={`/search/${encodeURIComponent(comparison.product2_name || "")}`}>
+        🔎 ابحث عنه
+      </Link>
+
+      {product2Offer?.id && (
+        <a
+          href={`/api/customer-offers/click/${product2Offer.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          🛒 ادخل للمنتج
+        </a>
+      )}
+    </div>
+  </div>
+</div>
       </section>
 
       <section className="quickActions">
@@ -327,7 +391,79 @@ const styles = `
   border: 1px solid rgba(34,197,94,.35);
   box-shadow: 0 0 45px rgba(34,197,94,.15);
 }
+.compareProductsBox {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
 
+.compareProductCard {
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.compareProductCard img {
+  width: 100%;
+  height: 190px;
+  object-fit: contain;
+  background: white;
+  border-radius: 18px;
+  padding: 8px;
+}
+
+.compareProductCard h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.compareProductCard strong {
+  color: #86efac;
+  font-size: 22px;
+  font-weight: 950;
+}
+
+.vsBadge {
+  align-self: center;
+  color: #86efac;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.productActions {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.productActions a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  padding: 11px 14px;
+  border-radius: 999px;
+  font-weight: 950;
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+}
+
+@media (max-width: 900px) {
+  .compareProductsBox {
+    grid-template-columns: 1fr;
+  }
+
+  .vsBadge {
+    text-align: center;
+  }
+}
 .storeCtaBox h2 {
   margin: 0 0 10px;
   font-size: 32px;
