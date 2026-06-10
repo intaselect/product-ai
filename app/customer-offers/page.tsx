@@ -769,7 +769,7 @@ return (
 </section>
     {!error && filteredOffers.length > 0 && (
   <>
-    <section className="offersGrid">
+    <section id="offers" className="offersGrid">
       {filteredOffers.map((offer) => (
         <article className="offerCard" key={offer.id}>
           <div className="imageWrap">
@@ -828,9 +828,9 @@ return (
 
     {hasMore && (
       <div className="loadMoreBox">
-        <a className="loadMoreBtn" href={buildOffersUrl(page + 1)}>
-        مشاهدة المزيد
-        </a>
+        <a className="loadMoreBtn" href={`${buildOffersUrl(page + 1)}#offers`}>
+  🚀 مشاهدة المزيد  
+</a>
       </div>
     )}
   </>
