@@ -220,69 +220,129 @@ const heroCountryUrl =
     ? "/customer-offers"
     : `/customer-offers?country=${selectedCountry}`;
 
-  const searchQuery = String(params?.q || "").trim().toLowerCase();
-  const selectedBrand = String(params?.brand || "").trim().toLowerCase();
-const isCountrySelected = selectedCountry !== "all";
-let allOffers: any[] = [];
+const searchQuery = String(params?.q || "").trim();
+const selectedBrand = String(params?.brand || "").trim().toLowerCase();
+
+const page = Math.max(1, Number(params?.page || 1));
+const limit = 100;
+const from = (page - 1) * limit;
+const to = from + limit - 1;
+
 let error: any = null;
-
-let from = 0;
-const batchSize = 1000;
-
-while (true) {
-  const { data, error: batchError } = await supabase
-    .from("customer_offers")
-    .select(
-      "id, product_name, price, image_url, image_url_2, image_url_3, product_url, store_name, country, category, created_at"
-    )
-    .eq("status", "approved")
-    .order("created_at", { ascending: false })
-    .range(from, from + batchSize - 1);
-
-  if (batchError) {
-    error = batchError;
-    break;
-  }
-
-  if (!data || data.length === 0) break;
-
-  allOffers = [...allOffers, ...data];
-
-  if (data.length < batchSize) break;
-
-  from += batchSize;
-}
-
-const offers = allOffers;
-const approvedOffers = (offers || []) as CustomerOffer[];
-let finalOffers = approvedOffers;
 
 const gccFallbackCountries = ["kw", "qa", "bh"];
 
-const hasLocalProducts = approvedOffers.some(
-  (offer) => offer.country === selectedCountry
-);
+let localCountQuery = supabase
+  .from("customer_offers")
+  .select("id", { count: "exact", head: true })
+  .eq("status", "approved");
+
+if (selectedCountry !== "all") {
+  localCountQuery = localCountQuery.eq("country", selectedCountry);
+}
+
+const { count: localCount } = await localCountQuery;
 
 const shouldUseSaudiFallback =
   gccFallbackCountries.includes(selectedCountry) &&
-  !hasLocalProducts;
+  selectedCountry !== "all" &&
+  (localCount || 0) === 0;
 
-if (shouldUseSaudiFallback) {
-  finalOffers = approvedOffers.filter(
-    (offer) => offer.country === "sa"
+let query = supabase
+  .from("customer_offers")
+  .select(
+    "id, product_name, price, image_url, image_url_2, image_url_3, product_url, store_name, country, category, created_at",
+    { count: "exact" }
+  )
+  .eq("status", "approved")
+  .order("created_at", { ascending: false });
+
+if (selectedCountry !== "all") {
+  query = query.eq("country", shouldUseSaudiFallback ? "sa" : selectedCountry);
+}
+
+if (selectedCategory !== "all") {
+  query = query.contains("category", [selectedCategory]);
+}
+
+if (searchQuery) {
+  query = query.or(
+    `product_name.ilike.%${searchQuery}%,store_name.ilike.%${searchQuery}%,price.ilike.%${searchQuery}%`
   );
 }
-const countryCategoryOffers = finalOffers.filter((offer) => {
-  const categoryOk =
-    selectedCategory === "all" ||
-    (offer.category || ["other"]).includes(selectedCategory);
-const countryOk =
-  shouldUseSaudiFallback ||
-  selectedCountry === "all" ||
-  (offer.country || "sa") === selectedCountry;
 
-  return categoryOk && countryOk;
-});
+if (selectedBrand) {
+  const brand = brandDefinitions.find((b) => b.key === selectedBrand);
+
+  if (brand) {
+    const brandOr = brand.terms
+      .flatMap((term) => [
+        `product_name.ilike.%${term}%`,
+        `store_name.ilike.%${term}%`,
+      ])
+      .join(",");
+
+    query = query.or(brandOr);
+  }
+}
+
+const { data: offers, error: offersError, count } = await query.range(from, to);
+
+if (offersError) {
+  error = offersError;
+}
+
+const filteredOffers = (offers || []) as CustomerOffer[];
+const totalOffers = count || 0;
+const hasMore = page * limit < totalOffers;
+
+function buildOffersUrl(nextPage: number) {
+  const urlParams = new URLSearchParams();
+
+  if (selectedCategory !== "all") {
+    urlParams.set("category", selectedCategory);
+  }
+
+  if (selectedCountry !== "all") {
+    urlParams.set("country", selectedCountry);
+  }
+
+  if (searchQuery) {
+    urlParams.set("q", searchQuery);
+  }
+
+  if (selectedBrand) {
+    urlParams.set("brand", selectedBrand);
+  }
+
+  urlParams.set("page", String(nextPage));
+
+  return `/customer-offers?${urlParams.toString()}`;
+}
+
+function buildFilterUrl(values: {
+  category?: string;
+  country?: string;
+  brand?: string;
+  q?: string;
+}) {
+  const urlParams = new URLSearchParams();
+
+  const category = values.category ?? selectedCategory;
+  const country = values.country ?? selectedCountry;
+  const brand = values.brand ?? selectedBrand;
+  const q = values.q ?? searchQuery;
+
+  if (category && category !== "all") urlParams.set("category", category);
+  if (country && country !== "all") urlParams.set("country", country);
+  if (brand) urlParams.set("brand", brand);
+  if (q) urlParams.set("q", q);
+
+  const qs = urlParams.toString();
+  return qs ? `/customer-offers?${qs}` : "/customer-offers";
+}
+
+const countryCategoryOffers = filteredOffers;
 
 const availableBrands = brandDefinitions
   .map((brand) => {
@@ -295,39 +355,11 @@ const availableBrands = brandDefinitions
   })
   .filter((brand) => brand.count > 0);
 
-const filteredOffers = countryCategoryOffers.filter((offer) => {
-  const categoryOk =
-    selectedCategory === "all" ||
-    (offer.category || ["other"]).includes(selectedCategory);
-
-  const countryOk =
-    selectedCountry === "all" ||
-    (offer.country || "sa") === selectedCountry;
-
-  const searchableText = [
-    offer.product_name,
-    offer.store_name,
-    offer.price,
-    countryNames[offer.country || ""],
-    ...(offer.category || []),
-  ]
-    .join(" ")
-    .toLowerCase();
-
- const searchOk =
-  !searchQuery || searchableText.includes(searchQuery);
-
-const brandOk =
-  !selectedBrand ||
-  detectBrand(offer)?.key === selectedBrand;
-
-return searchOk && brandOk;
-});
-
 const featuredSliderOffers = filteredOffers
   .slice()
   .sort(() => Math.random() - 0.5)
   .slice(0, 18);
+
 const categorySliderItems = Object.entries(categoryCards)
   .filter(([key]) => key !== "all")
   .map(([key, cat]) => {
@@ -341,7 +373,6 @@ const categorySliderItems = Object.entries(categoryCards)
       image: categoryOffer?.image_url || "",
     };
   });
- 
 return (
   <main className="customerOffersPage" dir="rtl">
     
@@ -736,65 +767,77 @@ return (
     عرض كل العروض
   </a>
 </section>
-      {!error && filteredOffers.length > 0 && (
-        <section className="offersGrid">
-          {filteredOffers.map((offer) => (
-            <article className="offerCard" key={offer.id}>
-              <div className="imageWrap">
-               <div className="productSlider">
-  {[offer.image_url, offer.image_url_2, offer.image_url_3]
-    .filter(Boolean)
-    .map((img, index) => (
-      <img
-        key={index}
-        src={img as string}
-        alt={offer.product_name}
-        
-      />
-    ))}
-</div>
-                <div className="floatingLabel">
-                  {countryNames[offer.country || ""] || "عرض مميز"}
-                </div>
-              </div>
+    {!error && filteredOffers.length > 0 && (
+  <>
+    <section className="offersGrid">
+      {filteredOffers.map((offer) => (
+        <article className="offerCard" key={offer.id}>
+          <div className="imageWrap">
+            <div className="productSlider">
+              {[offer.image_url, offer.image_url_2, offer.image_url_3]
+                .filter(Boolean)
+                .map((img, index) => (
+                  <img
+                    key={index}
+                    src={img as string}
+                    alt={offer.product_name}
+                  />
+                ))}
+            </div>
 
-              <div className="cardContent">
-                <p className="storeName">
-                  {offer.store_name || "عرض عميل BPS Chat"}
-                </p>
+            <div className="floatingLabel">
+              {countryNames[offer.country || ""] || "عرض مميز"}
+            </div>
+          </div>
 
-               <h2 className="mobileProductTitle">
-  <span>{offer.product_name}</span>
-</h2>
+          <div className="cardContent">
+            <p className="storeName">
+              {offer.store_name || "عرض عميل BPS Chat"}
+            </p>
 
-               <div className="priceRow">
-  <strong>{offer.price}</strong>
-  <span className="currency">
-    {countryCurrencies[offer.country || ""]}
-  </span>
-  <span className="bestLabel">أفضل عرض</span>
-</div>
-                <a
-                  href={`/api/customer-offers/click/${offer.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="buyBtn"
-                >
-                  عرض المنتج
-                </a>
-                <a
- href={productSeoUrl(offer)}
-  className="detailsBtn"
->
-  👀 شاهد صفحة المنتج على BPS Chat
-</a>
-              </div>
-            </article>
-          ))}
-        </section>
-        
-      )}
-      <section className="seoLinksSection">
+            <h2 className="mobileProductTitle">
+              <span>{offer.product_name}</span>
+            </h2>
+
+            <div className="priceRow">
+              <strong>{offer.price}</strong>
+
+              <span className="currency">
+                {countryCurrencies[offer.country || ""]}
+              </span>
+
+              <span className="bestLabel">أفضل عرض</span>
+            </div>
+
+            <a
+              href={`/api/customer-offers/click/${offer.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="buyBtn"
+            >
+              عرض المنتج
+            </a>
+
+            <a href={productSeoUrl(offer)} className="detailsBtn">
+              👀 شاهد صفحة المنتج على BPS Chat
+            </a>
+          </div>
+        </article>
+      ))}
+    </section>
+
+    {hasMore && (
+      <div className="loadMoreBox">
+        <a className="loadMoreBtn" href={buildOffersUrl(page + 1)}>
+          مشاهدة المزيد — تحميل 100 منتج إضافي
+        </a>
+      </div>
+    )}
+  </>
+)}
+
+<section className="seoLinksSection">
+      
   <h2>🔥 تصفح العروض حسب التصنيف</h2>
 
   <div className="seoLinksGrid">
