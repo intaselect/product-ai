@@ -30,13 +30,31 @@ function xmlEscape(value: string) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
 }
+async function getAllBlogPosts() {
+  const pageSize = 1000;
+  let from = 0;
+  let all: any[] = [];
 
+  while (true) {
+    const { data, error } = await supabase
+      .from("product_cache")
+      .select("query, country, updated_at, results")
+      .order("updated_at", { ascending: false })
+      .range(from, from + pageSize - 1);
+
+    if (error || !data?.length) break;
+
+    all = [...all, ...data];
+
+    if (data.length < pageSize) break;
+
+    from += pageSize;
+  }
+
+  return all;
+}
 export async function GET() {
-  const { data: cacheData } = await supabase
-    .from("product_cache")
-    .select("query, country, updated_at, results")
-    .order("updated_at", { ascending: false })
-    .limit(30000);
+  const cacheData = await getAllBlogPosts();
 
   const urls =
     (cacheData || [])
