@@ -17,13 +17,19 @@ type PageProps = {
 };
 
 async function getComparison(slug: string) {
+  const decodedSlug = decodeURIComponent(slug);
+
   const { data, error } = await supabaseAdmin
     .from("comparisons")
     .select("*")
-    .eq("slug", slug)
-    .single();
+    .eq("slug", decodedSlug)
+    .maybeSingle();
 
-  if (error || !data) return null;
+  if (error) {
+    console.error("COMPARISON_FETCH_ERROR:", error.message);
+    return null;
+  }
+
   return data;
 }
 
