@@ -18,13 +18,32 @@ function xmlEscape(value: string) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
 }
+async function getAllSearchTerms() {
+  const pageSize = 1000;
+  let from = 0;
+  let all: any[] = [];
+
+  while (true) {
+    const { data, error } = await supabase
+      .from("search_terms")
+      .select("slug, updated_at")
+      .order("updated_at", { ascending: false })
+      .range(from, from + pageSize - 1);
+
+    if (error || !data?.length) break;
+
+    all = [...all, ...data];
+
+    if (data.length < pageSize) break;
+
+    from += pageSize;
+  }
+
+  return all;
+}
 
 export async function GET() {
-  const { data } = await supabase
-    .from("search_terms")
-    .select("slug, updated_at")
-    .order("updated_at", { ascending: false })
-    .limit(50000);
+  const data = await getAllSearchTerms();
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
