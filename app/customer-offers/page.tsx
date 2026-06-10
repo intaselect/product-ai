@@ -102,6 +102,53 @@ const categoryCards: Record<string, { ar: string; en: string; icon: string }> = 
   cars: { ar: "سيارات", en: "Cars", icon: "🚗" },
   cameras: { ar: "كاميرات", en: "Cameras", icon: "📷" },
 camera_accessories: { ar: "ملحقات كاميرات", en: "Camera Accessories", icon: "🎥" },
+mobile_accessories: {
+  ar: "إكسسوارات جوالات",
+  en: "Mobile Accessories",
+  icon: "📲",
+},
+
+smart_watch: {
+  ar: "ساعات ذكية",
+  en: "Smart Watches",
+  icon: "⌚",
+},
+
+power_bank: {
+  ar: "باور بانك",
+  en: "Power Banks",
+  icon: "🔋",
+},
+
+chargers: {
+  ar: "شواحن وكابلات",
+  en: "Chargers",
+  icon: "🔌",
+},
+
+headphones: {
+  ar: "سماعات",
+  en: "Headphones",
+  icon: "🎧",
+},
+
+computer_accessories: {
+  ar: "إكسسوارات كمبيوتر",
+  en: "Computer Accessories",
+  icon: "🖱️",
+},
+
+gaming: {
+  ar: "ألعاب وجيمينج",
+  en: "Gaming",
+  icon: "🎮",
+},
+
+bags: {
+  ar: "شنط",
+  en: "Bags",
+  icon: "👜",
+},
   other: { ar: "المزيد", en: "More", icon: "▦" },
 };
 const categoryNames: Record<string, string> = {
