@@ -281,7 +281,23 @@ const featuredSliderOffers = filteredOffers
   .slice()
   .sort(() => Math.random() - 0.5)
   .slice(0, 18);
+const categorySliderItems = Object.entries(categoryCards)
+  .filter(([key]) => key !== "all")
+  .map(([key, cat]) => {
+    const categoryOffer = filteredOffers.find((offer) =>
+      (offer.category || []).includes(key)
+    );
 
+    return {
+      key,
+      ...cat,
+      image: categoryOffer?.image_url || "",
+      count: filteredOffers.filter((offer) =>
+        (offer.category || []).includes(key)
+      ).length,
+    };
+  })
+  .filter((item) => item.count > 0);
 return (
   <main className="customerOffersPage" dir="rtl">
     
@@ -628,6 +644,45 @@ return (
     </div>
   </section>
 )}
+{categorySliderItems.length > 0 && (
+  <section className="categoryCircleSlider">
+    <div className="categoryCircleHeader">
+      <div>
+        <h2>تصفح حسب القسم</h2>
+        <p>اختار التصنيف المناسب بعد تحديد الدولة</p>
+      </div>
+    </div>
+
+    <div className="categoryCircleTrack">
+      {categorySliderItems.map((cat) => (
+        <a
+          key={cat.key}
+          href={
+            selectedCountry === "all"
+              ? `/customer-offers?category=${cat.key}`
+              : `/customer-offers?category=${cat.key}&country=${selectedCountry}`
+          }
+          className={
+            selectedCategory === cat.key
+              ? "categoryCircleCard active"
+              : "categoryCircleCard"
+          }
+        >
+          <div className="categoryCircleImage">
+            {cat.image ? (
+              <img src={cat.image} alt={cat.ar} />
+            ) : (
+              <span>{cat.icon}</span>
+            )}
+          </div>
+
+          <strong>{cat.ar}</strong>
+          <small>{cat.count} عرض</small>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
 <section className="marketSectionHeader">
   <div>
     <h2>🔥 عروض اليوم</h2>
@@ -747,7 +802,135 @@ return (
   font-size: 11.5px !important;
   line-height: 1 !important;
 }
+.categoryCircleSlider {
+  max-width: 1320px;
+  margin: 22px auto 26px;
+  padding: 22px 20px;
+  border-radius: 30px;
+  background: linear-gradient(135deg,#ffffff,#f8fafc);
+  border: 1px solid #dbeafe;
+  box-shadow: 0 18px 45px rgba(15,23,42,.08);
+}
 
+.categoryCircleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.categoryCircleHeader h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 26px;
+  font-weight: 950;
+}
+
+.categoryCircleHeader p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.categoryCircleTrack {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 6px 4px 14px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.categoryCircleTrack::-webkit-scrollbar {
+  height: 6px;
+}
+
+.categoryCircleTrack::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 999px;
+}
+
+.categoryCircleCard {
+  min-width: 135px;
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: #111827;
+  text-align: center;
+  border-radius: 24px;
+  padding: 14px 10px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 24px rgba(15,23,42,.06);
+  transition: all .25s ease;
+}
+
+.categoryCircleCard:hover,
+.categoryCircleCard.active {
+  transform: translateY(-5px);
+  border-color: #22c55e;
+  background: linear-gradient(180deg,#ffffff,#ecfdf5);
+}
+
+.categoryCircleImage {
+  width: 86px;
+  height: 86px;
+  margin: 0 auto 10px;
+  border-radius: 999px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 3px solid #dcfce7;
+}
+
+.categoryCircleImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+.categoryCircleImage span {
+  font-size: 34px;
+}
+
+.categoryCircleCard strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.categoryCircleCard small {
+  display: block;
+  margin-top: 5px;
+  color: #16a34a;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+@media (max-width:700px) {
+  .categoryCircleSlider {
+    margin: 18px 12px 22px;
+    padding: 16px 12px;
+    border-radius: 24px;
+  }
+
+  .categoryCircleCard {
+    min-width: 112px;
+    padding: 12px 8px;
+  }
+
+  .categoryCircleImage {
+    width: 72px;
+    height: 72px;
+  }
+
+  .categoryCircleHeader h2 {
+    font-size: 21px;
+  }
+}
 .mobileProductTitle {
   height: 36px !important;
   min-height: 36px !important;
