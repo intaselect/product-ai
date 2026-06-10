@@ -27,9 +27,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.bpschat.com"),
 
-  alternates: {
-    canonical: "https://www.bpschat.com",
-  },
+  
 
   title: "BPS Chat | بي بي اس شات - أفضل محرك بحث منتجات ومقارنة أسعار",
   description:
