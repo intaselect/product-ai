@@ -451,7 +451,7 @@ const styles = `
   color: white;
   padding: 11px 14px;
   border-radius: 999px;
-  font-weight: 950;
+  font-weight: 940;
   background: linear-gradient(135deg, #16a34a, #2563eb);
 }
 
