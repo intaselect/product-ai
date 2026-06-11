@@ -33,6 +33,7 @@ const countryNames: Record<string, string> = {
   qa: "قطر",
   bh: "البحرين",
   eg: "مصر",
+  eg: "مصر",
 };
 
 export default function ComparisonGeneratorPage() {
