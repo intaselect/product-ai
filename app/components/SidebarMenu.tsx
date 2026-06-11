@@ -111,6 +111,19 @@ export default function SidebarMenu() {
     </span>
   </span>
 </a>
+<a
+  href="/comparisons"
+  className="menuItem sidebarComparisonsGlow"
+>
+  <span className="comparisonsSidebarIcon">⚔️</span>
+
+  <span>
+    مقارنات المنتجات
+    <span className="comparisonsSidebarSub">
+      قارن الأسعار والمواصفات
+    </span>
+  </span>
+</a>
 
         <a href="/about" className="menuItem">عن الموقع</a>
         <a href="/contact" className="menuItem">تواصل معنا</a>
@@ -180,7 +193,46 @@ export default function SidebarMenu() {
     box-shadow 0.22s ease,
     border-color 0.22s ease;
 }
+.sidebarComparisonsGlow {
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.15),
+    rgba(37, 99, 235, 0.15)
+  );
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.18);
+}
 
+.sidebarComparisonsGlow:hover {
+  transform: translateY(-2px);
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow:
+    0 0 25px rgba(34, 197, 94, 0.25),
+    0 0 35px rgba(37, 99, 235, 0.2);
+}
+
+.comparisonsSidebarIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: linear-gradient(
+    135deg,
+    #22c55e,
+    #2563eb
+  );
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+}
+
+.comparisonsSidebarSub {
+  display: block;
+  font-size: 12px;
+  opacity: .85;
+  margin-top: 2px;
+}
 .menuButton::before {
   content: "";
 

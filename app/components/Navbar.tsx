@@ -75,6 +75,7 @@ className="navSmallHover">📝 أدوات البائع</Link>
     <Link href="/smart-search" style={styles.smartBtn} className="smartBtnHover">
       ⚡ البحث الذكي
     </Link>
+    <Link href="/comparisons">⚔️ مقارنات المنتجات</Link>
 
     {user ? (
       <span>👤 {user.first_name}</span>
