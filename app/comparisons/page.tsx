@@ -5,12 +5,41 @@ export const revalidate = 43200;
 
 const SITE_URL = "https://www.bpschat.com";
 
-async function getComparisons() {
-  const { data, error } = await supabaseAdmin
+const countryNames: Record<string, string> = {
+  all: "كل الدول",
+  sa: "السعودية",
+  ae: "الإمارات",
+  kw: "الكويت",
+  qa: "قطر",
+  bh: "البحرين",
+  eg: "مصر",
+};
+
+async function getComparisons(country: string) {
+  let query = supabaseAdmin
     .from("comparisons")
-    .select("id, slug, title, meta_description, product1_name, product2_name, created_at")
+    .select(`
+id,
+slug,
+title,
+meta_description,
+product1_name,
+product2_name,
+product1_image,
+product2_image,
+product1_price,
+product2_price,
+country,
+created_at
+`)
     .order("created_at", { ascending: false })
     .limit(100);
+
+  if (country !== "all") {
+    query = query.eq("country", country);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("COMPARISONS_PAGE_ERROR:", error.message);
@@ -29,8 +58,14 @@ export const metadata = {
   },
 };
 
-export default async function ComparisonsPage() {
-  const comparisons = await getComparisons();
+export default async function ComparisonsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ country?: string }>;
+}) {
+  const params = await searchParams;
+  const selectedCountry = params?.country || "all";
+  const comparisons = await getComparisons(selectedCountry);
 
   return (
     <main className="comparisonsPage" dir="rtl">
@@ -45,32 +80,74 @@ export default async function ComparisonsPage() {
         </p>
       </section>
 
-      <section className="gridBox">
-        {comparisons.map((item: any) => (
+      <div className="countryTabs">
+        {Object.entries(countryNames).map(([code, name]) => (
           <Link
-            key={item.id}
-            href={`/compare/${item.slug}`}
-            className="comparisonCard"
+            key={code}
+            href={code === "all" ? "/comparisons" : `/comparisons?country=${code}`}
+            className={selectedCountry === code ? "active" : ""}
           >
-            <div className="cardTop">
-              <span>مقارنة</span>
-              <b>VS</b>
-            </div>
-
-            <div className="productsLine">
-              <div>{item.product1_name}</div>
-              <strong>ضد</strong>
-              <div>{item.product2_name}</div>
-            </div>
-
-            <h2>{item.title}</h2>
-
-            <p>{item.meta_description}</p>
-
-            <button>افتح المقارنة</button>
+            {name}
           </Link>
         ))}
-      </section>
+      </div>
+
+      {comparisons.length === 0 ? (
+        <section className="emptyBox">
+          لا توجد مقارنات لهذه الدولة حاليًا.
+        </section>
+      ) : (
+        <section className="gridBox">
+          {comparisons.map((item: any) => (
+            <Link
+              key={item.id}
+              href={`/compare/${item.slug}`}
+              className="comparisonCard"
+            >
+              <div className="cardTop">
+                <span>{countryNames[item.country] || "مقارنة"}</span>
+                <b>VS</b>
+              </div>
+
+              <div className="productsPreview">
+                <div className="productBox">
+                  <img
+                    src={item.product1_image || "/logo-icon.png"}
+                    alt={item.product1_name || "المنتج الأول"}
+                  />
+
+                  <span>{item.product1_name}</span>
+
+                  {item.product1_price && (
+                    <strong>{item.product1_price}</strong>
+                  )}
+                </div>
+
+                <div className="vsCircle">VS</div>
+
+                <div className="productBox">
+                  <img
+                    src={item.product2_image || "/logo-icon.png"}
+                    alt={item.product2_name || "المنتج الثاني"}
+                  />
+
+                  <span>{item.product2_name}</span>
+
+                  {item.product2_price && (
+                    <strong>{item.product2_price}</strong>
+                  )}
+                </div>
+              </div>
+
+              <h2>{item.title}</h2>
+
+              <p>{item.meta_description}</p>
+
+              <button>افتح المقارنة</button>
+            </Link>
+          ))}
+        </section>
+      )}
 
       <style>{`
         .comparisonsPage {
@@ -85,7 +162,7 @@ export default async function ComparisonsPage() {
 
         .hero {
           max-width: 1050px;
-          margin: 0 auto 28px;
+          margin: 0 auto 24px;
           text-align: center;
           padding: 42px 20px;
           border-radius: 32px;
@@ -119,6 +196,43 @@ export default async function ComparisonsPage() {
           margin: 16px auto 0;
           color: #d1d5db;
           line-height: 1.9;
+        }
+
+        .countryTabs {
+          max-width: 1050px;
+          margin: 0 auto 26px;
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .countryTabs a {
+          text-decoration: none;
+          color: white;
+          padding: 11px 18px;
+          border-radius: 999px;
+          font-weight: 900;
+          background: rgba(255,255,255,.07);
+          border: 1px solid rgba(255,255,255,.12);
+        }
+
+        .countryTabs a.active,
+        .countryTabs a:hover {
+          background: linear-gradient(135deg, #16a34a, #2563eb);
+          border-color: rgba(34,197,94,.55);
+        }
+
+        .emptyBox {
+          max-width: 900px;
+          margin: 0 auto;
+          text-align: center;
+          padding: 30px;
+          border-radius: 24px;
+          background: rgba(255,255,255,.055);
+          border: 1px solid rgba(255,255,255,.1);
+          color: #d1d5db;
+          font-weight: 900;
         }
 
         .gridBox {
@@ -163,23 +277,56 @@ export default async function ComparisonsPage() {
           font-size: 24px;
         }
 
-        .productsLine {
+        .productsPreview {
           display: grid;
-          gap: 10px;
-          margin-bottom: 16px;
+          grid-template-columns: 1fr auto 1fr;
+          gap: 12px;
+          align-items: center;
+          margin-bottom: 18px;
         }
 
-        .productsLine div {
-          padding: 12px;
-          border-radius: 16px;
-          background: rgba(255,255,255,.07);
-          line-height: 1.6;
-          font-weight: 850;
-        }
-
-        .productsLine strong {
+        .productBox {
+          background: rgba(255,255,255,.06);
+          border-radius: 18px;
+          padding: 10px;
           text-align: center;
+        }
+
+        .productBox img {
+          width: 100%;
+          height: 140px;
+          object-fit: contain;
+          background: white;
+          border-radius: 14px;
+          padding: 8px;
+          margin-bottom: 10px;
+        }
+
+        .productBox span {
+          display: block;
+          font-size: 13px;
+          line-height: 1.6;
+          font-weight: 800;
+        }
+
+        .productBox strong {
+          display: block;
+          margin-top: 8px;
           color: #86efac;
+          font-size: 18px;
+        }
+
+        .vsCircle {
+          width: 55px;
+          height: 55px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #16a34a, #2563eb);
+          color: white;
+          font-weight: 950;
+          box-shadow: 0 0 25px rgba(34,197,94,.25);
         }
 
         .comparisonCard h2 {
@@ -215,6 +362,14 @@ export default async function ComparisonsPage() {
         @media (max-width: 620px) {
           .gridBox {
             grid-template-columns: 1fr;
+          }
+
+          .productsPreview {
+            grid-template-columns: 1fr;
+          }
+
+          .vsCircle {
+            margin: 0 auto;
           }
         }
       `}</style>

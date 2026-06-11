@@ -137,18 +137,27 @@ export async function POST(req: Request) {
 
     const slug = `${baseSlug}-${Date.now().toString().slice(-6)}`;
 
-    const { data, error } = await supabaseAdmin
-      .from("comparisons")
-      .insert({
-        slug,
-        title,
-        meta_description: metaDescription,
-        content,
-        product1_name: product1.product_name,
-        product2_name: product2.product_name,
-      })
-      .select()
-      .single();
+  const { data, error } = await supabaseAdmin
+  .from("comparisons")
+  .insert({
+    slug,
+    title,
+    meta_description: metaDescription,
+    content,
+
+    product1_name: product1.product_name,
+    product2_name: product2.product_name,
+
+    product1_image: product1.image_url || "",
+    product2_image: product2.image_url || "",
+
+    product1_price: product1.price || "",
+    product2_price: product2.price || "",
+
+    country: product1.country || product2.country || "sa",
+  })
+  .select()
+  .single();
 
     if (error) {
       console.error("COMPARISON_SAVE_ERROR:", error);
