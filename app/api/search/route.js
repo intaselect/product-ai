@@ -33,21 +33,46 @@ async function fetchBpsStoreOffers(supabase, query, country) {
   const q = cleanCacheText(query);
   if (!q || q === "*") return [];
 
-  const words = q.split(" ").filter(Boolean).slice(0, 5);
+  const stopWords = [
+    "جوال",
+    "جوالات",
+    "موبايل",
+    "موبايلات",
+    "هاتف",
+    "هواتف",
+    "تليفون",
+    "تلفون",
+    "سعر",
+    "اسعار",
+    "أسعار",
+    "عرض",
+    "عروض",
+    "شراء",
+    "افضل",
+    "أفضل",
+  ];
 
-  const orParts = words.flatMap((word) => [
-    `product_name.ilike.%${word}%`,
-    `store_name.ilike.%${word}%`,
-  ]);
+  const words = q
+    .split(" ")
+    .filter(Boolean)
+    .filter((word) => !stopWords.includes(word))
+    .slice(0, 4);
 
-  const { data, error } = await supabase
+  const searchWords = words.length > 0 ? words : q.split(" ").filter(Boolean).slice(0, 2);
+
+  let request = supabase
     .from("customer_offers")
     .select("id, product_name, price, image_url, product_url, store_name, country, category, created_at")
     .eq("status", "approved")
     .eq("country", country)
-    .or(orParts.join(","))
     .order("created_at", { ascending: false })
     .limit(20);
+
+  searchWords.forEach((word) => {
+    request = request.ilike("product_name", `%${word}%`);
+  });
+
+  const { data, error } = await request;
 
   if (error) {
     console.error("BPS store offers error:", error.message);
