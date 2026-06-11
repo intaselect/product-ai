@@ -6,7 +6,7 @@ import MarketPromoSection from "@/app/components/MarketPromoSection";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 import ComparePricesSection from "@/app/components/ComparePricesSection";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 43200;
 
 const SITE_URL = "https://www.bpschat.com";
 
@@ -103,7 +103,7 @@ async function getRelatedOffers(offer: any) {
     .eq("status", "approved")
     .eq("country", country)
     .neq("id", offer.id)
-    .limit(40);
+    .limit(12);
 
   return data || [];
 }
@@ -115,7 +115,7 @@ async function getCountryOffers(country: string, currentId: number) {
     .eq("country", country)
     .neq("id", currentId)
     .order("created_at", { ascending: false })
-    .limit(40);
+    .limit(12);
 
   return data || [];
 }

@@ -1,11 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
-import { fetchRealProducts } from "@/lib/fetchRealProducts";
+
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import VideoPreview from "@/app/marketing-video/VideoPreview";
 import SidebarMenu from "@/app/components/SidebarMenu";
 import ShareSlugVideo from "@/app/components/ShareSlugVideo";
-import { headers } from "next/headers";
+
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
   
 
@@ -136,15 +136,6 @@ if (cached?.results?.length) {
   try {
     
 
-
-
-const headersList = await headers();
-
-const realIp =
-  headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-  headersList.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-  headersList.get("x-real-ip") ||
-  "unknown";
 //const fresh = await fetchRealProducts(query, countryCode);
 console.log("🚫 SLUG PAGE BLOCKED FROM SERPAPI");
 products = [];
@@ -156,7 +147,7 @@ products = [];
   query: cleanCacheText(query),
   country: countryCode,
   results: products,
-  ip: realIp,
+ 
   updated_at: new Date().toISOString(),
   expires_at: new Date(
     Date.now() + 10 * 24 * 60 * 60 * 1000
