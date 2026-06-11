@@ -14,7 +14,7 @@ export async function GET() {
     .select("*")
     .eq("status", "approved")
     .order("created_at", { ascending: false })
-    .limit(500);
+    //.limit(500);
 
   if (error) {
     return NextResponse.json(
