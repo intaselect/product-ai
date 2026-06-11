@@ -11,6 +11,18 @@ import TrustedSourcesBar from "@/app/components/TrustedSourcesBar";
 export const dynamic = "force-dynamic";
 
 const SITE_URL = "https://www.bpschat.com";
+function slugify(text: string) {
+  return String(text || "product")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
+}
+
+function offerSeoUrl(offer: any) {
+  return `/customer-offers/product/bps-chat-${slugify(
+    offer.product_name
+  )}-${offer.country || "sa"}-${offer.id}`;
+}
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -189,9 +201,15 @@ async function getOfferByName(productName: string) {
     {product1Offer?.price && <strong>{product1Offer.price}</strong>}
 
     <div className="productActions">
-      <Link href={`/search/${encodeURIComponent(comparison.product1_name || "")}`}>
-        🔎 ابحث عنه
-      </Link>
+      <Link
+  href={
+    product1Offer?.id
+      ? offerSeoUrl(product1Offer)
+      : `/search/${encodeURIComponent(comparison.product1_name || "")}`
+  }
+>
+  🔎 ابحث عنه
+</Link>
 
       {product1Offer?.id && (
         <a
@@ -217,9 +235,15 @@ async function getOfferByName(productName: string) {
     {product2Offer?.price && <strong>{product2Offer.price}</strong>}
 
     <div className="productActions">
-      <Link href={`/search/${encodeURIComponent(comparison.product2_name || "")}`}>
-        🔎 ابحث عنه
-      </Link>
+     <Link
+  href={
+    product2Offer?.id
+      ? offerSeoUrl(product2Offer)
+      : `/search/${encodeURIComponent(comparison.product2_name || "")}`
+  }
+>
+  🔎 ابحث عنه
+</Link>
 
       {product2Offer?.id && (
         <a
