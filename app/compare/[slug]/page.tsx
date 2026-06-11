@@ -134,6 +134,10 @@ async function getOfferByName(productName: string) {
     "@type": "Article",
     headline: comparison.title,
     description: comparison.meta_description,
+    image: [
+  comparison.product1_image,
+  comparison.product2_image,
+],
     mainEntityOfPage: `${SITE_URL}/compare/${comparison.slug}`,
     author: {
       "@type": "Organization",
