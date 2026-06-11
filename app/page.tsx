@@ -825,7 +825,11 @@ async function handleSearch() {
           />
 
           <div className="info">
-            <div className="name">{data.title || data.name || "No title"}</div>
+            {data.isBpsOffer && (
+  <div className="bpsOfferBadge">⭐ من متجر BPS Chat</div>
+)}
+
+<div className="name">{data.title || data.name || "No title"}</div>
 
             <div className="meta">
               <span>💰 {data.priceText || "No price"}</span>
@@ -833,7 +837,7 @@ async function handleSearch() {
             </div>
 
             <a
-              href={data.url || "#"}
+              href={data.url || data.link || "#"}
               target="_blank"
               rel="noopener noreferrer"
               className="link"
@@ -3265,6 +3269,20 @@ z-index: 3;
   55%,100% {
     transform: translateX(170%) skewX(-18deg);
   }
+}
+  .bpsOfferBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #00ffd5;
+  background: rgba(0, 255, 200, 0.12);
+  border: 1px solid rgba(0, 255, 200, 0.35);
+  box-shadow: 0 0 14px rgba(0, 255, 200, 0.18);
 }
 `}</style>
     </div>

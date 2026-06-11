@@ -29,6 +29,61 @@ function cleanCacheText(text) {
 function makeCacheKey(query, country) {
   return `${String(country || "sa").toLowerCase().trim()}:${cleanCacheText(query)}`;
 }
+async function fetchBpsStoreOffers(supabase, query, country) {
+  const q = cleanCacheText(query);
+  if (!q || q === "*") return [];
+
+  const words = q.split(" ").filter(Boolean).slice(0, 5);
+
+  const orParts = words.flatMap((word) => [
+    `product_name.ilike.%${word}%`,
+    `store_name.ilike.%${word}%`,
+  ]);
+
+  const { data, error } = await supabase
+    .from("customer_offers")
+    .select("id, product_name, price, image_url, product_url, store_name, country, category, created_at")
+    .eq("status", "approved")
+    .eq("country", country)
+    .or(orParts.join(","))
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  if (error) {
+    console.error("BPS store offers error:", error.message);
+    return [];
+  }
+
+  return (data || []).map((item) => ({
+    id: `bps-${item.id}`,
+    title: item.product_name,
+    name: item.product_name,
+    priceText: item.price,
+    price: item.price,
+    image: item.image_url,
+    url: `/api/customer-offers/click/${item.id}`,
+    link: `/api/customer-offers/click/${item.id}`,
+    store: item.store_name || "BPS Chat Market",
+    source: item.store_name || "BPS Chat Market",
+    country: item.country,
+    isBpsOffer: true,
+  }));
+}
+
+function removeDuplicateProducts(products) {
+  const seen = new Set();
+
+  return (products || []).filter((item) => {
+    const key = cleanCacheText(
+      item?.url || item?.link || item?.title || item?.name || ""
+    );
+
+    if (!key || seen.has(key)) return false;
+
+    seen.add(key);
+    return true;
+  });
+}
 
 function getSupabaseAdmin() {
   return createClient(
@@ -159,13 +214,28 @@ if (!isAdmin && (minuteCount || 0) >= MINUTE_LIMIT) {
   limit: DAILY_LIMIT,
 });
 }
-  let results = [];
+let results = [];
 
 if (searchKey === "unknown") {
   console.log("🚫 BOT BLOCKED: no IP and no visitorId");
   results = [];
 } else {
-  results = await fetchRealProducts(cleanQuery, cleanCountry, realIp || searchKey);
+  const bpsOffers = await fetchBpsStoreOffers(
+    supabase,
+    cleanQuery,
+    cleanCountry
+  );
+
+  const realProducts = await fetchRealProducts(
+    cleanQuery,
+    cleanCountry,
+    realIp || searchKey
+  );
+
+  results = removeDuplicateProducts([
+    ...bpsOffers,
+    ...(Array.isArray(realProducts) ? realProducts : []),
+  ]);
 }
     // ✅ نسجل الطلب
 await supabase.from("search_rate_limits").insert({
