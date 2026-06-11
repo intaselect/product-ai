@@ -28,13 +28,30 @@ const countries = [
 ];
 
 const categories = [
+  { value: "mobiles", label: "جوالات وتابلت" },
   { value: "electronics", label: "إلكترونيات" },
-  { value: "mobiles", label: "موبايلات" },
   { value: "computers", label: "كمبيوتر ولابتوب" },
   { value: "home", label: "المنزل والمطبخ" },
   { value: "beauty", label: "جمال وعناية" },
   { value: "fashion", label: "ملابس" },
-  { value: "gaming", label: "ألعاب وجيمينج" },
+  { value: "shoes", label: "أحذية" },
+  { value: "sports", label: "رياضة" },
+  { value: "kids", label: "أطفال وألعاب" },
+  { value: "gaming", label: "جيمينج" },
+  { value: "watches", label: "ساعات" },
+  { value: "smartwatches", label: "ساعات ذكية" },
+  { value: "perfumes", label: "عطور" },
+  { value: "makeup", label: "مكياج" },
+  { value: "skincare", label: "العناية بالبشرة" },
+  { value: "earphones", label: "سماعات" },
+  { value: "phone_accessories", label: "إكسسوارات الجوال" },
+  { value: "power_bank", label: "باور بانك" },
+  { value: "cars", label: "سيارات وإكسسوارات" },
+  { value: "tools", label: "أدوات ومعدات" },
+  { value: "office", label: "مستلزمات مكتبية" },
+  { value: "pets", label: "مستلزمات الحيوانات" },
+  { value: "books", label: "كتب" },
+  { value: "food", label: "أغذية ومشروبات" },
   { value: "other", label: "أخرى" },
 ];
 
@@ -59,24 +76,26 @@ export default function DailyDealsAdminPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlSecret = params.get("secret") || "";
-    setSecret(urlSecret);
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
 
-    setForm({
-      ...emptyForm,
-      title: params.get("title") || "",
-      image_url: params.get("image_url") || "",
-      product_url: params.get("product_url") || "",
-      store_name: params.get("store_name") || "",
-      country: params.get("country") || "sa",
-      old_price: params.get("old_price") || "",
-      new_price: params.get("new_price") || "",
-    });
+  const urlSecret = params.get("secret") || "";
 
-    if (urlSecret) loadDeals(urlSecret);
-  }, []);
+  setSecret(urlSecret);
+
+  setForm({
+    ...emptyForm,
+    title: params.get("title") || "",
+    image_url: params.get("image_url") || "",
+    product_url: params.get("product_url") || "",
+    store_name: params.get("store_name") || "",
+    country: params.get("country") || "sa",
+    old_price: params.get("old_price") || "",
+    new_price: params.get("new_price") || "",
+  });
+
+  if (urlSecret) loadDeals(urlSecret);
+}, []);
 
   const discountPreview = useMemo(() => {
     const oldPrice = Number(form.old_price || 0);

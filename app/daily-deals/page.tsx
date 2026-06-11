@@ -48,16 +48,48 @@ const countryCurrencies: Record<string, string> = {
 
 const categoryNames: Record<string, string> = {
   all: "كل الأقسام",
+
+  mobiles: "جوالات وتابلت",
   electronics: "إلكترونيات",
-  mobiles: "موبايلات",
   computers: "كمبيوتر ولابتوب",
+
   home: "المنزل والمطبخ",
+
   beauty: "جمال وعناية",
+  makeup: "مكياج",
+  skincare: "العناية بالبشرة",
+  perfumes: "عطور",
+
   fashion: "ملابس",
-  gaming: "ألعاب وجيمينج",
+  shoes: "أحذية",
+
+  sports: "رياضة",
+
+  kids: "أطفال وألعاب",
+
+  gaming: "جيمينج",
+
+  watches: "ساعات",
+  smartwatches: "ساعات ذكية",
+
+  earphones: "سماعات",
+  phone_accessories: "إكسسوارات الجوال",
+  power_bank: "باور بانك",
+
+  cars: "سيارات وإكسسوارات",
+
+  tools: "أدوات ومعدات",
+
+  office: "مستلزمات مكتبية",
+
+  pets: "مستلزمات الحيوانات",
+
+  books: "كتب",
+
+  food: "أغذية ومشروبات",
+
   other: "أخرى",
 };
-
 function money(value?: number | null, country?: string | null) {
   if (!value) return "-";
   return `${Number(value).toLocaleString("en-US")} ${
