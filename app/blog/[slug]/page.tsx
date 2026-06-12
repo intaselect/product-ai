@@ -242,6 +242,17 @@ export default async function BlogPostPage({ params }: any) {
           <div className="quickActions">
             <Link href="/customer-offers/add">ابدأ بإضافة منتجك الآن</Link>
             <Link href="/stores">تعرف على خدمات التجار</Link>
+            <div className="merchantCtaBox">
+  <h3>هل عندك متجر إلكتروني؟</h3>
+  <p>
+    أضف منتجك على BPS Chat ليظهر أمام مستخدمين يبحثون عن الأسعار والمنتجات،
+    والعميل ينتقل مباشرة إلى متجرك لإتمام الشراء.
+  </p>
+
+  <Link href="/customer-offers/add">
+    ابدأ بإضافة منتجك مجانًا
+  </Link>
+</div>
           </div>
 
           <h2>أهم ما يجب تحسينه داخل متجرك</h2>
@@ -264,25 +275,39 @@ export default async function BlogPostPage({ params }: any) {
             ))}
           </div>
 
-          <h2>روابط مهمة للتجار</h2>
+          <h2>ابدأ مع BPS Chat لزيادة ظهور منتجاتك</h2>
 
-          <div className="relatedGrid">
-            <Link href="/bps-for-stores" className="relatedItem">
-              خدمات BPS Chat للتجار
-            </Link>
-            <Link href="/customer-offers/add" className="relatedItem">
-              إضافة منتج مجاني
-            </Link>
-            <Link href="/customer-offers" className="relatedItem">
-              متجر العملاء
-            </Link>
-            <Link href="/" className="relatedItem">
-              البحث عن المنتجات
-            </Link>
-          </div>
+<p>
+  بعد تحسين متجرك وصفحات منتجاتك، تحتاج إلى قناة إضافية تساعد العملاء على
+  اكتشاف منتجاتك أثناء البحث والمقارنة. لذلك يوفر BPS Chat روابط مباشرة
+  تساعد التاجر على عرض منتجاته وربطها بصفحات البحث والمقارنة داخل الموقع.
+</p>
 
-          <h2>أسئلة شائعة</h2>
+<div className="relatedGrid">
+  <Link href="/bps-for-stores" className="relatedItem">
+    🚀 خدمات BPS Chat للتجار
+  </Link>
 
+  <Link href="/customer-offers/add" className="relatedItem">
+    ➕ أضف منتجك مجانًا
+  </Link>
+
+  <Link href="/customer-offers" className="relatedItem">
+    🛒 متجر العملاء
+  </Link>
+
+  <Link href="/stores" className="relatedItem">
+    📈 حلول نمو المتاجر
+  </Link>
+
+  <Link href="/blog" className="relatedItem">
+    📚 مقالات التسويق للمتاجر
+  </Link>
+
+  <Link href="/" className="relatedItem">
+    🔎 مقارنة أسعار المنتجات
+  </Link>
+</div>
           <div className="faq">
             <h3>هل إضافة المنتج مجانية؟</h3>
             <p>نعم، يمكنك البدء بإضافة منتج مجاني على BPS Chat.</p>
@@ -399,6 +424,34 @@ export default async function BlogPostPage({ params }: any) {
             background: #dbeafe;
             color: #1d4ed8;
           }
+            .merchantCtaBox {
+  margin: 28px 0;
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #0f172a, #1d4ed8);
+  color: white;
+}
+
+.merchantCtaBox h3 {
+  margin: 0 0 10px;
+  font-size: 26px;
+  color: white;
+}
+
+.merchantCtaBox p {
+  color: #dbeafe;
+  margin-bottom: 18px;
+}
+
+.merchantCtaBox a {
+  display: inline-flex;
+  text-decoration: none;
+  padding: 13px 18px;
+  border-radius: 16px;
+  background: #22c55e;
+  color: white;
+  font-weight: 950;
+}
 
           @media (max-width: 900px) {
             .postArticle {
