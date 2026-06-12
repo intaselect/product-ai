@@ -13,6 +13,7 @@ import AnalyticsTracker from "@/app/components/AnalyticsTracker";
 import InstallAppButton from "@/app/components/InstallAppButton";
 import GlobalAdsSlider from "@/app/components/GlobalAdsSlider";
 import TrustBanner from "@/app/components/TrustBanner";
+import DailyDealsBanner from "@/app/components/DailyDealsBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -189,6 +190,7 @@ export default function RootLayout({
 <TrustedSourcesBar />
 <TrustBanner />
 <GlobalAdsSlider />
+<DailyDealsBanner />
 
 <div className="storesPromoBanner">
   <a href="/bps-for-stores" className="storesPromoLink">
