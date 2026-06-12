@@ -18,6 +18,9 @@ type Deal = {
   new_price: number | null;
   discount_percent: number | null;
   created_at: string;
+  description: string | null;
+features: string[] | null;
+source_brand: string | null;
 };
 
 const supabase = createClient(
@@ -140,6 +143,12 @@ export default async function DailyDealDetailsPage({
     deal.old_price && deal.new_price
       ? Number(deal.old_price) - Number(deal.new_price)
       : 0;
+      const productFeatures = Array.isArray((deal as any).features)
+  ? (deal as any).features.filter(Boolean)
+  : [];
+
+const productDescription = String((deal as any).description || "").trim();
+const sourceBrand = String((deal as any).source_brand || "").trim();
       const { data: relatedOffers } = await supabase
   .from("customer_offers")
   .select("id,product_name,image_url,price,country")
@@ -225,6 +234,27 @@ const relatedDeals = await getRelatedDeals(
         </p>
       </section>
 <section className="relatedDealsBox">
+{(productDescription || productFeatures.length > 0 || sourceBrand) && (
+  <section className="seoBox">
+    <h2>معلومات إضافية عن العرض</h2>
+
+    {sourceBrand && (
+      <p>
+        العلامة التجارية: <strong>{sourceBrand}</strong>
+      </p>
+    )}
+
+    {productDescription && <p>{productDescription}</p>}
+
+    {productFeatures.length > 0 && (
+      <ul className="featuresList">
+        {productFeatures.map((feature: string, index: number) => (
+          <li key={index}>{feature}</li>
+        ))}
+      </ul>
+    )}
+  </section>
+)}
 
   <h2>
     🔥 عروض مشابهة في {countryNames[deal.country || ""] || "بلدك"}
@@ -536,7 +566,17 @@ const relatedDeals = await getRelatedDeals(
   color:#16a34a;
   font-weight:950;
 }
+.featuresList{
+  margin:16px 0 0;
+  padding:0 22px 0 0;
+  color:#475569;
+  line-height:2;
+  font-weight:800;
+}
 
+.featuresList li{
+  margin-bottom:8px;
+}
         @media (max-width: 800px) {
           .dealDetailsPage {
             padding: 24px 12px 60px;

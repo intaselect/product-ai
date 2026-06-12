@@ -64,6 +64,10 @@ const emptyForm = {
   category: ["electronics"],
   old_price: "",
   new_price: "",
+
+  description: "",
+  features: "",
+  source_brand: "",
 };
 
 export default function DailyDealsAdminPage() {
@@ -92,6 +96,9 @@ useEffect(() => {
     country: params.get("country") || "sa",
     old_price: params.get("old_price") || "",
     new_price: params.get("new_price") || "",
+    description: params.get("description") || "",
+features: params.get("features") || "",
+source_brand: params.get("source_brand") || "",
   });
 
   if (urlSecret) loadDeals(urlSecret);
@@ -154,6 +161,11 @@ useEffect(() => {
       category: deal.category?.length ? deal.category : ["electronics"],
       old_price: String(deal.old_price || ""),
       new_price: String(deal.new_price || ""),
+      description: (deal as any).description || "",
+features: Array.isArray((deal as any).features)
+  ? (deal as any).features.join("\n")
+  : "",
+source_brand: (deal as any).source_brand || "",
     });
 
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -172,12 +184,17 @@ useEffect(() => {
     setError("");
     setMessage("");
 
-    const payload = {
-      ...form,
-      old_price: Number(form.old_price || 0),
-      new_price: Number(form.new_price || 0),
-    };
+   const payload = {
+  ...form,
 
+  old_price: Number(form.old_price || 0),
+  new_price: Number(form.new_price || 0),
+
+  features: String(form.features || "")
+    .split("\n")
+    .map((x) => x.trim())
+    .filter(Boolean),
+};
     try {
       const res = await fetch(
         `/api/daily-deals/admin?secret=${encodeURIComponent(secret)}`,
@@ -307,6 +324,34 @@ useEffect(() => {
                   placeholder="noon / amazon / jarir"
                 />
               </label>
+              <label>
+  العلامة التجارية
+  <input
+    value={(form as any).source_brand || ""}
+    onChange={(e) => updateField("source_brand", e.target.value)}
+    placeholder="Apple / Samsung / Xiaomi"
+  />
+</label>
+
+<label>
+  وصف المنتج
+  <textarea
+    value={(form as any).description || ""}
+    onChange={(e) => updateField("description", e.target.value)}
+    rows={5}
+    placeholder="وصف كامل للمنتج..."
+  />
+</label>
+
+<label>
+  المميزات (كل سطر ميزة)
+  <textarea
+    value={(form as any).features || ""}
+    onChange={(e) => updateField("features", e.target.value)}
+    rows={8}
+    placeholder="ميزة 1&#10;ميزة 2&#10;ميزة 3"
+  />
+</label>
 
               <div className="twoCols">
                 <label>
@@ -545,7 +590,8 @@ useEffect(() => {
         }
 
         .dealForm input,
-        .dealForm select {
+.dealForm select,
+.dealForm textarea {
           width: 100%;
           box-sizing: border-box;
           border: 1px solid rgba(255,255,255,.13);
@@ -556,6 +602,10 @@ useEffect(() => {
           font-size: 15px;
           outline: none;
         }
+          .dealForm textarea{
+  resize: vertical;
+  min-height: 120px;
+}
 
         .twoCols {
           display: grid;

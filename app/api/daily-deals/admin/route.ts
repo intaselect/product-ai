@@ -56,8 +56,18 @@ export async function POST(req: Request) {
     old_price,
     new_price,
     discount_percent: calcDiscount(old_price, new_price),
-    status: "approved",
-    updated_at: new Date().toISOString(),
+
+description: String(body.description || "").trim(),
+features: Array.isArray(body.features) ? body.features : [],
+gallery_images: Array.isArray(body.gallery_images) ? body.gallery_images : [],
+specifications:
+  body.specifications && typeof body.specifications === "object"
+    ? body.specifications
+    : {},
+source_brand: String(body.source_brand || "").trim(),
+
+status: "approved",
+updated_at: new Date().toISOString(),
   };
 
   if (!payload.title || !payload.product_url || !new_price) {
@@ -105,7 +115,17 @@ export async function PATCH(req: Request) {
     old_price,
     new_price,
     discount_percent: calcDiscount(old_price, new_price),
-    updated_at: new Date().toISOString(),
+
+description: String(body.description || "").trim(),
+features: Array.isArray(body.features) ? body.features : [],
+gallery_images: Array.isArray(body.gallery_images) ? body.gallery_images : [],
+specifications:
+  body.specifications && typeof body.specifications === "object"
+    ? body.specifications
+    : {},
+source_brand: String(body.source_brand || "").trim(),
+
+updated_at: new Date().toISOString(),
   };
 
   const { data, error } = await supabase
