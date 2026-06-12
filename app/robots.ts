@@ -1,16 +1,29 @@
 export default function robots() {
   return {
-   rules: [
-  {
-    userAgent: "*",
-    allow: "/",
-    disallow: [
-      "/api/",
-      "/customer-offers/dashboard",
-      "/admin",
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: [
+          "/api/",
+          "/customer-offers/dashboard",
+          "/admin",
+        ],
+      },
+
+      {
+        userAgent: [
+          "GPTBot",
+          "CCBot",
+          "ClaudeBot",
+          "anthropic-ai",
+          "PerplexityBot",
+          "Bytespider",
+          "Amazonbot",
+        ],
+        disallow: "/",
+      },
     ],
-  },
-],
 
     sitemap: [
       "https://www.bpschat.com/sitemap.xml",

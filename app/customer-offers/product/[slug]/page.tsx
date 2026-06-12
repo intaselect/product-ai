@@ -6,7 +6,8 @@ import MarketPromoSection from "@/app/components/MarketPromoSection";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 import ComparePricesSection from "@/app/components/ComparePricesSection";
 
-export const revalidate = 43200;
+export const revalidate = 86400; // 24 ساعة
+export const dynamicParams = true;
 
 const SITE_URL = "https://www.bpschat.com";
 

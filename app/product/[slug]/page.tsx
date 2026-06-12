@@ -11,7 +11,8 @@ import InternalLinksBoost from "@/app/components/InternalLinksBoost";
 import PopularSearches from "@/app/components/PopularSearches";
 import Footer from "@/app/components/Footer";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400; // 24 ساعة
+export const dynamicParams = true;
 
 const SITE_URL = "https://www.bpschat.com";
 

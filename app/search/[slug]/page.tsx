@@ -9,7 +9,8 @@ import ShareSlugVideo from "@/app/components/ShareSlugVideo";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
   
 
-export const revalidate = 43200; // 12 ساعة
+export const revalidate = 86400; // 24 ساعة
+export const dynamicParams = true;
 function cleanSlug(slug: string) {
   return decodeURIComponent(slug)
     .toLowerCase()
@@ -128,16 +129,16 @@ const { data: cached } = await supabase
   .maybeSingle();
 
 if (cached?.results?.length) {
-  console.log("✅ SLUG CACHE HIT");
+
   products = cached.results;
 } else {
-  console.log("🔥 SLUG FETCH FROM API");
+ 
 
   try {
     
 
 //const fresh = await fetchRealProducts(query, countryCode);
-console.log("🚫 SLUG PAGE BLOCKED FROM SERPAPI");
+
 products = [];
   //products = fresh || [];
 
@@ -155,7 +156,7 @@ products = [];
 });
   }
 } catch (e) {
-  console.log("❌ SLUG API FAILED");
+  
   products = [];
 }
 }

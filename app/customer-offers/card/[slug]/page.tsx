@@ -6,7 +6,8 @@ import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
 import ComparePricesSection from "@/app/components/ComparePricesSection";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400; // 24 ساعة
+export const dynamicParams = true;
 
 const SITE_URL = "https://www.bpschat.com";
 
