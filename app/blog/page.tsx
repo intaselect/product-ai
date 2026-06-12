@@ -5,6 +5,7 @@ import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
 import InternalLinksBoost from "@/app/components/InternalLinksBoost";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
+import { merchantPosts } from "./merchantPosts";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +49,12 @@ export default async function BlogPage() {
     .limit(220);
 
   const validPosts = (cachePosts || []).filter((item: any) => {
-    return item?.query && item?.country && Array.isArray(item?.results) && item.results.length > 0;
+    return (
+      item?.query &&
+      item?.country &&
+      Array.isArray(item?.results) &&
+      item.results.length > 0
+    );
   });
 
   const { data: offers } = await supabase
@@ -72,6 +78,15 @@ export default async function BlogPage() {
       </section>
 
       <section className="blogGrid">
+        {merchantPosts.map((post) => (
+          <Link href={`/blog/${post.slug}`} className="blogCard" key={post.slug}>
+            <span>دليل للتجار</span>
+            <h2>{post.title}</h2>
+            <p>{post.description}</p>
+            <small>اقرأ الدليل ←</small>
+          </Link>
+        ))}
+
         {validPosts.map((item: any) => {
           const country = item.country || "sa";
           const slug = makeBlogSlug(item.query, country);
@@ -114,24 +129,25 @@ export default async function BlogPage() {
       <SearchBeforeBuyBanner />
       <PopularSearches />
       <InternalLinksBoost />
+
       <section className="authorBox">
-  <div className="authorIcon">📝</div>
+        <div className="authorIcon">📝</div>
 
-  <div>
-    <h2>عن الكاتب</h2>
+        <div>
+          <h2>عن الكاتب</h2>
 
-    <p>
-      تم إعداد هذا الدليل بواسطة فريق BPS Chat المختص في مقارنة الأسعار
-      وتحليل عروض المتاجر الإلكترونية في السعودية والإمارات والكويت وقطر
-      والبحرين ومصر.
-    </p>
+          <p>
+            تم إعداد هذا الدليل بواسطة فريق BPS Chat المختص في مقارنة الأسعار
+            وتحليل عروض المتاجر الإلكترونية في السعودية والإمارات والكويت وقطر
+            والبحرين ومصر.
+          </p>
 
-    <p>
-      يعتمد فريق BPS Chat على تحليل الأسعار والعروض ومراجعة نتائج البحث
-      لمساعدة المستخدمين في اتخاذ قرارات شراء أفضل.
-    </p>
-  </div>
-</section>
+          <p>
+            يعتمد فريق BPS Chat على تحليل الأسعار والعروض ومراجعة نتائج البحث
+            لمساعدة المستخدمين في اتخاذ قرارات شراء أفضل.
+          </p>
+        </div>
+      </section>
 
       <style>{`
         .blogPage {
@@ -166,18 +182,20 @@ export default async function BlogPage() {
           line-height: 2;
           color: #dbeafe;
         }
-          .authorBox{
-  margin-top:40px;
-  padding:24px;
-  border-radius:20px;
-  background:#f8fafc;
-  border:1px solid #e2e8f0;
-}
 
-.authorIcon{
-  font-size:32px;
-  margin-bottom:10px;
-}
+        .authorBox {
+          max-width: 1100px;
+          margin: 40px auto;
+          padding: 24px;
+          border-radius: 20px;
+          background: #fff;
+          border: 1px solid #e2e8f0;
+        }
+
+        .authorIcon {
+          font-size: 32px;
+          margin-bottom: 10px;
+        }
 
         .blogGrid {
           max-width: 1200px;
@@ -257,6 +275,10 @@ export default async function BlogPage() {
         @media (max-width: 900px) {
           .blogGrid {
             grid-template-columns: 1fr;
+          }
+
+          .authorBox {
+            margin: 30px 18px;
           }
         }
       `}</style>
