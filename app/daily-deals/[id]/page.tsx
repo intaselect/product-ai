@@ -49,7 +49,18 @@ function money(value?: number | null, country?: string | null) {
     currencies[country || ""] || ""
   }`;
 }
+function slugify(text: string) {
+  return String(text || "product")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
+}
 
+function customerOfferSeoUrl(offer: any) {
+  return `/customer-offers/product/bps-chat-${slugify(
+    offer.product_name
+  )}-${offer.country || "sa"}-${offer.id}`;
+}
 async function getDeal(id: string) {
   const { data } = await supabase
     .from("daily_deals")
@@ -60,6 +71,7 @@ async function getDeal(id: string) {
 
   return data as Deal | null;
 }
+
 async function getRelatedDeals(
   country?: string | null,
   category?: string[] | null,
@@ -128,6 +140,12 @@ export default async function DailyDealDetailsPage({
     deal.old_price && deal.new_price
       ? Number(deal.old_price) - Number(deal.new_price)
       : 0;
+      const { data: relatedOffers } = await supabase
+  .from("customer_offers")
+  .select("id,product_name,image_url,price,country")
+  .eq("status", "approved")
+  .eq("country", deal.country || "sa")
+  .limit(8);
 const relatedDeals = await getRelatedDeals(
   deal.country,
   deal.category,
@@ -232,6 +250,29 @@ const relatedDeals = await getRelatedDeals(
     ))}
   </div>
 
+</section>
+<section className="relatedDealsBox">
+  <h2>
+    🛍️ منتجات مقترحة من BPS Market في {countryNames[deal.country || ""] || "بلدك"}
+  </h2>
+
+  <div className="relatedGrid">
+    {(relatedOffers || []).map((item: any) => (
+      <Link
+        key={item.id}
+        href={customerOfferSeoUrl(item)}
+        className="relatedCard"
+      >
+        {item.image_url && (
+          <img src={item.image_url} alt={item.product_name} />
+        )}
+
+        <span>{item.product_name}</span>
+
+        {item.price && <b>{item.price}</b>}
+      </Link>
+    ))}
+  </div>
 </section>
 
 <section className="internalLinksBox">

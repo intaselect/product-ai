@@ -11,7 +11,8 @@ import {
   getAdvertiserPage,
 } from "@/app/advertisers/data";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
+export const dynamicParams = true;
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!

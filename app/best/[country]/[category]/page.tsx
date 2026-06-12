@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import MarketPromoSection from "@/app/components/MarketPromoSection";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
+export const dynamicParams = true;
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
