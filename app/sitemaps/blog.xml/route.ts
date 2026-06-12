@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { merchantPosts } from "@/app/blog/merchantPosts";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,10 @@ function slugify(text: string) {
     .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
 }
 
+function makeBlogSlug(query: string, country: string) {
+  return `${slugify(query)}-${country || "sa"}`;
+}
+
 function xmlEscape(value: string) {
   return String(value || "")
     .replace(/&/g, "&amp;")
@@ -26,6 +31,7 @@ function xmlEscape(value: string) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
 }
+
 async function getAllBlogPosts() {
   const pageSize = 1000;
   let from = 0;
@@ -49,34 +55,49 @@ async function getAllBlogPosts() {
 
   return all;
 }
+
 export async function GET() {
   const cacheData = await getAllBlogPosts();
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${(cacheData || [])
-  .filter(
-    (item: any) =>
-      item?.query &&
-      item?.country &&
-      Array.isArray(item?.results) &&
-      item.results.length > 0
-  )
-  .map((item: any) => {
-    const slug = `${slugify(item.query)}-${item.country || "sa"}`;
-    const lastmod = item.updated_at
-      ? new Date(item.updated_at).toISOString()
-      : new Date().toISOString();
-
+  const merchantUrls = merchantPosts.map((post) => {
     return `
+  <url>
+    <loc>${xmlEscape(`${SITE_URL}/blog/${post.slug}`)}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>`;
+  });
+
+  const productBlogUrls =
+    (cacheData || [])
+      .filter((item: any) => {
+        return (
+          item?.query &&
+          item?.country &&
+          Array.isArray(item?.results) &&
+          item.results.length > 0
+        );
+      })
+      .map((item: any) => {
+        const slug = makeBlogSlug(item.query, item.country);
+        const lastmod = item.updated_at
+          ? new Date(item.updated_at).toISOString()
+          : new Date().toISOString();
+
+        return `
   <url>
     <loc>${xmlEscape(`${SITE_URL}/blog/${slug}`)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
-  })
-  .join("")}
+      }) || [];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${merchantUrls.join("")}
+${productBlogUrls.join("")}
 </urlset>`;
 
   return new NextResponse(xml, {
