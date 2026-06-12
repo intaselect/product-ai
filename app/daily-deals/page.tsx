@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "عروض اليوم | أقوى الخصومات من نون وأمازون والمتاجر | BPS Chat",
@@ -606,8 +606,51 @@ export default async function DailyDealsPage({
           }
 
           .dealsGrid {
-            grid-template-columns: 1fr;
-          }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.imageWrap {
+  height: 140px;
+}
+
+.cardContent {
+  padding: 10px;
+}
+
+.cardContent h2 {
+  height: 44px;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.storeName {
+  font-size: 10px;
+}
+
+.newPrice {
+  font-size: 15px;
+}
+
+.oldPrice {
+  font-size: 10px;
+}
+
+.pricesBox small {
+  font-size: 10px;
+}
+
+.dealActions {
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.buyBtn,
+.detailsBtn {
+  height: 36px;
+  font-size: 11px;
+}
 
           .imageWrap {
             height: 210px;
