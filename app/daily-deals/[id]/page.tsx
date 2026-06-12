@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
+export const dynamicParams = true;
 
 type Deal = {
   id: number;
@@ -59,6 +60,26 @@ async function getDeal(id: string) {
 
   return data as Deal | null;
 }
+async function getRelatedDeals(
+  country?: string | null,
+  category?: string[] | null,
+  currentId?: number
+) {
+  let query = supabase
+    .from("daily_deals")
+    .select("id,title,image_url,discount_percent")
+    .eq("status", "approved")
+    .neq("id", currentId || 0)
+    .limit(8);
+
+  if (country) {
+    query = query.eq("country", country);
+  }
+
+  const { data } = await query;
+
+  return data || [];
+}
 
 export async function generateMetadata({
   params,
@@ -107,7 +128,11 @@ export default async function DailyDealDetailsPage({
     deal.old_price && deal.new_price
       ? Number(deal.old_price) - Number(deal.new_price)
       : 0;
-
+const relatedDeals = await getRelatedDeals(
+  deal.country,
+  deal.category,
+  deal.id
+);
   return (
     <main className="dealDetailsPage" dir="rtl">
       <section className="dealHero">
@@ -181,7 +206,65 @@ export default async function DailyDealDetailsPage({
           إلى المتجر.
         </p>
       </section>
+<section className="relatedDealsBox">
 
+  <h2>
+    🔥 عروض مشابهة في {countryNames[deal.country || ""] || "بلدك"}
+  </h2>
+
+  <div className="relatedGrid">
+    {relatedDeals.map((item: any) => (
+      <Link
+        key={item.id}
+        href={`/daily-deals/${item.id}`}
+        className="relatedCard"
+      >
+        {item.image_url && (
+          <img src={item.image_url} alt={item.title} />
+        )}
+
+        <span>{item.title}</span>
+
+        {Number(item.discount_percent || 0) > 0 && (
+          <b>خصم {Math.round(item.discount_percent)}%</b>
+        )}
+      </Link>
+    ))}
+  </div>
+
+</section>
+
+<section className="internalLinksBox">
+
+  <h2>
+    🛍️ تصفح المزيد في {countryNames[deal.country || ""] || "بلدك"}
+  </h2>
+
+  <div className="internalLinksGrid">
+
+    <Link href={`/daily-deals?country=${deal.country}`}>
+      عروض {countryNames[deal.country || ""] || ""}
+    </Link>
+
+    <Link href={`/customer-offers?country=${deal.country}`}>
+      منتجات {countryNames[deal.country || ""] || ""}
+    </Link>
+
+    <Link href="/">
+      مقارنة الأسعار
+    </Link>
+
+    <Link href="/smart-search">
+      البحث الذكي
+    </Link>
+
+    <Link href="/customer-offers">
+      متجر العملاء
+    </Link>
+
+  </div>
+
+</section>
       <style>{`
         .dealDetailsPage {
           min-height: 100vh;
@@ -345,6 +428,73 @@ export default async function DailyDealDetailsPage({
           line-height: 2;
           font-weight: 800;
         }
+          .relatedDealsBox,
+.internalLinksBox{
+  max-width:1180px;
+  margin:0 auto 24px;
+  padding:26px;
+  border-radius:30px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  box-shadow:0 18px 45px rgba(15,23,42,.08);
+}
+
+.relatedDealsBox h2,
+.internalLinksBox h2{
+  margin:0 0 18px;
+  font-size:28px;
+  font-weight:950;
+}
+
+.relatedGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px;
+}
+
+.relatedCard{
+  text-decoration:none;
+  color:#111827;
+  border:1px solid #e5e7eb;
+  border-radius:20px;
+  overflow:hidden;
+  background:#fff;
+}
+
+.relatedCard img{
+  width:100%;
+  height:160px;
+  object-fit:contain;
+  background:#f8fafc;
+}
+
+.relatedCard span{
+  display:block;
+  padding:12px;
+  font-size:13px;
+  font-weight:900;
+}
+
+.relatedCard b{
+  display:block;
+  color:#16a34a;
+  padding:0 12px 12px;
+}
+
+.internalLinksGrid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+.internalLinksGrid a{
+  text-decoration:none;
+  padding:12px 18px;
+  border-radius:999px;
+  background:#ecfdf5;
+  color:#16a34a;
+  font-weight:950;
+}
 
         @media (max-width: 800px) {
           .dealDetailsPage {
