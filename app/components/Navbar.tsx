@@ -47,7 +47,9 @@ className="navSmallHover">📝 أدوات البائع</Link>
       </div>
       <span style={styles.customerStoreArrow}>←</span>
     </Link>
-
+<Link href="/daily-deals" style={styles.dailyDealsBtn} className="dailyDealsHover">
+  🔥 عروض اليوم
+</Link>
     <Link href="/customer-offers/share-center" style={styles.quickBrowseBtn} className="quickBrowseHover">
       <span style={styles.quickBrowseIcon}>⚡</span>
       <div style={styles.customerStoreContent}>
@@ -113,7 +115,14 @@ className="navSmallHover">تسجيل الدخول</Link>
       0 0 90px rgba(250,204,21,.42);
   }
 }
+.dailyDealsHover {
+  animation: fireMarketPulse 1.9s ease-in-out infinite;
+}
 
+.dailyDealsHover:hover {
+  transform: scale(1.08) !important;
+  filter: brightness(1.12);
+}
 .fireMarketHover {
   animation: fireMarketPulse 1.8s ease-in-out infinite;
 }
@@ -342,6 +351,16 @@ const styles: any = {
   display: "flex",
   flexDirection: "column",
   lineHeight: 1.05,
+},
+dailyDealsBtn: {
+  background: "linear-gradient(135deg,#ef4444,#f97316)",
+  padding: "10px 16px",
+  borderRadius: "999px",
+  color: "#fff",
+  textDecoration: "none",
+  fontWeight: "950",
+  boxShadow: "0 0 18px rgba(249,115,22,.45)",
+  whiteSpace: "nowrap",
 },
 fireMarketBtn: {
   width: "74px",

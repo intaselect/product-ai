@@ -54,7 +54,13 @@ export default function SidebarMenu() {
         ) : (
           <a href="/login" className="menuItem">تسجيل الدخول</a>
         )}
-
+<a href="/daily-deals" className="menuItem sidebarDailyDealsGlow">
+  <span className="dailyDealsSideIcon">🔥</span>
+  <span>
+    عروض اليوم
+    <span className="dailyDealsSideSub">أقوى خصومات نون وأمازون</span>
+  </span>
+</a>
         <a href="/" className="menuItem">الرئيسية</a>
 
         <a href="/advertise" className="menuItem sidebarAdvertiseGlow">
@@ -192,6 +198,38 @@ export default function SidebarMenu() {
     transform 0.22s ease,
     box-shadow 0.22s ease,
     border-color 0.22s ease;
+}
+    .sidebarDailyDealsGlow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 68px;
+  border-radius: 22px;
+  background: linear-gradient(135deg,#ef4444,#f97316);
+  border: 2px solid rgba(254,215,170,.75);
+  color: #fff !important;
+  box-shadow: 0 0 22px rgba(249,115,22,.55);
+  animation: sidebarFirePulse 1.8s ease-in-out infinite;
+}
+
+.dailyDealsSideIcon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.18);
+  font-size: 25px;
+}
+
+.dailyDealsSideSub {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+  color: #fff7ed;
+  font-weight: 900;
 }
 .sidebarComparisonsGlow {
   background: linear-gradient(
