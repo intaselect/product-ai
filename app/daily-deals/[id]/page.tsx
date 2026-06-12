@@ -145,7 +145,7 @@ export default async function DailyDealDetailsPage({
   .select("id,product_name,image_url,price,country")
   .eq("status", "approved")
   .eq("country", deal.country || "sa")
-  .limit(8);
+  .limit(12);
 const relatedDeals = await getRelatedDeals(
   deal.country,
   deal.category,
@@ -489,7 +489,7 @@ const relatedDeals = await getRelatedDeals(
 
 .relatedGrid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
   gap:16px;
 }
 
