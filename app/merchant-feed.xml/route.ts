@@ -18,7 +18,14 @@ const currencyCodes: Record<string, string> = {
   bh: "BHD",
   eg: "EGP",
 };
-
+const shippingCountries: Record<string, string> = {
+  sa: "SA",
+  ae: "AE",
+  kw: "KW",
+  qa: "QA",
+  bh: "BH",
+  eg: "EG",
+};
 function xmlEscape(value: any) {
   return String(value || "")
     .replace(/&/g, "&amp;")
@@ -185,7 +192,12 @@ if (error) {
       )
       .join("\n    ")}
     <g:availability>in_stock</g:availability>
+    <g:availability_date>${new Date().toISOString()}</g:availability_date>
     <g:condition>new</g:condition>
+    <g:shipping>
+  <g:country>${offer.country.toUpperCase()}</g:country>
+  <g:price>0 ${currency}</g:price>
+</g:shipping>
     <g:price>${xmlEscape(price)} ${currency}</g:price>
     <g:brand>${xmlEscape(
       offer.source_brand || offer.store_name || "BPS Chat"
