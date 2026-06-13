@@ -103,7 +103,7 @@ export default async function DailyDealsPage({
 }) {
   const params = await searchParams;
 
-  const selectedCountry = String(params?.country || "all");
+ const selectedCountry = String(params?.country || "sa");
   const selectedCategory = String(params?.category || "all");
   const selectedStore = String(params?.store || "all");
 
