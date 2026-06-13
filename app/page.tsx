@@ -2532,19 +2532,23 @@ z-index: 3;
   text-align: center;
   font-size: 14px;
   font-weight: 800;
-color: #00ffd5;
 
-background: linear-gradient(
-  135deg,
-  rgba(0,255,213,0.10),
-  rgba(0,180,255,0.08)
-);
+  color: #ffffff;
 
-border: 1px solid rgba(0,255,213,0.25);
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(30, 41, 59, 0.95)
+  );
 
-box-shadow:
-  0 0 16px rgba(0,255,213,0.15),
-  inset 0 0 8px rgba(0,255,213,0.05);
+  border: 1px solid rgba(0,255,213,0.35);
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 0 18px rgba(0,255,213,0.25),
+    0 0 35px rgba(0,180,255,0.15),
+    inset 0 0 12px rgba(0,255,213,0.08);
 
   animation: egyptNoticePulse 2s infinite;
 }
