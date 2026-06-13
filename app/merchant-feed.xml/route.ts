@@ -144,7 +144,6 @@ while (true) {
     )
     .eq("status", "approved")
     .eq("is_ad", false)
-    .not("seller_email", "is", null)
     .not("product_name", "is", null)
     .not("price", "is", null)
     .not("image_url", "is", null)
