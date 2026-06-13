@@ -639,7 +639,11 @@ async function handleSearch() {
   <div className="dailyLimitNotice">
     ⚡ لكل مستخدم 10 عمليات بحث يوميًا لضمان أفضل أداء للموقع
   </div>
-
+{country === "eg" && (
+  <div className="egyptNotice">
+    ⏳ نتائج مصر تأتي على دفعتين للحصول على أكبر عدد من المنتجات، يرجى الانتظار 5 - 10 ثوانٍ حتى تكتمل جميع النتائج.
+  </div>
+)}
   <div className="searchBox">
     <input
       placeholder="اكتب اسم المنتج..."
@@ -2520,7 +2524,37 @@ z-index: 3;
   font-weight: bold;
   text-decoration: none;
 }
+.egyptNotice {
+  margin: 0 auto 12px;
+  max-width: 670px;
+  padding: 12px 16px;
 
+  text-align: center;
+  font-size: 14px;
+  font-weight: 800;
+
+  color: #fbbf24;
+
+  background: rgba(251,191,36,0.12);
+  border: 1px solid rgba(251,191,36,0.35);
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 0 16px rgba(251,191,36,0.18),
+    inset 0 0 8px rgba(251,191,36,0.08);
+
+  animation: egyptNoticePulse 2s infinite;
+}
+
+@keyframes egyptNoticePulse {
+  0%,100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
 .storeSlider {
   display: flex;
   gap: 12px;
