@@ -48,7 +48,14 @@ className="navSmallHover">📝 أدوات البائع</Link>
       <span style={styles.customerStoreArrow}>←</span>
     </Link>
 <Link href="/daily-deals" style={styles.dailyDealsBtn} className="dailyDealsHover">
-  🔥 عروض اليوم
+  <span className="discountRain" aria-hidden="true">
+    <i>20%</i>
+    <i>50%</i>
+    <i>35%</i>
+    <i>70%</i>
+    <i>15%</i>
+  </span>
+  <span style={{ position: "relative", zIndex: 2 }}>🔥 عروض اليوم</span>
 </Link>
     <Link href="/customer-offers/share-center" style={styles.quickBrowseBtn} className="quickBrowseHover">
       <span style={styles.quickBrowseIcon}>⚡</span>
@@ -116,13 +123,71 @@ className="navSmallHover">تسجيل الدخول</Link>
   }
 }
 .dailyDealsHover {
-  animation: fireMarketPulse 1.9s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: rgba(249, 115, 22, 0.42) !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  backdrop-filter: blur(10px);
+  animation: dailyDealsGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes dailyDealsGlow {
+  0%,100% {
+    box-shadow:
+      0 0 14px rgba(249,115,22,.35),
+      inset 0 0 18px rgba(255,255,255,.08);
+  }
+  50% {
+    box-shadow:
+      0 0 28px rgba(249,115,22,.65),
+      inset 0 0 24px rgba(255,255,255,.14);
+  }
+}
+
+.discountRain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.discountRain i {
+  position: absolute;
+  top: -18px;
+  color: rgba(255,255,255,.42);
+  font-size: 10px;
+  font-weight: 950;
+  font-style: normal;
+  animation: discountFall 2.8s linear infinite;
+}
+
+.discountRain i:nth-child(1) { right: 12%; animation-delay: 0s; }
+.discountRain i:nth-child(2) { right: 32%; animation-delay: .45s; }
+.discountRain i:nth-child(3) { right: 52%; animation-delay: .9s; }
+.discountRain i:nth-child(4) { right: 70%; animation-delay: 1.35s; }
+.discountRain i:nth-child(5) { right: 84%; animation-delay: 1.8s; }
+
+@keyframes discountFall {
+  0% {
+    transform: translateY(-16px) rotate(-8deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: .75;
+  }
+  100% {
+    transform: translateY(54px) rotate(12deg);
+    opacity: 0;
+  }
 }
 
 .dailyDealsHover:hover {
-  transform: scale(1.08) !important;
-  filter: brightness(1.12);
+  transform: scale(1.06) !important;
+  filter: brightness(1.1);
 }
+
+
 .fireMarketHover {
   animation: fireMarketPulse 1.8s ease-in-out infinite;
 }
@@ -353,14 +418,13 @@ const styles: any = {
   lineHeight: 1.05,
 },
 dailyDealsBtn: {
-  background: "linear-gradient(135deg,#ef4444,#f97316)",
   padding: "10px 16px",
   borderRadius: "999px",
   color: "#fff",
   textDecoration: "none",
   fontWeight: "950",
-  boxShadow: "0 0 18px rgba(249,115,22,.45)",
   whiteSpace: "nowrap",
+  position: "relative",
 },
 fireMarketBtn: {
   width: "74px",
