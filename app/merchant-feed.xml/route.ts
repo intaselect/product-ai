@@ -54,22 +54,25 @@ function buildDescription(offer: any) {
 }
 
 export async function GET() {
-  const { data, error } = await supabase
-    .from("customer_offers")
-    .select(
-      "id, product_name, price, image_url, product_url, store_name, country, status, description, source_brand, gallery_images, image_url_2, image_url_3, updated_at, created_at"
-    )
-    .eq("status", "approved")
-    .not("product_name", "is", null)
-    .not("price", "is", null)
-    .not("image_url", "is", null)
-    .order("updated_at", { ascending: false })
-    .limit(5000);
+ const { data, error } = await supabase
+  .from("customer_offers")
+  .select(
+    "id, product_name, price, image_url, product_url, store_name, country, status, description, source_brand, gallery_images, image_url_2, image_url_3, updated_at, created_at, seller_email, is_ad"
+  )
+  .eq("status", "approved")
+  .eq("is_ad", false)
+.not("seller_email", "is", null)
+  .eq("is_ad", false)
+  .not("seller_email", "is", null)
+  .not("product_name", "is", null)
+  .not("price", "is", null)
+  .not("image_url", "is", null)
+  .order("updated_at", { ascending: false })
+  .limit(5000);
 
-  if (error) {
-    return new NextResponse(`Feed error: ${error.message}`, { status: 500 });
-  }
-
+if (error) {
+  return new NextResponse(`Feed error: ${error.message}`, { status: 500 });
+}
   const items = (data || [])
     .filter((offer: any) => {
       const price = Number(cleanPrice(offer.price));
