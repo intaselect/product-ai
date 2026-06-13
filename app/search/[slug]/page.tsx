@@ -67,14 +67,16 @@ async function getSearchData(slug: string) {
 
   return data;
 }
+const topMarketplaces =
+  "Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein و B.TECH و Homzmart و Breadfast و OpenSooq و Blink و Best Al Yousifi و Eureka و Lulu و Mumzworld و Dubizzle و D4D Online";
 export async function generateMetadata({ params }: any) {
   const { slug } = await params;
   const { query, countryName, clean } = parseSlug(slug);
   const pageUrl = `https://www.bpschat.com/search/${clean}`;
 
   return {
-    title: `أفضل سعر ${query} في ${countryName} اليوم | مقارنة أسعار BPS Chat`,
-    description: `قارن سعر ${query} في ${countryName} اليوم من عدة متاجر، وشاهد أرخص العروض قبل الشراء عبر BPS Chat بي بي اس شات.`,
+    title: `${query} في ${countryName} | قارن بين Amazon و Noon و Jumia | BPS Chat`,
+    description: `قارن أسعار ${query} في ${countryName} بين أشهر المتاجر مثل ${topMarketplaces} عبر BPS Chat بي بي اس شات واعرف أفضل سعر قبل الشراء.`,
     alternates: {
       canonical: pageUrl,
     },
@@ -83,8 +85,8 @@ export async function generateMetadata({ params }: any) {
       follow: true,
     },
     openGraph: {
-      title: `أفضل سعر ${query} في ${countryName} | BPS Chat`,
-      description: `قارن أسعار ${query} في ${countryName} واعرف أرخص عرض قبل الشراء.`,
+      title: `${query} في ${countryName} | مقارنة أسعار المتاجر | BPS Chat`,
+      description: `قارن أسعار ${query} في ${countryName} بين ${topMarketplaces} واعرف أرخص عرض قبل الشراء.`,
       url: pageUrl,
       siteName: "BPS Chat | بي بي اس شات",
       images: [
@@ -95,6 +97,12 @@ export async function generateMetadata({ params }: any) {
         },
       ],
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${query} في ${countryName} | BPS Chat`,
+      description: `قارن أسعار ${query} بين أشهر المتاجر الإلكترونية في ${countryName}.`,
+      images: ["https://www.bpschat.com/og-image.png"],
     },
   };
 }
@@ -170,26 +178,34 @@ function getPriceNumber(product: any) {
 function getStoreName(product: any) {
   const raw = String(product.source || product.store || product.merchant || product.seller || "");
   const url = String(product.url || product.link || "");
+  const text = `${raw} ${url}`.toLowerCase();
 
-  // تنظيف الاسم الأول
-  if (raw) {
-    if (raw.toLowerCase().includes("amazon")) return "Amazon";
-    if (raw.toLowerCase().includes("noon")) return "Noon";
-    if (raw.toLowerCase().includes("jumia")) return "Jumia";
-    if (raw.toLowerCase().includes("jarir")) return "Jarir";
-    if (raw.toLowerCase().includes("extra")) return "Extra";
+  if (text.includes("amazon")) return "Amazon";
+  if (text.includes("noon")) return "Noon";
+  if (text.includes("jumia")) return "Jumia";
+  if (text.includes("jarir")) return "Jarir";
+  if (text.includes("extra")) return "Extra";
+  if (text.includes("carrefour")) return "Carrefour";
+  if (text.includes("sharafdg") || text.includes("sharaf dg")) return "Sharaf DG";
+  if (text.includes("xcite")) return "Xcite";
+  if (text.includes("namshi")) return "Namshi";
+  if (text.includes("trendyol")) return "Trendyol";
+  if (text.includes("aliexpress")) return "AliExpress";
+  if (text.includes("temu")) return "Temu";
+  if (text.includes("shein")) return "Shein";
+  if (text.includes("btech")) return "B.TECH";
+  if (text.includes("homzmart")) return "Homzmart";
+  if (text.includes("breadfast")) return "Breadfast";
+  if (text.includes("opensooq")) return "OpenSooq";
+  if (text.includes("blink")) return "Blink";
+  if (text.includes("best")) return "Best Al Yousifi";
+  if (text.includes("eureka")) return "Eureka";
+  if (text.includes("lulu")) return "Lulu";
+  if (text.includes("mumzworld")) return "Mumzworld";
+  if (text.includes("dubizzle")) return "Dubizzle";
+  if (text.includes("d4donline") || text.includes("d4d")) return "D4D Online";
 
-    return raw; // لو متجر تاني
-  }
-
-  // fallback من الرابط
-  if (url.includes("amazon.")) return "Amazon";
-  if (url.includes("noon.")) return "Noon";
-  if (url.includes("jumia.")) return "Jumia";
-  if (url.includes("jarir.")) return "Jarir";
-  if (url.includes("extra.")) return "Extra";
-
-  return "متجر إلكتروني";
+  return raw || "متجر إلكتروني";
 }
 const currency =
   countryCode === "sa" ? "ريال" :
@@ -265,7 +281,7 @@ const storeSummary = stores
   "@context": "https://schema.org",
   "@type": "Product",
   name: `${data?.query || query}`,
-  description: `قارن أسعار ${data?.query || query} في ${countryName} واعرف أفضل العروض.`,
+  description: `قارن أسعار ${data?.query || query} في ${countryName} بين أشهر المتاجر الإلكترونية مثل ${topMarketplaces} عبر BPS Chat بي بي اس شات واعرف أفضل العروض قبل الشراء.`,
   brand: {
     "@type": "Brand",
     name: "BPS Chat",
@@ -483,6 +499,11 @@ return (
       <h1>
   أفضل سعر {data?.query || query} في {countryName} عبر BPS Chat (بي بي اس شات)
 </h1>
+<p className="marketplacesSeoText">
+  يقارن BPS Chat أسعار {data?.query || query} في {countryName} بين أشهر
+  المتاجر الإلكترونية مثل {topMarketplaces}، لمساعدتك في معرفة أفضل سعر
+  قبل الشراء من مكان واحد.
+</p>
 <section className="faqSeoSection">
   <h2>أسئلة شائعة حول {data?.query || query}</h2>
 

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "أفضل عروض العملاء | BPS Chat - بي بي اس شات",
   description:
-    "اكتشف أفضل عروض العملاء والمتاجر على BPS Chat. منتجات بأسعار مميزة من السعودية، الإمارات، الكويت، قطر، البحرين ومصر مع روابط مباشرة للشراء.",
+  "اكتشف عروض العملاء والمتاجر على BPS Chat وقارن المنتجات من Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein في السعودية والإمارات والكويت والبحرين ومصر.",
   keywords: [
     "أفضل عروض العملاء",
     "عروض BPS Chat",
@@ -19,6 +19,33 @@ export const metadata: Metadata = {
     "عروض السعودية",
     "عروض الإمارات",
     "عروض مصر",
+    "Amazon",
+"Noon",
+"Jumia",
+"Jarir",
+"Extra",
+"Carrefour",
+"Sharaf DG",
+"Xcite",
+"Namshi",
+"Trendyol",
+"AliExpress",
+"Temu",
+"Shein",
+"B.TECH",
+"Homzmart",
+"Breadfast",
+"OpenSooq",
+"Blink",
+"Best Al Yousifi",
+"Eureka",
+"Lulu",
+"Mumzworld",
+"Dubizzle",
+"D4D Online",
+"مقارنة أسعار أمازون",
+"مقارنة أسعار نون",
+"مقارنة أسعار جوميا",
   ],
 };
 
@@ -478,12 +505,14 @@ return (
 
       <section className="seoBox">
         <h2>عروض منتجات حقيقية من العملاء والمتاجر</h2>
-        <p>
-          في صفحة أفضل عروض عملاء بي بي اس شات يمكنك اكتشاف عروض منتجات،
-          خصومات، أسعار مميزة، وروابط مباشرة للشراء من المتاجر. الصفحة تساعد
-          المستخدمين في الوصول لعروض قوية داخل السعودية، الإمارات، الكويت،
-          قطر، البحرين ومصر.
-        </p>
+       <p>
+  في صفحة أفضل عروض عملاء بي بي اس شات يمكنك اكتشاف عروض منتجات،
+  خصومات، أسعار مميزة، وروابط مباشرة للشراء من المتاجر. الصفحة تساعد
+  المستخدمين في الوصول لعروض قوية داخل السعودية، الإمارات، الكويت،
+  قطر، البحرين ومصر، مع ربط تجربة البحث والمقارنة بأشهر المتاجر مثل
+  Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite
+  و Namshi و Trendyol و AliExpress و Temu و Shein و B.TECH و Lulu.
+</p>
       </section>
       
       <section className="categoryTabs">

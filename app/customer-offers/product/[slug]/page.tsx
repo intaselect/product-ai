@@ -199,10 +199,10 @@ export async function generateMetadata({
   const pageUrl = `${SITE_URL}/customer-offers/product/${slug}`;
 
   return {
-    title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat بي بي اس شات`,
+    title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat بي بي اس شات | Amazon Noon Jumia`,
     description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat (بي بي اس شات). شاهد العرض بسعر ${offer.price} ${currency} من ${
-      offer.store_name || "متجر موثوق"
-    } مع رابط شراء مباشر.`,
+  offer.store_name || "متجر موثوق"
+} مع رابط شراء مباشر. يساعدك BPS Chat على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.`,
     robots: {
       index: true,
       follow: true,
@@ -286,9 +286,9 @@ const relatedSearchTerms = await getRelatedSearchTerms(
 
     image: productImages.length > 0 ? productImages : [offer.image_url].filter(Boolean),
 
-    description:
-      offer.description ||
-      `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}.`,
+   description:
+  offer.description ||
+  `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}. يساعدك الموقع على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress.`,
 
     brand: {
       "@type": "Brand",
@@ -402,6 +402,10 @@ const relatedSearchTerms = await getRelatedSearchTerms(
           <strong>{offer.product_name}</strong> في {country} مع رابط مباشر من
           البائع. يمكنك من خلال <strong>بي بي اس شات</strong> مقارنة الأسعار
           والوصول لأفضل العروض بسهولة.
+          <br />
+<br />
+كما يساعدك BPS Chat في مقارنة الأسعار بين أشهر المتاجر الإلكترونية مثل
+Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.
         </p>
       </section>
 
@@ -524,6 +528,10 @@ const relatedSearchTerms = await getRelatedSearchTerms(
 
       <section className="content">
         <h2>أفضل سعر {offer.product_name} في {country}</h2>
+        <p>
+يعرض BPS Chat (بي بي اس شات) أسعار وعروض المنتجات من متاجر متعددة،
+ويساعد المستخدمين على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress للوصول إلى أفضل سعر متاح.
+</p>
 
         <p>
           يعتبر موقع <strong>BPS Chat</strong> من أفضل المواقع لمقارنة أسعار
