@@ -55,11 +55,21 @@ export default function SidebarMenu() {
           <a href="/login" className="menuItem">تسجيل الدخول</a>
         )}
 <a href="/daily-deals" className="menuItem sidebarDailyDealsGlow">
+  <span className="discountRainSide" aria-hidden="true">
+    <i>20%</i>
+    <i>50%</i>
+    <i>35%</i>
+    <i>70%</i>
+    <i>90%</i>
+    <i>15%</i>
+  </span>
   <span className="dailyDealsSideIcon">🔥</span>
   <span>
-    عروض اليوم
-    <span className="dailyDealsSideSub">أقوى خصومات نون وأمازون</span>
+  عروض اليوم
+  <span className="dailyDealsSideSub">
+    أفضل عروض وخصومات جميع المتاجر في بلدك
   </span>
+</span>
 </a>
         <a href="/" className="menuItem">الرئيسية</a>
 
@@ -199,37 +209,127 @@ export default function SidebarMenu() {
     box-shadow 0.22s ease,
     border-color 0.22s ease;
 }
-    .sidebarDailyDealsGlow {
+.sidebarDailyDealsGlow {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
   display: flex;
   align-items: center;
   gap: 12px;
+
   min-height: 68px;
   border-radius: 22px;
-  background: linear-gradient(135deg,#ef4444,#f97316);
-  border: 2px solid rgba(254,215,170,.75);
+
+  background: rgba(249, 115, 22, 0.34);
+  border: 1px solid rgba(255,255,255,.26);
+
   color: #fff !important;
-  box-shadow: 0 0 22px rgba(249,115,22,.55);
-  animation: sidebarFirePulse 1.8s ease-in-out infinite;
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 0 18px rgba(249,115,22,.38),
+    inset 0 0 20px rgba(255,255,255,.08);
+
+  animation: sidebarDailyDealsGlass 2.4s ease-in-out infinite;
+}
+
+@keyframes sidebarDailyDealsGlass {
+  0%,100% {
+    box-shadow:
+      0 0 16px rgba(249,115,22,.35),
+      inset 0 0 18px rgba(255,255,255,.07);
+  }
+
+  50% {
+    box-shadow:
+      0 0 30px rgba(249,115,22,.65),
+      inset 0 0 26px rgba(255,255,255,.13);
+  }
+}
+
+.discountRainSide {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.discountRainSide i {
+  position: absolute;
+  top: -18px;
+  color: rgba(255,255,255,.34);
+  font-size: 12px;
+  font-weight: 950;
+  font-style: normal;
+  animation: sidebarDiscountFall 3s linear infinite;
+}
+
+.discountRainSide i:nth-child(1) { right: 10%; animation-delay: 0s; }
+.discountRainSide i:nth-child(2) { right: 25%; animation-delay: .4s; }
+.discountRainSide i:nth-child(3) { right: 42%; animation-delay: .8s; }
+.discountRainSide i:nth-child(4) { right: 58%; animation-delay: 1.2s; }
+.discountRainSide i:nth-child(5) { right: 74%; animation-delay: 1.6s; }
+.discountRainSide i:nth-child(6) { right: 86%; animation-delay: 2s; }
+
+@keyframes sidebarDiscountFall {
+  0% {
+    transform: translateY(-18px) rotate(-10deg);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: .7;
+  }
+
+  100% {
+    transform: translateY(86px) rotate(14deg);
+    opacity: 0;
+  }
 }
 
 .dailyDealsSideIcon {
+  position: relative;
+  z-index: 2;
+
   width: 46px;
   height: 46px;
   min-width: 46px;
+
   border-radius: 999px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,.18);
+
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.22);
+
   font-size: 25px;
+
+  box-shadow:
+    inset 0 0 16px rgba(255,255,255,.10),
+    0 0 18px rgba(249,115,22,.26);
+}
+
+.dailyDealsSideText {
+  position: relative;
+  z-index: 2;
+  font-weight: 950;
 }
 
 .dailyDealsSideSub {
   display: block;
   font-size: 11px;
   margin-top: 4px;
-  color: #fff7ed;
+  color: rgba(255,255,255,.82);
   font-weight: 900;
+}
+
+.sidebarDailyDealsGlow:hover {
+  transform: translateX(-5px) scale(1.03);
+  filter: brightness(1.08);
 }
 .sidebarComparisonsGlow {
   background: linear-gradient(
