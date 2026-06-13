@@ -195,7 +195,7 @@ if (error) {
     <g:availability_date>${new Date().toISOString()}</g:availability_date>
     <g:condition>new</g:condition>
     <g:shipping>
-  <g:country>${offer.country.toUpperCase()}</g:country>
+  <g:country>${shippingCountries[offer.country] || "SA"}</g:country>
   <g:price>0 ${currency}</g:price>
 </g:shipping>
     <g:price>${xmlEscape(price)} ${currency}</g:price>
