@@ -9,18 +9,36 @@ export default function Navbar({ user }: { user?: any }) {
   return (
     <header style={styles.header}>
       <div style={styles.container}>
-        <Link href="/" style={styles.logo}>
-  <img
-    src="/logo.png"
-    alt="عالم المنتجات من BPS Chat"
-    style={{
-      height: "54px",
-      width: "auto",
-      display: "block",
-      objectFit: "contain",
-    }}
-  />
-</Link>
+     <div className="mobileTopSlider">
+  <Link href="/" className="mobileTopBtn">
+    🏠 الرئيسية
+  </Link>
+
+  <Link href="/daily-deals" className="mobileTopBtn hot">
+    🔥 عروض اليوم
+  </Link>
+
+  <Link href="/customer-offers" className="mobileTopBtn">
+    🛒 المتجر
+  </Link>
+
+  <Link href="/customer-offers/add" className="mobileTopBtn green">
+    🎁 أضف منتجك
+  </Link>
+
+  <Link href="/" style={styles.logo}>
+    <img
+      src="/logo.png"
+      alt="عالم المنتجات من BPS Chat"
+      style={{
+        height: "54px",
+        width: "auto",
+        display: "block",
+        objectFit: "contain",
+      }}
+    />
+  </Link>
+</div>
 
         <nav style={styles.navDesktop}>
   <div style={styles.navSmallGroup}>
@@ -410,6 +428,44 @@ animation-play-state: paused;
     0 0 20px rgba(37,99,235,.25),
     0 8px 22px rgba(0,0,0,.25);
   color: #fff !important;
+}
+  .mobileTopSlider{
+  display:none;
+}
+
+@media (max-width:768px){
+  .mobileTopSlider{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+
+  .mobileTopSlider::-webkit-scrollbar{
+    display:none;
+  }
+
+  .mobileTopBtn{
+    flex:0 0 auto;
+    padding:10px 14px;
+    border-radius:14px;
+    background:#1e293b;
+    color:#fff !important;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .mobileTopBtn.hot{
+    background:linear-gradient(135deg,#ef4444,#f97316);
+  }
+
+  .mobileTopBtn.green{
+    background:linear-gradient(135deg,#22c55e,#06b6d4);
+    color:#04120d !important;
+  }
 }
       `}</style>
     </header>
