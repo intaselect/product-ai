@@ -14,6 +14,7 @@ import InstallAppButton from "@/app/components/InstallAppButton";
 import GlobalAdsSlider from "@/app/components/GlobalAdsSlider";
 import TrustBanner from "@/app/components/TrustBanner";
 import DailyDealsBanner from "@/app/components/DailyDealsBanner";
+import BrandSplash from "@/app/components/BrandSplash";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -250,6 +251,7 @@ export default function RootLayout({
 </head>
 
  <body className="min-h-screen flex flex-col">
+  <BrandSplash />
  <Navbar />
  <div className="mobileFloatingStoreCard">
     <a href="/customer-offers" className="mobileFloatingItem">
