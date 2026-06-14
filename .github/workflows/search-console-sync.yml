@@ -18,6 +18,10 @@ jobs:
         run: |
           curl -X GET "https://www.bpschat.com/api/search-console-generate-pages?secret=${{ secrets.CRON_SECRET }}"
 
-      - name: Generate Landing Pages
+      - name: Generate Search Landing Pages
         run: |
           curl -X GET "https://www.bpschat.com/api/search-console-generate-landing-pages?secret=${{ secrets.CRON_SECRET }}"
+
+      - name: Generate Customer Offer Landing Pages
+        run: |
+          curl -X GET "https://www.bpschat.com/api/customer-offers-generate-landing-pages?secret=${{ secrets.CRON_SECRET }}"
