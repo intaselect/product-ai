@@ -20,13 +20,15 @@ export default function AboutPage() {
   </div>
 </div>
       <section style={styles.hero}>
-        <div style={styles.badge}>
-  BPS Chat
-  <div className="arabicNameSmall">بي بي اس شات</div>
+       <div style={styles.badge}>
+  🌍 BPS Chat
+  <div className="arabicNameSmall">
+    بي بي اس شات | عالم المنتجات
+  </div>
 </div>
 
         <h1 style={styles.title}>
-          عن BPS Chat (بي بي اس شات) — محرك بحث ذكي لمقارنة أسعار المنتجات
+         عن BPS Chat (بي بي اس شات) | عالم المنتجات ومقارنة الأسعار
         </h1>
 
         <p style={styles.subtitle}>

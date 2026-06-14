@@ -69,8 +69,8 @@ export default async function BlogPage() {
       <SeoSearchBar />
 
       <section className="blogHero">
-        <span>📚 BPS Chat Guides</span>
-        <h1>دليل الشراء ومقارنة الأسعار</h1>
+        <span>📚 عالم المنتجات | BPS Chat Guides</span>
+        <h1>دليل الشراء ومقارنة الأسعار في عالم المنتجات</h1>
         <p>
           مقالات ذكية تساعدك تختار المنتج المناسب، تقارن الأسعار، وتشوف عروض
           من المتاجر والعملاء داخل BPS Chat.

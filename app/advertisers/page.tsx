@@ -7,7 +7,7 @@ import PopularSearches from "@/app/components/PopularSearches";
 import { advertiserPages } from "@/app/advertisers/data";
 
 export const metadata = {
-  title: "اعلن عن متجرك ومنتجاتك | BPS Chat",
+  title: "اعلن معنا في BPS Chat | عالم المنتجات",
   description:
     "صفحات مخصصة لأصحاب المتاجر والمعلنين لعرض المنتجات وجذب العملاء عبر BPS Chat في السعودية والخليج ومصر.",
 };
@@ -19,7 +19,7 @@ export default function AdvertisersPage() {
       <SeoSearchBar />
 
       <section className="hero">
-        <span>🚀 BPS Chat للمعلنين والتجار</span>
+       <span>🌍 عالم المنتجات | BPS Chat للتجار والمعلنين</span>
         <h1>اعلن عن متجرك ومنتجاتك أمام عملاء يبحثون عن الشراء</h1>
         <p>
           صفحات مخصصة لأصحاب المتاجر، البراندات، الهاند ميد، والمشاريع الصغيرة
@@ -36,8 +36,8 @@ export default function AdvertisersPage() {
           </Link>
 
           <Link href="/customer-offers" className="darkBtn">
-            🛍️ تصفح المتجر
-          </Link>
+  🛍️ متجر عالم المنتجات
+</Link>
         </div>
       </section>
 

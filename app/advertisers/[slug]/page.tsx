@@ -75,7 +75,9 @@ const { data: offers } = await supabase
       <SeoSearchBar />
 
       <article className="article">
-        <div className="badge">🚀 دليل BPS Chat للمعلنين والتجار</div>
+       <div className="badge">
+  🌍 دليل عالم المنتجات من BPS Chat
+</div>
 
         <h1>{item.title}</h1>
 
@@ -208,7 +210,7 @@ const { data: offers } = await supabase
         </div>
         {offers && offers.length > 0 && (
   <section className="realOffers">
-    <h2>عروض حقيقية من BPS Market في {item.country}</h2>
+    <h2>عروض حقيقية من متجر عالم المنتجات في {item.country}</h2>
 
     <p>
       هذه أمثلة من المنتجات والعروض الموجودة داخل BPS Market، وهي توضح كيف يمكن

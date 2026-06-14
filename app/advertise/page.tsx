@@ -101,8 +101,8 @@ export default function AdvertisePage() {
   </div>
 </div>
       <section style={styles.container}>
-        <h1 style={styles.title}>
-  اعلن معنا في BPS Chat (بي بي اس شات)
+       <h1 style={styles.title}>
+  اعلن معنا في BPS Chat (بي بي اس شات) | عالم المنتجات
 </h1>
 
         <p style={styles.desc}>
@@ -113,8 +113,8 @@ export default function AdvertisePage() {
 </p>
 <SearchBeforeBuyBanner />
         <div style={styles.box}>
-          <h2 style={styles.h2}>
-  لماذا الإعلان في BPS Chat (بي بي اس شات)؟
+      <h2 style={styles.h2}>
+  لماذا الإعلان في عالم المنتجات من BPS Chat؟
 </h2>
           <ul style={styles.list}>
             <li>🚀 وصول لعملاء جاهزين للشراء</li>
