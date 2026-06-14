@@ -253,6 +253,15 @@ export default function RootLayout({
  <body className="min-h-screen flex flex-col">
   <BrandSplash />
  <Navbar />
+ <div className="mobileQuickMenu" dir="rtl">
+  <a href="/" className="mobileQuickItem">🏠 الرئيسية</a>
+  <a href="/daily-deals" className="mobileQuickItem hot">🔥 عروض اليوم</a>
+  <a href="/customer-offers" className="mobileQuickItem">🛒 المتجر</a>
+  <a href="/customer-offers/add" className="mobileQuickItem green">🎁 أضف منتجك</a>
+  <a href="/comparisons" className="mobileQuickItem">⚖️ المقارنات</a>
+  <a href="/bps-for-stores" className="mobileQuickItem">🚀 للتجار</a>
+  <a href="/advertise" className="mobileQuickItem">📢 أعلن معنا</a>
+</div>
  <div className="mobileFloatingStoreCard">
     <a href="/customer-offers" className="mobileFloatingItem">
       <span>🛒</span>
