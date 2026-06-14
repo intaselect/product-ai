@@ -89,9 +89,12 @@ export const metadata: Metadata = {
 "مقارنة أسعار كارفور",
   ],
 icons: {
-  icon: "/favicon-v2.ico",
-  shortcut: "/favicon-v2.ico",
-  apple: "/og-image.png",
+  icon: [
+    { url: "/favicon.ico" },
+    { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+  ],
+  apple: "/apple-touch-icon.png",
 },
 
  openGraph: {
@@ -120,6 +123,7 @@ icons: {
     "بي بي اس شات (BPS Chat) يساعدك تقارن الأسعار حسب الدولة بسهولة.",
   images: ["https://www.bpschat.com/og-image.png"],
 },
+manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -134,11 +138,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
   <head>
-  <link rel="manifest" href="/manifest.json" />
+  <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0ea5e9" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="BPS Chat" />
-  <link rel="apple-touch-icon" href="/logo-icon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <script
     async
@@ -169,7 +173,7 @@ export default function RootLayout({
 ],
           logo: {
             "@type": "ImageObject",
-            url: "https://www.bpschat.com/logo-icon.png",
+            url: "https://www.bpschat.com/android-chrome-512x512.png",
             width: 512,
             height: 512,
           },
