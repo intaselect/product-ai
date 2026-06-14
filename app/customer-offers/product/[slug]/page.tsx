@@ -253,6 +253,11 @@ const relatedSearchTerms = await getRelatedSearchTerms(
   offer.product_name,
   offer.country || "sa"
 );
+const { data: relatedCollections } = await supabase
+  .from("seo_landing_pages")
+  .select("slug,title")
+  .order("created_at", { ascending: false })
+  .limit(12);
 
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
@@ -791,6 +796,22 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
           href={`/search/${item.slug}`}
         >
           {item.query}
+        </Link>
+      ))}
+    </div>
+  </>
+)}
+{relatedCollections && relatedCollections.length > 0 && (
+  <>
+    <h2>أدلة الشراء والمراجعات</h2>
+
+    <div className="quickLinks">
+      {relatedCollections.map((item: any) => (
+        <Link
+          key={item.slug}
+          href={`/collections/${item.slug}`}
+        >
+          {item.title}
         </Link>
       ))}
     </div>
