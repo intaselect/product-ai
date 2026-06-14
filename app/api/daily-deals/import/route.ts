@@ -5,10 +5,30 @@ export const dynamic = "force-dynamic";
 
 const AMAZON_TAG = "bpschatksa-21";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+function json(data: any, status = 200) {
+  return NextResponse.json(data, {
+    status,
+    headers: corsHeaders,
+  });
+}
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
+}
 
 function checkAdmin(req: Request) {
   const url = new URL(req.url);
@@ -19,6 +39,16 @@ function checkAdmin(req: Request) {
 function calcDiscount(oldPrice: number, newPrice: number) {
   if (!oldPrice || !newPrice || oldPrice <= newPrice) return 0;
   return Math.round(((oldPrice - newPrice) / oldPrice) * 100);
+}
+
+function toNumber(value: any) {
+  const cleaned = String(value || "")
+    .replace(/[^\d.,]/g, "")
+    .replace(/,/g, "")
+    .trim();
+
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : 0;
 }
 
 function extractAsin(url: string) {
@@ -42,23 +72,27 @@ function cleanText(v: any) {
 
 export async function POST(req: Request) {
   if (!checkAdmin(req)) {
-    return NextResponse.json({ ok: false, error: "غير مصرح" }, { status: 401 });
+    return json({ ok: false, error: "غير مصرح" }, 401);
   }
 
-  const body = await req.json();
+  let body: any = {};
+
+  try {
+    body = await req.json();
+  } catch {
+    return json({ ok: false, error: "Body JSON غير صحيح" }, 400);
+  }
+
   const items = Array.isArray(body.items) ? body.items : [];
 
   if (!items.length) {
-    return NextResponse.json(
-      { ok: false, error: "لا توجد منتجات للاستيراد" },
-      { status: 400 }
-    );
+    return json({ ok: false, error: "لا توجد منتجات للاستيراد" }, 400);
   }
 
   const payload = items
     .map((item: any) => {
-      const old_price = Number(item.old_price || 0);
-      const new_price = Number(item.new_price || 0);
+      const old_price = toNumber(item.old_price);
+      const new_price = toNumber(item.new_price);
       const productUrl = cleanText(item.product_url);
 
       return {
@@ -67,18 +101,24 @@ export async function POST(req: Request) {
         product_url: makeAmazonAffiliateUrl(productUrl),
         store_name: cleanText(item.store_name || "amazon"),
         country: cleanText(item.country || "sa"),
-        category: Array.isArray(item.category) ? item.category : ["electronics"],
+        category: Array.isArray(item.category) && item.category.length
+          ? item.category
+          : ["electronics"],
         old_price,
         new_price,
         discount_percent: calcDiscount(old_price, new_price),
+
         description: cleanText(item.description),
         features: Array.isArray(item.features) ? item.features : [],
-        gallery_images: Array.isArray(item.gallery_images) ? item.gallery_images : [],
+        gallery_images: Array.isArray(item.gallery_images)
+          ? item.gallery_images
+          : [],
         specifications:
           item.specifications && typeof item.specifications === "object"
             ? item.specifications
             : {},
         source_brand: cleanText(item.source_brand),
+
         status: "approved",
         updated_at: new Date().toISOString(),
       };
@@ -86,9 +126,9 @@ export async function POST(req: Request) {
     .filter((item: any) => item.title && item.product_url && item.image_url);
 
   if (!payload.length) {
-    return NextResponse.json(
+    return json(
       { ok: false, error: "كل المنتجات ناقصة اسم أو رابط أو صورة" },
-      { status: 400 }
+      400
     );
   }
 
@@ -97,7 +137,10 @@ export async function POST(req: Request) {
   for (const item of payload) {
     const asin = extractAsin(item.product_url);
     const key = asin || item.product_url;
-    if (!uniqueMap.has(key)) uniqueMap.set(key, item);
+
+    if (!uniqueMap.has(key)) {
+      uniqueMap.set(key, item);
+    }
   }
 
   const uniquePayload = Array.from(uniqueMap.values());
@@ -108,10 +151,10 @@ export async function POST(req: Request) {
     .select("id,title,product_url");
 
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return json({ ok: false, error: error.message }, 500);
   }
 
-  return NextResponse.json({
+  return json({
     ok: true,
     inserted: data?.length || 0,
     skipped: items.length - uniquePayload.length,
