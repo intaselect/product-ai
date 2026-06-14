@@ -382,6 +382,116 @@ export default async function CollectionPage({
           ثم اختر المنتج الأنسب لك.
         </p>
       </section>
+      <section
+  style={{
+    padding: 18,
+    borderRadius: 18,
+    background: "#fff7ed",
+    border: "1px solid #fed7aa",
+    marginBottom: 24,
+  }}
+>
+  <h2>روابط تساعدك في شراء {page.query}</h2>
+
+  <p style={{ lineHeight: 2 }}>
+    لو لم تجد المنتج المناسب من أول مرة، يمكنك متابعة أحدث المنتجات والعروض
+    داخل <strong>عالم المنتجات</strong> أو تصفح أقسام BPS Chat المختلفة.
+    الروابط التالية تساعدك على الوصول لصفحات أكثر ارتباطًا ببحثك:
+  </p>
+
+  <div
+    style={{
+      display: "flex",
+      gap: 10,
+      flexWrap: "wrap",
+    }}
+  >
+    <Link
+      href={`/customer-offers?country=${country}`}
+      style={{
+        color: "#fff",
+        background: "#0f172a",
+        padding: "10px 14px",
+        borderRadius: 10,
+        textDecoration: "none",
+        fontWeight: 700,
+      }}
+    >
+      منتجات {countryName}
+    </Link>
+
+    <Link
+      href="/customer-offers"
+      style={{
+        color: "#fff",
+        background: "#0f172a",
+        padding: "10px 14px",
+        borderRadius: 10,
+        textDecoration: "none",
+        fontWeight: 700,
+      }}
+    >
+      كل منتجات العملاء
+    </Link>
+
+    <Link
+      href={`/daily-deals?country=${country}`}
+      style={{
+        color: "#fff",
+        background: "#0f172a",
+        padding: "10px 14px",
+        borderRadius: 10,
+        textDecoration: "none",
+        fontWeight: 700,
+      }}
+    >
+      عروض اليوم في {countryName}
+    </Link>
+
+    <Link
+      href={`/search/${page.slug}`}
+      style={{
+        color: "#fff",
+        background: "#0f172a",
+        padding: "10px 14px",
+        borderRadius: 10,
+        textDecoration: "none",
+        fontWeight: 700,
+      }}
+    >
+      نتائج بحث {page.query}
+    </Link>
+
+    <Link
+      href="/smart-search"
+      style={{
+        color: "#fff",
+        background: "#0f172a",
+        padding: "10px 14px",
+        borderRadius: 10,
+        textDecoration: "none",
+        fontWeight: 700,
+      }}
+    >
+      البحث الذكي
+    </Link>
+
+    <Link
+      href="/comparisons"
+      style={{
+        color: "#fff",
+        background: "#0f172a",
+        padding: "10px 14px",
+        borderRadius: 10,
+        textDecoration: "none",
+        fontWeight: 700,
+      }}
+    >
+      مقارنات المنتجات
+    </Link>
+  </div>
+</section>
+      
 
       {faq.length > 0 && (
         <section style={{ marginBottom: 24 }}>
