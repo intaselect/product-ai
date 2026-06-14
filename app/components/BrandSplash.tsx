@@ -15,7 +15,7 @@ export default function BrandSplash() {
 
     const timer = setTimeout(() => {
       setShow(false);
-    }, 1000);
+    }, 1400);
 
     return () => clearTimeout(timer);
   }, []);
@@ -51,7 +51,7 @@ export default function BrandSplash() {
             radial-gradient(circle at center, rgba(0, 212, 255, 0.20), transparent 35%),
             linear-gradient(135deg, #071a3d, #020617);
           overflow: hidden;
-          animation: splashFadeOut 1s ease forwards;
+          animation: splashFadeOut 1.4s ease forwards;
         }
 
         .brandSplashGlow {
@@ -82,7 +82,7 @@ export default function BrandSplash() {
           opacity: 0;
           transform: scale(.72);
           filter: drop-shadow(0 0 28px rgba(0,212,255,.45));
-          animation: logoAssemble .65s ease .25s forwards;
+          animation: logoAssemble .95s ease .35s forwards;
         }
 
         .splashWord {
