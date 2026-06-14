@@ -5,9 +5,9 @@ import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "أفضل عروض العملاء | BPS Chat - بي بي اس شات",
+  title: "متجر عالم المنتجات | BPS Chat - بي بي اس شات",
   description:
-  "اكتشف عروض العملاء والمتاجر على BPS Chat وقارن المنتجات من Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein في السعودية والإمارات والكويت والبحرين ومصر.",
+  "اكتشف متجر عالم المنتجات من BPS Chat وقارن المنتجات من Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein في السعودية والإمارات والكويت والبحرين ومصر.",
   keywords: [
     "أفضل عروض العملاء",
     "عروض BPS Chat",
@@ -405,10 +405,10 @@ return (
     
       <section className="hero marketplaceHero">
   <div className="heroText">
-    <div className="badge">🛒 BPS Market | بي بي اس ماركت</div>
+    <div className="badge">🛒 متجر عالم المنتجات | BPS Chat</div>
 
     <h1>
-      أفضل عروض <span>{heroCountryName}</span>
+     متجر عالم المنتجات في <span>{heroCountryName}</span>
     </h1>
 
     <p>

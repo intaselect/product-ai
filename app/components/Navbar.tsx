@@ -27,6 +27,9 @@ className="navSmallHover">سياسة الخصوصية</Link>
 className="navSmallHover">الشروط</Link>
     <Link href="/seller-tools" style={styles.navSmallBtn}
 className="navSmallHover">📝 أدوات البائع</Link>
+<Link href="/product-world" style={styles.navSmallBtn} className="navSmallHover">
+  🌍 عالم المنتجات
+</Link>
   </div>
 
   <div style={styles.navMainGroup}>
@@ -42,7 +45,7 @@ className="navSmallHover">📝 أدوات البائع</Link>
     <Link href="/customer-offers" style={styles.customerStoreBtn} className="customerStoreHover">
       <span style={styles.customerStoreIcon}>🛒</span>
       <div style={styles.customerStoreContent}>
-        <span style={styles.customerStoreText}>BPS Market</span>
+        <span style={styles.customerStoreText}>متجر عالم المنتجات</span>
         <span style={styles.customerStoreSub}>تسوّق العروض الآن</span>
       </div>
       <span style={styles.customerStoreArrow}>←</span>
@@ -55,7 +58,7 @@ className="navSmallHover">📝 أدوات البائع</Link>
     <i>70%</i>
     <i>15%</i>
   </span>
-  <span style={{ position: "relative", zIndex: 2 }}>🔥 عروض اليوم</span>
+  <span style={{ position: "relative", zIndex: 2 }}>🔥 عروض اليوم عالم المنتجات</span>
 </Link>
     <Link href="/customer-offers/share-center" style={styles.quickBrowseBtn} className="quickBrowseHover">
       <span style={styles.quickBrowseIcon}>⚡</span>

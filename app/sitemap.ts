@@ -10,6 +10,12 @@ export default async function sitemap() {
       priority: 0.9,
     },
     {
+  url: "https://www.bpschat.com/product-world",
+  lastModified: new Date(),
+  changeFrequency: "weekly",
+  priority: 1,
+},
+    {
       url: "https://www.bpschat.com/sitemaps/search.xml",
     },
     {

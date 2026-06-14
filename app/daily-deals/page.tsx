@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "عروض اليوم | أقوى الخصومات من نون وأمازون والمتاجر | BPS Chat",
+  title: "عروض عالم المنتجات اليومية | أقوى الخصومات | BPS Chat",
   description:
     "تابع أقوى عروض اليوم والخصومات من نون وأمازون والمتاجر الكبيرة في السعودية ومصر والخليج على BPS Chat.",
 };
@@ -160,9 +160,9 @@ export default async function DailyDealsPage({
   return (
     <main className="dailyDealsPage" dir="rtl">
       <section className="dealsHero">
-        <div className="heroBadge">🔥 BPS Chat Daily Deals</div>
+        <div className="heroBadge">🔥 عروض عالم المنتجات اليومية</div>
 
-        <h1>أقوى عروض اليوم من المتاجر الكبيرة</h1>
+        <h1>أقوى عروض عالم المنتجات اليومية</h1>
 
         <p>
           تابع أفضل الخصومات اليومية من نون، أمازون، جرير، إكسترا والمتاجر

@@ -65,13 +65,16 @@ export default function SidebarMenu() {
   </span>
   <span className="dailyDealsSideIcon">🔥</span>
   <span>
-  عروض اليوم
+  عروض اليوم عالم المنتجات
   <span className="dailyDealsSideSub">
     أفضل عروض وخصومات جميع المتاجر في بلدك
   </span>
 </span>
 </a>
         <a href="/" className="menuItem">الرئيسية</a>
+        <a href="/product-world" className="menuItem">
+  🌍 عالم المنتجات
+</a>
 
         <a href="/advertise" className="menuItem sidebarAdvertiseGlow">
           🚀 أعلن معنا
@@ -97,7 +100,7 @@ export default function SidebarMenu() {
        <a href="/customer-offers" className="menuItem sidebarCustomerStoreGlow">
   <span className="storeIcon">🛍️</span>
   <span>
-   BPS Market 🛒
+متجر عالم المنتجات 🛒
 <span className="subText">تسوّق عروض العملاء الآن</span>
   </span>
 </a>

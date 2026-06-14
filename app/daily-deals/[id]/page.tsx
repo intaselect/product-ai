@@ -187,7 +187,7 @@ const relatedDeals = await getRelatedDeals(
             <h1>{deal.title}</h1>
 
             <p className="intro">
-              عرض مختار ضمن أقوى عروض اليوم على BPS Chat لمساعدة المستخدم في
+             عرض مختار ضمن عروض عالم المنتجات اليومية على BPS Chat لمساعدة المستخدم في
               الوصول لأفضل الخصومات من المتاجر الكبيرة بسرعة.
             </p>
 
@@ -224,7 +224,7 @@ const relatedDeals = await getRelatedDeals(
       </section>
 
       <section className="seoBox">
-        <h2>تفاصيل عرض اليوم على BPS Chat</h2>
+        <h2>تفاصيل عرض عالم المنتجات اليومي على BPS Chat</h2>
 
         <p>
           هذا العرض ضمن صفحة عروض اليوم في بي بي اس شات، حيث نعرض خصومات
