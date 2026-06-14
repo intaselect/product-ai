@@ -152,7 +152,7 @@ export async function GET(request: Request) {
       .gte("impressions", 20)
       .lte("position", 40)
       .order("impressions", { ascending: false })
-      .limit(30);
+      .limit(100);
 
     if (error) throw error;
 
