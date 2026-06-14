@@ -54,10 +54,12 @@ export default function BpsMarketAdSection({ products = [], country = "sa" }: Pr
       </div>
 
       <div className="marketAdContent">
-        <div className="marketBadge">🛍️ متجر بي بي اس | BPS Market</div>
+       <div className="marketBadge">
+  🌍 عالم المنتجات | BPS Chat Market
+</div>
 
         <h2>
-          اكتشف أرخص الأسعار
+         اكتشف عالم المنتجات بأفضل الأسعار
           <span>والمنتجات من المتاجر الموثوقة</span>
         </h2>
 
@@ -146,7 +148,8 @@ export default function BpsMarketAdSection({ products = [], country = "sa" }: Pr
 
         .marketAdContent h2 span {
           display: block;
-          color: #22c55e;
+           color: #00d4ff;
+  text-shadow: 0 0 18px rgba(0,212,255,.35);
         }
 
         .marketAdContent p {
@@ -192,7 +195,12 @@ export default function BpsMarketAdSection({ products = [], country = "sa" }: Pr
         .mainMarketBtn {
           padding: 15px 28px;
           color: #fff;
-          background: linear-gradient(135deg, #16a34a, #2563eb);
+           background: linear-gradient(
+    135deg,
+    #0b7cff,
+    #00d4ff,
+    #ff8a00
+  );
           box-shadow: 0 16px 35px rgba(37,99,235,0.28);
         }
 

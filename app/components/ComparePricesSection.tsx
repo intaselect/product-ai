@@ -22,8 +22,8 @@ export default function ComparePricesSection() {
   return (
     <section className="comparePricesSection" dir="rtl">
       <div className="compareHeader">
-        <span>🔥 BPS Compare</span>
-        <h2>قارن أسعار المنتجات حسب الدولة</h2>
+        <span>⚔️ عالم المنتجات | Product Comparisons</span>
+        <h2>قارن أسعار المنتجات في عالم المنتجات حسب الدولة</h2>
         <p>
           صفحات مقارنة تجمع نتائج بحث BPS Chat مع عروض BPS Market في صفحة واحدة.
         </p>

@@ -27,8 +27,8 @@ export default function PopularSearches() {
     <section className="popularSearches" dir="rtl">
       <div className="popularHeader">
         <div>
-          <h2>🔥 عمليات بحث شائعة الآن</h2>
-          <p>اكتشف المنتجات التي يبحث عنها العملاء على BPS Chat</p>
+          <h2>🔥 الأكثر بحثاً في عالم المنتجات</h2>
+          <p>اكتشف المنتجات الأكثر شعبية في عالم المنتجات من BPS Chat</p>
         </div>
 
         <span>يتحرك تلقائيًا</span>
@@ -92,7 +92,11 @@ export default function PopularSearches() {
         .popularHeader span {
           white-space: nowrap;
           color: #ffffff;
-          background: linear-gradient(135deg, #16a34a, #2563eb);
+          background: linear-gradient(
+  135deg,
+  #0b7cff,
+  #00d4ff
+);
           padding: 9px 14px;
           border-radius: 999px;
           font-size: 12px;
@@ -181,7 +185,11 @@ export default function PopularSearches() {
           margin-top: 5px;
           width: fit-content;
           color: #ffffff;
-          background: linear-gradient(135deg, #16a34a, #22c55e);
+          background: linear-gradient(
+  135deg,
+  #0b7cff,
+  #00d4ff
+);
           padding: 5px 10px;
           border-radius: 999px;
           font-size: 11px;
@@ -190,7 +198,7 @@ export default function PopularSearches() {
 
         .popularItem:hover {
           transform: translateY(-6px) scale(1.03);
-          border-color: rgba(34,197,94,0.45);
+          border-color: rgba(0,212,255,0.45);
           box-shadow:
             0 18px 40px rgba(15,23,42,0.14),
             0 0 30px rgba(34,197,94,0.18);

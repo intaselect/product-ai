@@ -5,8 +5,20 @@ export default function Footer() {
     <footer className="footer" dir="rtl">
       <div className="footerInner">
         <div>
-          <h3>BPS Chat</h3>
-          <p>محرك بحث ومقارنة أسعار المنتجات في السعودية والخليج ومصر</p>
+          <img
+  src="/logo.png"
+  alt="BPS Chat | عالم المنتجات"
+  style={{
+    width: "180px",
+    marginBottom: "10px",
+  }}
+/>
+          <h3>BPS Chat | عالم المنتجات</h3>
+
+<p>
+عالم المنتجات من BPS Chat للبحث عن المنتجات
+ومقارنة الأسعار واكتشاف العروض اليومية.
+</p>
         </div>
 
         <div className="footerLinks">

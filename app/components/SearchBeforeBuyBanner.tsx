@@ -6,9 +6,9 @@ export default function SearchBeforeBuyBanner() {
 
       <div className="searchBeforeBuyText">
         <span>⚡ قبل ما تشتري</span>
-        <h2>ابحث عن المنتج وقارن السعر الأول</h2>
+        <h2>ابحث داخل عالم المنتجات وقارن السعر أولاً</h2>
         <p>
-          BPS Chat يساعدك تشوف أفضل الأسعار من المتاجر قبل قرار الشراء.
+          عالم المنتجات من BPS Chat يساعدك تشوف أفضل الأسعار من المتاجر قبل قرار الشراء.
         </p>
       </div>
 
