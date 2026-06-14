@@ -35,6 +35,8 @@ export default function robots() {
   "https://www.bpschat.com/sitemaps/videos.xml",
   "https://www.bpschat.com/sitemaps/comparisons.xml",
   "https://www.bpschat.com/sitemaps/daily-deals.xml",
+  "https://www.bpschat.com/sitemaps/collections.xml",
 ],
+
   };
 }

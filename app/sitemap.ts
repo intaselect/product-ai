@@ -33,6 +33,9 @@ export default async function sitemap() {
 {
   url: "https://www.bpschat.com/sitemaps/daily-deals.xml",
 },
+{
+  url: "https://www.bpschat.com/sitemaps/collections.xml",
+},
     {
       url: "https://www.bpschat.com/sitemaps/videos.xml",
     },
