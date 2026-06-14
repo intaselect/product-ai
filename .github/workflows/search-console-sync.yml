@@ -17,3 +17,7 @@ jobs:
       - name: Generate Search Pages
         run: |
           curl -X GET "https://www.bpschat.com/api/search-console-generate-pages?secret=${{ secrets.CRON_SECRET }}"
+
+      - name: Generate Landing Pages
+        run: |
+          curl -X GET "https://www.bpschat.com/api/search-console-generate-landing-pages?secret=${{ secrets.CRON_SECRET }}"
