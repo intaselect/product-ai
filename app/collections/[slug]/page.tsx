@@ -58,11 +58,42 @@ async function getPage(slug: string) {
 
 async function getProducts(query: string, country: string) {
   const supabase = supabaseServer();
-  const words = getWords(query);
+
+  const stopWords = new Set([
+    "في",
+    "من",
+    "على",
+    "عن",
+    "مع",
+    "الى",
+    "إلى",
+    "سعر",
+    "اسعار",
+    "أسعار",
+    "عروض",
+    "عرض",
+    "افضل",
+    "أفضل",
+    "price",
+    "prices",
+    "best",
+    "offer",
+    "offers",
+    "mobile",
+    "mobiles",
+  ]);
+
+  const words = cleanText(query)
+    .toLowerCase()
+    .replace(/[^\u0600-\u06FFa-z0-9\s]/gi, " ")
+    .split(/\s+/)
+    .map((w) => w.trim())
+    .filter((w) => w.length > 2 && !stopWords.has(w))
+    .slice(0, 6);
 
   let allProducts: any[] = [];
 
-  for (const word of words) {
+  async function searchField(field: string, word: string, limit = 10) {
     const { data } = await supabase
       .from("customer_offers")
       .select(
@@ -70,21 +101,47 @@ async function getProducts(query: string, country: string) {
       )
       .eq("status", "approved")
       .eq("country", country)
-      .ilike("product_name", `%${word}%`)
+      .ilike(field, `%${word}%`)
       .not("image_url", "is", null)
       .order("created_at", { ascending: false })
-      .limit(12);
+      .limit(limit);
 
     if (data?.length) allProducts.push(...data);
+  }
+
+  for (const word of words) {
+    await searchField("product_name", word, 12);
+    await searchField("description", word, 6);
+    await searchField("store_name", word, 4);
   }
 
   const unique = Array.from(
     new Map(allProducts.map((p) => [p.id, p])).values()
   );
 
-  if (unique.length >= 4) return unique.slice(0, 24);
+  const scored = unique
+    .map((p) => {
+      const haystack = `${p.product_name || ""} ${p.description || ""} ${
+        p.store_name || ""
+      }`
+        .toLowerCase()
+        .replace(/\s+/g, " ");
 
-  const { data: fallback } = await supabase
+      let score = 0;
+
+      for (const word of words) {
+        if (haystack.includes(word)) score += 2;
+        if (String(p.product_name || "").toLowerCase().includes(word)) score += 3;
+      }
+
+      return { ...p, _score: score };
+    })
+    .filter((p) => p._score > 0)
+    .sort((a, b) => b._score - a._score);
+
+  if (scored.length >= 4) return scored.slice(0, 24);
+
+  const { data: categoryFallback } = await supabase
     .from("customer_offers")
     .select(
       "id, product_name, price, image_url, product_url, store_name, country, category, description, created_at"
@@ -95,7 +152,9 @@ async function getProducts(query: string, country: string) {
     .order("created_at", { ascending: false })
     .limit(24);
 
-  return fallback || [];
+  return [...scored, ...(categoryFallback || [])]
+    .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
+    .slice(0, 24);
 }
 
 export async function generateMetadata({
