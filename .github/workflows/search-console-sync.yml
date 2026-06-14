@@ -1,0 +1,15 @@
+name: Search Console Sync
+
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Search Console Sync API
+        run: |
+          curl -X GET "https://www.bpschat.com/api/search-console-sync?secret=${{ secrets.CRON_SECRET }}"
