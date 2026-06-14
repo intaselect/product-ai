@@ -30,9 +30,9 @@ export const metadata: Metadata = {
 
   
 
-  title: "BPS Chat | بي بي اس شات - أفضل محرك بحث منتجات ومقارنة أسعار",
-  description:
-  "BPS Chat منصة مقارنة أسعار وبحث عن المنتجات بين متاجر Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein و B.TECH و Lulu و OpenSooq في السعودية والإمارات والكويت والبحرين ومصر.",
+  title: "BPS Chat | بي بي اس شات | عالم المنتجات | مقارنة الأسعار والعروض",
+description:
+"BPS Chat | بي بي اس شات | عالم المنتجات - منصة ذكية لمقارنة الأسعار والبحث عن المنتجات واكتشاف العروض اليومية بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein وغيرها في السعودية والإمارات والكويت وقطر والبحرين ومصر.",
   keywords: [
     "BPS Chat",
     "بي بي اس شات",
@@ -87,6 +87,47 @@ export const metadata: Metadata = {
 "مقارنة أسعار جرير",
 "مقارنة أسعار اكسترا",
 "مقارنة أسعار كارفور",
+"عالم المنتجات",
+"عالم المنتجات من BPS Chat",
+"عالم المنتجات بي بي اس شات",
+"متجر عالم المنتجات",
+"عروض عالم المنتجات",
+"عروض عالم المنتجات اليومية",
+"أفضل المنتجات",
+"البحث عن المنتجات",
+"دليل المنتجات",
+"عالم التسوق",
+"تسوق ذكي",
+"مقارنة المنتجات",
+"مقارنة المتاجر",
+"البحث الذكي عن المنتجات",
+"اكتشف المنتجات",
+"قارن المنتجات",
+"Product World",
+"Product World BPS Chat",
+"BPS Chat Product World",
+"Online Product Search",
+"Product Comparison",
+"Shopping Search Engine",
+"Best Product Prices",
+"Product Discovery",
+"Smart Shopping",
+"عالم المنتجات",
+"عالم المنتجات من بي بي اس شات",
+"عالم المنتجات من BPS Chat",
+"عالم المنتجات بي بي اس شات",
+"بي بي اس شات عالم المنتجات",
+
+"Product World",
+"Product World by BPS Chat",
+"BPS Chat Product World",
+"World of Products",
+"World of Products by BPS Chat",
+
+"BPS Chat",
+"bps chat",
+"bpschat",
+"بي بي اس شات",
   ],
 icons: {
   icon: [
@@ -213,7 +254,7 @@ export default function RootLayout({
  <div className="mobileFloatingStoreCard">
     <a href="/customer-offers" className="mobileFloatingItem">
       <span>🛒</span>
-      <b>المتجر</b>
+      <b>المتجر عالم المنتجات</b>
     </a>
     <a href="/customer-offers/add" className="mobileFloatingItem highlight">
       <span>🎁</span>
@@ -229,7 +270,7 @@ export default function RootLayout({
   <a href="/bps-for-stores" className="storesPromoLink">
     <span className="storesPromoIcon">🎁</span>
     <span className="storesPromoText">
-      للتجار: أضف أول منتج مجاناً بالكامل على BPS Chat
+     للتجار: أضف أول منتج مجاناً داخل عالم المنتجات من BPS Chat
     </span>
     <span className="storesPromoBtn">ابدأ الآن 🚀</span>
   </a>

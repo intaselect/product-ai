@@ -10,8 +10,17 @@ export default function Navbar({ user }: { user?: any }) {
     <header style={styles.header}>
       <div style={styles.container}>
         <Link href="/" style={styles.logo}>
-          BPS Chat
-        </Link>
+  <img
+    src="/logo.png"
+    alt="عالم المنتجات من BPS Chat"
+    style={{
+      height: "54px",
+      width: "auto",
+      display: "block",
+      objectFit: "contain",
+    }}
+  />
+</Link>
 
         <nav style={styles.navDesktop}>
   <div style={styles.navSmallGroup}>

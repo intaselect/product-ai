@@ -614,8 +614,8 @@ async function handleSearch() {
   <span className="heroMarketIcon">🛒</span>
 
   <span className="heroMarketText">
-    <strong>BPS Market</strong>
-    <small>تسوّق العروض الآن</small>
+    <strong>متجر عالم المنتجات</strong>
+<small>تسوّق عروض BPS Chat الآن</small>
   </span>
 
   <span className="heroMarketArrow">←</span>
@@ -676,19 +676,18 @@ async function handleSearch() {
 </section>
     <div className="heroLeft">
       <div className="heroBadge">
-        ⚡ BPS Chat AI Shopping Engine
+        🌍 عالم المنتجات من BPS Chat
       </div>
 
       <h1 className="heroTitle">
-        ابحث عن أفضل المنتجات
-        <span>وقارن الأسعار بذكاء</span>
-      </h1>
+  BPS Chat | عالم المنتجات
+  <span>ابحث عن أفضل المنتجات وقارن الأسعار بذكاء</span>
+</h1>
 
       <p className="heroDesc">
-        بي بي اس شات يساعدك تكتشف أفضل العروض والمنتجات
-        في السعودية والإمارات والكويت وقطر والبحرين ومصر.
-      </p>
-    
+  بي بي اس شات هو عالم المنتجات الذكي الذي يساعدك تكتشف المنتجات،
+  تقارن الأسعار، وتتابع عروض اليوم في السعودية والإمارات والكويت وقطر والبحرين ومصر.
+</p>
 
       <div className="heroStats">
         <div className="heroStatCard">
@@ -710,15 +709,15 @@ async function handleSearch() {
 
     <div className="heroRight">
       <div className="floatingCard card1">
-        🔥 Trending Deals
+        🔥 عروض يومية
       </div>
 
       <div className="floatingCard card2">
-        🛍️ BPS Market
+        🛍️ BPS Market متجر عالم المنتجات
       </div>
 
       <div className="floatingCard card3">
-        ⚡ AI Search
+        ⚡ AI Search ⚡ مقارنة ذكية
       </div>
     </div>
   </div>
@@ -726,7 +725,7 @@ async function handleSearch() {
  
 <a href="/customer-offers" className="liveStorePulse">
   <span className="liveDot"></span>
-  مئات المستخدمين يكتشفون عروض BPS Chat
+  مئات المستخدمين داخل عالم المنتجات من BPS Chat
   <span className="aiSpark">AI</span>
 </a>
 {results.length === 0 && (
@@ -766,7 +765,7 @@ async function handleSearch() {
       <div>
         <strong>⚡ البحث الذكي حسب الميزانية</strong>
         <p>
-          اختار المنتج والدولة والميزانية، وخلّي BPS Chat يرشح لك نتائج مناسبة.
+         اختار المنتج والدولة والميزانية، وخلّي عالم المنتجات من BPS Chat يرشح لك نتائج مناسبة.
         </p>
       </div>
 
@@ -861,13 +860,13 @@ async function handleSearch() {
 
       <div className="smartLinksHeader">
         <span>⚡ روابط سريعة</span>
-        <h2>ابدأ من هنا مع BPS Chat</h2>
-        <p>اختصر وقتك: تسوّق، قارن، بيع، أو أعلن داخل بي بي اس شات.</p>
+        <h2>ابدأ من عالم المنتجات</h2>
+<p>اختصر وقتك: تسوّق، قارن، بيع، أو أعلن داخل BPS Chat.</p>
       </div>
 
       <div className="smartLinksGrid">
         <a href="/customer-offers" className="smartLinkCard">
-          <b>🛍️ متجر BPS</b>
+          <b>🛍️ BPS متجر عالم المنتجات</b>
           <span>تصفح عروض ومنتجات العملاء</span>
         </a>
 
@@ -935,9 +934,9 @@ async function handleSearch() {
     <section className="storePromo">
       <div className="storePromoContent">
         <div>
-          <h3>🛒 متجر عملاء بي بي اس</h3>
+          <h3>🛒 متجر عالم المنتجات من BPS Chat</h3>
           <p>
-            ✅ منتجات مختارة ومعتمدة من BPS Chat — تسوّق بثقة أو ابدأ بيع منتجاتك مجانًا
+            ✅ منتجات مختارة داخل عالم المنتجات — تسوّق بثقة أو ابدأ بيع منتجاتك مجانًا
           </p>
         </div>
 
@@ -956,10 +955,10 @@ async function handleSearch() {
 )}
 <section className="homeAdsenseContent">
 
-  <h2>كيف يعمل BPS Chat؟</h2>
+  <h2>كيف يعمل عالم المنتجات من BPS Chat؟</h2>
 
   <p>
-    BPS Chat هو محرك بحث متخصص في مقارنة أسعار المنتجات
+    عالم المنتجات من BPS Chat هو محرك بحث ومتجر ذكي متخصص في مقارنة أسعار المنتجات
     في السعودية والإمارات والكويت وقطر والبحرين ومصر.
     يساعد المستخدمين على الوصول إلى أفضل الأسعار
     والعروض من متاجر متعددة في مكان واحد.
