@@ -161,7 +161,7 @@ export async function GET(request: Request) {
       .not("product_name", "is", null)
       .not("image_url", "is", null)
       .order("created_at", { ascending: false })
-      .limit(500);
+      .limit(5000);
 
     if (error) throw error;
 
@@ -232,7 +232,7 @@ export async function GET(request: Request) {
 
       created++;
 
-      if (created >= 100) break;
+      if (created >= 1000) break;
     }
 
     return NextResponse.json({
