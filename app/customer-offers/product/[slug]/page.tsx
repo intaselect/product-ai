@@ -198,18 +198,23 @@ export async function generateMetadata({
   const currency = currencies[offer.country || ""] || "";
   const pageUrl = `${SITE_URL}/customer-offers/product/${slug}`;
 
-  return {
-    title: `${offer.product_name} | أفضل سعر في ${country} | BPS Chat بي بي اس شات | Amazon Noon Jumia`,
-    description: `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat (بي بي اس شات). شاهد العرض بسعر ${offer.price} ${currency} من ${
-  offer.store_name || "متجر موثوق"
-} مع رابط شراء مباشر. يساعدك BPS Chat على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.`,
-    robots: {
-      index: true,
-      follow: true,
-    },
-    alternates: {
-      canonical: pageUrl,
-    },
+  const shortProductName =
+  String(offer.product_name || "").length > 55
+    ? `${String(offer.product_name).slice(0, 55).trim()}...`
+    : String(offer.product_name || "");
+
+return {
+  title: `${shortProductName} | أفضل سعر في ${country} | BPS Chat`,
+  description: `شاهد عرض ${shortProductName} في ${country} بسعر ${offer.price} ${currency} من ${
+    offer.store_name || "متجر موثوق"
+  }. قارن السعر وادخل لرابط الشراء عبر BPS Chat.`,
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: pageUrl,
+  },
     openGraph: {
       title: `${offer.product_name} | BPS Chat بي بي اس شات`,
       description: `أفضل عرض ${offer.product_name} في ${country} بسعر ${offer.price} ${currency}.`,
