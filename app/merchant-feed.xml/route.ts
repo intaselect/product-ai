@@ -204,12 +204,21 @@ const link = productUrl(offer);
 const title = cleanMerchantTitle(offer.product_name);
 const mainImage = improveImageUrl(offer.image_url);
 
-      const extraImages = [
-  ...(Array.isArray(offer.gallery_images) ? offer.gallery_images : []),
+  const extraImages = [
+  ...(Array.isArray(offer.gallery_images)
+    ? offer.gallery_images
+    : []),
   offer.image_url_2,
   offer.image_url_3,
 ]
   .filter(Boolean)
+  .filter(
+    (img: string) =>
+      !img.includes(".svg") &&
+      !img.includes("/icons/") &&
+      !img.includes("Header") &&
+      !img.includes("logo")
+  )
   .map(improveImageUrl);
 
       return `
