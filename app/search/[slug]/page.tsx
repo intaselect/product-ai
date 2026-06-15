@@ -494,7 +494,27 @@ return (
     </div>
   </section>
 )}
-
+<div
+  style={{
+    margin: "20px 0",
+    textAlign: "center",
+  }}
+>
+  <a
+    href={`/research/${slug}`}
+    style={{
+      display: "inline-block",
+      padding: "12px 18px",
+      borderRadius: "14px",
+      background: "linear-gradient(135deg,#00ffd5,#38bdf8)",
+      color: "#000",
+      fontWeight: 900,
+      textDecoration: "none",
+    }}
+  >
+    📊 دراسة المنتج الكاملة
+  </a>
+</div>
     <div style={{ padding: "40px" }}>
       <h1>
   أفضل سعر {data?.query || query} في {countryName} عبر BPS Chat (بي بي اس شات)

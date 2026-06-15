@@ -114,6 +114,10 @@ className="navSmallHover">📝 أدوات البائع</Link>
     <Link href="/smart-search" style={styles.smartBtn} className="smartBtnHover">
       ⚡ البحث الذكي
     </Link>
+    <Link href="/research" style={styles.researchBtn} className="researchBtnHover">
+  <span style={styles.researchIcon}>📊</span>
+  <span>دراسات المنتجات</span>
+</Link>
     <Link href="/comparisons">⚔️ مقارنات المنتجات</Link>
 
     {user ? (
@@ -432,6 +436,52 @@ animation-play-state: paused;
   .mobileTopSlider{
   display:none;
 }
+  .researchBtnHover {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  animation: researchNavPulse 2.6s ease-in-out infinite;
+}
+
+.researchBtnHover::before {
+  content: "▁ ▃ ▅ ▇";
+  position: absolute;
+  left: 10px;
+  bottom: 3px;
+  font-size: 9px;
+  color: rgba(255,255,255,.35);
+  letter-spacing: 2px;
+  animation: researchBarsMove 1.8s ease-in-out infinite;
+}
+
+.researchBtnHover:hover {
+  transform: translateY(-3px) scale(1.07);
+  filter: brightness(1.12);
+}
+
+@keyframes researchNavPulse {
+  0%,100% {
+    box-shadow:
+      0 0 14px rgba(45,212,191,.38),
+      0 0 34px rgba(124,58,237,.20);
+  }
+  50% {
+    box-shadow:
+      0 0 26px rgba(45,212,191,.70),
+      0 0 58px rgba(124,58,237,.42);
+  }
+}
+
+@keyframes researchBarsMove {
+  0%,100% {
+    transform: translateY(0);
+    opacity: .45;
+  }
+  50% {
+    transform: translateY(-3px);
+    opacity: .9;
+  }
+}
 
 @media (max-width:768px){
   .mobileTopSlider{
@@ -493,6 +543,25 @@ dailyDealsBtn: {
   fontWeight: "950",
   whiteSpace: "nowrap",
   position: "relative",
+},
+researchBtn: {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "7px",
+  background: "linear-gradient(135deg, #0f766e, #2563eb, #7c3aed)",
+  padding: "8px 14px",
+  borderRadius: "999px",
+  color: "#fff",
+  textDecoration: "none",
+  fontWeight: "950",
+  whiteSpace: "nowrap",
+  boxShadow:
+    "0 0 14px rgba(45,212,191,0.45), 0 0 34px rgba(124,58,237,0.25)",
+  transition: "all 0.3s ease",
+},
+
+researchIcon: {
+  fontSize: "18px",
 },
 fireMarketBtn: {
   width: "74px",

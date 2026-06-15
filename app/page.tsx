@@ -884,6 +884,10 @@ async function handleSearch() {
           <b>🚀 أعلن معنا</b>
           <span>اظهر قدام الزوار المهتمين</span>
         </a>
+        <a href="/research" className="smartLinkCard">
+  <b>📊 دراسات المنتجات</b>
+  <span>تحليل الأسعار والمتاجر والكلمات المفتاحية</span>
+</a>
       </div>
     </section>
 

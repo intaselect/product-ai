@@ -86,6 +86,16 @@ export default function SidebarMenu() {
         <a href="/smart-search" className="menuItem sidebarSmartGlow">
           ⚡ البحث الذكي
         </a>
+        <a href="/research" className="menuItem sidebarResearchGlow">
+  <span className="researchSidebarIcon">📊</span>
+
+  <span>
+    دراسات المنتجات
+    <span className="researchSidebarSub">
+      تحليل الأسعار والمتاجر بالرسم البياني
+    </span>
+  </span>
+</a>
 
         <a href="/seller-tools" className="menuItem sidebarSellerGlow">
           📝 أدوات البائع
@@ -769,6 +779,115 @@ font-weight: 700;
           border: 1px solid rgba(0, 180, 255, 0.35);
           animation: sidebarSmartPulse 2.2s ease-in-out infinite;
         }
+          .sidebarResearchGlow {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 12px;
+  min-height: 68px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15,118,110,0.32),
+      rgba(37,99,235,0.24),
+      rgba(124,58,237,0.22)
+    );
+
+  border: 1px solid rgba(45,212,191,0.42);
+
+  color: #ffffff !important;
+
+  box-shadow:
+    0 0 18px rgba(45,212,191,0.22),
+    0 0 34px rgba(124,58,237,0.18),
+    inset 0 0 18px rgba(255,255,255,0.04);
+
+  animation: sidebarResearchPulse 2.6s ease-in-out infinite;
+}
+
+.sidebarResearchGlow::after {
+  content: "▁ ▃ ▅ ▇";
+  position: absolute;
+  left: 14px;
+  bottom: 8px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 3px;
+  animation: sidebarResearchBars 1.8s ease-in-out infinite;
+}
+
+.researchSidebarIcon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(135deg, #2dd4bf, #60a5fa, #a78bfa);
+
+  color: #020617;
+
+  font-size: 23px;
+
+  box-shadow:
+    inset 0 0 14px rgba(255,255,255,0.55),
+    0 0 18px rgba(45,212,191,0.28);
+}
+
+.researchSidebarSub {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+  color: rgba(255,255,255,0.84);
+  font-weight: 900;
+}
+
+.sidebarResearchGlow:hover {
+  transform: translateX(-5px) scale(1.035);
+  border-color: rgba(96,165,250,0.7);
+  filter: brightness(1.1);
+  box-shadow:
+    0 0 28px rgba(45,212,191,0.35),
+    0 0 48px rgba(124,58,237,0.28);
+}
+
+@keyframes sidebarResearchPulse {
+  0%,100% {
+    box-shadow:
+      0 0 18px rgba(45,212,191,0.22),
+      0 0 34px rgba(124,58,237,0.18);
+  }
+
+  50% {
+    box-shadow:
+      0 0 30px rgba(45,212,191,0.45),
+      0 0 62px rgba(124,58,237,0.34);
+  }
+}
+
+@keyframes sidebarResearchBars {
+  0%,100% {
+    transform: translateY(0);
+    opacity: .35;
+  }
+
+  50% {
+    transform: translateY(-4px);
+    opacity: .85;
+  }
+}
 
         .sidebarSellerGlow {
           background: linear-gradient(
