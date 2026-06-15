@@ -19,6 +19,9 @@ export default async function sitemap() {
       url: "https://www.bpschat.com/sitemaps/search.xml",
     },
     {
+  url: "https://www.bpschat.com/sitemaps/research.xml",
+},
+    {
       url: "https://www.bpschat.com/sitemaps/products.xml",
     },
     {
