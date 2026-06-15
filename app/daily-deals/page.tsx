@@ -108,11 +108,10 @@ export default async function DailyDealsPage({
   const selectedStore = String(params?.store || "all");
 
   let query = supabase
-    .from("daily_deals")
-    .select("*")
-    .eq("status", "approved")
-    .order("discount_percent", { ascending: false })
-    .order("created_at", { ascending: false });
+  .from("daily_deals")
+  .select("*")
+  .eq("status", "approved")
+  .order("created_at", { ascending: false });
 
   if (selectedCountry !== "all") {
     query = query.eq("country", selectedCountry);
