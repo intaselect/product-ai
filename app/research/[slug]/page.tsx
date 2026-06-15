@@ -163,7 +163,7 @@ export default async function ProductResearchPage({ params }: any) {
   const sortedProducts = [...productsWithPrices].sort(
     (a: any, b: any) => a.numericPrice - b.numericPrice
   );
-
+const topDeals = sortedProducts.slice(0, 5);
   const cheapest = sortedProducts[0];
   const highest = sortedProducts[sortedProducts.length - 1];
   const priceDiff =
@@ -309,35 +309,43 @@ export default async function ProductResearchPage({ params }: any) {
         </div>
       </section>
 
-      {cheapest && (
-        <section className="bestBox">
-          <h2>🏆 أفضل سعر حاليًا</h2>
+      {topDeals.length > 0 && (
+  <section className="bestBox">
+    <h2>🏆 أفضل 5 أسعار حاليًا</h2>
 
-          <div className="bestContent">
-            {cheapest.productImage && (
-              <img src={cheapest.productImage} alt={cheapest.productTitle} />
-            )}
+    <div className="bestContent">
+      {topDeals.map((deal, index) => (
+        <div className="bestMiniCard" key={index}>
+          {deal.productImage && (
+            <img
+              src={deal.productImage}
+              alt={deal.productTitle}
+            />
+          )}
 
-            <div>
-              <h3>{cheapest.productTitle}</h3>
-              <p>
-                المتجر: <strong>{cheapest.storeName}</strong>
-              </p>
-              <p>
-                السعر: <strong>{cheapest.priceText || cheapest.price}</strong>
-              </p>
+          <h3>{deal.productTitle}</h3>
 
-              <a
-                href={cheapest.productUrl}
-                target="_blank"
-                rel="nofollow sponsored noopener noreferrer"
-              >
-                فتح رابط المنتج
-              </a>
-            </div>
-          </div>
-        </section>
-      )}
+          <p>
+            المتجر:
+            <strong> {deal.storeName}</strong>
+          </p>
+
+          <p className="bestMiniPrice">
+            {deal.priceText || deal.price}
+          </p>
+
+          <a
+            href={deal.productUrl}
+            target="_blank"
+            rel="nofollow sponsored noopener noreferrer"
+          >
+            فتح الرابط
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
 
       <section className="tableSection">
         <h2>جدول أسعار {query}</h2>
@@ -599,7 +607,62 @@ export default async function ProductResearchPage({ params }: any) {
           font-size: 22px;
           color: #fff;
         }
+.bestContent {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
 
+.bestMiniCard {
+  text-align: center;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(0,255,200,0.15);
+}
+
+.bestMiniCard img {
+  width: 95px;
+  height: 95px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 12px;
+  padding: 6px;
+  margin-bottom: 10px;
+}
+
+.bestMiniCard h3 {
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 62px;
+}
+
+.bestMiniCard p {
+  margin: 6px 0;
+}
+
+.bestMiniPrice {
+  color: #00ffd5 !important;
+  font-size: 18px !important;
+  font-weight: 950;
+}
+
+.bestMiniCard a {
+  margin-top: 8px;
+  display: inline-block;
+}
+
+@media (max-width: 1000px) {
+  .bestContent {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .bestContent {
+    grid-template-columns: 1fr;
+  }
+}
         .bestContent {
           display: flex;
           gap: 18px;
