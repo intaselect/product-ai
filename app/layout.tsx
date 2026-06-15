@@ -15,6 +15,7 @@ import GlobalAdsSlider from "@/app/components/GlobalAdsSlider";
 import TrustBanner from "@/app/components/TrustBanner";
 import DailyDealsBanner from "@/app/components/DailyDealsBanner";
 import BrandSplash from "@/app/components/BrandSplash";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -308,6 +309,7 @@ export default function RootLayout({
   <Analytics />
   <SpeedInsights />
   <AnalyticsTracker />
+  <GoogleTagManager gtmId="GTM-5D25SDWK" />
 </body>
     </html>
   );
