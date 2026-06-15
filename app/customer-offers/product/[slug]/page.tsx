@@ -472,13 +472,26 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
           </div>
 
           <a
-            href={`/api/customer-offers/click/${offer.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="premiumBuyBtn"
-          >
-            🔥 عرض المنتج الآن
-          </a>
+  href={`/api/customer-offers/click/${offer.id}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="premiumBuyBtn"
+  onClick={() => {
+    if (typeof window !== "undefined") {
+      window.dataLayer = window.dataLayer || [];
+
+      window.dataLayer.push({
+        event: "affiliate_click",
+        product_name: offer.product_name,
+        store_name: offer.store_name || "unknown",
+        country: offer.country || "sa",
+        product_id: offer.id,
+      });
+    }
+  }}
+>
+  🔥 عرض المنتج الآن
+</a>
 
           <Link href="/customer-offers" className="premiumBackBtn">
             مشاهدة باقي عروض العملاء
