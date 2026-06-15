@@ -59,6 +59,30 @@ function buildDescription(offer: any) {
     `عرض ${offer.product_name} من ${offer.store_name || "BPS Chat"} عبر BPS Chat. يتم الشراء من المتجر أو البائع صاحب العرض.`
   ).slice(0, 4800);
 }
+function cleanMerchantTitle(title: any) {
+  return String(title || "")
+    .replace(/\s+/g, " ")
+    .replace(/[|]+/g, " ")
+    .trim()
+    .slice(0, 140);
+}
+
+function improveImageUrl(url: any) {
+  let image = String(url || "").trim();
+
+  if (!image) return "";
+
+  image = image
+    .replace(/width=380/gi, "width=1200")
+    .replace(/height=380/gi, "height=1200")
+    .replace(/width=500/gi, "width=1200")
+    .replace(/width=720/gi, "width=1200")
+    .replace(/width=800/gi, "width=1200")
+    .replace(/fit-in\/680x680/gi, "fit-in/1200x1200")
+    .replace(/fit=contain,width=380,height=380/gi, "fit=contain,width=1200,height=1200");
+
+  return image;
+}
 function getGoogleProductCategory(offer: any) {
   const categories = Array.isArray(offer.category)
     ? offer.category.map((c: any) => String(c).toLowerCase())
@@ -175,19 +199,23 @@ while (true) {
     })
     .map((offer: any) => {
       const currency = currencyCodes[offer.country] || "SAR";
-      const price = cleanPrice(offer.price);
-      const link = productUrl(offer);
+const price = cleanPrice(offer.price);
+const link = productUrl(offer);
+const title = cleanMerchantTitle(offer.product_name);
+const mainImage = improveImageUrl(offer.image_url);
 
       const extraImages = [
-        ...(Array.isArray(offer.gallery_images) ? offer.gallery_images : []),
-        offer.image_url_2,
-        offer.image_url_3,
-      ].filter(Boolean);
+  ...(Array.isArray(offer.gallery_images) ? offer.gallery_images : []),
+  offer.image_url_2,
+  offer.image_url_3,
+]
+  .filter(Boolean)
+  .map(improveImageUrl);
 
       return `
   <item>
     <g:id>${xmlEscape(`bps-${offer.id}`)}</g:id>
-    <g:title>${xmlEscape(offer.product_name)}</g:title>
+    <g:title>${xmlEscape(title)}</g:title>
     <g:description>${xmlEscape(buildDescription(offer))}</g:description>
         <g:google_product_category>${xmlEscape(getGoogleProductCategory(offer))}</g:google_product_category>
     <g:product_type>${xmlEscape(
@@ -196,7 +224,7 @@ while (true) {
         : "Customer Offers"
     )}</g:product_type>
     <g:link>${xmlEscape(link)}</g:link>
-    <g:image_link>${xmlEscape(offer.image_url)}</g:image_link>
+    <g:image_link>${xmlEscape(mainImage)}</g:image_link>
     ${extraImages
       .slice(0, 10)
       .map(
@@ -205,7 +233,7 @@ while (true) {
       )
       .join("\n    ")}
     <g:availability>in_stock</g:availability>
-    <g:availability_date>${new Date().toISOString()}</g:availability_date>
+    
     <g:condition>new</g:condition>
     <g:shipping>
   <g:country>${shippingCountries[offer.country] || "SA"}</g:country>
@@ -218,6 +246,8 @@ while (true) {
     <g:mpn>${xmlEscape(`bps-${offer.id}`)}</g:mpn>
     <g:identifier_exists>no</g:identifier_exists>
     <g:adult>no</g:adult>
+    <g:custom_label_0>BPS Chat</g:custom_label_0>
+<g:custom_label_1>${xmlEscape(offer.country || "sa")}</g:custom_label_1>
   </item>`;
     })
     .join("");
