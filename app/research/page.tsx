@@ -29,6 +29,7 @@ export default function ResearchHomePage() {
   const [country, setCountry] = useState("sa");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [paymentLink, setPaymentLink] = useState("");
 
   useEffect(() => {
     const saved = localStorage.getItem("bps_selected_country");
@@ -48,22 +49,32 @@ export default function ResearchHomePage() {
     setLoading(true);
     setErrorMessage("");
 
-    try {
-      await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-bps-visitor-id": getVisitorId(),
-        },
-        body: JSON.stringify({
-          query: cleanQuery,
-          country,
-        }),
-      });
+ try {
+  const res = await fetch("/api/search", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-bps-visitor-id": getVisitorId(),
+    },
+    body: JSON.stringify({
+      query: cleanQuery,
+      country,
+      searchType: "research",
+    }),
+  });
 
-      const slug = `${slugify(cleanQuery)}-${country}`;
-      window.location.href = `/research/${slug}`;
-    } catch {
+  const data = await res.json();
+
+  if (data.blocked) {
+    setErrorMessage(data.message);
+    setPaymentLink(data.paymentLink || "");
+    setLoading(false);
+    return;
+  }
+
+  const slug = `${slugify(cleanQuery)}-${country}`;
+  window.location.href = `/research/${slug}`;
+} catch {
       const slug = `${slugify(cleanQuery)}-${country}`;
       window.location.href = `/research/${slug}`;
     } finally {
@@ -86,9 +97,27 @@ export default function ResearchHomePage() {
           رسم بياني، أفضل سعر، كلمات مفتاحية وجمل قوية تساعدك قبل الشراء.
         </p>
 
-        {errorMessage && <div className="errorBox">{errorMessage}</div>}
+      {errorMessage && <div className="errorBox">{errorMessage}</div>}
 
-        <div className="researchSearchBox">
+{paymentLink && (
+  <>
+    <a
+      href={paymentLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="paypalBtn"
+    >
+      شراء 50 دراسة منتج بـ 20 دولار بعد الدفع أرسل كود حسابك الظاهر هنا عبر واتساب.
+    </a>
+
+    <div className="visitorBox">
+      كود حسابك بعد الدفع:
+      <strong>{getVisitorId()}</strong>
+    </div>
+  </>
+)}
+
+<div className="researchSearchBox">
           <select
             value={country}
             onChange={(e) => {
@@ -142,6 +171,29 @@ export default function ResearchHomePage() {
             radial-gradient(circle at left, rgba(0,180,255,0.1), transparent 28%),
             #0b0f14;
         }
+            .visitorBox {
+  margin: 12px auto;
+  padding: 12px;
+  max-width: 500px;
+
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(0,255,200,0.25);
+
+  border-radius: 14px;
+
+  color: #fff;
+  font-weight: 800;
+}
+
+.visitorBox strong {
+  display: block;
+  margin-top: 8px;
+
+  color: #00ffd5;
+
+  font-size: 14px;
+  word-break: break-all;
+}
 
         .researchHero {
           max-width: 900px;
@@ -224,6 +276,16 @@ export default function ResearchHomePage() {
           border-radius: 14px;
           padding: 12px;
         }
+          .paypalBtn {
+  display: inline-block;
+  margin: 10px auto 0;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #facc15, #f97316);
+  color: #111827;
+  font-weight: 950;
+  text-decoration: none;
+}
 
         .researchInfo {
           max-width: 900px;

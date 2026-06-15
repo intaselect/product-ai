@@ -119,7 +119,10 @@ function getSupabaseAdmin() {
 
 export async function POST(req) {
   try {
-    const { query, country } = await req.json();
+    const { query, country, searchType } = await req.json();
+
+const requestType = searchType === "research" ? "research" : "search";
+const DAILY_LIMIT = requestType === "research" ? 5 : 10;
 
     const cleanQuery = String(query || "").trim();
     const cleanCountry = String(country || "sa").toLowerCase().trim();
@@ -129,9 +132,10 @@ export async function POST(req) {
     const supabase = getSupabaseAdmin();
     const cacheKey = makeCacheKey(cleanQuery, cleanCountry);
     const now = new Date().toISOString();
-    const DAILY_LIMIT = 10;
+    //const DAILY_LIMIT = 10;
 const MINUTE_LIMIT = 5;
 const ADMIN_EMAILS = ["gospstudio2030@gmail.com"];
+const RESEARCH_PAYPAL_LINK = "https://www.paypal.com/ncp/payment/CQBWES5NLK98J";
 const userEmail = req.headers.get("x-bps-user-email");
 const isAdmin = ADMIN_EMAILS.includes(userEmail || "");
 
@@ -160,20 +164,25 @@ const { count: dailyCount } = await supabase
   .from("search_rate_limits")
   .select("*", { count: "exact", head: true })
   .eq("ip", searchKey)
-  .eq("day", today);
+  .eq("day", today)
+  .eq("search_type", requestType);
 
 const HARD_BLOCK_LIMIT = 15;
 
 if ((dailyCount || 0) >= HARD_BLOCK_LIMIT) {
   console.log("🚫 HARD BLOCKED:", searchKey);
 
-  return Response.json({
-    value: [],
-    message: "تم حظر هذا المستخدم بسبب استخدام مفرط.",
-    blocked: true,
-    remainingSearches: 0,
-    limit: DAILY_LIMIT,
-  });
+ return Response.json({
+  value: [],
+  message:
+    requestType === "research"
+      ? "لقد وصلت للحد اليومي المجاني لدراسات المنتجات: 5 دراسات يوميًا. يمكنك شراء باقة 50 دراسة منتج مقابل 20 دولار."
+      : "لقد وصلت للحد اليومي 10 عمليات بحث جديدة، جرّب غدًا أو استخدم نتائج الكاش.",
+  paymentLink: requestType === "research" ? RESEARCH_PAYPAL_LINK : null,
+  blocked: true,
+  remainingSearches: 0,
+  limit: DAILY_LIMIT,
+});
 }
 
 const remainingSearches = Math.max(0, DAILY_LIMIT - (dailyCount || 0));
@@ -217,13 +226,16 @@ const { count: minuteCount } = await supabase
   .from("search_rate_limits")
   .select("*", { count: "exact", head: true })
   .eq("ip", searchKey)
-  .eq("minute_bucket", minuteBucket);
-
+  .eq("minute_bucket", minuteBucket)
+  .eq("search_type", requestType);
 // 🚫 لو بوت
 if (!isAdmin && (dailyCount || 0) >= DAILY_LIMIT) {
  return Response.json({
   value: [],
-  message: "لقد وصلت للحد اليومي 10 عمليات بحث جديدة، جرّب غدًا أو استخدم نتائج الكاش.",
+  message:
+  requestType === "research"
+    ? "لقد وصلت للحد اليومي المجاني لدراسات المنتجات: 5 دراسات يوميًا. يمكنك ترقية حسابك لاحقًا للحصول على 50 دراسة مقابل 20 دولار."
+    : "لقد وصلت للحد اليومي 10 عمليات بحث جديدة، جرّب غدًا أو استخدم نتائج الكاش.",
   blocked: true,
   remainingSearches: 0,
   limit: DAILY_LIMIT,
@@ -263,13 +275,13 @@ if (searchKey === "unknown") {
     ...(Array.isArray(realProducts) ? realProducts : []),
   ]);
 }
-    // ✅ نسجل الطلب
-await supabase.from("search_rate_limits").insert({
+  await supabase.from("search_rate_limits").insert({
   ip: searchKey,
   day: today,
   minute_bucket: minuteBucket,
   query: cleanQuery,
   country: cleanCountry,
+  search_type: requestType,
 });
 const remainingAfterSearch = Math.max(
   0,
