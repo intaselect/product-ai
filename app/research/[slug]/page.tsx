@@ -174,7 +174,7 @@ export default async function ProductResearchPage({ params }: any) {
   const priceDiff =
     cheapest && highest ? highest.numericPrice - cheapest.numericPrice : 0;
 
-  const chartBars = sortedProducts.slice(0, 10);
+  const chartBars = sortedProducts.slice(0, 40);
   const maxPrice = Math.max(...chartBars.map((p: any) => p.numericPrice || 0), 1);
 
   const keywordList = [
@@ -359,7 +359,7 @@ export default async function ProductResearchPage({ params }: any) {
             </thead>
 
             <tbody>
-              {sortedProducts.slice(0, 20).map((product: any, index: number) => (
+              {sortedProducts.slice(0, 100).map((product: any, index: number) => (
                 <tr key={index}>
                   <td>{product.storeName}</td>
                   <td>{product.priceText || product.price}</td>
