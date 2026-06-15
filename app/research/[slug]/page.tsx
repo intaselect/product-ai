@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { fetchRealProducts } from "@/lib/fetchRealProducts";
+
 import Link from "next/link";
 
 export const revalidate = 86400;
@@ -116,13 +116,8 @@ async function getProducts(query: string, countryCode: string) {
     .gt("expires_at", now)
     .maybeSingle();
 
-  if (cached?.results?.length) return cached.results;
-
-  const fresh = await fetchRealProducts(query, countryCode);
-
-  return Array.isArray(fresh) ? fresh : [];
+  return cached?.results?.length ? cached.results : [];
 }
-
 export async function generateMetadata({ params }: any) {
   const { slug } = await params;
   const { query, countryName, clean } = parseSlug(slug);
@@ -462,11 +457,15 @@ export default async function ProductResearchPage({ params }: any) {
           <h2>عمليات بحث مرتبطة</h2>
 
           <div className="relatedLinks">
-            {relatedSearchTerms.map((item: any) => (
-              <Link href={`/research/${item.slug}`} key={item.slug}>
-                {item.query}
-              </Link>
-            ))}
+          {relatedSearchTerms.map((item: any) => (
+  <Link
+    href={`/research/${item.slug}`}
+    key={item.slug}
+    prefetch={false}
+  >
+    {item.query}
+  </Link>
+))}
           </div>
         </section>
       )}

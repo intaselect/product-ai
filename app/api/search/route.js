@@ -251,11 +251,12 @@ if (searchKey === "unknown") {
     cleanCountry
   );
 
-  const realProducts = await fetchRealProducts(
-    cleanQuery,
-    cleanCountry,
-    realIp || searchKey
-  );
+ const realProducts = await fetchRealProducts(
+  cleanQuery,
+  cleanCountry,
+  realIp || searchKey,
+  true
+);
 
   results = removeDuplicateProducts([
     ...bpsOffers,
