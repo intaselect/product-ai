@@ -443,6 +443,9 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
             <strong>{offer.price}</strong>
             <span>{currency}</span>
           </div>
+          <div className="stockBadge">
+  ✅ متوفر الآن للشراء
+</div>
 
           <div className="premiumMetaGrid">
             <div>
@@ -1342,6 +1345,17 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
           font-size: 12px;
           font-weight: 950;
         }
+          .stockBadge {
+  width: fit-content;
+  margin: -6px 0 18px;
+  padding: 9px 15px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 14px;
+  font-weight: 950;
+  border: 1px solid #bbf7d0;
+}
 
         .premiumMetaGrid {
           display: grid;
