@@ -13,6 +13,31 @@ type Product = {
   thumbnail?: string;
 };
 
+function clean(v: any) {
+  return String(v || "").trim().replace(/\s+/g, " ");
+}
+
+function short(v: any, max = 70) {
+  const t = clean(v);
+  return t.length > max ? t.slice(0, max - 3) + "..." : t;
+}
+
+function name(p?: Product) {
+  return clean(p?.title || p?.name || "منتج مميز");
+}
+
+function price(p?: Product) {
+  return clean(p?.priceText || p?.price || "شوف السعر");
+}
+
+function store(p?: Product) {
+  return clean(p?.store || p?.source || "متجر موثوق");
+}
+
+function image(p?: Product) {
+  return clean(p?.image || p?.thumbnail);
+}
+
 export default function StorePromoVideo({
   query,
   countryName,
@@ -23,27 +48,36 @@ export default function StorePromoVideo({
   products: Product[];
 }) {
   const frame = useCurrentFrame();
-  const shown = products.slice(0, 10);
 
-  const introOpacity = interpolate(frame, [0, 60, 120], [0, 1, 1], {
+  const shown = products.slice(0, 6);
+  const activeIndex = Math.min(Math.floor(frame / 240), Math.max(shown.length - 1, 0));
+  const active = shown[activeIndex] || shown[0];
+
+  const activeName = name(active);
+  const activePrice = price(active);
+  const activeStore = store(active);
+  const activeImage = image(active);
+
+  const heroOpacity = interpolate(frame % 240, [0, 30, 210, 239], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  const cardsOpacity = interpolate(frame, [120, 180], [0, 1], {
+  const heroScale = interpolate(frame % 240, [0, 55, 210], [0.94, 1.02, 1], {
+    extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  const slideX = interpolate(frame, [120, 500], [120, 0], {
+  const pulse = interpolate(Math.sin(frame / 12), [-1, 1], [0.65, 1]);
+  const shine = interpolate(frame, [0, 1800], [-1000, 1000], {
     extrapolateRight: "clamp",
   });
-
-  const pulse = interpolate(Math.sin(frame / 12), [-1, 1], [0.5, 1]);
 
   return (
     <AbsoluteFill
       style={{
         background:
-          "radial-gradient(circle at 15% 15%, rgba(0,220,255,0.30), transparent 30%), radial-gradient(circle at 85% 85%, rgba(255,140,0,0.22), transparent 32%), linear-gradient(135deg, #030712 0%, #07111f 45%, #000 100%)",
+          "radial-gradient(circle at 12% 18%, rgba(34,197,94,.28), transparent 32%), radial-gradient(circle at 88% 82%, rgba(37,99,235,.30), transparent 34%), linear-gradient(135deg,#020617 0%,#07111f 50%,#000 100%)",
         color: "white",
         fontFamily: "Arial",
         direction: "rtl",
@@ -53,23 +87,23 @@ export default function StorePromoVideo({
       <div
         style={{
           position: "absolute",
-          inset: -200,
+          inset: -220,
           background:
-            "linear-gradient(120deg, transparent, rgba(0,220,255,0.14), transparent)",
-          transform: `translateX(${interpolate(frame, [0, 1800], [-900, 900])}px) rotate(10deg)`,
+            "linear-gradient(120deg, transparent, rgba(255,255,255,.14), transparent)",
+          transform: `translateX(${shine}px) rotate(10deg)`,
         }}
       />
 
       <div
         style={{
           position: "absolute",
-          top: 55,
-          right: 80,
-          left: 80,
+          top: 46,
+          left: 70,
+          right: 70,
+          zIndex: 20,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          zIndex: 5,
         }}
       >
         <div>
@@ -78,56 +112,53 @@ export default function StorePromoVideo({
               display: "inline-block",
               padding: "12px 28px",
               borderRadius: 999,
-              background: "rgba(0,220,255,0.14)",
-              border: "1px solid rgba(0,220,255,0.55)",
-              boxShadow: `0 0 ${30 + pulse * 35}px rgba(0,220,255,0.40)`,
-              fontSize: 28,
-              fontWeight: "bold",
+              background: "linear-gradient(135deg,#ef4444,#f97316)",
+              fontSize: 30,
+              fontWeight: 950,
+              boxShadow: "0 0 35px rgba(249,115,22,.45)",
             }}
           >
-            BPS Chat | بي بي اس شات
+            🔥 عروض اليوم
           </div>
 
           <h1
             style={{
-              margin: "26px 0 0",
-              fontSize: 62,
-              lineHeight: 1.15,
-              maxWidth: 900,
-              textShadow: "0 0 35px rgba(0,220,255,0.45)",
-              opacity: introOpacity,
+              margin: "22px 0 0",
+              fontSize: 58,
+              lineHeight: 1.12,
+              maxWidth: 980,
+              textShadow: "0 0 35px rgba(37,99,235,.45)",
             }}
           >
-            أفضل عروض {query}
+            قارن أفضل أسعار {query}
           </h1>
 
           <div
             style={{
-              marginTop: 18,
-              fontSize: 34,
-              color: "#d9f6ff",
-              opacity: introOpacity,
+              marginTop: 14,
+              fontSize: 30,
+              color: "#dbeafe",
+              fontWeight: 850,
             }}
           >
-            منتجات مختارة في {countryName} مع السعر والمتجر
+            منتجات مختارة في {countryName} قبل الشراء
           </div>
         </div>
 
         <div
           style={{
-            width: 360,
-            padding: 28,
-            borderRadius: 36,
-            background: "rgba(255,255,255,0.08)",
-            border: "1px solid rgba(255,255,255,0.18)",
-            boxShadow: "0 0 60px rgba(0,220,255,0.18)",
+            width: 320,
+            padding: 24,
+            borderRadius: 32,
+            background: "rgba(0,0,0,.55)",
+            border: "1px solid rgba(255,255,255,.18)",
             textAlign: "center",
+            boxShadow: "0 0 42px rgba(37,99,235,.24)",
           }}
         >
-          <div style={{ fontSize: 44, fontWeight: "bold" }}>ابحث</div>
-          <div style={{ fontSize: 44, fontWeight: "bold" }}>قارن</div>
-          <div style={{ fontSize: 44, fontWeight: "bold", color: "#80f7ff" }}>
-            وفر
+          <div style={{ fontSize: 38, fontWeight: 950 }}>BPS Chat</div>
+          <div style={{ fontSize: 28, color: "#93c5fd", marginTop: 8 }}>
+            ابحث • قارن • وفر
           </div>
         </div>
       </div>
@@ -135,126 +166,279 @@ export default function StorePromoVideo({
       <div
         style={{
           position: "absolute",
-          top: 300,
-          right: 80,
-          left: 80,
-          bottom: 135,
+          top: 250,
+          left: 70,
+          right: 70,
+          bottom: 130,
           display: "grid",
-          gridTemplateColumns: "repeat(5, 1fr)",
-          gap: 22,
-          opacity: cardsOpacity,
-          transform: `translateX(${slideX}px)`,
-          zIndex: 4,
+          gridTemplateColumns: "1.15fr .85fr",
+          gap: 30,
+          zIndex: 10,
         }}
       >
-        {shown.map((p, i) => {
-          const img = p.image || p.thumbnail;
-          const title = p.title || p.name || "منتج";
-          const store = p.store || p.source || "متجر";
-          const price = p.priceText || p.price || "شوف السعر";
+        <div
+          style={{
+            opacity: heroOpacity,
+            transform: `scale(${heroScale})`,
+            borderRadius: 42,
+            padding: 28,
+            background:
+              "linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.07))",
+            border: "2px solid rgba(34,197,94,.48)",
+            boxShadow: "0 0 70px rgba(34,197,94,.22)",
+            display: "grid",
+            gridTemplateColumns: "0.95fr 1.05fr",
+            gap: 26,
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              height: "100%",
+              minHeight: 510,
+              background: "white",
+              borderRadius: 34,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 28,
+              boxShadow: "0 24px 60px rgba(0,0,0,.35)",
+            }}
+          >
+            {activeImage && (
+              <img
+                src={activeImage}
+                alt={activeName}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: 500,
+                  objectFit: "contain",
+                }}
+              />
+            )}
+          </div>
 
-          const y = interpolate(
-            Math.sin(frame / 18 + i),
-            [-1, 1],
-            [-8, 8]
-          );
-
-          return (
+          <div>
             <div
-              key={i}
               style={{
-                borderRadius: 28,
-                padding: 18,
-                background:
-                  i === 0
-                    ? "linear-gradient(135deg, rgba(0,220,255,0.26), rgba(255,140,0,0.16))"
-                    : "rgba(255,255,255,0.075)",
-                border:
-                  i === 0
-                    ? "2px solid rgba(0,220,255,0.75)"
-                    : "1px solid rgba(255,255,255,0.14)",
-                boxShadow:
-                  i === 0
-                    ? "0 0 55px rgba(0,220,255,0.35)"
-                    : "0 0 25px rgba(255,255,255,0.08)",
-                transform: `translateY(${y}px)`,
+                display: "inline-block",
+                padding: "10px 22px",
+                borderRadius: 999,
+                background: "rgba(250,204,21,.16)",
+                border: "1px solid rgba(250,204,21,.38)",
+                color: "#fde68a",
+                fontSize: 28,
+                fontWeight: 950,
               }}
             >
-              {img && (
-                <img
-                  src={img}
-                  alt={title}
-                  style={{
-                    width: "100%",
-                    height: 145,
-                    objectFit: "contain",
-                    background: "white",
-                    borderRadius: 22,
-                    padding: 10,
-                    marginBottom: 14,
-                  }}
-                />
-              )}
-
-              <div style={{ fontSize: 24, fontWeight: "bold", color: "#bff7ff" }}>
-                {store}
-              </div>
-
-              <div
-                style={{
-                  fontSize: 23,
-                  color: "#ffffff",
-                  marginTop: 8,
-                  lineHeight: 1.25,
-                  minHeight: 58,
-                }}
-              >
-                {title.slice(0, 54)}
-              </div>
-
-              <div
-                style={{
-                  marginTop: 12,
-                  fontSize: 30,
-                  fontWeight: "bold",
-                  color: "#fff",
-                  textShadow: "0 0 18px rgba(0,220,255,0.48)",
-                }}
-              >
-                {String(price).slice(0, 28)}
-              </div>
+              المنتج رقم {activeIndex + 1}
             </div>
-          );
-        })}
+
+            <div
+              style={{
+                marginTop: 22,
+                fontSize: 46,
+                lineHeight: 1.25,
+                fontWeight: 950,
+              }}
+            >
+              {short(activeName, 72)}
+            </div>
+
+            <div
+              style={{
+                marginTop: 24,
+                display: "inline-block",
+                padding: "16px 34px",
+                borderRadius: 999,
+                background: "linear-gradient(135deg,#16a34a,#22c55e)",
+                fontSize: 48,
+                fontWeight: 950,
+                boxShadow: `0 0 ${35 + pulse * 35}px rgba(34,197,94,.55)`,
+              }}
+            >
+              {activePrice}
+            </div>
+
+            <div
+              style={{
+                marginTop: 22,
+                fontSize: 32,
+                color: "#bfdbfe",
+                fontWeight: 900,
+              }}
+            >
+              المتجر: {activeStore}
+            </div>
+
+            <div
+              style={{
+                marginTop: 24,
+                fontSize: 28,
+                color: "#e5e7eb",
+                lineHeight: 1.5,
+              }}
+            >
+              شوف السعر وقارن قبل ما تشتري من BPS Chat
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateRows: "repeat(3, 1fr)",
+            gap: 18,
+          }}
+        >
+          {shown.slice(0, 3).map((p, i) => {
+            const img = image(p);
+            const isActive = i === activeIndex;
+
+            return (
+              <div
+                key={i}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "150px 1fr",
+                  gap: 16,
+                  alignItems: "center",
+                  padding: 16,
+                  borderRadius: 28,
+                  background: isActive
+                    ? "linear-gradient(135deg, rgba(34,197,94,.22), rgba(37,99,235,.16))"
+                    : "rgba(255,255,255,.08)",
+                  border: isActive
+                    ? "2px solid rgba(34,197,94,.55)"
+                    : "1px solid rgba(255,255,255,.14)",
+                  boxShadow: isActive
+                    ? "0 0 38px rgba(34,197,94,.26)"
+                    : "0 0 20px rgba(0,0,0,.22)",
+                }}
+              >
+                {img && (
+                  <img
+                    src={img}
+                    alt={name(p)}
+                    style={{
+                      width: 150,
+                      height: 150,
+                      objectFit: "contain",
+                      background: "white",
+                      borderRadius: 22,
+                      padding: 8,
+                    }}
+                  />
+                )}
+
+                <div>
+                  <div style={{ fontSize: 25, fontWeight: 950 }}>
+                    {short(name(p), 46)}
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 10,
+                      color: "#86efac",
+                      fontSize: 28,
+                      fontWeight: 950,
+                    }}
+                  >
+                    {String(price(p)).slice(0, 24)}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {shown.slice(3, 6).map((p, i) => {
+            const img = image(p);
+            const realIndex = i + 3;
+            const isActive = realIndex === activeIndex;
+
+            return (
+              <div
+                key={realIndex}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "150px 1fr",
+                  gap: 16,
+                  alignItems: "center",
+                  padding: 16,
+                  borderRadius: 28,
+                  background: isActive
+                    ? "linear-gradient(135deg, rgba(34,197,94,.22), rgba(37,99,235,.16))"
+                    : "rgba(255,255,255,.08)",
+                  border: isActive
+                    ? "2px solid rgba(34,197,94,.55)"
+                    : "1px solid rgba(255,255,255,.14)",
+                  boxShadow: isActive
+                    ? "0 0 38px rgba(34,197,94,.26)"
+                    : "0 0 20px rgba(0,0,0,.22)",
+                }}
+              >
+                {img && (
+                  <img
+                    src={img}
+                    alt={name(p)}
+                    style={{
+                      width: 150,
+                      height: 150,
+                      objectFit: "contain",
+                      background: "white",
+                      borderRadius: 22,
+                      padding: 8,
+                    }}
+                  />
+                )}
+
+                <div>
+                  <div style={{ fontSize: 25, fontWeight: 950 }}>
+                    {short(name(p), 46)}
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 10,
+                      color: "#86efac",
+                      fontSize: 28,
+                      fontWeight: 950,
+                    }}
+                  >
+                    {String(price(p)).slice(0, 24)}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <div
         style={{
           position: "absolute",
-          bottom: 42,
-          left: 80,
-          right: 80,
+          bottom: 36,
+          left: 70,
+          right: 70,
           height: 78,
           borderRadius: 999,
-          background: "rgba(0,0,0,0.66)",
-          border: "1px solid rgba(255,255,255,0.18)",
+          background: "rgba(0,0,0,.72)",
+          border: "1px solid rgba(255,255,255,.18)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           padding: "0 42px",
-          boxShadow: "0 0 45px rgba(0,220,255,0.20)",
-          zIndex: 7,
+          boxShadow: "0 0 45px rgba(37,99,235,.22)",
+          zIndex: 30,
         }}
       >
-        <div style={{ fontSize: 30, fontWeight: "bold" }}>
+        <div style={{ fontSize: 30, fontWeight: 950 }}>
           bpschat.com
         </div>
 
-        <div style={{ fontSize: 28, color: "#d9f6ff" }}>
-          قارن الأسعار قبل ما تشتري
+        <div style={{ fontSize: 29, color: "#dbeafe", fontWeight: 850 }}>
+          قارن السعر قبل ما تشتري
         </div>
 
-        <div style={{ fontSize: 30, fontWeight: "bold", color: "#80f7ff" }}>
+        <div style={{ fontSize: 30, fontWeight: 950, color: "#86efac" }}>
           BPS Chat
         </div>
       </div>
