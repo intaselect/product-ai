@@ -60,6 +60,11 @@ BPS Chat منصة للبحث عن المنتجات ومقارنة الأسعار
         <Link href="/seller-tools">أداة كتابة إعلان بيع منتج</Link>
         <Link href="/trends">المنتجات الأكثر بحثًا اليوم</Link>
         <Link href="/customer-offers/dashboard">صفحة البائعين</Link>
+        <Link href="/terms">الشروط والأحكام</Link>
+<Link href="/refund-policy">سياسة الاستبدال والاسترجاع</Link>
+<Link href="/shipping-policy">سياسة الشحن</Link>
+<Link href="/privacy">سياسة الخصوصية</Link>
+<Link href="/contact">تواصل معنا</Link>
 
 
         </div>
@@ -68,8 +73,17 @@ BPS Chat منصة للبحث عن المنتجات ومقارنة الأسعار
           <a href="https://www.instagram.com/bpschat" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="https://www.tiktok.com/@bpschat" target="_blank" rel="noopener noreferrer">TikTok</a>
           <a href="https://www.youtube.com/@bpschat" target="_blank" rel="noopener noreferrer">YouTube</a>
+          
         </div>
       </div>
+      <div className="businessInfo">
+  <h4>معلومات النشاط</h4>
+  <p>BPS Chat</p>
+  <p>King Fahd Road, Office 1</p>
+  <p>Dammam, Eastern Province 31146</p>
+  <p>Saudi Arabia</p>
+  <p>البريد: sales@bpschat.com</p>
+</div>
 
       <style>{`
         .footer {
@@ -80,6 +94,22 @@ BPS Chat منصة للبحث عن المنتجات ومقارنة الأسعار
           margin-top: 0;
           color: white;
         }
+          .businessInfo {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 260px;
+}
+
+.businessInfo h4 {
+  color: #10a37f;
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.businessInfo p {
+  margin: 2px 0;
+}
 
         .footerInner {
           max-width: 1100px;
