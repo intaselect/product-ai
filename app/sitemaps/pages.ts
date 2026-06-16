@@ -8,6 +8,10 @@ export default async function sitemap() {
 
     { url: "https://www.bpschat.com/about" },
     { url: "https://www.bpschat.com/contact" },
+    { url: "https://www.bpschat.com/privacy" },
+{ url: "https://www.bpschat.com/terms" },
+{ url: "https://www.bpschat.com/refund-policy" },
+{ url: "https://www.bpschat.com/shipping-policy" },
     { url: "https://www.bpschat.com/advertise" },
     { url: "https://www.bpschat.com/smart-search" },
     { url: "https://www.bpschat.com/seller-tools" },
@@ -25,6 +29,7 @@ export default async function sitemap() {
     { url: "https://www.bpschat.com/advertisers" },
     { url: "https://www.bpschat.com/sell-online" },
     { url: "https://www.bpschat.com/compare" },
+    
   ];
 
   const advertiserUrls = advertiserPages.map((page) => ({
