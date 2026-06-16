@@ -328,7 +328,6 @@ export default function RootLayout({
 
 <GoogleTagManager gtmId="GTM-5D25SDWK" />
 </body>
-</body>
     </html>
   );
 }
