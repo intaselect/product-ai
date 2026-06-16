@@ -4,6 +4,8 @@ import { createClient } from "@supabase/supabase-js";
 export const dynamic = "force-dynamic";
 
 const SITE_URL = "https://www.bpschat.com";
+const CURRENCY = "SAR";
+const COUNTRY = "SA";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -33,18 +35,39 @@ function productUrl(offer: any) {
   )}-sa-${offer.id}`;
 }
 
-function cleanPrice(price: any) {
-  const raw = String(price || "").trim();
+function normalizeArabicDigits(value: string) {
+  return value
+    .replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d).toString())
+    .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString());
+}
 
-  const normalized = raw
-    .replace(/,/g, "")
-    .replace(/[^\d.]/g, "");
+function cleanPrice(price: any): string | null {
+  let raw = normalizeArabicDigits(String(price || "").trim());
 
-  const num = Number(normalized);
+  raw = raw
+    .replace(/SAR/gi, "")
+    .replace(/ر\.س\.?/g, "")
+    .replace(/ريال/g, "")
+    .replace(/\s+/g, "");
 
-  if (!Number.isFinite(num) || num <= 0) {
-    return null;
+  if (!raw) return null;
+
+  if (raw.includes(",") && raw.includes(".")) {
+    raw = raw.replace(/,/g, "");
+  } else if (raw.includes(",") && !raw.includes(".")) {
+    raw = raw.replace(",", ".");
   }
+
+  raw = raw.replace(/[^\d.]/g, "");
+
+  const parts = raw.split(".");
+  if (parts.length > 2) {
+    raw = parts[0] + "." + parts.slice(1).join("");
+  }
+
+  const num = Number(raw);
+
+  if (!Number.isFinite(num) || num <= 0) return null;
 
   return num.toFixed(2);
 }
@@ -58,17 +81,20 @@ function cleanTitle(title: any) {
 }
 
 function cleanDescription(offer: any) {
-  return (
+  const text =
     offer.description ||
-    `عرض ${offer.product_name} من ${offer.store_name || "BPS Chat"} عبر BPS Chat داخل السعودية.`
-  )
+    `عرض ${offer.product_name} من ${
+      offer.store_name || "BPS Chat"
+    } عبر BPS Chat داخل السعودية.`;
+
+  return String(text)
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 4800);
 }
 
 function improveImageUrl(url: any) {
-  let image = String(url || "").trim();
+  const image = String(url || "").trim();
   if (!image) return "";
 
   return image
@@ -78,7 +104,10 @@ function improveImageUrl(url: any) {
     .replace(/width=720/gi, "width=1200")
     .replace(/width=800/gi, "width=1200")
     .replace(/fit-in\/680x680/gi, "fit-in/1200x1200")
-    .replace(/fit=contain,width=380,height=380/gi, "fit=contain,width=1200,height=1200");
+    .replace(
+      /fit=contain,width=380,height=380/gi,
+      "fit=contain,width=1200,height=1200"
+    );
 }
 
 function getCategory(offer: any) {
@@ -93,32 +122,42 @@ function getCategory(offer: any) {
     title.includes("samsung") ||
     title.includes("جوال") ||
     title.includes("موبايل")
-  ) return "267";
+  ) {
+    return "267";
+  }
 
   if (
     categories.includes("computers") ||
     title.includes("laptop") ||
     title.includes("لابتوب")
-  ) return "328";
+  ) {
+    return "328";
+  }
 
   if (
     categories.includes("beauty") ||
     title.includes("كريم") ||
     title.includes("عناية")
-  ) return "469";
+  ) {
+    return "469";
+  }
 
   if (
     categories.includes("fashion") ||
     categories.includes("shoes") ||
     title.includes("حذاء") ||
     title.includes("ملابس")
-  ) return "166";
+  ) {
+    return "166";
+  }
 
   if (
     categories.includes("home") ||
     title.includes("منزل") ||
     title.includes("مطبخ")
-  ) return "536";
+  ) {
+    return "536";
+  }
 
   return "5605";
 }
@@ -159,15 +198,13 @@ export async function GET() {
   }
 
   const items = allOffers
-    .filter((offer: any) => {
-      const price = cleanPrice(offer.price);
-return offer.product_name && offer.image_url && price;
-    })
     .map((offer: any) => {
       const price = cleanPrice(offer.price);
       const title = cleanTitle(offer.product_name);
-      const link = productUrl(offer);
-      const mainImage = improveImageUrl(offer.image_url);
+      const description = cleanDescription(offer);
+      const image = improveImageUrl(offer.image_url);
+
+      if (!price || !title || !description || !image) return "";
 
       const extraImages = [
         ...(Array.isArray(offer.gallery_images) ? offer.gallery_images : []),
@@ -183,15 +220,16 @@ return offer.product_name && offer.image_url && price;
             !img.includes("logo")
         )
         .map(improveImageUrl)
-        .slice(0, 5);
+        .filter((img: string) => img && img !== image)
+        .slice(0, 3);
 
       return `
   <item>
     <g:id>${xmlEscape(`bps-sa-${offer.id}`)}</g:id>
     <g:title>${xmlEscape(title)}</g:title>
-    <g:description>${xmlEscape(cleanDescription(offer))}</g:description>
-    <g:link>${xmlEscape(link)}</g:link>
-    <g:image_link>${xmlEscape(mainImage)}</g:image_link>
+    <g:description>${xmlEscape(description)}</g:description>
+    <g:link>${xmlEscape(productUrl(offer))}</g:link>
+    <g:image_link>${xmlEscape(image)}</g:image_link>
     ${extraImages
       .map(
         (img: string) =>
@@ -200,25 +238,22 @@ return offer.product_name && offer.image_url && price;
       .join("\n    ")}
     <g:availability>in_stock</g:availability>
     <g:condition>new</g:condition>
-    <g:price>${xmlEscape(price)} SAR</g:price>
-    <g:brand>${xmlEscape(offer.source_brand || offer.store_name || "BPS Chat")}</g:brand>
+    <g:price>${price} ${CURRENCY}</g:price>
+    <g:brand>${xmlEscape(
+      offer.source_brand || offer.store_name || "BPS Chat"
+    )}</g:brand>
     <g:mpn>${xmlEscape(`bps-sa-${offer.id}`)}</g:mpn>
     <g:identifier_exists>no</g:identifier_exists>
     <g:google_product_category>${xmlEscape(getCategory(offer))}</g:google_product_category>
-    <g:product_type>${xmlEscape(
-      Array.isArray(offer.category) && offer.category.length
-        ? offer.category.join(" > ")
-        : "BPS Chat Saudi Offers"
-    )}</g:product_type>
+    <g:product_type>BPS Chat Saudi Offers</g:product_type>
     <g:shipping>
-      <g:country>SA</g:country>
-      <g:price>0 SAR</g:price>
+      <g:country>${COUNTRY}</g:country>
+      <g:price>0.00 ${CURRENCY}</g:price>
     </g:shipping>
     <g:adult>no</g:adult>
-    <g:custom_label_0>BPS Chat</g:custom_label_0>
-    <g:custom_label_1>Saudi Arabia</g:custom_label_1>
   </item>`;
     })
+    .filter(Boolean)
     .join("");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
