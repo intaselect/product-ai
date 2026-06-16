@@ -34,8 +34,19 @@ function productUrl(offer: any) {
 }
 
 function cleanPrice(price: any) {
-  const n = String(price || "").replace(/[^\d.]/g, "");
-  return n || "0";
+  const raw = String(price || "").trim();
+
+  const normalized = raw
+    .replace(/,/g, "")
+    .replace(/[^\d.]/g, "");
+
+  const num = Number(normalized);
+
+  if (!Number.isFinite(num) || num <= 0) {
+    return null;
+  }
+
+  return num.toFixed(2);
 }
 
 function cleanTitle(title: any) {
@@ -149,8 +160,8 @@ export async function GET() {
 
   const items = allOffers
     .filter((offer: any) => {
-      const price = Number(cleanPrice(offer.price));
-      return offer.product_name && offer.image_url && price > 0;
+      const price = cleanPrice(offer.price);
+return offer.product_name && offer.image_url && price;
     })
     .map((offer: any) => {
       const price = cleanPrice(offer.price);
