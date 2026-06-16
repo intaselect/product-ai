@@ -307,9 +307,27 @@ export default function RootLayout({
   <Footer />
 
   <Analytics />
-  <SpeedInsights />
-  <AnalyticsTracker />
-  <GoogleTagManager gtmId="GTM-5D25SDWK" />
+<SpeedInsights />
+<AnalyticsTracker />
+
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=AW-433499662"
+/>
+
+<script
+  dangerouslySetInnerHTML={{
+    __html: `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-433499662');
+    `,
+  }}
+/>
+
+<GoogleTagManager gtmId="GTM-5D25SDWK" />
+</body>
 </body>
     </html>
   );
