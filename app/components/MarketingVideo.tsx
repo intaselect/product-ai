@@ -41,7 +41,102 @@ function getStore(p?: Product) {
 function getImage(p?: Product) {
   return clean(p?.image || p?.thumbnail);
 }
+function getDailySeed(query: string, countryName: string, offset = 0) {
+  const d = new Date();
+  const key = `${query}-${countryName}-${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}-${offset}`;
+  let h = 2166136261;
+  for (let i = 0; i < key.length; i++) h = Math.imul(h ^ key.charCodeAt(i), 16777619);
+  return Math.abs(h);
+}
 
+function seededShuffle<T>(arr: T[], seed: number) {
+  const a = [...arr];
+  let s = seed;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 9301 + 49297) % 233280;
+    const j = Math.floor((s / 233280) * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function uniqueProducts(products: Product[]) {
+  const seen = new Set<string>();
+  return products.filter((p) => {
+    const k = clean(
+      `${p.title || p.name || ""}-${p.image || p.thumbnail || ""}`
+    ).toLowerCase();
+
+    if (!k || seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
+const VIDEO_STYLES = [
+  {
+    badge: "🔥 الأرخص اليوم",
+    title: "{style.title} ",
+    footer: "قارن السعر قبل الشراء",
+    bg: "radial-gradient(circle at 50% 5%, rgba(34,197,94,.36), transparent 30%), linear-gradient(180deg,#020617,#07111f,#000)",
+    badgeBg: "linear-gradient(135deg,#ef4444,#f97316)",
+    priceBg: "linear-gradient(135deg,#16a34a,#22c55e)",
+    glow: "rgba(34,197,94,.55)",
+  },
+  {
+    badge: "⚡ صفقة سريعة",
+    title: "منتجات تستحق تشوف سعرها اليوم",
+    footer: "وفر وقتك وفلوسك مع BPS Chat",
+    bg: "radial-gradient(circle at 15% 20%, rgba(59,130,246,.38), transparent 32%), linear-gradient(135deg,#020617,#0f172a,#000)",
+    badgeBg: "linear-gradient(135deg,#2563eb,#06b6d4)",
+    priceBg: "linear-gradient(135deg,#0ea5e9,#22d3ee)",
+    glow: "rgba(14,165,233,.55)",
+  },
+  {
+    badge: "💰 وفر أكثر",
+    title: "قبل الشراء شوف الفرق في الأسعار",
+    footer: "أرخص سعر يبدأ من هنا",
+    bg: "radial-gradient(circle at 80% 15%, rgba(250,204,21,.32), transparent 30%), linear-gradient(135deg,#1c1917,#020617,#000)",
+    badgeBg: "linear-gradient(135deg,#eab308,#f97316)",
+    priceBg: "linear-gradient(135deg,#ca8a04,#facc15)",
+    glow: "rgba(250,204,21,.55)",
+  },
+  {
+    badge: "🛒 اختيار المتسوقين",
+    title: "منتجات عليها بحث ومقارنة",
+    footer: "شوف المنتج من المتاجر الموثوقة",
+    bg: "radial-gradient(circle at 20% 80%, rgba(168,85,247,.35), transparent 34%), linear-gradient(135deg,#12051f,#020617,#000)",
+    badgeBg: "linear-gradient(135deg,#7c3aed,#ec4899)",
+    priceBg: "linear-gradient(135deg,#9333ea,#d946ef)",
+    glow: "rgba(168,85,247,.55)",
+  },
+  {
+    badge: "🚀 ترشيحات اليوم",
+    title: "شوف أفضل منتجات قبل ما تدفع",
+    footer: "بحث ذكي ومقارنة أسرع",
+    bg: "radial-gradient(circle at 50% 50%, rgba(20,184,166,.34), transparent 35%), linear-gradient(135deg,#042f2e,#020617,#000)",
+    badgeBg: "linear-gradient(135deg,#0f766e,#14b8a6)",
+    priceBg: "linear-gradient(135deg,#059669,#2dd4bf)",
+    glow: "rgba(45,212,191,.55)",
+  },
+  {
+    badge: "🏆 أفضل مقارنة",
+    title: "نفس المنتج ممكن تلاقيه بسعر أقل",
+    footer: "قارن بين الأسعار والمتاجر",
+    bg: "radial-gradient(circle at 15% 15%, rgba(244,63,94,.32), transparent 32%), linear-gradient(135deg,#190b12,#020617,#000)",
+    badgeBg: "linear-gradient(135deg,#be123c,#fb7185)",
+    priceBg: "linear-gradient(135deg,#e11d48,#fb7185)",
+    glow: "rgba(244,63,94,.55)",
+  },
+  {
+    badge: "✨ منتجات مميزة",
+    title: "اكتشف اختيارات جديدة كل يوم",
+    footer: "bpschat.com",
+    bg: "radial-gradient(circle at 90% 80%, rgba(99,102,241,.36), transparent 32%), linear-gradient(135deg,#111827,#020617,#000)",
+    badgeBg: "linear-gradient(135deg,#4f46e5,#8b5cf6)",
+    priceBg: "linear-gradient(135deg,#6366f1,#a78bfa)",
+    glow: "rgba(129,140,248,.55)",
+  },
+];
 export default function MarketingVideo({
   query,
   countryName,
@@ -53,7 +148,13 @@ export default function MarketingVideo({
 }) {
   const frame = useCurrentFrame();
 
-  const shown = products.slice(0, 5);
+  const dayStyle = getDailySeed(query, countryName) % 7;
+  const style = VIDEO_STYLES[dayStyle];
+
+const shown = seededShuffle(
+  uniqueProducts(products),
+  getDailySeed(query, countryName, dayStyle)
+).slice(0, 5);
   const hero = shown[0] || products[0];
 
   const heroImage = getImage(hero);
@@ -87,8 +188,7 @@ export default function MarketingVideo({
   return (
     <AbsoluteFill
       style={{
-        background:
-          "radial-gradient(circle at 50% 5%, rgba(34,197,94,0.36), transparent 30%), radial-gradient(circle at 20% 80%, rgba(37,99,235,0.32), transparent 36%), linear-gradient(180deg, #020617 0%, #07111f 52%, #000 100%)",
+        background: style.bg,
         color: "white",
         fontFamily: "Arial",
         direction: "rtl",
@@ -130,7 +230,7 @@ export default function MarketingVideo({
             boxShadow: "0 0 35px rgba(249,115,22,.55)",
           }}
         >
-          🔥 الأرخص اليوم
+         {style.badge}
         </div>
 
         <div
@@ -240,11 +340,11 @@ export default function MarketingVideo({
               display: "inline-block",
               padding: "14px 34px",
               borderRadius: 999,
-              background: "linear-gradient(135deg,#16a34a,#22c55e)",
+              background: style.priceBg,
               color: "#fff",
               fontSize: 48,
               fontWeight: 950,
-              boxShadow: `0 0 ${30 + pulse * 35}px rgba(34,197,94,.65)`,
+              boxShadow: `0 0 ${30 + pulse * 35}px ${style.glow}`,
             }}
           >
             {heroPrice}
@@ -384,7 +484,7 @@ export default function MarketingVideo({
         }}
       >
         <div style={{ fontSize: 34, fontWeight: 950 }}>
-          شوف أرخص سعر قبل الشراء
+         {style.footer}
         </div>
 
         <div style={{ fontSize: 28, marginTop: 6, color: "#93c5fd", fontWeight: 900 }}>
