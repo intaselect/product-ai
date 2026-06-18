@@ -66,7 +66,7 @@ async function fetchBpsStoreOffers(supabase, query, country) {
     .eq("status", "approved")
     .eq("country", country)
     .order("created_at", { ascending: false })
-    .limit(20);
+    .limit(3);
 
   searchWords.forEach((word) => {
     request = request.ilike("product_name", `%${word}%`);
