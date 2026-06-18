@@ -104,16 +104,30 @@ export default function AdminImportFromSearchPage() {
         <option value="eg">مصر</option>
       </select>
 
-      <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ padding: 12, marginRight: 10 }}>
-        <option value="electronics">إلكترونيات</option>
-        <option value="mobiles">موبايلات</option>
-        <option value="computers">كمبيوتر</option>
-        <option value="home">منزل</option>
-        <option value="fashion">موضة</option>
-        <option value="beauty">جمال</option>
-        <option value="gaming">ألعاب</option>
-        <option value="other">أخرى</option>
-      </select>
+     <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ padding: 12, marginRight: 10 }}>
+  <option value="all">كل العروض</option>
+  <option value="mobiles">جوالات وتابلت</option>
+  <option value="electronics">إلكترونيات</option>
+  <option value="computers">كمبيوتر ولابتوب</option>
+  <option value="home">المنزل والمطبخ</option>
+  <option value="beauty">جمال وعناية</option>
+  <option value="fashion">ملابس</option>
+  <option value="shoes">أحذية</option>
+  <option value="sports">رياضة</option>
+  <option value="kids">أطفال</option>
+  <option value="cars">سيارات</option>
+  <option value="cameras">كاميرات</option>
+  <option value="camera_accessories">ملحقات كاميرات</option>
+  <option value="mobile_accessories">إكسسوارات جوالات</option>
+  <option value="smart_watch">ساعات ذكية</option>
+  <option value="power_bank">باور بانك</option>
+  <option value="chargers">شواحن وكابلات</option>
+  <option value="headphones">سماعات</option>
+  <option value="computer_accessories">إكسسوارات كمبيوتر</option>
+  <option value="gaming">ألعاب وجيمينج</option>
+  <option value="bags">شنط</option>
+  <option value="other">المزيد</option>
+</select>
 
       <select value={limit} onChange={(e) => setLimit(Number(e.target.value))} style={{ padding: 12, marginRight: 10 }}>
         <option value={10}>10 منتجات</option>
