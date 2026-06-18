@@ -314,18 +314,68 @@ const { data: relatedCollections } = await supabase
     reviewCount: "87",
   },
 
-  offers: {
-    "@type": "Offer",
-    url: `${SITE_URL}/api/customer-offers/click/${offer.id}`,
-    priceCurrency: currencyCode,
-    price: cleanPrice(offer.price),
-    availability: "https://schema.org/InStock",
-    itemCondition: "https://schema.org/NewCondition",
-    seller: {
-      "@type": "Organization",
-      name: offer.store_name || "External Store",
+ offers: {
+  "@type": "Offer",
+  url: `${SITE_URL}/api/customer-offers/click/${offer.id}`,
+  priceCurrency: currencyCode,
+  price: cleanPrice(offer.price),
+  availability: "https://schema.org/InStock",
+  itemCondition: "https://schema.org/NewCondition",
+
+  seller: {
+    "@type": "Organization",
+    name: offer.store_name || "External Store",
+  },
+
+  shippingDetails: {
+    "@type": "OfferShippingDetails",
+    shippingDestination: {
+      "@type": "DefinedRegion",
+      addressCountry:
+        offer.country === "sa"
+          ? "SA"
+          : offer.country === "ae"
+          ? "AE"
+          : offer.country === "kw"
+          ? "KW"
+          : offer.country === "qa"
+          ? "QA"
+          : offer.country === "bh"
+          ? "BH"
+          : offer.country === "eg"
+          ? "EG"
+          : "SA",
+    },
+    shippingRate: {
+      "@type": "MonetaryAmount",
+      value: "0",
+      currency: currencyCode,
     },
   },
+
+  hasMerchantReturnPolicy: {
+    "@type": "MerchantReturnPolicy",
+    applicableCountry:
+      offer.country === "sa"
+        ? "SA"
+        : offer.country === "ae"
+        ? "AE"
+        : offer.country === "kw"
+        ? "KW"
+        : offer.country === "qa"
+        ? "QA"
+        : offer.country === "bh"
+        ? "BH"
+        : offer.country === "eg"
+        ? "EG"
+        : "SA",
+    returnPolicyCategory:
+      "https://schema.org/MerchantReturnFiniteReturnWindow",
+    merchantReturnDays: 14,
+    returnMethod: "https://schema.org/ReturnByMail",
+    returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
+  },
+},
 };
 
   const breadcrumbSchema = {
