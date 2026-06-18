@@ -412,8 +412,8 @@ return (
     </h1>
 
     <p>
-      اكتشف عروض ومنتجات مختارة في {heroCountryName} من العملاء والمتاجر
-      على BPS Market by BPS Chat.
+     اكتشف عروض ومنتجات من متاجر وبائعين خارجيين في {heroCountryName}.
+يعرض BPS Chat المنتجات والأسعار ويساعدك في الوصول إلى المتجر الأصلي لإتمام الشراء.
       <br />
       Discover best deals, trending products, electronics, fashion,
       mobiles and home appliances in {heroCountryName}.
@@ -467,6 +467,11 @@ return (
   </div>
 </section>
 <SearchBeforeBuyBanner />
+<div className="merchantNotice">
+  ⚠️ BPS Chat لا يبيع المنتجات مباشرة ولا يستقبل المدفوعات.
+  عند الضغط على "عرض المنتج" سيتم تحويلك إلى المتجر أو البائع الأصلي
+  لإتمام عملية الشراء.
+</div>
 
      <section
   id="market-filters"
@@ -1352,7 +1357,19 @@ return (
 .hotOfferInfo {
   min-width: 0;
 }
-
+.merchantNotice{
+  max-width:1120px;
+  margin:16px auto;
+  padding:14px 18px;
+  border-radius:18px;
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  color:#9a3412;
+  font-size:14px;
+  font-weight:900;
+  text-align:center;
+  line-height:1.9;
+}
 .hotOfferInfo strong {
   display: -webkit-box;
   -webkit-line-clamp: 2;

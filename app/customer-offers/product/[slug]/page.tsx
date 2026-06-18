@@ -290,41 +290,43 @@ const { data: relatedCollections } = await supabase
       : [];
 
   const schema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: offer.product_name,
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: offer.product_name,
 
-    image: productImages.length > 0 ? productImages : [offer.image_url].filter(Boolean),
+  image:
+    productImages.length > 0
+      ? productImages
+      : [offer.image_url].filter(Boolean),
 
-   description:
-  offer.description ||
-  `أفضل سعر ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}. يساعدك الموقع على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress.`,
+  description:
+    offer.description ||
+    `صفحة عرض ومقارنة سعر لمنتج ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}. BPS Chat لا يبيع المنتج مباشرة، ويتم إتمام الشراء من خلال المتجر الأصلي صاحب الرابط.`,
 
-    brand: {
-      "@type": "Brand",
-      name: offer.source_brand || offer.store_name || "BPS Chat Customer Offer",
-    },
+  brand: {
+    "@type": "Brand",
+    name: offer.source_brand || offer.store_name || "منتج من متجر خارجي",
+  },
 
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.4",
+    reviewCount: "87",
+  },
+
+  offers: {
+    "@type": "Offer",
+    url: `${SITE_URL}/api/customer-offers/click/${offer.id}`,
+    priceCurrency: currencyCode,
+    price: cleanPrice(offer.price),
+    availability: "https://schema.org/InStock",
+    itemCondition: "https://schema.org/NewCondition",
     seller: {
       "@type": "Organization",
-      name: offer.store_name || "BPS Chat",
+      name: offer.store_name || "External Store",
     },
-
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.4",
-      reviewCount: "87",
-    },
-
-    offers: {
-      "@type": "Offer",
-      url: pageUrl,
-      priceCurrency: currencyCode,
-      price: cleanPrice(offer.price),
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition",
-    },
-  };
+  },
+};
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -448,9 +450,13 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
             <strong>{offer.price}</strong>
             <span>{currency}</span>
           </div>
-          <div className="stockBadge">
-  ✅ متوفر الآن للشراء
+         <div className="stockBadge">
+  ✅ متاح عبر المتجر الأصلي
 </div>
+
+<p className="merchantNotice">
+  BPS Chat لا يبيع هذا المنتج مباشرة. عند الضغط على زر عرض المنتج سيتم تحويلك إلى المتجر الأصلي لإتمام الشراء ومراجعة السعر النهائي والشحن والتوفر.
+</p>
 
           <div className="premiumMetaGrid">
             <div>
@@ -472,6 +478,7 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
           </div>
 
           <a
+          
   href={`/api/customer-offers/click/${offer.id}`}
   target="_blank"
   rel="noopener noreferrer"
@@ -1218,7 +1225,17 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
             max-height: 260px;
           }
         }
-
+.merchantNotice {
+  margin: -6px 0 18px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.8;
+}
         @media (max-width: 520px) {
           .metaGrid {
             grid-template-columns: 1fr;
