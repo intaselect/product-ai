@@ -17,6 +17,11 @@ type Offer = {
   seller_email: string | null;
   click_count?: number;
   is_ad?: boolean;
+  description?: string;
+features?: string[];
+gallery_images?: string[];
+specifications?: Record<string, any>;
+source_brand?: string;
 };
 
 type Limit = {
@@ -231,7 +236,55 @@ async function toggleAd(id: number, is_ad: boolean) {
       setActionLoading("");
     }
   }
+async function fetchDetails(id: number) {
+  setActionLoading(`details-${id}`);
+  setError("");
 
+  try {
+    const res = await fetch(
+      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "fetch_product_details",
+          id,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      setError(data.error || "حدث خطأ أثناء جلب التفاصيل");
+      return;
+    }
+
+    setOffers((prev) =>
+      prev.map((offer) =>
+        offer.id === id
+          ? {
+              ...offer,
+              description: data.details?.description || offer.description,
+              features: data.details?.features || offer.features,
+              gallery_images:
+                data.details?.gallery_images || offer.gallery_images,
+              specifications:
+                data.details?.specifications || offer.specifications,
+              source_brand:
+                data.details?.source_brand || offer.source_brand,
+            }
+          : offer
+      )
+    );
+  } catch {
+    setError("حدث خطأ غير متوقع أثناء جلب التفاصيل");
+  } finally {
+    setActionLoading("");
+  }
+}
   return (
     <main className="adminPage" dir="rtl">
       <section className="adminHero">
@@ -409,6 +462,33 @@ async function toggleAd(id: number, is_ad: boolean) {
                 >
                   فتح رابط المنتج
                 </a>
+                <button
+  className="detailsBtn"
+  disabled={actionLoading === `details-${offer.id}`}
+  onClick={() => fetchDetails(offer.id)}
+>
+  {actionLoading === `details-${offer.id}`
+    ? "جاري جلب التفاصيل..."
+    : "📄 جلب الوصف والمواصفات"}
+</button>
+                {offer.description && (
+  <details
+    style={{
+      marginTop: 10,
+      padding: 10,
+      borderRadius: 12,
+      background: "rgba(255,255,255,.05)",
+    }}
+  >
+    <summary style={{ cursor: "pointer", fontWeight: 900 }}>
+      📄 عرض الوصف
+    </summary>
+
+    <div style={{ marginTop: 10, lineHeight: 1.8 }}>
+      {offer.description}
+    </div>
+  </details>
+)}
                 <button
   className={offer.is_ad ? "adOffBtn" : "adOnBtn"}
   disabled={actionLoading === `ad-${offer.id}`}
@@ -762,6 +842,22 @@ async function toggleAd(id: number, is_ad: boolean) {
           text-decoration: none;
           font-weight: 900;
         }
+          .detailsBtn {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px;
+  color: white;
+  font-weight: 950;
+  cursor: pointer;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+}
+
+.detailsBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
           .adOnBtn,
 .adOffBtn {
   width: 100%;

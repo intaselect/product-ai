@@ -13,7 +13,83 @@ function checkAdmin(req: Request) {
   const secret = url.searchParams.get("secret");
   return secret && secret === process.env.CUSTOMER_OFFERS_ADMIN_SECRET;
 }
+function cleanText(value: any) {
+  return String(value || "").replace(/\s+/g, " ").trim();
+}
 
+function pickMeta(html: string, key: string) {
+  const patterns = [
+    new RegExp(`<meta[^>]+property=["']${key}["'][^>]+content=["']([^"']+)["']`, "i"),
+    new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+property=["']${key}["']`, "i"),
+    new RegExp(`<meta[^>]+name=["']${key}["'][^>]+content=["']([^"']+)["']`, "i"),
+    new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+name=["']${key}["']`, "i"),
+  ];
+
+  for (const p of patterns) {
+    const match = html.match(p);
+    if (match?.[1]) {
+      return cleanText(
+        match[1]
+          .replace(/&quot;/g, '"')
+          .replace(/&amp;/g, "&")
+          .replace(/&#x27;/g, "'")
+      );
+    }
+  }
+
+  return "";
+}
+
+async function fetchProductDetails(productUrl: string) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 7000);
+
+  try {
+    const res = await fetch(productUrl, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "Mozilla/5.0",
+        Accept: "text/html",
+      },
+    });
+
+    clearTimeout(timeout);
+
+    if (!res.ok) throw new Error("fetch failed");
+
+    const html = await res.text();
+
+    const description =
+      pickMeta(html, "og:description") ||
+      pickMeta(html, "description") ||
+      pickMeta(html, "twitter:description");
+
+    const image = pickMeta(html, "og:image");
+
+    return {
+      description: cleanText(description).slice(0, 2500),
+      features: description
+        ? cleanText(description)
+            .split(/[،,.]/)
+            .map((x) => cleanText(x))
+            .filter((x) => x.length > 15)
+            .slice(0, 10)
+        : [],
+      gallery_images: image ? [image] : [],
+      specifications: {},
+      source_brand: "",
+    };
+  } catch {
+    clearTimeout(timeout);
+    return {
+      description: "",
+      features: [],
+      gallery_images: [],
+      specifications: {},
+      source_brand: "",
+    };
+  }
+}
 export async function GET(req: Request) {
   if (!checkAdmin(req)) {
     return NextResponse.json({ ok: false, error: "غير مصرح" }, { status: 401 });
@@ -56,6 +132,58 @@ export async function PATCH(req: Request) {
   }
 
   const body = await req.json();
+  if (body.action === "fetch_product_details") {
+  const id = Number(body.id);
+
+  if (!id) {
+    return NextResponse.json(
+      { ok: false, error: "رقم المنتج غير صحيح" },
+      { status: 400 }
+    );
+  }
+
+  const { data: offer, error: offerError } = await supabase
+    .from("customer_offers")
+    .select("id, product_url")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (offerError || !offer) {
+    return NextResponse.json(
+      { ok: false, error: "المنتج غير موجود" },
+      { status: 404 }
+    );
+  }
+
+  const details = await fetchProductDetails(offer.product_url);
+
+  const { error } = await supabase
+    .from("customer_offers")
+    .update({
+      description: details.description || null,
+      features: details.features || [],
+      gallery_images: details.gallery_images || [],
+      specifications: details.specifications || {},
+      source_brand: details.source_brand || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  if (error) {
+    return NextResponse.json(
+      { ok: false, error: error.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({
+    ok: true,
+    details,
+    message: details.description
+      ? "تم جلب الوصف وتحديث المنتج"
+      : "تمت المحاولة لكن لم يتم العثور على وصف",
+  });
+}
   if (body.action === "toggle_ad") {
   const id = Number(body.id);
   const is_ad = Boolean(body.is_ad);
