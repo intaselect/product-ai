@@ -292,7 +292,10 @@ const { data: relatedCollections } = await supabase
   const schema = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: offer.product_name,
+  name:
+  String(offer.product_name || "").length > 120
+    ? `${String(offer.product_name).slice(0, 120).trim()}...`
+    : offer.product_name,
 
   image:
     productImages.length > 0
@@ -327,31 +330,46 @@ const { data: relatedCollections } = await supabase
     name: offer.store_name || "External Store",
   },
 
-  shippingDetails: {
-    "@type": "OfferShippingDetails",
-    shippingDestination: {
-      "@type": "DefinedRegion",
-      addressCountry:
-        offer.country === "sa"
-          ? "SA"
-          : offer.country === "ae"
-          ? "AE"
-          : offer.country === "kw"
-          ? "KW"
-          : offer.country === "qa"
-          ? "QA"
-          : offer.country === "bh"
-          ? "BH"
-          : offer.country === "eg"
-          ? "EG"
-          : "SA",
+ shippingDetails: {
+  "@type": "OfferShippingDetails",
+  shippingDestination: {
+    "@type": "DefinedRegion",
+    addressCountry:
+      offer.country === "sa"
+        ? "SA"
+        : offer.country === "ae"
+        ? "AE"
+        : offer.country === "kw"
+        ? "KW"
+        : offer.country === "qa"
+        ? "QA"
+        : offer.country === "bh"
+        ? "BH"
+        : offer.country === "eg"
+        ? "EG"
+        : "SA",
+  },
+  shippingRate: {
+    "@type": "MonetaryAmount",
+    value: "0",
+    currency: currencyCode,
+  },
+  deliveryTime: {
+    "@type": "ShippingDeliveryTime",
+    handlingTime: {
+      "@type": "QuantitativeValue",
+      minValue: 0,
+      maxValue: 2,
+      unitCode: "DAY",
     },
-    shippingRate: {
-      "@type": "MonetaryAmount",
-      value: "0",
-      currency: currencyCode,
+    transitTime: {
+      "@type": "QuantitativeValue",
+      minValue: 1,
+      maxValue: 7,
+      unitCode: "DAY",
     },
   },
+},
 
   hasMerchantReturnPolicy: {
     "@type": "MerchantReturnPolicy",
