@@ -56,11 +56,18 @@ export async function POST(req: Request) {
         store_name: cleanText(item.store || item.source || item.store_name || "Unknown store"),
         country,
         category,
-        description: "",
-        features: [],
-        gallery_images: [],
-        specifications: {},
-        source_brand: cleanText(item.store || item.source || ""),
+       description: cleanText(item.description || item.snippet || item.product_description || ""),
+features: Array.isArray(item.features)
+  ? item.features.map((v: any) => cleanText(v)).filter(Boolean).slice(0, 20)
+  : [],
+gallery_images: Array.isArray(item.gallery_images)
+  ? item.gallery_images.map((v: any) => cleanText(v)).filter(Boolean).slice(0, 10)
+  : [],
+specifications:
+  item.specifications && typeof item.specifications === "object"
+    ? item.specifications
+    : {},
+source_brand: cleanText(item.source_brand || item.brand || item.store || item.source || ""),
         status: "pending",
         user_id: user.id,
       }))
