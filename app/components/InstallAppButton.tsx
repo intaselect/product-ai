@@ -6,17 +6,10 @@ export default function InstallAppButton() {
       href="https://wa.me/966564911912"
       target="_blank"
       rel="noopener noreferrer"
-      className="installAppFloatingBtn"
-      style={{
-        textDecoration: "none",
-      }}
+      className="floatingWhatsapp"
+      aria-label="WhatsApp"
     >
-      <span className="installAppIcon">💬</span>
-
-      <span>
-        تواصل واتساب
-        <small>راسلنا مباشرة</small>
-      </span>
+      <img src="/logo.png" alt="WhatsApp" />
     </a>
   );
 }
