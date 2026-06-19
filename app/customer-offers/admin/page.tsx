@@ -462,6 +462,22 @@ async function fetchDetails(id: number) {
                 >
                   فتح رابط المنتج
                 </a>
+                {offer.status === "approved" && (
+  <Link
+    href={`/customer-offers/product/bps-chat-${String(
+      offer.product_name || ""
+    )
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "")}-${
+      offer.country || "sa"
+    }-${offer.id}`}
+    target="_blank"
+    className="productCardLink"
+  >
+    🛒 عرض كارت المنتج
+  </Link>
+)}
                 <button
   className="detailsBtn"
   disabled={actionLoading === `details-${offer.id}`}
@@ -842,6 +858,21 @@ async function fetchDetails(id: number) {
           text-decoration: none;
           font-weight: 900;
         }
+          .productCardLink {
+  display: block;
+  margin: 0 0 12px;
+  text-align: center;
+  padding: 11px;
+  border-radius: 14px;
+  background: linear-gradient(135deg,#16a34a,#2563eb);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.productCardLink:hover {
+  opacity: .95;
+}
           .detailsBtn {
   width: 100%;
   border: 0;
