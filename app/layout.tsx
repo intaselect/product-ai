@@ -280,7 +280,14 @@ export default function RootLayout({
   </a>
 </div>
 
-<InstallAppButton />
+<a
+  href="https://wa.me/966564911912"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="whatsappFloating"
+>
+  <img src="/whatsapp.png" alt="WhatsApp" />
+</a>
 
 <div className="mobileFloatingCard">
 

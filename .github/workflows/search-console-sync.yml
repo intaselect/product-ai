@@ -1,8 +1,7 @@
 name: Search Console Sync
 
 on:
-  schedule:
-    - cron: "30 3 * * *"
+  
   workflow_dispatch:
 
 jobs:
