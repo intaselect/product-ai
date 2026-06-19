@@ -27,8 +27,6 @@ export default function Navbar({ user }: { user?: any }) {
     🎁 أضف منتجك
   </Link>
   <Link href="/customer-offers/dashboard" className="mobileTopBtn">👤 البائعين</Link>
-
-  <Link href="/product-world" className="mobileTopBtn">🌍 عالم المنتجات</Link>
   
   <Link href="/bps-market" className="mobileTopBtn hot">🔥 BPS Market</Link>
   <Link href="/research" className="mobileTopBtn">📊 دراسات</Link>
