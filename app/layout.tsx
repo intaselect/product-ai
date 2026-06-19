@@ -256,15 +256,75 @@ export default function RootLayout({
  <Navbar />
  
  <div className="mobileFloatingStoreCard">
-    <a href="/customer-offers" className="mobileFloatingItem">
-      <span>🛒</span>
-      <b>المتجر عالم المنتجات</b>
-    </a>
-    <a href="/customer-offers/add" className="mobileFloatingItem highlight">
-      <span>🎁</span>
-      <b>أضف منتجك</b>
-    </a>
-  </div>
+  <a href="/daily-deals" className="mobileFloatingItem hot">
+    <span>🔥</span>
+    <b>عروض اليوم</b>
+  </a>
+<a href="/sell-online" className="mobileFloatingItem">
+    <span>🚀</span>
+    <b>بيع مجاناً</b>
+  </a>
+
+  <a href="/" className="mobileFloatingItem">
+    <span>🏠</span>
+    <b>الرئيسية</b>
+  </a>
+
+  <a href="/product-world" className="mobileFloatingItem">
+    <span>🌍</span>
+    <b>عالم المنتجات</b>
+  </a>
+
+  <a href="/customer-offers" className="mobileFloatingItem">
+    <span>🛒</span>
+    <b>المتجر</b>
+  </a>
+
+  <a href="/customer-offers/add" className="mobileFloatingItem highlight">
+    <span>🎁</span>
+    <b>أضف منتجك</b>
+  </a>
+
+  <a href="/customer-offers/dashboard" className="mobileFloatingItem">
+    <span>👤</span>
+    <b>البائعين</b>
+  </a>
+
+  <a href="/customer-offers/share-center" className="mobileFloatingItem">
+    <span>⚡</span>
+    <b>تصفح سريع</b>
+  </a>
+
+  <a href="/bps-market" className="mobileFloatingItem hot">
+    <span>🔥</span>
+    <b>BPS Market</b>
+  </a>
+
+  <a href="/smart-search" className="mobileFloatingItem">
+    <span>⚡</span>
+    <b>البحث الذكي</b>
+  </a>
+
+  <a href="/research" className="mobileFloatingItem">
+    <span>📊</span>
+    <b>دراسات</b>
+  </a>
+
+  <a href="/seller-tools" className="mobileFloatingItem">
+    <span>📝</span>
+    <b>أدوات البائع</b>
+  </a>
+
+  <a href="/comparisons" className="mobileFloatingItem">
+    <span>⚔️</span>
+    <b>مقارنات</b>
+  </a>
+
+  <a href="/advertise" className="mobileFloatingItem">
+    <span>🚀</span>
+    <b>أعلن معنا</b>
+  </a>
+</div>
 <TrustedSourcesBar />
 <TrustBanner />
 <GlobalAdsSlider />
