@@ -672,7 +672,8 @@ body {
 
   border-radius: 50%;
 
-  background: #25d366;
+  background: rgba(37, 211, 102, 0.75);
+  backdrop-filter: blur(10px);
 
   box-shadow:
     0 8px 25px rgba(37,211,102,.45),
@@ -682,8 +683,8 @@ body {
 }
 
 .floatingWhatsapp img {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
 }
 

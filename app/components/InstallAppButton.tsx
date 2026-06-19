@@ -7,9 +7,11 @@ export default function InstallAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       className="floatingWhatsapp"
-      aria-label="WhatsApp"
     >
-      <img src="/logo.png" alt="WhatsApp" />
+      <img
+        src="/whatsapp.png"
+        alt="WhatsApp"
+      />
     </a>
   );
 }
