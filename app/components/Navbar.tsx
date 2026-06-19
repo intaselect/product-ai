@@ -17,6 +17,7 @@ export default function Navbar({ user }: { user?: any }) {
   <Link href="/daily-deals" className="mobileTopBtn hot">
     🔥 عروض اليوم
   </Link>
+  <Link href="/sell-online" className="mobileTopBtn green">🚀 بيع مجاناً</Link>
 
   <Link href="/customer-offers" className="mobileTopBtn">
     🛒 المتجر
@@ -25,7 +26,18 @@ export default function Navbar({ user }: { user?: any }) {
   <Link href="/customer-offers/add" className="mobileTopBtn green">
     🎁 أضف منتجك
   </Link>
+  <Link href="/customer-offers/dashboard" className="mobileTopBtn">👤 البائعين</Link>
 
+  <Link href="/product-world" className="mobileTopBtn">🌍 عالم المنتجات</Link>
+  
+  <Link href="/bps-market" className="mobileTopBtn hot">🔥 BPS Market</Link>
+  <Link href="/research" className="mobileTopBtn">📊 دراسات</Link>
+  
+  <Link href="/customer-offers/share-center" className="mobileTopBtn">⚡ تصفح سريع</Link>
+  <Link href="/seller-tools" className="mobileTopBtn">📝 أدوات البائع</Link>
+  <Link href="/sell-online" className="mobileTopBtn green">🚀 بيع مجاناً</Link>
+  <Link href="/comparisons" className="mobileTopBtn">⚔️ مقارنات</Link>
+  <Link href="/advertise" className="mobileTopBtn">🚀 أعلن معنا</Link>
   <Link href="/" style={styles.logo}>
     <img
       src="/logo.png"
@@ -489,7 +501,11 @@ animation-play-state: paused;
     align-items:center;
     gap:8px;
     overflow-x:auto;
+    overflow-y:hidden;
     scrollbar-width:none;
+    direction:rtl;
+    width:100%;
+    padding:0 4px;
   }
 
   .mobileTopSlider::-webkit-scrollbar{
@@ -510,13 +526,16 @@ animation-play-state: paused;
 
   .mobileTopBtn.hot{
     background:linear-gradient(135deg,#ef4444,#f97316);
+    box-shadow:0 0 16px rgba(249,115,22,.35);
   }
 
   .mobileTopBtn.green{
     background:linear-gradient(135deg,#22c55e,#06b6d4);
     color:#04120d !important;
+    box-shadow:0 0 16px rgba(34,197,94,.35);
   }
 }
+
       `}</style>
     </header>
   );
