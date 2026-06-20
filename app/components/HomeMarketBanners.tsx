@@ -66,7 +66,31 @@ function productSeoUrl(offer: Offer) {
 
   return `/customer-offers/product/bps-chat-${slug}-${offer.country || "sa"}-${offer.id}`;
 }
+function detectCategory(offer: Offer) {
+  const text = `${offer.product_name || ""} ${offer.store_name || ""}`.toLowerCase();
 
+  const rules: Record<string, string[]> = {
+    mobiles: ["iphone", "galaxy", "samsung", "huawei", "oppo", "realme", "xiaomi", "redmi", "poco", "ipad", "جوال", "هاتف", "ايفون", "موبايل"],
+    electronics: ["سماعة", "headset", "earbuds", "airpods", "كاميرا", "camera", "ring", "speaker"],
+    computers: ["laptop", "keyboard", "mouse", "monitor", "كمبيوتر", "لابتوب", "كيبورد", "ماوس", "شاشة"],
+    home: ["مكنسة", "مطبخ", "قلاية", "خلاط", "كرسي", "طاولة", "منزل", "kitchen", "chair", "vacuum"],
+    beauty: ["عطر", "perfume", "كريم", "شامبو", "فرشاة", "beauty", "skin", "makeup"],
+    fashion: ["هودي", "تيشيرت", "حذاء", "شنطة", "ملابس", "shirt", "shoes", "bag"],
+    gaming: ["playstation", "ps5", "xbox", "nintendo", "gaming", "بلايستيشن", "جيمينج"],
+    kids: ["kids", "baby", "طفل", "أطفال", "لعبة", "toy"],
+    cars: ["car", "سيارة", "سيارات", "carlinkit", "jump starter"],
+    sports: ["sport", "رياض", "fitness", "جيم", "دراجة"],
+    cameras: ["camera", "كاميرا"],
+  };
+
+  for (const [key, words] of Object.entries(rules)) {
+    if (words.some((word) => text.includes(word))) {
+      return key;
+    }
+  }
+
+  return "electronics";
+}
 export default function HomeMarketBanners({
   products = [],
   country = "sa",
@@ -84,10 +108,7 @@ export default function HomeMarketBanners({
 const sections = categories
   .map((cat) => {
     const items = offers
-      .filter((offer) => {
-        const cats = Array.isArray(offer.category) ? offer.category : [];
-        return cats.includes(cat.key);
-      })
+      .filter((offer) => detectCategory(offer) === cat.key)
       .slice(0, 4);
 
     return { ...cat, items };
