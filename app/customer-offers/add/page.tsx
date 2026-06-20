@@ -435,6 +435,8 @@ if (remainingOffers !== null && remainingOffers <= 0) {
   <label><input type="checkbox" name="category" value="cameras" /> كاميرات</label>
 
 <label><input type="checkbox" name="category" value="camera_accessories" /> ملحقات كاميرات</label>
+<label><input type="checkbox" name="category" value="perfumes" /> عطور</label>
+<label><input type="checkbox" name="category" value="incense" /> بخور</label>
   <label><input type="checkbox" name="category" value="other" /> أخرى</label>
 </div>
 </div>

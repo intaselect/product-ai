@@ -68,6 +68,8 @@ const categories: Record<string, { ar: string; icon: string }> = {
   sports: { ar: "رياضة", icon: "🏋️" },
   cameras: { ar: "كاميرات", icon: "📷" },
   camera_accessories: { ar: "ملحقات كاميرات", icon: "🎥" },
+  perfumes: { ar: "عطور", icon: "🌸" },
+incense: { ar: "بخور", icon: "🪔" },
   other: { ar: "أخرى", icon: "▦" },
 };
 

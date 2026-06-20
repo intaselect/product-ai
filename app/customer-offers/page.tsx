@@ -129,6 +129,8 @@ const categoryCards: Record<string, { ar: string; en: string; icon: string }> = 
   cars: { ar: "سيارات", en: "Cars", icon: "🚗" },
   cameras: { ar: "كاميرات", en: "Cameras", icon: "📷" },
 camera_accessories: { ar: "ملحقات كاميرات", en: "Camera Accessories", icon: "🎥" },
+perfumes: { ar: "عطور", en: "Perfumes", icon: "🌸" },
+incense: { ar: "بخور", en: "Incense", icon: "🪔" },
 mobile_accessories: {
   ar: "إكسسوارات جوالات",
   en: "Mobile Accessories",
@@ -200,6 +202,8 @@ const categoryNames: Record<string, string> = {
   sports: "رياضة",
   cameras: "كاميرات",
 camera_accessories: "ملحقات كاميرات",
+perfumes: "عطور",
+incense: "بخور",
   other: "أخرى",
 };
 const brandDefinitions = [
