@@ -43,6 +43,12 @@ const promoCategories = [
     icon: "🌸",
   },
   {
+    key: "incense",
+    title: "بخور فاخر",
+    subtitle: "بخور ومنتجات فاخرة",
+    icon: "🪔",
+  },
+  {
     key: "gaming",
     title: "ألعاب وجيمينج",
     subtitle: "بلايستيشن وإكسسوارات الألعاب",
@@ -50,9 +56,9 @@ const promoCategories = [
   },
 ];
 
-function productCategories(product: any) {
+function productCategories(product: any): string[] {
   if (Array.isArray(product.category)) return product.category;
-  if (product.category) return [product.category];
+  if (product.category) return [String(product.category)];
   return [];
 }
 
@@ -66,18 +72,30 @@ export default function HomeCategoryPromoBanners({ products, country }: Props) {
 
   const blocks = promoCategories
     .map((cat) => {
-     const matchedItems = countryProducts.filter((item) =>
-  productCategories(item).includes(cat.key)
-);
+      const matchedItems = countryProducts.filter((item) =>
+        productCategories(item).includes(cat.key)
+      );
 
-const items = (matchedItems.length ? matchedItems : countryProducts).slice(0, 5);
+      if (!matchedItems.length) {
+        return null;
+      }
 
       return {
         ...cat,
-        items,
+        items: matchedItems.slice(0, 5),
       };
     })
-    .filter((block) => block.items.length > 0 || countryProducts.length > 0);
+    .filter(
+      (
+        block
+      ): block is {
+        key: string;
+        title: string;
+        subtitle: string;
+        icon: string;
+        items: any[];
+      } => block !== null
+    );
 
   if (!blocks.length) return null;
 
