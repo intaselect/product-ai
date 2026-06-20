@@ -6,6 +6,7 @@ import PopularSearches from "@/app/components/PopularSearches";
 import type React from "react";
 import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
 import ComparePricesSection from "@/app/components/ComparePricesSection";
+import HomeMarketBanners from "@/app/components/HomeMarketBanners";
 
 
 
@@ -706,6 +707,12 @@ async function handleSearch() {
   مئات المستخدمين داخل عالم المنتجات من BPS Chat
   <span className="aiSpark">AI</span>
 </a>
+{results.length === 0 && (
+  <HomeMarketBanners
+    products={storeProducts}
+    country={country}
+  />
+)}
 {results.length === 0 && (
   <div className="adsWrapper" ref={sliderRef}>
     {ads.map((ad: any, i: number) => (
