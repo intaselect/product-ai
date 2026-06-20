@@ -9,6 +9,7 @@ import ComparePricesSection from "@/app/components/ComparePricesSection";
 import HomeMarketBanners from "@/app/components/HomeMarketBanners";
 import HomeDailyDealsBanner from "@/app/components/HomeDailyDealsBanner";
 import HomeCategoryPromoBanners from "@/app/components/HomeCategoryPromoBanners";
+import HomeHeroSlider from "@/app/components/HomeHeroSlider";
 
 
 
@@ -709,6 +710,7 @@ async function handleSearch() {
   مئات المستخدمين داخل عالم المنتجات من BPS Chat
   <span className="aiSpark">AI</span>
 </a>
+<HomeHeroSlider />
 {results.length === 0 && (
   <div className="adsWrapper" ref={sliderRef}>
     {ads.map((ad: any, i: number) => (
