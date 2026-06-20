@@ -760,11 +760,6 @@ async function handleSearch() {
   products={groupedProducts[country] || []}
   country={country}
 />
-<HomeMarketBanners
-  products={groupedProducts[country] || []}
-  country={country}
-/>
-
 <HomeDailyDealsBanner country={country} />
   </>
 )}
