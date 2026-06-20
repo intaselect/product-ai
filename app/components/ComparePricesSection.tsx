@@ -75,8 +75,9 @@ export default function ComparePricesSection() {
           display: inline-block;
           padding: 8px 14px;
           border-radius: 999px;
-          background: #dcfce7;
-          color: #166534;
+          background: #fff7ed;
+color: #b45309;
+border:1px solid rgba(245,158,11,.2);
           font-weight: 950;
           margin-bottom: 10px;
         }
@@ -143,8 +144,8 @@ export default function ComparePricesSection() {
 
         .compareLinks a:hover {
           transform: translateY(-3px);
-          border-color: #22c55e;
-          box-shadow: 0 12px 25px rgba(34,197,94,.14);
+          border-color: #f59e0b;
+box-shadow: 0 12px 25px rgba(245,158,11,.18);
         }
 
         .compareMainBtn {
@@ -153,12 +154,20 @@ export default function ComparePricesSection() {
           margin: 22px auto 0;
           text-decoration: none;
           color: white;
-          background: linear-gradient(135deg,#16a34a,#2563eb);
+          background: linear-gradient(
+  135deg,
+  #f59e0b,
+  #d97706
+);
+
           padding: 14px 22px;
           border-radius: 16px;
           font-weight: 950;
         }
-
+.compareMainBtn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 35px rgba(245,158,11,.28);
+}
         @media (max-width: 900px) {
           .compareCountryGrid {
             grid-template-columns: 1fr 1fr;
