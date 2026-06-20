@@ -26,30 +26,35 @@ const currencyLabel: Record<string, string> = {
 const promoCategories = [
   {
     key: "mobiles",
-    title: "جوالات وتابلت",
-    subtitle: "أحدث الموبايلات والأسعار",
+    keys: ["mobiles", "mobile_accessories", "smart_watch", "power_bank", "chargers", "headphones"],
+    title: "جوالات وإكسسوارات",
+    subtitle: "موبايلات، سماعات، ساعات ذكية وشواحن",
     icon: "📱",
   },
   {
     key: "computers",
+    keys: ["computers", "computer_accessories"],
     title: "لابتوبات وكمبيوتر",
-    subtitle: "أجهزة مناسبة للشغل والدراسة",
+    subtitle: "أجهزة وإكسسوارات للكمبيوتر",
     icon: "💻",
   },
   {
     key: "perfumes",
+    keys: ["perfumes"],
     title: "عطور مختارة",
     subtitle: "أفضل العطور حسب دولتك",
     icon: "🌸",
   },
   {
     key: "incense",
+    keys: ["incense"],
     title: "بخور فاخر",
     subtitle: "بخور ومنتجات فاخرة",
     icon: "🪔",
   },
   {
     key: "gaming",
+    keys: ["gaming"],
     title: "ألعاب وجيمينج",
     subtitle: "بلايستيشن وإكسسوارات الألعاب",
     icon: "🎮",
@@ -57,8 +62,23 @@ const promoCategories = [
 ];
 
 function productCategories(product: any): string[] {
-  if (Array.isArray(product.category)) return product.category;
-  if (product.category) return [String(product.category)];
+  const value = product?.category;
+
+  if (Array.isArray(value)) return value.map(String);
+
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) return parsed.map(String);
+    } catch {}
+
+    return value
+      .replace(/[{}[\]"]/g, "")
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean);
+  }
+
   return [];
 }
 
@@ -72,30 +92,26 @@ export default function HomeCategoryPromoBanners({ products, country }: Props) {
 
   const blocks = promoCategories
     .map((cat) => {
-      const matchedItems = countryProducts.filter((item) =>
-        productCategories(item).includes(cat.key)
-      );
+      const matchedItems = countryProducts.filter((item) => {
+        const categories = productCategories(item);
+        return cat.keys.some((key) => categories.includes(key));
+      });
 
-      if (!matchedItems.length) {
-        return null;
-      }
+      if (!matchedItems.length) return null;
 
       return {
         ...cat,
         items: matchedItems.slice(0, 5),
       };
     })
-    .filter(
-      (
-        block
-      ): block is {
-        key: string;
-        title: string;
-        subtitle: string;
-        icon: string;
-        items: any[];
-      } => block !== null
-    );
+    .filter(Boolean) as {
+      key: string;
+      keys: string[];
+      title: string;
+      subtitle: string;
+      icon: string;
+      items: any[];
+    }[];
 
   if (!blocks.length) return null;
 
