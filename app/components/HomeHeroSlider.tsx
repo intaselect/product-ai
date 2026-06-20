@@ -27,19 +27,21 @@ const slides = [
     video: "/banners/compare-prices.mp4",
     href: "/",
   },
-];
-
+].filter((slide) => {
+  return slide.video;
+});
 export default function HomeHeroSlider() {
   const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActive((p) => (p + 1) % slides.length);
-    }, 7000);
+ useEffect(() => {
+  if (slides.length <= 1) return;
 
-    return () => clearInterval(timer);
-  }, []);
+  const timer = setInterval(() => {
+    setActive((p) => (p + 1) % slides.length);
+  }, 7000);
 
+  return () => clearInterval(timer);
+}, []);
   return (
     <section className="homeHeroSlider">
       {slides.map((slide, index) => (
@@ -49,14 +51,14 @@ export default function HomeHeroSlider() {
           className={`heroSlide ${active === index ? "active" : ""}`}
         >
           <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          >
-            <source src={slide.video} type="video/mp4" />
-          </video>
+  autoPlay
+  muted
+  loop={slides.length === 1}
+  playsInline
+  preload="metadata"
+>
+  <source src={slide.video} type="video/mp4" />
+</video>
         </a>
       ))}
 
@@ -70,71 +72,88 @@ export default function HomeHeroSlider() {
         ))}
       </div>
 
-      <style jsx>{`
-        .homeHeroSlider {
-          position: relative;
-          max-width: 1320px;
-          margin: 22px auto;
-          height: 420px;
-          border-radius: 32px;
-          overflow: hidden;
-          box-shadow: 0 20px 60px rgba(15,23,42,.12);
-          background: #f8fafc;
-        }
+     <style jsx>{`
+  .homeHeroSlider {
+    position: relative;
+    width: 100%;
+    max-width: 1320px;
+    margin: 22px auto;
+    aspect-ratio: 1920 / 600;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(15,23,42,.12);
+    background: #fff;
+  }
 
-        .heroSlide {
-          position: absolute;
-          inset: 0;
-          opacity: 0;
-          transition: opacity .6s ease;
-          pointer-events: none;
-        }
+  .heroSlide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity .6s ease;
+    pointer-events: none;
+  }
 
-        .heroSlide.active {
-          opacity: 1;
-          pointer-events: auto;
-          z-index: 2;
-        }
+  .heroSlide.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+  }
 
-        .heroSlide video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-        }
+  .heroSlide video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #fff;
+  }
 
-        .heroDots {
-          position: absolute;
-          bottom: 18px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 8px;
-          z-index: 5;
-        }
+  .heroDots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+  }
 
-        .heroDots button {
-          width: 10px;
-          height: 10px;
-          border: 0;
-          border-radius: 999px;
-          background: rgba(255,255,255,.55);
-          cursor: pointer;
-        }
+  .heroDots button {
+    width: 10px;
+    height: 10px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,.65);
+    cursor: pointer;
+    transition: .25s;
+  }
 
-        .heroDots button.active {
-          width: 28px;
-          background: white;
-        }
+  .heroDots button.active {
+    width: 28px;
+    background: #22c55e;
+  }
 
-        @media (max-width: 768px) {
-          .homeHeroSlider {
-            margin: 14px 10px;
-            height: 180px;
-            border-radius: 22px;
-          }
-        }
-      `}</style>
+  @media (max-width: 768px) {
+    .homeHeroSlider {
+      width: calc(100vw - 16px);
+      margin: 12px auto;
+      border-radius: 18px;
+      aspect-ratio: 1920 / 600;
+    }
+
+    .heroDots {
+      bottom: 8px;
+    }
+
+    .heroDots button {
+      width: 8px;
+      height: 8px;
+    }
+
+    .heroDots button.active {
+      width: 22px;
+    }
+  }
+`}</style>
     </section>
   );
 }
