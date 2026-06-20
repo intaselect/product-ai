@@ -58,10 +58,10 @@ export default function SeoSearchBar() {
       </div>
 
       <style jsx>{`
-        .seoSearch {
-          background:
-            radial-gradient(circle at center, rgba(16, 163, 127, 0.12), transparent 38%),
-            #212121;
+       .seoSearch {
+  background:
+    radial-gradient(circle at center, rgba(245,158,11,.12), transparent 38%),
+    linear-gradient(180deg,#ffffff,#fffaf0);
           padding: 34px 16px 24px;
           border-bottom: 1px solid rgba(255,255,255,0.08);
         }
@@ -75,29 +75,29 @@ export default function SeoSearchBar() {
   margin: 0 auto 14px;
   padding: 11px 14px;
   border-radius: 18px;
-  color: #d7fff4;
+  color: #444;
   font-size: 14px;
   line-height: 1.8;
   text-align: center;
   background:
-    linear-gradient(135deg, rgba(16,163,127,0.18), rgba(0,180,255,0.10)),
-    rgba(255,255,255,0.05);
-  border: 1px solid rgba(0,255,200,0.22);
+    linear-gradient(135deg, rgba(245,158,11,.10), rgba(251,191,36,.08)),
+    #ffffff;
+  border: 1px solid rgba(245,158,11,.25);
   box-shadow:
-    0 0 22px rgba(0,255,200,0.10),
-    inset 0 0 18px rgba(255,255,255,0.03);
+    0 10px 24px rgba(245,158,11,.08),
+    inset 0 0 18px rgba(255,255,255,.8);
 }
 
 .aiLimitIcon {
   display: inline-flex;
   margin-left: 8px;
-  color: #00ffd0;
-  text-shadow: 0 0 12px rgba(0,255,200,0.8);
+  color: #d97706;
+  text-shadow: 0 0 8px rgba(245,158,11,.35);
   animation: aiLimitPulse 1.8s ease-in-out infinite;
 }
 
 .aiLimitNotice strong {
-  color: #00ffd0;
+  color: #b45309;
 }
 
 @keyframes aiLimitPulse {
@@ -109,9 +109,9 @@ export default function SeoSearchBar() {
           margin: 0 auto 14px;
           padding: 11px 18px;
           border-radius: 14px;
-          background: #2f2f2f;
-          color: white;
-          border: 1px solid rgba(255,255,255,0.14);
+          background: #ffffff;
+color: #111827;
+border: 1px solid rgba(245,158,11,.25);
           outline: none;
           box-shadow: 0 10px 30px rgba(0,0,0,0.25);
         }
@@ -128,18 +128,18 @@ export default function SeoSearchBar() {
           height: 52px;
           padding: 0 18px;
           border-radius: 18px;
-          background: #2f2f2f;
-          border: 1px solid rgba(255,255,255,0.14);
-          color: white;
+          background: #ffffff;
+border: 1px solid rgba(245,158,11,.22);
+color: #111827;
           outline: none;
           font-size: 15px;
           box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
         }
 
-        .seoInput:focus {
-          border-color: #10a37f;
-          box-shadow: 0 0 0 4px rgba(16,163,127,0.14);
-        }
+       .seoInput:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 4px rgba(245,158,11,.15);
+}
 
         .seoButton {
           height: 52px;
@@ -149,15 +149,16 @@ export default function SeoSearchBar() {
           color: white;
           font-weight: 800;
           cursor: pointer;
-          background: linear-gradient(135deg, #10a37f, #18d6a3);
-          box-shadow: 0 12px 34px rgba(16,163,127,0.28);
+          background: linear-gradient(135deg,#f59e0b,#d97706);
+box-shadow: 0 12px 34px rgba(245,158,11,.28);
           transition: 0.2s ease;
         }
 
-        .seoButton:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 16px 42px rgba(16,163,127,0.38);
-        }
+       .seoButton:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg,#fbbf24,#b45309);
+  box-shadow: 0 16px 42px rgba(245,158,11,.40);
+}
 
         @media (max-width: 640px) {
           .seoSearchBox {
