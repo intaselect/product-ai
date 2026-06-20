@@ -1036,12 +1036,13 @@ async function handleSearch() {
 }
 .page {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top, rgba(0,255,200,0.08), transparent 30%),
-    radial-gradient(circle at right, rgba(0,180,255,0.07), transparent 25%),
-    #0b0f14;
 
-  color: #ececec;
+  background:
+    radial-gradient(circle at top right, rgba(16,163,127,.06), transparent 25%),
+    radial-gradient(circle at left, rgba(59,130,246,.05), transparent 20%),
+    #f8fafc;
+
+  color: #111827;
 
   position: relative;
   overflow-x: hidden;
@@ -1065,19 +1066,16 @@ async function handleSearch() {
   padding: 14px 18px;
   border-radius: 999px;
   text-decoration: none;
-  color: #fff;
+  color: #111827;
   font-weight: 900;
   font-size: 15px;
-  background:
-    linear-gradient(135deg, rgba(16,163,127,0.28), rgba(0,180,255,0.18)),
-    rgba(255,255,255,0.05);
-  border: 1px solid rgba(0,255,200,0.28);
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   box-shadow:
-    0 0 22px rgba(0,255,200,0.18),
-    inset 0 0 14px rgba(255,255,255,0.04);
+    0 10px 25px rgba(15,23,42,.08);
   overflow: hidden;
   transition: all .25s ease;
-  animation: livePulse 2.4s ease-in-out infinite;
+  animation: none;
 }
 
 .liveStorePulse::before {
@@ -1107,12 +1105,38 @@ async function handleSearch() {
 }
 
 .aiSpark {
-  padding: 4px 8px;
+  padding: 5px 10px;
+
   border-radius: 999px;
-  background: rgba(0,255,200,0.14);
-  color: #00ffd5;
+
+  background: linear-gradient(
+    135deg,
+    #eef2ff,
+    #dbeafe
+  );
+
+  color: #2563eb;
+
   font-size: 11px;
-  border: 1px solid rgba(0,255,200,0.25);
+  font-weight: 800;
+
+  border: 1px solid #bfdbfe;
+
+  box-shadow:
+    0 4px 12px rgba(37,99,235,.12);
+
+  transition: all .25s ease;
+}
+
+.aiSpark:hover {
+  background: linear-gradient(
+    135deg,
+    #dbeafe,
+    #bfdbfe
+  );
+
+  box-shadow:
+    0 6px 16px rgba(37,99,235,.18);
 }
 
 @keyframes livePulse {
