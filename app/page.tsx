@@ -3099,10 +3099,14 @@ z-index: 3;
 }
 
 .heroComposer .searchBox {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  padding: 0 !important;
+  background: linear-gradient(135deg, #fff8dc 0%, #ffe8a3 50%, #fffdf5 100%) !important;
+  border: 2px solid #f4b400 !important;
+  box-shadow:
+    0 0 0 4px rgba(244,180,0,.18),
+    0 16px 35px rgba(244,180,0,.22),
+    inset 0 0 14px rgba(255,255,255,.7) !important;
+  padding: 10px !important;
+  border-radius: 20px !important;
 }
 
 .heroComposer .input {
