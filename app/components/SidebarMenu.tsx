@@ -1228,6 +1228,94 @@ font-weight: 700;
     transform: translateY(-3px);
   }
 }
+  /* ✅ Sidebar Light Theme Override */
+
+.sidebar {
+  background: #ffffff !important;
+  border-right: 1px solid #e5e7eb !important;
+  box-shadow: 18px 0 55px rgba(15,23,42,.14) !important;
+  backdrop-filter: blur(18px);
+}
+
+.sidebarHeader {
+  color: #0f172a !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.arabicName {
+  color: #059669 !important;
+}
+
+.closeButton {
+  color: #0f172a !important;
+}
+
+.menuItem {
+  color: #0f172a !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 8px 20px rgba(15,23,42,.06) !important;
+}
+
+.menuItem:hover {
+  background: linear-gradient(135deg, #ecfdf5, #eff6ff) !important;
+  border-color: #bfdbfe !important;
+  box-shadow: 0 12px 26px rgba(37,99,235,.10) !important;
+}
+
+.sidebarDailyDealsGlow,
+.sidebarAdvertiseGlow,
+.sidebarSellerDashboardGlow,
+.sidebarSmartGlow,
+.sidebarResearchGlow,
+.sidebarSellerGlow,
+.sidebarFireMarketGlow,
+.sidebarCustomerStoreGlow,
+.sidebarQuickBrowseGlow,
+.sidebarSellOnlineGlow,
+.sidebarComparisonsGlow {
+  color: #0f172a !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,.08) !important;
+  animation: none !important;
+}
+
+.dailyDealsSideSub,
+.fireMarketSideSub,
+.researchSidebarSub,
+.sellOnlineSidebarSub,
+.quickBrowseSub,
+.comparisonsSidebarSub,
+.subText {
+  color: #059669 !important;
+}
+
+.dailyDealsSideIcon,
+.fireMarketSideIcon,
+.researchSidebarIcon,
+.sellOnlineSidebarIcon,
+.quickBrowseIcon,
+.comparisonsSidebarIcon,
+.storeIcon {
+  background: linear-gradient(135deg, #ecfdf5, #dbeafe) !important;
+  color: #0f172a !important;
+  box-shadow: 0 8px 18px rgba(15,23,42,.08) !important;
+}
+
+.discountRainSide,
+.sidebarCustomerStoreGlow::before,
+.sidebarResearchGlow::after {
+  display: none !important;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f5f9 !important;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #10b981, #2563eb) !important;
+}
       `}</style>
     </>
   );
