@@ -7,6 +7,7 @@ import type React from "react";
 import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
 import ComparePricesSection from "@/app/components/ComparePricesSection";
 import HomeMarketBanners from "@/app/components/HomeMarketBanners";
+import HomeDailyDealsBanner from "@/app/components/HomeDailyDealsBanner";
 
 
 
@@ -759,6 +760,12 @@ async function handleSearch() {
   products={groupedProducts[country] || []}
   country={country}
 />
+<HomeMarketBanners
+  products={groupedProducts[country] || []}
+  country={country}
+/>
+
+<HomeDailyDealsBanner country={country} />
   </>
 )}
 
