@@ -1,3 +1,5 @@
+"use client";
+
 export default function TrustedSourcesBar() {
   const sources = [
     "Amazon Saudi",
