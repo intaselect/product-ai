@@ -66,16 +66,18 @@ export default function HomeCategoryPromoBanners({ products, country }: Props) {
 
   const blocks = promoCategories
     .map((cat) => {
-      const items = countryProducts
-        .filter((item) => productCategories(item).includes(cat.key))
-        .slice(0, 5);
+     const matchedItems = countryProducts.filter((item) =>
+  productCategories(item).includes(cat.key)
+);
+
+const items = (matchedItems.length ? matchedItems : countryProducts).slice(0, 5);
 
       return {
         ...cat,
         items,
       };
     })
-    .filter((block) => block.items.length > 0);
+    .filter((block) => block.items.length > 0 || countryProducts.length > 0);
 
   if (!blocks.length) return null;
 

@@ -29,7 +29,11 @@ export default function HomeMarketBanners({ products, country }: Props) {
     (p) => (p.country || "sa") === country
   );
 
-  if (!countryProducts.length) return null;
+  const fallbackProducts = countryProducts.length
+  ? countryProducts
+  : (products || []).slice(0, 20);
+
+if (!fallbackProducts.length) return null;
 
   return (
     <section className="homeMarketBanners" dir="rtl">
@@ -48,17 +52,15 @@ export default function HomeMarketBanners({ products, country }: Props) {
       </div>
 
       {sections.map((section) => {
-        const items = countryProducts
-          .filter((p) => {
+      const matchedItems = fallbackProducts.filter((p) => {
   const cat = Array.isArray(p.category)
     ? p.category
     : [p.category];
 
   return cat.includes(section.key);
-})
-          .slice(0, 10);
+});
 
-        if (!items.length) return null;
+const items = (matchedItems.length ? matchedItems : fallbackProducts).slice(0, 10);
 
         return (
           <div className="homeMarketSection" key={section.key}>
