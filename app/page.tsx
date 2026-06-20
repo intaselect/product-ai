@@ -7,6 +7,7 @@ import type React from "react";
 import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
 import ComparePricesSection from "@/app/components/ComparePricesSection";
 import HomeMarketBanners from "@/app/components/HomeMarketBanners";
+import HomeCategoryPromoBanners from "@/app/components/HomeCategoryPromoBanners";
 
 
 
@@ -709,6 +710,12 @@ async function handleSearch() {
 </a>
 {results.length === 0 && (
   <HomeMarketBanners
+    products={storeProducts}
+    country={country}
+  />
+)}
+{results.length === 0 && (
+  <HomeCategoryPromoBanners
     products={storeProducts}
     country={country}
   />
