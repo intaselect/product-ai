@@ -26,92 +26,86 @@ const currencyLabel: Record<string, string> = {
 const promoCategories = [
   {
     key: "mobiles",
-    keys: ["mobiles", "mobile_accessories", "smart_watch", "power_bank", "chargers", "headphones"],
     title: "جوالات وإكسسوارات",
     subtitle: "موبايلات، سماعات، ساعات ذكية وشواحن",
     icon: "📱",
+    words: ["iphone", "galaxy", "samsung", "huawei", "oppo", "realme", "xiaomi", "redmi", "poco", "ipad", "جوال", "هاتف", "ايفون", "موبايل", "سماعة", "شاحن", "ساعة"],
   },
   {
     key: "computers",
-    keys: ["computers", "computer_accessories"],
     title: "لابتوبات وكمبيوتر",
     subtitle: "أجهزة وإكسسوارات للكمبيوتر",
     icon: "💻",
+    words: ["laptop", "keyboard", "mouse", "monitor", "computer", "pc", "كمبيوتر", "لابتوب", "كيبورد", "ماوس", "شاشة"],
   },
   {
-    key: "perfumes",
-    keys: ["perfumes"],
-    title: "عطور مختارة",
-    subtitle: "أفضل العطور حسب دولتك",
-    icon: "🌸",
+    key: "beauty",
+    title: "جمال وعناية",
+    subtitle: "عطور، عناية، مكياج ومنتجات شخصية",
+    icon: "💄",
+    words: ["عطر", "perfume", "كريم", "شامبو", "فرشاة", "beauty", "skin", "makeup", "عناية", "مكياج", "بخور"],
   },
   {
-    key: "incense",
-    keys: ["incense"],
-    title: "بخور فاخر",
-    subtitle: "بخور ومنتجات فاخرة",
-    icon: "🪔",
+    key: "home",
+    title: "المنزل والمطبخ",
+    subtitle: "أجهزة منزلية ومنتجات عملية للبيت",
+    icon: "🏠",
+    words: ["مكنسة", "مطبخ", "قلاية", "خلاط", "كرسي", "طاولة", "منزل", "kitchen", "chair", "vacuum", "coffee"],
   },
   {
     key: "gaming",
-    keys: ["gaming"],
     title: "ألعاب وجيمينج",
     subtitle: "بلايستيشن وإكسسوارات الألعاب",
     icon: "🎮",
+    words: ["playstation", "ps5", "xbox", "nintendo", "gaming", "game", "بلايستيشن", "جيمينج", "نينتندو"],
   },
 ];
 
-function productCategories(product: any): string[] {
-  const value = product?.category;
+function detectPromoCategory(product: any) {
+  const text = `${product?.product_name || ""} ${product?.store_name || ""}`.toLowerCase();
 
-  if (Array.isArray(value)) return value.map(String);
+  const found = promoCategories.find((cat) =>
+    cat.words.some((word) => text.includes(word.toLowerCase()))
+  );
 
-  if (typeof value === "string") {
-    try {
-      const parsed = JSON.parse(value);
-      if (Array.isArray(parsed)) return parsed.map(String);
-    } catch {}
-
-    return value
-      .replace(/[{}[\]"]/g, "")
-      .split(",")
-      .map((x) => x.trim())
-      .filter(Boolean);
-  }
-
-  return [];
+  return found?.key || "home";
 }
 
-export default function HomeCategoryPromoBanners({ products, country }: Props) {
+function productSeoUrl(product: any) {
+  const slug = String(product?.product_name || "product")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "");
+
+  return `/customer-offers/product/bps-chat-${slug}-${product?.country || "sa"}-${product?.id}`;
+}
+
+export default function HomeCategoryPromoBanners({
+  products = [],
+  country = "sa",
+}: Props) {
   const countryName = countryNames[country] || "دولتك";
   const currency = currencyLabel[country] || "";
 
   const countryProducts = (products || []).filter(
-    (item) => (item.country || "sa") === country
+    (item) => (item?.country || "sa") === country
   );
+
+  if (!countryProducts.length) return null;
 
   const blocks = promoCategories
     .map((cat) => {
-      const matchedItems = countryProducts.filter((item) => {
-        const categories = productCategories(item);
-        return cat.keys.some((key) => categories.includes(key));
-      });
-
-      if (!matchedItems.length) return null;
+      const matchedItems = countryProducts
+        .filter((item) => detectPromoCategory(item) === cat.key)
+        .slice(0, 5);
 
       return {
         ...cat,
-        items: matchedItems.slice(0, 5),
+        items: matchedItems,
       };
     })
-    .filter(Boolean) as {
-      key: string;
-      keys: string[];
-      title: string;
-      subtitle: string;
-      icon: string;
-      items: any[];
-    }[];
+    .filter((block) => block.items.length > 0)
+    .slice(0, 5);
 
   if (!blocks.length) return null;
 
@@ -122,7 +116,7 @@ export default function HomeCategoryPromoBanners({ products, country }: Props) {
           <span>✨ مختار لك حسب دولتك</span>
           <h2>تسوق من أقسام عالم المنتجات في {countryName}</h2>
           <p>
-            بانرات أقسام تعرض منتجات حقيقية من المتجر، وكل قسم يفتح منتجاته في دولتك مباشرة.
+            بانرات أقسام تعرض منتجات حقيقية من المتجر حسب اسم المنتج والمتجر بدون تغيير الـ API.
           </p>
         </div>
 
@@ -138,7 +132,7 @@ export default function HomeCategoryPromoBanners({ products, country }: Props) {
 
           return (
             <a
-              href={`/customer-offers?category=${block.key}&country=${country}`}
+              href={`/customer-offers?country=${country}`}
               className="homeCategoryPromoCard"
               key={block.key}
             >
@@ -188,9 +182,7 @@ export default function HomeCategoryPromoBanners({ products, country }: Props) {
           border-radius: 30px;
           background: linear-gradient(135deg, #ffffff, #fffaf0);
           border: 1px solid rgba(245, 158, 11, 0.26);
-          box-shadow:
-            0 18px 45px rgba(15, 23, 42, 0.08),
-            0 0 0 5px rgba(245, 158, 11, 0.05);
+          box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08), 0 0 0 5px rgba(245, 158, 11, 0.05);
         }
 
         .homeCategoryPromoHeader span {
@@ -259,9 +251,7 @@ export default function HomeCategoryPromoBanners({ products, country }: Props) {
         .homeCategoryPromoCard:hover {
           transform: translateY(-6px);
           border-color: #f59e0b;
-          box-shadow:
-            0 24px 55px rgba(15, 23, 42, 0.12),
-            0 0 0 5px rgba(245, 158, 11, 0.08);
+          box-shadow: 0 24px 55px rgba(15, 23, 42, 0.12), 0 0 0 5px rgba(245, 158, 11, 0.08);
         }
 
         .promoCardText {

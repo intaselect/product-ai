@@ -8,6 +8,7 @@ import BpsMarketAdSection from "@/app/components/BpsMarketAdSection";
 import ComparePricesSection from "@/app/components/ComparePricesSection";
 import HomeMarketBanners from "@/app/components/HomeMarketBanners";
 import HomeDailyDealsBanner from "@/app/components/HomeDailyDealsBanner";
+import HomeCategoryPromoBanners from "@/app/components/HomeCategoryPromoBanners";
 
 
 
@@ -761,6 +762,10 @@ async function handleSearch() {
   country={country}
 />
 <HomeDailyDealsBanner country={country} />
+<HomeCategoryPromoBanners
+  products={groupedProducts[country] || []}
+  country={country}
+/>
   </>
 )}
 
@@ -837,7 +842,21 @@ async function handleSearch() {
       );
     })}
 </section>
+{results.length > 0 && (
+  <>
+    <HomeMarketBanners
+      products={groupedProducts[country] || []}
+      country={country}
+    />
 
+    <HomeDailyDealsBanner country={country} />
+
+    <HomeCategoryPromoBanners
+      products={groupedProducts[country] || []}
+      country={country}
+    />
+  </>
+)}
 {results.length === 0 && (
   <>
     <section className="smartLinksBox">
