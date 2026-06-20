@@ -1757,14 +1757,8 @@ z-index: 3;
   max-width: 670px;
   margin: 15px auto;
 
-  background: linear-gradient(
-    135deg,
-    #fff8dc 0%,
-    #ffe8a3 50%,
-    #fffdf5 100%
-  );
-
-  border: 2px solid #f4b400;
+  background: linear-gradient(135deg, #fff8dc 0%, #ffe8a3 50%, #fffdf5 100%) !important;
+  border: 2px solid #f4b400 !important;
   border-radius: 18px;
   padding: 8px;
 
