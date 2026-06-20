@@ -733,3 +733,104 @@ footer p,
 .mainFooter p {
   color: #475569 !important;
 }
+/* ✅ Footer links light style */
+footer a,
+.footer a,
+.siteFooter a,
+.mainFooter a {
+  color: #0f172a !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 6px 16px rgba(15,23,42,.07) !important;
+
+  padding: 8px 14px !important;
+  border-radius: 999px !important;
+
+  text-decoration: none !important;
+  font-weight: 800 !important;
+  transition: all .25s ease !important;
+}
+
+footer a:hover,
+.footer a:hover,
+.siteFooter a:hover,
+.mainFooter a:hover {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #10b981, #2563eb) !important;
+  border-color: transparent !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(37,99,235,.18) !important;
+}
+
+footer,
+.footer,
+.siteFooter,
+.mainFooter {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+footer p,
+.footer p,
+.siteFooter p,
+.mainFooter p {
+  color: #475569 !important;
+}
+/* ✅ Light Theme Override - Home Dark Cards */
+
+.smartLinksBox,
+.homeCountryOffers,
+.homeAdsenseContent,
+.storePromo,
+.smartSearchPromo {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 12px 30px rgba(15,23,42,.06) !important;
+  color: #0f172a !important;
+}
+
+.smartLinkCard,
+.startCard,
+.quickCard,
+.featureCard,
+.actionCard {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,.08) !important;
+}
+
+.smartLinkCard b,
+.smartLinkCard strong,
+.startCard b,
+.quickCard b,
+.featureCard b,
+.actionCard b {
+  color: #0f172a !important;
+}
+
+.smartLinkCard span,
+.smartLinkCard p,
+.startCard span,
+.quickCard span,
+.featureCard span,
+.actionCard span {
+  color: #64748b !important;
+}
+
+.smartLinkCard:hover,
+.startCard:hover,
+.quickCard:hover,
+.featureCard:hover,
+.actionCard:hover {
+  transform: translateY(-3px);
+  border-color: #bfdbfe !important;
+  box-shadow: 0 18px 35px rgba(37,99,235,.12) !important;
+}
+
+.smartLinksHeader h2,
+.smartLinksHeader p,
+.homeAdsenseContent h2,
+.homeAdsenseContent p {
+  color: #0f172a !important;
+}
