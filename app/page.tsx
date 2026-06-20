@@ -1757,9 +1757,29 @@ z-index: 3;
   max-width: 670px;
   margin: 15px auto;
 
-  background: rgba(255,255,255,0.04);
-  border-radius: 16px;
-  padding: 6px;
+  background: linear-gradient(
+    135deg,
+    #fff8dc 0%,
+    #ffe8a3 50%,
+    #fffdf5 100%
+  );
+
+  border: 2px solid #f4b400;
+  border-radius: 18px;
+  padding: 8px;
+
+  box-shadow:
+    0 0 0 4px rgba(244,180,0,.12),
+    0 12px 30px rgba(244,180,0,.18),
+    inset 0 0 12px rgba(255,255,255,.6);
+}
+    .searchBox:hover {
+  border-color: #ff9800;
+
+  box-shadow:
+    0 0 0 5px rgba(255,152,0,.18),
+    0 18px 40px rgba(255,152,0,.25),
+    inset 0 0 16px rgba(255,255,255,.8);
 }
 .input {
   flex: 1;
