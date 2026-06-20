@@ -1,5 +1,9 @@
-import { createClient } from "@supabase/supabase-js";
-import { headers } from "next/headers";
+"use client";
+
+type Props = {
+  products?: any[];
+  country?: string;
+};
 
 type Offer = {
   id: number;
@@ -10,11 +14,6 @@ type Offer = {
   country: string | null;
   category: string[] | null;
 };
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 const countryNames: Record<string, string> = {
   sa: "السعودية",
@@ -34,15 +33,6 @@ const currencies: Record<string, string> = {
   eg: "جنيه",
 };
 
-const vercelCountryToCode: Record<string, string> = {
-  SA: "sa",
-  AE: "ae",
-  KW: "kw",
-  QA: "qa",
-  BH: "bh",
-  EG: "eg",
-};
-
 const categories = [
   { key: "mobiles", title: "جوالات وتابلت", icon: "📱" },
   { key: "electronics", title: "إلكترونيات", icon: "🎧" },
@@ -54,12 +44,6 @@ const categories = [
   { key: "cameras", title: "كاميرات", icon: "📷" },
 ];
 
-async function getVisitorCountry() {
-  const h = await headers();
-  const code = h.get("x-vercel-ip-country")?.toUpperCase() || "";
-  return vercelCountryToCode[code] || "sa";
-}
-
 function productSeoUrl(offer: Offer) {
   const slug = String(offer.product_name || "product")
     .toLowerCase()
@@ -69,37 +53,19 @@ function productSeoUrl(offer: Offer) {
   return `/customer-offers/product/bps-chat-${slug}-${offer.country || "sa"}-${offer.id}`;
 }
 
-export default async function HomeMarketBanners() {
-  const visitorCountry = await getVisitorCountry();
-  const safeCountry = countryNames[visitorCountry] ? visitorCountry : "sa";
+export default function HomeMarketBanners({
+  products = [],
+  country = "sa",
+}: Props) {
+  const safeCountry = countryNames[country] ? country : "sa";
+  const countryName = countryNames[safeCountry] || "دولتك";
 
-  let { data } = await supabase
-    .from("customer_offers")
-    .select("id, product_name, price, image_url, store_name, country, category")
-    .eq("status", "approved")
-    .eq("country", safeCountry)
-    .order("created_at", { ascending: false })
-    .limit(80);
-
-  const gccFallback = ["kw", "qa", "bh"];
-
-  if ((!data || data.length === 0) && gccFallback.includes(safeCountry)) {
-    const fallback = await supabase
-      .from("customer_offers")
-      .select("id, product_name, price, image_url, store_name, country, category")
-      .eq("status", "approved")
-      .eq("country", "sa")
-      .order("created_at", { ascending: false })
-      .limit(80);
-
-    data = fallback.data || [];
-  }
-
-  const offers = (data || []) as Offer[];
+  const offers = (products || []).filter((offer) => {
+    const offerCountry = offer?.country || safeCountry;
+    return offerCountry === safeCountry;
+  }) as Offer[];
 
   if (!offers.length) return null;
-
-  const countryName = countryNames[safeCountry] || "دولتك";
 
   const sections = categories
     .map((cat) => {
@@ -155,7 +121,7 @@ export default async function HomeMarketBanners() {
             >
               <img src={offer.image_url} alt={offer.product_name} />
               <strong>{offer.price}</strong>
-              <small>{currencies[offer.country || ""]}</small>
+              <small>{currencies[offer.country || safeCountry]}</small>
             </a>
           ))}
         </div>
@@ -190,7 +156,7 @@ export default async function HomeMarketBanners() {
 
                   <div className="catPrice">
                     <strong>{offer.price}</strong>
-                    <small>{currencies[offer.country || ""]}</small>
+                    <small>{currencies[offer.country || safeCountry]}</small>
                   </div>
 
                   <span>{offer.store_name || "BPS Market"}</span>

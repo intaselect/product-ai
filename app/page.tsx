@@ -755,7 +755,10 @@ async function handleSearch() {
       products={groupedProducts[country] || []}
       country={country}
     />
-     <HomeMarketBanners />
+    <HomeMarketBanners
+  products={groupedProducts[country] || []}
+  country={country}
+/>
   </>
 )}
 
