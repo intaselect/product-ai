@@ -884,3 +884,47 @@ footer p,
   background: linear-gradient(135deg, #fbbf24, #b45309) !important;
   transform: translateY(-3px) !important;
 }
+/* Daily Deals Banner Mobile Fix */
+
+@media (max-width: 700px) {
+  .dailyDealsNewsBanner {
+    margin: 14px 10px !important;
+  }
+
+  .dailyDealsNewsLink {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    padding: 16px !important;
+    border-radius: 24px !important;
+    min-height: auto !important;
+    text-align: center !important;
+  }
+
+  .dailyDealsNewsText {
+    order: 1 !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .dailyDealsNewsImages {
+    order: 2 !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    padding: 6px 0 !important;
+  }
+
+  .dailyDealsNewsImage {
+    width: 54px !important;
+    height: 54px !important;
+    flex: 0 0 54px !important;
+  }
+
+  .dailyDealsNewsBtn {
+    order: 3 !important;
+    width: fit-content !important;
+    margin: 0 auto !important;
+  }
+}
