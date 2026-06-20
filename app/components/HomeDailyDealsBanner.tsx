@@ -26,22 +26,31 @@ const currencies: any = {
 
 export default function HomeDailyDealsBanner({ country = "sa" }: Props) {
   const [deals, setDeals] = useState<any[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     async function loadDeals() {
       try {
-        const res = await fetch(`/api/daily-deals/public?country=${country}`);
+        setLoaded(false);
+
+        const res = await fetch(`/api/daily-deals/public?country=${country}`, {
+          cache: "no-store",
+        });
+
         const json = await res.json();
-        setDeals(json.deals || []);
+
+        setDeals(Array.isArray(json.deals) ? json.deals : []);
       } catch {
         setDeals([]);
+      } finally {
+        setLoaded(true);
       }
     }
 
     loadDeals();
   }, [country]);
 
-  if (!deals.length) return null;
+  if (loaded && deals.length === 0) return null;
 
   const countryName = countryNames[country] || "دولتك";
 
@@ -50,41 +59,67 @@ export default function HomeDailyDealsBanner({ country = "sa" }: Props) {
       <div className="dailyDealsHero">
         <div>
           <span className="dailyBadge">🔥 عروض اليوم</span>
+
           <h2>خصومات يومية في {countryName}</h2>
-          <p>عروض سريعة من المتاجر حسب دولة الزائر، قبل ما تخلص.</p>
+
+          <p>
+            عروض سريعة من المتاجر حسب دولة الزائر، قبل ما تخلص.
+          </p>
         </div>
 
-        <a href={`/daily-deals?country=${country}`}>مشاهدة كل العروض</a>
+        <a href={`/daily-deals?country=${country}`}>
+          مشاهدة كل العروض
+        </a>
       </div>
 
-      <div className="dailyDealsTrack">
-        {deals.map((deal) => (
-          <a
-            key={deal.id}
-            href={`/daily-deals/${deal.id}`}
-            className="dailyDealCard"
-          >
-            <div className="dealImage">
-              {deal.discount_percent ? (
-                <b>خصم {Math.round(Number(deal.discount_percent))}%</b>
-              ) : null}
+      {!loaded && (
+        <div className="dailyLoading">
+          جاري تحميل عروض اليوم...
+        </div>
+      )}
 
-              <img src={deal.image_url || "/logo-icon.png"} alt={deal.title} />
-            </div>
+      {loaded && deals.length > 0 && (
+        <div className="dailyDealsTrack">
+          {deals.map((deal) => (
+            <a
+              key={deal.id}
+              href={`/daily-deals/${deal.id}`}
+              className="dailyDealCard"
+            >
+              <div className="dealImage">
+                {Number(deal.discount_percent || 0) > 0 && (
+                  <b>
+                    خصم {Math.round(Number(deal.discount_percent))}%
+                  </b>
+                )}
 
-            <strong>{deal.title}</strong>
+                <img
+                  src={deal.image_url || "/logo-icon.png"}
+                  alt={deal.title || "عرض اليوم"}
+                />
+              </div>
 
-            <div className="priceLine">
-              {deal.old_price ? <del>{deal.old_price}</del> : null}
-              <span>
-                {deal.new_price} {currencies[deal.country || country]}
-              </span>
-            </div>
+              <strong>{deal.title}</strong>
 
-            <small>{deal.store_name || "BPS Deals"}</small>
-          </a>
-        ))}
-      </div>
+              <div className="priceLine">
+                {deal.old_price ? (
+                  <del>
+                    {Number(deal.old_price).toLocaleString("en-US")}{" "}
+                    {currencies[deal.country || country]}
+                  </del>
+                ) : null}
+
+                <span>
+                  {Number(deal.new_price || 0).toLocaleString("en-US")}{" "}
+                  {currencies[deal.country || country]}
+                </span>
+              </div>
+
+              <small>{deal.store_name || "BPS Deals"}</small>
+            </a>
+          ))}
+        </div>
+      )}
 
       <style jsx>{`
         .homeDailyDeals {
@@ -141,6 +176,15 @@ export default function HomeDailyDealsBanner({ country = "sa" }: Props) {
           white-space: nowrap;
         }
 
+        .dailyLoading {
+          padding: 22px;
+          border-radius: 20px;
+          background: white;
+          color: #ea580c;
+          font-weight: 950;
+          text-align: center;
+        }
+
         .dailyDealsTrack {
           display: grid;
           grid-template-columns: repeat(6, 1fr);
@@ -172,6 +216,7 @@ export default function HomeDailyDealsBanner({ country = "sa" }: Props) {
           align-items: center;
           justify-content: center;
           margin-bottom: 9px;
+          overflow: hidden;
         }
 
         .dealImage img {
@@ -190,6 +235,7 @@ export default function HomeDailyDealsBanner({ country = "sa" }: Props) {
           padding: 5px 8px;
           font-size: 10px;
           font-weight: 950;
+          z-index: 2;
         }
 
         .dailyDealCard strong {

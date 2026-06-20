@@ -37,11 +37,25 @@ const categories = [
   { key: "mobiles", title: "جوالات وتابلت", icon: "📱" },
   { key: "electronics", title: "إلكترونيات", icon: "🎧" },
   { key: "computers", title: "لابتوبات وكمبيوتر", icon: "💻" },
+  { key: "mobile_accessories", title: "إكسسوارات جوالات", icon: "📲" },
+  { key: "smart_watch", title: "ساعات ذكية", icon: "⌚" },
+  { key: "power_bank", title: "باور بانك", icon: "🔋" },
+  { key: "chargers", title: "شواحن وكابلات", icon: "🔌" },
+  { key: "headphones", title: "سماعات", icon: "🎧" },
+  { key: "computer_accessories", title: "إكسسوارات كمبيوتر", icon: "🖱️" },
+  { key: "gaming", title: "ألعاب وجيمينج", icon: "🎮" },
   { key: "home", title: "المنزل والمطبخ", icon: "🏠" },
+  { key: "fashion", title: "ملابس", icon: "👕" },
+  { key: "shoes", title: "أحذية", icon: "👟" },
+  { key: "bags", title: "شنط", icon: "👜" },
   { key: "beauty", title: "جمال وعناية", icon: "💄" },
-  { key: "fashion", title: "ملابس وموضة", icon: "👕" },
-  { key: "gaming", title: "Gaming", icon: "🎮" },
+  { key: "cars", title: "سيارات وإكسسوارات", icon: "🚗" },
+  { key: "kids", title: "أطفال", icon: "🧸" },
+  { key: "sports", title: "رياضة", icon: "🏋️" },
   { key: "cameras", title: "كاميرات", icon: "📷" },
+  { key: "camera_accessories", title: "ملحقات كاميرات", icon: "🎥" },
+  { key: "perfumes", title: "عطور", icon: "🌸" },
+  { key: "incense", title: "بخور", icon: "🪔" },
 ];
 
 function productSeoUrl(offer: Offer) {
@@ -67,25 +81,21 @@ export default function HomeMarketBanners({
 
   if (!offers.length) return null;
 
- const sections = categories
-  .map((cat, index) => {
-    const categoryItems = offers
+const sections = categories
+  .map((cat) => {
+    const items = offers
       .filter((offer) => {
         const cats = Array.isArray(offer.category) ? offer.category : [];
         return cats.includes(cat.key);
       })
       .slice(0, 4);
 
-    const fallbackItems = offers
-      .slice(index * 4, index * 4 + 4);
-
-    const items = categoryItems.length > 0 ? categoryItems : fallbackItems;
-
     return { ...cat, items };
   })
   .filter((section) => section.items.length > 0)
-  .slice(0, 6);
+  .slice(0, 8);
 
+if (!sections.length) return null;
 const heroProducts = offers.slice(0, 5);
 
   return (
