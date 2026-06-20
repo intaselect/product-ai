@@ -515,29 +515,7 @@ async function handleSearch() {
   return (
   <div className="page">
     {/* AI Animated Background - Desktop only */}
-    {!isMobile && (
-      <div className="aiBackground">
-        <div className="brainCore"></div>
-
-        <div className="grid"></div>
-
-        <div className="particles">
-          {Array.from({ length: 35 }).map((_, i) => (
-            <span
-              key={i}
-              style={
-                {
-                  "--i": i,
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                } as React.CSSProperties
-              }
-            />
-          ))}
-        </div>
-      </div>
-    )}
-
+    
     <button className="menuButton" onClick={() => setMenuOpen(true)}>
       ☰
     </button>
@@ -3326,6 +3304,95 @@ z-index: 3;
   background: rgba(0, 255, 200, 0.12);
   border: 1px solid rgba(0, 255, 200, 0.35);
   box-shadow: 0 0 14px rgba(0, 255, 200, 0.18);
+}
+  /* ✅ Light Store Theme مثل صفحة المتجر */
+.page {
+  background: #f6f8fb !important;
+  color: #111827 !important;
+}
+
+.aiBackground {
+  display: none !important;
+}
+
+.container {
+  max-width: 1180px !important;
+}
+
+.newHero {
+  background:
+    radial-gradient(circle at top right, rgba(34,197,94,0.10), transparent 35%),
+    linear-gradient(135deg, #ffffff, #f8fafc) !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 18px 45px rgba(15,23,42,0.08) !important;
+}
+
+.heroTitle,
+.heroLeft,
+.heroDesc,
+.heroStatCard span,
+.floatingCard {
+  color: #111827 !important;
+}
+
+.heroTitle span,
+.heroBadge,
+.heroStatCard strong {
+  color: #059669 !important;
+}
+
+.heroBadge,
+.heroStatCard,
+.floatingCard,
+.liveStorePulse,
+.smartSearchPromo,
+.smartLinksBox,
+.homeCountryOffers,
+.storePromo,
+.homeAdsenseContent,
+.card,
+.adCard {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 12px 30px rgba(15,23,42,0.08) !important;
+}
+
+.heroDesc,
+.smartSearchPromo p,
+.homeCountryHeader p,
+.storePromo p,
+.homeAdsenseContent,
+.meta,
+.empty {
+  color: #64748b !important;
+}
+
+.homeAdsenseContent h2,
+.smartSearchPromo strong {
+  color: #111827 !important;
+}
+
+.card:hover,
+.adCard:hover {
+  border-color: rgba(34,197,94,0.35) !important;
+  box-shadow: 0 18px 40px rgba(15,23,42,0.12) !important;
+}
+
+.name,
+.adTitle {
+  color: #111827 !important;
+}
+
+.liveStorePulse {
+  color: #111827 !important;
+}
+
+.smartLinksHeader h2,
+.smartLinksHeader p,
+.smartLinkCard,
+.smartLinkCard b,
+.smartLinkCard span {
+  color: #111827 !important;
 }
 `}</style>
     </div>
