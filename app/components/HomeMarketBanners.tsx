@@ -22,6 +22,12 @@ const sections = [
   { key: "gaming", title: "ألعاب وجيمينج", icon: "🎮" },
 ];
 
+function getProductCategories(product: any): string[] {
+  if (Array.isArray(product.category)) return product.category;
+  if (product.category) return [String(product.category)];
+  return [];
+}
+
 export default function HomeMarketBanners({ products, country }: Props) {
   const countryName = countryNames[country] || "دولتك";
 
@@ -29,11 +35,20 @@ export default function HomeMarketBanners({ products, country }: Props) {
     (p) => (p.country || "sa") === country
   );
 
-  const fallbackProducts = countryProducts.length
-  ? countryProducts
-  : (products || []).slice(0, 20);
+  const visibleSections = sections
+    .map((section) => {
+      const items = countryProducts
+        .filter((p) => getProductCategories(p).includes(section.key))
+        .slice(0, 10);
 
-if (!fallbackProducts.length) return null;
+      return {
+        ...section,
+        items,
+      };
+    })
+    .filter((section) => section.items.length > 0);
+
+  if (!visibleSections.length) return null;
 
   return (
     <section className="homeMarketBanners" dir="rtl">
@@ -42,7 +57,7 @@ if (!fallbackProducts.length) return null;
           <span>✨ عالم المنتجات</span>
           <h2>منتجات مختارة لك في {countryName}</h2>
           <p>
-            تصفح منتجات وعروض من متاجر وبائعين داخل دولتك بنفس تجربة المتاجر الكبيرة.
+            تصفح منتجات وعروض من متاجر وبائعين داخل دولتك حسب كل قسم.
           </p>
         </div>
 
@@ -51,54 +66,42 @@ if (!fallbackProducts.length) return null;
         </a>
       </div>
 
-      {sections.map((section) => {
-      const matchedItems = fallbackProducts.filter((p) => {
-  const cat = Array.isArray(p.category)
-    ? p.category
-    : [p.category];
-
-  return cat.includes(section.key);
-});
-
-const items = (matchedItems.length ? matchedItems : fallbackProducts).slice(0, 10);
-
-        return (
-          <div className="homeMarketSection" key={section.key}>
-            <div className="homeMarketHeader">
-              <div>
-                <span>{section.icon}</span>
-                <h3>{section.title} في {countryName}</h3>
-              </div>
-
-              <a href={`/customer-offers?category=${section.key}&country=${country}`}>
-                عرض الكل
-              </a>
+      {visibleSections.map((section) => (
+        <div className="homeMarketSection" key={section.key}>
+          <div className="homeMarketHeader">
+            <div>
+              <span>{section.icon}</span>
+              <h3>{section.title} في {countryName}</h3>
             </div>
 
-            <div className="homeMarketSlider">
-              {items.map((item) => (
-                <a
-                  key={item.id}
-                  href={`/api/customer-offers/click/${item.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="homeMarketCard"
-                >
-                  <div className="homeMarketImage">
-                    <img src={item.image_url} alt={item.product_name} />
-                  </div>
-
-                  <div className="homeMarketInfo">
-                    <strong>{item.product_name}</strong>
-                    <span>{item.price}</span>
-                    <small>{item.store_name || "BPS Market"}</small>
-                  </div>
-                </a>
-              ))}
-            </div>
+            <a href={`/customer-offers?category=${section.key}&country=${country}`}>
+              عرض الكل
+            </a>
           </div>
-        );
-      })}
+
+          <div className="homeMarketSlider">
+            {section.items.map((item) => (
+              <a
+                key={item.id}
+                href={`/api/customer-offers/click/${item.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="homeMarketCard"
+              >
+                <div className="homeMarketImage">
+                  <img src={item.image_url} alt={item.product_name} />
+                </div>
+
+                <div className="homeMarketInfo">
+                  <strong>{item.product_name}</strong>
+                  <span>{item.price}</span>
+                  <small>{item.store_name || "BPS Market"}</small>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
 
       <style jsx>{`
         .homeMarketBanners {
