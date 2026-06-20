@@ -67,20 +67,26 @@ export default function HomeMarketBanners({
 
   if (!offers.length) return null;
 
-  const sections = categories
-    .map((cat) => {
-      const items = offers
-        .filter((offer) => (offer.category || []).includes(cat.key))
-        .slice(0, 4);
+ const sections = categories
+  .map((cat, index) => {
+    const categoryItems = offers
+      .filter((offer) => {
+        const cats = Array.isArray(offer.category) ? offer.category : [];
+        return cats.includes(cat.key);
+      })
+      .slice(0, 4);
 
-      return { ...cat, items };
-    })
-    .filter((section) => section.items.length > 0)
-    .slice(0, 6);
+    const fallbackItems = offers
+      .slice(index * 4, index * 4 + 4);
 
-  if (!sections.length) return null;
+    const items = categoryItems.length > 0 ? categoryItems : fallbackItems;
 
-  const heroProducts = offers.slice(0, 5);
+    return { ...cat, items };
+  })
+  .filter((section) => section.items.length > 0)
+  .slice(0, 6);
+
+const heroProducts = offers.slice(0, 5);
 
   return (
     <section className="homeMarketBanners" dir="rtl">
