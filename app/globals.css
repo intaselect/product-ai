@@ -928,3 +928,42 @@ footer p,
     margin: 0 auto !important;
   }
 }
+/* Floating add/advertise buttons */
+.mobileFloatingCard {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileFloatingCard {
+    display: flex;
+    position: fixed;
+    left: 12px;
+    bottom: 155px;
+    z-index: 99998;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mobileFloatBtn {
+    padding: 9px 13px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 950;
+    white-space: nowrap;
+    color: #0f172a;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 24px rgba(15,23,42,.14);
+  }
+
+  .addOfferBtn {
+    background: linear-gradient(135deg, #ecfdf5, #ffffff);
+    border-color: #86efac;
+  }
+
+  .advertiseBtn {
+    background: linear-gradient(135deg, #fff7ed, #ffffff);
+    border-color: #fed7aa;
+  }
+}
