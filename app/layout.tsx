@@ -282,20 +282,22 @@ export default function RootLayout({
 
 <InstallAppButton />
 
-<div className="mobileFloatingCard">
+<div className="mobileFloatActions">
 
-  <a
-    href="/customer-offers/add"
-    className="mobileFloatBtn addOfferBtn"
-  >
+  <a href="/customer-offers/add" className="mobileFloatBtn addOfferBtn">
     🛍️ أضف منتجك
   </a>
 
-  <a
-    href="/advertise"
-    className="mobileFloatBtn advertiseBtn"
-  >
+  <a href="/advertise" className="mobileFloatBtn advertiseBtn">
     🚀 أعلن معنا
+  </a>
+
+  <a href="/customer-offers" className="mobileFloatBtn storeBtn">
+    🛒 المتجر
+  </a>
+
+  <a href="/bps-for-stores" className="mobileFloatBtn socialBtn">
+    📱 بائع على السوشيال
   </a>
 
 </div>
