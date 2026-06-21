@@ -710,7 +710,7 @@ async function handleSearch() {
   مئات المستخدمين داخل عالم المنتجات من BPS Chat
   <span className="aiSpark">AI</span>
 </a>
-<HomeHeroSlider />
+
 {results.length === 0 && (
   <div className="adsWrapper" ref={sliderRef}>
     {ads.map((ad: any, i: number) => (
@@ -754,6 +754,7 @@ async function handleSearch() {
 
       <a href="/smart-search">جرّب البحث الذكي</a>
     </section>
+    <HomeHeroSlider />
 
     <BpsMarketAdSection
       products={groupedProducts[country] || []}
