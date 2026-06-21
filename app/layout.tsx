@@ -282,25 +282,32 @@ export default function RootLayout({
 
 <InstallAppButton />
 
-<div className="mobileFloatActions">
+<div className="mobileFloatingCard">
+  <input type="checkbox" id="mobileFloatToggle" className="mobileFloatToggle" />
 
-  <a href="/customer-offers/add" className="mobileFloatBtn addOfferBtn">
-    🛍️ أضف منتجك
-  </a>
+  <label htmlFor="mobileFloatToggle" className="mobileFloatArrow">
+    ➜
+  </label>
 
-  <a href="/advertise" className="mobileFloatBtn advertiseBtn">
-    🚀 أعلن معنا
-  </a>
+  <div className="mobileFloatActions">
+    <a href="/customer-offers/add" className="mobileFloatBtn addOfferBtn">
+      🛍️ أضف منتجك
+    </a>
 
-  <a href="/customer-offers" className="mobileFloatBtn storeBtn">
-    🛒 المتجر
-  </a>
+    <a href="/advertise" className="mobileFloatBtn advertiseBtn">
+      🚀 أعلن معنا
+    </a>
 
-  <a href="/bps-for-stores" className="mobileFloatBtn socialBtn">
-    📱 بائع على السوشيال
-  </a>
+    <a href="/customer-offers" className="mobileFloatBtn storeBtn">
+      🛒 المتجر
+    </a>
 
+    <a href="/bps-for-stores" className="mobileFloatBtn socialBtn">
+      📱 بائع على السوشيال
+    </a>
+  </div>
 </div>
+
 <SidebarMenu />
   <div className="flex-1">
     {children}
