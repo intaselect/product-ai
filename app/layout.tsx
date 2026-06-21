@@ -282,31 +282,7 @@ export default function RootLayout({
 
 <InstallAppButton />
 
-<div className="mobileFloatingCard">
-  <input type="checkbox" id="mobileFloatToggle" className="mobileFloatToggle" />
 
-  <label htmlFor="mobileFloatToggle" className="mobileFloatArrow">
-    ➜
-  </label>
-
-  <div className="mobileFloatActions">
-    <a href="/customer-offers/add" className="mobileFloatBtn addOfferBtn">
-      🛍️ أضف منتجك
-    </a>
-
-    <a href="/advertise" className="mobileFloatBtn advertiseBtn">
-      🚀 أعلن معنا
-    </a>
-
-    <a href="/customer-offers" className="mobileFloatBtn storeBtn">
-      🛒 المتجر
-    </a>
-
-    <a href="/bps-for-stores" className="mobileFloatBtn socialBtn">
-      📱 بائع على السوشيال
-    </a>
-  </div>
-</div>
 
 <SidebarMenu />
   <div className="flex-1">
