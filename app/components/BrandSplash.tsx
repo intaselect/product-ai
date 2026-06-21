@@ -2,21 +2,40 @@
 
 import { useEffect, useState } from "react";
 
-export default function BrandSplash() {
+// ملاحظة: قم بتغيير /logo.png إلى مسار اللوجو الدائري الخاص بك (اللوجو الذي يوجد في مركز التصميم)
+const logoSrc = "/logo.png"; 
+
+// مجموعة من الأغراض (المنتجات والفلوس والهدايا) للتطاير في الخلفية لإعطاء شعور "عالم العروض"
+const flyingDebris = [
+  "📱", "💻", "🎧", "⌚", "🛍️", "🎁", "💵", "💰", "🏷️", "%", "✨",
+];
+
+// مجموعة الكلمات الرئيسية للـ "Word Cloud" المحيط باللوجو كما في التصميم المطور
+const dealWords = [
+  { text: "BPS Chat", color: "#16a34a", pos: { top: "4%", left: "4%" } }, // أخضر
+  { text: "عالم المنتجات", color: "#b45309", pos: { bottom: "8%", right: "7%" } }, // ذهبي
+  { text: "تسوّق بذكاء", color: "#16a34a", pos: { bottom: "34%", right: "4%" } }, // أخضر
+  { text: "وفر أكثر", color: "#d97706", pos: { bottom: "34%", left: "6%" } }, // ذهبي
+  { text: "قارن الأسعار", color: "#2563eb", pos: { top: "35%", right: "-1%" } }, // أزرق
+  { text: "عروض يومية", color: "#ef4444", pos: { top: "35%", left: "-1%" } }, // أحمر
+];
+
+export default function EnhancedBrandSplash() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
+    // التأكد من أن المستخدم لم يرَ الـ Splash Screen في هذه الجلسة
     const seen = sessionStorage.getItem("bps_brand_splash_seen");
-
     if (seen) return;
 
     setShow(true);
+    // تسجيل المشاهدة في الجلسة لمنع تكراره عند تحديث الصفحة
     sessionStorage.setItem("bps_brand_splash_seen", "1");
 
-    // زيادة الوقت قليلاً إلى 3 ثوانٍ ليعيش العميل تجربة الأنميشن الكاملة
+    // الوقت الإجمالي للـ Splash Screen قبل الاختفاء (5 ثوانٍ لتجربة غامرة)
     const timer = setTimeout(() => {
       setShow(false);
-    }, 3200);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -24,61 +43,84 @@ export default function BrandSplash() {
   if (!show) return null;
 
   return (
-    <div className="brandSplash" dir="rtl">
-      {/* شبكة نفقية متحركة لإعطاء إحساس الدخول إلى العالم */}
-      <div className="vortexGrid"></div>
-      
-      {/* الهالات الضوئية الدائرية الملونة الخلفية المتوهجة من الصورة */}
-      <div className="glowRing ringOuter"></div>
-      <div className="glowRing ringInner"></div>
+    <div className="immersiveSplash" dir="rtl">
+      {/* 1. الخلفية الشبكية المتحركة لإعطاء شعور بالعمق التقني */}
+      <div className="gridBackground"></div>
 
-      {/* المنتجات والهدايا والفلوس المتطايرة والمندفعة نحو الشاشة (3D Space Explosion) */}
-      <span className="flyItem p1">📱</span>
-      <span className="flyItem p2">🎧</span>
-      <span className="flyItem p3">⌚</span>
-      <span className="flyItem p4">💻</span>
-      <span className="flyItem p5">🛍️</span>
-      <span className="flyItem p6">🎁</span>
-      <span className="flyItem p7">💵</span>
-      <span className="flyItem p8">💰</span>
-      <span className="flyItem p9">🔥</span>
-      <span className="flyItem p10">🏷️</span>
-      <span className="flyItem p11">💸</span>
-      <span className="flyItem p12">✨</span>
+      {/* 2. هالات الضوء العائمة (الأورب) - ذهبية وخضراء */}
+      <div className="floatingOrb orbGold"></div>
+      <div className="floatingOrb orbGreen"></div>
 
-      {/* حلقة العروض الدائرية المحيطة باللوجو */}
-      <div className="vortexContainer">
+      {/* 3. عناصر الخلفية الطائرة (المنتجات، الفلوس، الرموز) */}
+      <div className="flyingDebrisContainer">
+        {flyingDebris.map((item, index) => (
+          <span key={index} className={`flyItem fly${index % 6}`}>{item}</span>
+        ))}
+      </div>
+
+      {/* 4. التصميم المركزي (Cloud) وحلقة الكواكب واللوجو - القلب النابض للتجربة */}
+      <div className="cloudUniverseContainer">
         
-        {/* الكلمات والتاغات العائمة حول الدائرة */}
-        <span className="orbitBadge b1">BPS Chat</span>
-        <span className="orbitBadge b2">Smart Shopping</span>
-        <span className="orbitBadge b3">عروض يومية</span>
-        <span className="orbitBadge b4">تسوّق بذكاء</span>
-        <span className="orbitBadge b5">هدايا وتخفيضات</span>
-        <span className="orbitBadge b6">Compare Prices</span>
-        <span className="orbitBadge b7">عالم المنتجات</span>
+        {/* حلقة كواكب متحركة في الخلفية مع منتجات حقيقية (أو رموز) */}
+        <div className="vortexOrbitRing">
+          <div className="orbitContent">
+            <span className="orbitProd p1">📱</span>
+            <span className="orbitProd p2">🛍️</span>
+            <span className="orbitProd p3">🎁</span>
+            <span className="orbitProd p4">💵</span>
+            <span className="orbitProd p5">🎧</span>
+            <span className="orbitProd p6">⌚</span>
+          </div>
+        </div>
 
-        {/* مركز الكون التسوقي: اللوجو الدائري المتوهج */}
-        <div className="logoPortal">
-          <div className="portalBorder"></div>
-          <img
-            src="/logo.png"
-            alt="BPS Chat | عالم المنتجات"
-            className="mainPortalLogo"
-          />
+        {/* سحابة الكلمات والعروض المحيطة - تجربة Word Cloud */}
+        <div className="wordCloud">
+          {dealWords.map((word, index) => (
+            <span 
+              key={index} 
+              className={`splashWord word${index + 1}`}
+              style={{ color: word.color, ...word.pos }}
+            >
+              {word.text}
+            </span>
+          ))}
+
+          {/* اللوجو المركزي والدائري المتوهج */}
+          <div className="logoUniverseCore">
+            <div className="glowingRing">
+              <img
+                src={logoSrc}
+                alt="BPS Chat Logo"
+                className="centralLogo"
+              />
+            </div>
+            
+            {/* النص التحتي داخل التصميم السحابي */}
+            <div className="coreUniverseText">
+              <strong>BPS Chat</strong>
+              <span>عالم المنتجات والمقارنة</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* شريط التحميل المودرن الذكي بأسفل الشاشة */}
-      <div className="loadingSection">
-        <div className="splashLoader">
-          <i></i>
+      {/* 5. قسم التحميل السفلي (Loader) والنص التحتي */}
+      <div className="splashFooter">
+        <div className="loadingText">...Loading a World of Deals...</div>
+        <div className="loadingBarContainer">
+          <i className="loadingBarFill"></i>
         </div>
-        <p className="loadingText">...Loading a World of Deals...</p>
+        <div className="miniFeatureBanner">
+          <div className="miniFeature">🛒 كل المنتجات</div>
+          <div className="miniFeature">⚡ مقارنة ذكية</div>
+          <div className="miniFeature">🔥 عروض اليوم</div>
+        </div>
       </div>
 
+      {/* 6. استايلات CSS مدمجة لتنفيذ الأنميشن والتصميم الغامر */}
       <style jsx>{`
-        .brandSplash {
+        /* الحاوية الرئيسية - غامرة ومثبتة فوق كل شيء */
+        .immersiveSplash {
           position: fixed;
           inset: 0;
           z-index: 999999;
@@ -87,288 +129,340 @@ export default function BrandSplash() {
           align-items: center;
           justify-content: center;
           overflow: hidden;
-          background: radial-gradient(circle at center, #ffffff 20%, #f0fdf4 60%, #fffbeb 100%);
-          animation: splashFadeOut 3.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
-          perspective: 1000px;
+          background:
+            radial-gradient(circle at 50% 15%, rgba(245, 158, 11, 0.28), transparent 35%),
+            radial-gradient(circle at 15% 85%, rgba(34, 197, 94, 0.16), transparent 30%),
+            radial-gradient(circle at 85% 75%, rgba(14, 165, 233, 0.12), transparent 28%),
+            linear-gradient(135deg, #ffffff, #fffdf8 50%, #f9fafb);
+          animation: splashFadeOut 5s ease forwards;
         }
 
-        /* دوامة الخلفية الحركية */
-        .vortexGrid {
+        /* الخلفية الشبكية المتحركة */
+        .gridBackground {
           position: absolute;
-          inset: -50%;
-          opacity: 0.15;
-          background-image: 
-            radial-gradient(circle, #f59e0b 2px, transparent 2px),
-            radial-gradient(circle, #22c55e 2px, transparent 2px);
-          background-size: 40px 40px;
-          background-position: 0 0, 20px 20px;
-          animation: vortexRotate 20s linear infinite;
+          inset: -20%;
+          opacity: 0.25;
+          background-image:
+            linear-gradient(rgba(245,158,11,.15) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245,158,11,.15) 1px, transparent 1px);
+          background-size: 50px 50px;
+          mask-image: radial-gradient(circle at center, black, transparent 80%);
+          animation: gridPan 15s linear infinite;
         }
 
-        /* الهالات المتوهجة الدائرية كما في صورتك */
-        .glowRing {
+        /* الهالات العائمة */
+        .floatingOrb {
           position: absolute;
-          border-radius: 50%;
-          border: 2px dashed rgba(245, 158, 11, 0.2);
-          animation: spinClockwise 15s linear infinite;
+          border-radius: 999px;
+          filter: blur(25px);
+          opacity: .9;
+          animation: orbFloat 2s ease-in-out infinite;
         }
-        .ringOuter {
-          width: min(580px, 90vw);
-          height: min(580px, 90vw);
-          background: radial-gradient(circle, rgba(254, 243, 199, 0.4) 0%, transparent 70%);
-          border-color: rgba(34, 197, 94, 0.25);
+        .orbGold {
+          width: 350px; height: 350px;
+          top: 5%; right: 10%;
+          background: radial-gradient(circle, rgba(245,158,11,.4), transparent 70%);
         }
-        .ringInner {
-          width: min(400px, 70vw);
-          height: min(400px, 70vw);
-          background: radial-gradient(circle, rgba(220, 252, 231, 0.3) 0%, transparent 60%);
-          border: 2px solid rgba(245, 158, 11, 0.15);
-          animation: spinCounterClockwise 10s linear infinite;
+        .orbGreen {
+          width: 400px; height: 400px;
+          left: 5%; bottom: 10%;
+          background: radial-gradient(circle, rgba(34,197,94,.18), transparent 70%);
+          animation-delay: .3s;
         }
 
-        /* حاوية الدوران واللوجو المركزية */
-        .vortexContainer {
-          position: relative;
-          width: min(500px, 85vw);
-          height: min(500px, 85vw);
+        /* عناصر الخلفية المتطايرة */
+        .flyingDebrisContainer {
+          position: absolute;
+          inset: 0;
           display: flex;
           align-items: center;
           justify-content: center;
+          z-index: 1;
         }
-
-        /* البوابة الدائرية الحاضنة للوجو */
-        .logoPortal {
-          position: relative;
-          width: min(240px, 45vw);
-          height: min(240px, 45vw);
-          border-radius: 50%;
-          background: #ffffff;
-          padding: 10px;
-          box-shadow: 
-            0 25px 60px rgba(15, 23, 42, 0.15),
-            0 0 50px rgba(245, 158, 11, 0.3),
-            inset 0 0 20px rgba(34, 197, 94, 0.1);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 10;
-          transform: scale(0);
-          animation: portalPop 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
-        }
-
-        .portalBorder {
-          position: absolute;
-          inset: -4px;
-          border-radius: 50%;
-          background: conic-gradient(from 0deg, #22c55e, #facc15, #f59e0b, #22c55e);
-          animation: spinClockwise 3s linear infinite;
-          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          padding: 4px;
-        }
-
-        .mainPortalLogo {
-          width: 85%;
-          height: 85%;
-          object-fit: contain;
-          filter: drop-shadow(0 8px 16px rgba(0,0,0,0.08));
-          animation: logoFloat 2s ease-in-out infinite alternate;
-        }
-
-        /* النبذات والبطاقات الدائرية حول اللوجو */
-        .orbitBadge {
-          position: absolute;
-          padding: 8px 16px;
-          border-radius: 30px;
-          font-weight: 800;
-          font-size: clamp(12px, 2.5vw, 15px);
-          white-space: nowrap;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-          border: 1px solid rgba(255,255,255,0.8);
-          opacity: 0;
-          transform: scale(0);
-          animation: badgeEnter 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        /* تحديد مواضع البطاقات بدقة دائرية وتناسق ألوان الصورة */
-        .b1 { top: 12%; left: 50%; transform: translateX(-50%); background: #22c55e; color: #fff; animation-delay: 0.5s; }
-        .b2 { top: 24%; left: 46%; background: #1e3a8a; color: #fff; animation-delay: 0.6s; font-size: 11px; }
-        .b3 { top: 32%; right: -5%; background: #fef3c7; color: #b45309; border-color: #f59e0b; animation-delay: 0.7s; }
-        .b4 { top: 42%; right: -12%; background: #2563eb; color: #fff; animation-delay: 0.8s; }
-        .b5 { bottom: 22%; right: 2%; background: #f0fdf4; color: #16a34a; border-color: #22c55e; animation-delay: 0.9s; }
-        .b6 { top: 40%; left: -10%; background: #0f172a; color: #fff; animation-delay: 1s; }
-        .b7 { bottom: 32%; left: -4%; background: #f59e0b; color: #fff; animation-delay: 1.1s; }
-
-        /* الأنميشن الانفجاري المتطاير للمنتجات والفلوس الفلوتنج */
         .flyItem {
           position: absolute;
-          font-size: clamp(24px, 5vw, 42px);
-          z-index: 5;
+          font-size: clamp(20px, 3.5vw, 36px);
           opacity: 0;
-          filter: drop-shadow(0 15px 20px rgba(0,0,0,0.12));
-          pointer-events: none;
+          animation: debrisFly 3.5s ease-out forwards;
+        }
+        .fly0 { top: 15%; left: 15%; animation-delay: .2s; }
+        .fly1 { top: 20%; right: 15%; animation-delay: .4s; }
+        .fly2 { bottom: 25%; left: 20%; animation-delay: .6s; }
+        .fly3 { bottom: 20%; right: 20%; animation-delay: .8s; }
+        .fly4 { top: 50%; left: 10%; animation-delay: 1.0s; }
+        .fly5 { top: 52%; right: 10%; animation-delay: 1.2s; }
+
+        /* الحاوية الرئيسية للتصميم السحابي وحلقة الكواكب */
+        .cloudUniverseContainer {
+          position: relative;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 70vh;
         }
 
-        /* هندسة انطلاق المنتجات والفلوس من المركز إلى الخارج بقوة وتأثير الـ 3D */
-        .p1 { top: 45%; left: 50%; animation: explodeTopLeft 1.8s cubic-bezier(0.1, 0.8, 0.25, 1) 0.4s infinite; }
-        .p2 { top: 45%; left: 50%; animation: explodeTopRight 2s cubic-bezier(0.1, 0.8, 0.25, 1) 0.7s infinite; }
-        .p3 { top: 45%; left: 50%; animation: explodeBottomLeft 2.2s cubic-bezier(0.1, 0.8, 0.25, 1) 0.5s infinite; }
-        .p4 { top: 45%; left: 50%; animation: explodeBottomRight 1.9s cubic-bezier(0.1, 0.8, 0.25, 1) 0.9s infinite; }
-        
-        /* الفلوس والهدايا المندفعة */
-        .p5 { top: 45%; left: 50%; animation: explodePureLeft 2.1s cubic-bezier(0.1, 0.8, 0.25, 1) 0.3s infinite; }
-        .p6 { top: 45%; left: 50%; animation: explodePureRight 1.7s cubic-bezier(0.1, 0.8, 0.25, 1) 0.6s infinite; }
-        .p7 { top: 45%; left: 50%; animation: explodePureTop 2.3s cubic-bezier(0.1, 0.8, 0.25, 1) 0.8s infinite; }
-        .p8 { top: 45%; left: 50%; animation: explodePureBottom 2s cubic-bezier(0.1, 0.8, 0.25, 1) 1.1s infinite; }
-
-        /* المنتجات الإضافية لملء المساحة الرائعة */
-        .p9 { top: 45%; left: 50%; animation: explodeTopLeft 2.4s cubic-bezier(0.1, 0.8, 0.25, 1) 1.2s infinite; }
-        .p10 { top: 45%; left: 50%; animation: explodeBottomRight 1.6s cubic-bezier(0.1, 0.8, 0.25, 1) 1.3s infinite; }
-        .p11 { top: 45%; left: 50%; animation: explodeTopRight 2.1s cubic-bezier(0.1, 0.8, 0.25, 1) 0.2s infinite; }
-        .p12 { top: 45%; left: 50%; animation: explodeBottomLeft 1.8s cubic-bezier(0.1, 0.8, 0.25, 1) 1s infinite; }
-
-
-        /* قسم التحميل السفلي */
-        .loadingSection {
+        /* حلقة كواكب متحركة */
+        .vortexOrbitRing {
           position: absolute;
+          width: 600px; height: 600px;
+          border-radius: 50%;
+          border: 1px dashed rgba(245,158,11,.2);
+          animation: vortexRotate 10s linear infinite;
+        }
+        .orbitContent {
+          position: relative;
+          width: 100%; height: 100%;
+        }
+        .orbitProd {
+          position: absolute;
+          font-size: 28px;
+          width: 50px; height: 50px;
+          display: flex; align-items: center; justify-content: center;
+          background: rgba(255,255,255,0.9);
+          border-radius: 50%;
+          border: 1px solid rgba(245,158,11,.2);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+        }
+        .p1 { top: 50%; right: -25px; transform: translateY(-50%); }
+        .p2 { bottom: -25px; left: 50%; transform: translateX(-50%); }
+        .p3 { top: 50%; left: -25px; transform: translateY(-50%); }
+        .p4 { top: -25px; left: 50%; transform: translateX(-50%); }
+        .p5 { top: 10%; right: 10%; }
+        .p6 { bottom: 10%; left: 10%; }
+
+        /* سحابة الكلمات والعروض */
+        .wordCloud {
+          position: relative;
+          width: min(750px, 94vw);
+          height: min(450px, 75vh);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        /* تصميم الكلمة المحيطة */
+        .splashWord {
+          position: absolute;
+          padding: 10px 18px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.9);
+          border: 1px solid rgba(245,158,11,.2);
+          box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+          font-size: clamp(16px, 3vw, 30px);
+          font-weight: 950;
+          white-space: nowrap;
+          opacity: 0;
+          animation: wordEntrance 1.5s ease-out forwards;
+        }
+        .word1 { animation-delay: .2s; } .word2 { animation-delay: .4s; }
+        .word3 { animation-delay: .6s; } .word4 { animation-delay: .8s; }
+        .word5 { animation-delay: 1.0s; } .word6 { animation-delay: 1.2s; }
+
+        /* التصميم السحابي المركزي وحلقة الكواكب */
+        .logoUniverseCore {
+          position: relative;
+          z-index: 15;
+          width: min(350px, 75vw);
+          min-height: 280px;
+          border-radius: 45px;
+          background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,252,245,0.92));
+          border: 1px solid rgba(245,158,11,.3);
+          box-shadow: 0 35px 100px rgba(15,23,42,0.15), 0 0 0 10px rgba(245,158,11,.08);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          opacity: 0;
+          transform: scale(0.7) translateY(30px);
+          animation: coreEntrance .8s cubic-bezier(.2,.9,.2,1.1) .8s forwards;
+        }
+
+        /* حلقة الكواكب المركزية (توهج) */
+        .glowingRing {
+          position: relative;
+          width: 150px; height: 150px;
+          border-radius: 999px;
+          display: flex; align-items: center; justify-content: center;
+          background: conic-gradient(from 120deg, #f59e0b, #facc15, #22c55e, #f59e0b);
+          box-shadow: 0 25px 50px rgba(245,158,11,.25), 0 0 50px rgba(34,197,94,.18);
+          animation: ringPulse 1.2s ease-in-out infinite;
+        }
+        .glowingRing::after {
+          content: "";
+          position: absolute; inset: 8px;
+          border-radius: inherit;
+          background: #ffffff;
+        }
+
+        /* اللوجو المركزي */
+        .centralLogo {
+          position: relative; z-index: 5;
+          width: 95px; height: 95px;
+          object-fit: contain;
+          filter: drop-shadow(0 15px 20px rgba(15,23,42,0.15));
+          animation: logoEnter .7s ease 1.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+          opacity: 0;
+          transform: scale(0.6);
+        }
+
+        /* النص التحتي داخل التصميم السحابي */
+        .coreUniverseText {
+          text-align: center;
+          margin-top: 18px;
+          z-index: 5;
+        }
+        .coreUniverseText strong {
+          display: block; color: #111827;
+          font-size: clamp(36px, 6.5vw, 50px);
+          line-height: 1; font-weight: 950;
+          letter-spacing: -1px;
+        }
+        .coreUniverseText span {
+          display: inline-flex; margin-top: 12px;
+          padding: 9px 16px; border-radius: 999px;
+          background: #fff8f0;
+          border: 1px solid rgba(245,158,11,.3);
+          color: #b45309; font-size: 15px; font-weight: 950;
+        }
+
+        /* تذييل الـ Splash Screen (التحميل والمعلومات) */
+        .splashFooter {
+          position: absolute;
+          z-index: 20;
           bottom: 50px;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 12px;
-          z-index: 20;
+          gap: 15px;
+          width: 90vw;
+          opacity: 0;
+          animation: bottomEntrance .6s ease 1.6s forwards;
         }
-
-        .splashLoader {
-          width: min(300px, 70vw);
-          height: 6px;
-          border-radius: 10px;
-          background: #e2e8f0;
-          overflow: hidden;
-        }
-
-        .splashLoader i {
-          display: block;
-          width: 0%;
-          height: 100%;
-          background: linear-gradient(90deg, #22c55e, #facc15, #f59e0b);
-          border-radius: 10px;
-          animation: fillProgress 2.5s ease forwards;
-        }
-
         .loadingText {
-          font-size: 13px;
-          font-weight: 700;
+          font-size: 14px; font-weight: 900;
           color: #64748b;
-          letter-spacing: 1px;
-          margin: 0;
+          letter-spacing: 0.5px;
+        }
+        .loadingBarContainer {
+          width: min(380px, 80vw);
+          height: 10px;
+          border-radius: 999px;
+          background: #f1f5f9;
+          overflow: hidden;
+          box-shadow: inset 0 0 0 1px rgba(148,163,184,.2);
+        }
+        .loadingBarFill {
+          display: block; width: 0%; height: 100%;
+          border-radius: inherit;
+          background: linear-gradient(90deg, #22c55e, #facc15, #f59e0b);
+          animation: loadProgress 3.8s ease 1s forwards;
+        }
+        .miniFeatureBanner {
+          display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+        }
+        .miniFeature {
+          padding: 11px 16px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.92);
+          border: 1px solid rgba(245,158,11,.22);
+          color: #111827; font-size: 14px; font-weight: 950;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.06);
         }
 
-        /* --- كل حركات الأنميشن الذكية والـ Keyframes --- */
-
-        @keyframes portalPop {
-          to { transform: scale(1); }
+        /* Keyframes - الرسوم المتحركة */
+        
+        @keyframes debrisFly {
+          0% { opacity: 0; transform: scale(0.3) translateY(50px); }
+          30% { opacity: 0.8; }
+          100% { opacity: 0.2; transform: scale(1.2) translateY(-100px); }
         }
 
-        @keyframes logoFloat {
-          to { transform: translateY(-8px) scale(1.03); }
+        @keyframes wordEntrance {
+          0% { opacity: 0; transform: translateY(50px) scale(0.8); }
+          60% { opacity: 1; transform: translateY(0) scale(1.05); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes badgeEnter {
-          to { opacity: 1; transform: scale(1) translateX(0); }
+        @keyframes coreEntrance {
+          to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes logoEnter {
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes loadProgress {
+          to { width: 100%; }
+        }
+
+        @keyframes orbFloat {
+          50% { transform: translateY(-15px) scale(1.04); }
+        }
+
+        @keyframes ringPulse {
+          50% { transform: scale(1.05); filter: brightness(1.1); }
+        }
+
+        @keyframes gridPan {
+          to { background-position: 50px 50px; }
         }
 
         @keyframes vortexRotate {
           to { transform: rotate(360deg); }
         }
 
-        @keyframes spinClockwise {
-          to { transform: rotate(360deg); }
+        @keyframes bottomEntrance {
+          to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes spinCounterClockwise {
-          to { transform: rotate(-360deg); }
-        }
-
-        @keyframes fillProgress {
-          to { width: 100%; }
-        }
-
-        /* اتجاهات الانفجار والتطاير الثلاثي الأبعاد للأغراض والفلوس */
-        @keyframes explodeTopLeft {
-          0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-          15% { opacity: 1; }
-          100% { opacity: 0; transform: translate(-220px, -220px) scale(1.4) rotate(-45deg); }
-        }
-
-        @keyframes explodeTopRight {
-          0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-          15% { opacity: 1; }
-          100% { opacity: 0; transform: translate(220px, -220px) scale(1.4) rotate(45deg); }
-        }
-
-        @keyframes explodeBottomLeft {
-          0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-          15% { opacity: 1; }
-          100% { opacity: 0; transform: translate(-220px, 220px) scale(1.4) rotate(35deg); }
-        }
-
-        @keyframes explodeBottomRight {
-          0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-          15% { opacity: 1; }
-          100% { opacity: 0; transform: translate(220px, 220px) scale(1.4) rotate(-35deg); }
-        }
-
-        @keyframes explodePureLeft {
-          0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-          15% { opacity: 1; }
-          100% { opacity: 0; transform: translate(-280px, 0px) scale(1.3) rotate(-90deg); }
-        }
-
-        @keyframes explodePureRight {
-          0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-          15% { opacity: 1; }
-          100% { opacity: 0; transform: translate(280px, 0px) scale(1.3) rotate(90deg); }
-        }
-
-        @keyframes explodePureTop {
-          0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-          15% { opacity: 1; }
-          100% { opacity: 0; transform: translate(0px, -260px) scale(1.3) rotate(15deg); }
-        }
-
-        @keyframes explodePureBottom {
-          0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-          15% { opacity: 1; }
-          100% { opacity: 0; transform: translate(0px, 260px) scale(1.3) rotate(-15deg); }
-        }
-
-        /* اختفاء الاسبلاش بالكامل بسلاسة ونعومة مذهلة */
         @keyframes splashFadeOut {
-          0%, 88% { opacity: 1; visibility: visible; }
-          100% { opacity: 0; transform: scale(1.05); visibility: hidden; }
+          0%, 85% { opacity: 1; visibility: visible; }
+          100% { opacity: 0; visibility: hidden; transform: scale(1.05); }
         }
 
-        /* التجاوب الممتاز مع شاشات الجوال */
-        @media (max-width: 600px) {
-          .vortexContainer {
-            width: 90vw;
-            height: 90vw;
+        /* استايلات التجاوب لشاشات الجوال */
+        @media (max-width: 650px) {
+          .cloudUniverseContainer {
+            height: 60vh;
           }
-          .b3 { right: -2%; }
-          .b4 { right: -4%; }
-          .b6 { left: -4%; }
-          .b7 { left: -2%; }
-          
-          @keyframes explodeTopLeft { 100% { transform: translate(-130px, -130px) scale(1.2); } }
-          @keyframes explodeTopRight { 100% { transform: translate(130px, -130px) scale(1.2); } }
-          @keyframes explodeBottomLeft { 100% { transform: translate(-130px, 130px) scale(1.2); } }
-          @keyframes explodeBottomRight { 100% { transform: translate(130px, 130px) scale(1.2); } }
-          @keyframes explodePureLeft { 100% { transform: translate(-160px, 0px) scale(1.2); } }
-          @keyframes explodePureRight { 100% { transform: translate(160px, 0px) scale(1.2); } }
-          @keyframes explodePureTop { 100% { transform: translate(0px, -160px) scale(1.2); } }
-          @keyframes explodePureBottom { 100% { transform: translate(0px, 160px) scale(1.2); } }
+          .vortexOrbitRing {
+            width: 450px; height: 450px;
+          }
+          .orbitProd {
+            font-size: 20px; width: 40px; height: 40px;
+          }
+          .logoUniverseCore {
+            width: min(280px, 80vw);
+            min-height: 240px;
+            border-radius: 35px;
+          }
+          .glowingRing {
+            width: 120px; height: 120px;
+          }
+          .centralLogo {
+            width: 80px; height: 80px;
+          }
+          .splashWord {
+            font-size: 14px;
+            padding: 8px 14px;
+          }
+          /* إخفاء الكلمات الثانوية في الجوال لمنع الازدحام */
+          .word3, .word4, .word5, .word6 {
+            display: none;
+          }
+          .splashFooter {
+            bottom: 40px;
+          }
+          .miniFeatureBanner {
+            gap: 10px;
+          }
+          .miniFeature {
+            font-size: 12px;
+            padding: 9px 12px;
+          }
         }
       `}</style>
     </div>
