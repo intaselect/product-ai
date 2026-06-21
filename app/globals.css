@@ -274,8 +274,8 @@ body {
 }
 
 .storesPromoBanner {
-  position: sticky;
-  top: 0;
+ position: relative;
+  top: auto;
   z-index: 40;
   width: 100%;
   padding: 10px 14px;
