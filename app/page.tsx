@@ -10,7 +10,8 @@ import HomeMarketBanners from "@/app/components/HomeMarketBanners";
 import HomeDailyDealsBanner from "@/app/components/HomeDailyDealsBanner";
 import HomeCategoryPromoBanners from "@/app/components/HomeCategoryPromoBanners";
 import HomeHeroSlider from "@/app/components/HomeHeroSlider";
-import CanvaPromo from "@/app/components/CanvaPromo"; // تأكد من المسار الصحيح للمجلد لديك
+import CanvaPromo from "@/app/components/CanvaPromo";
+import GeminiPromo from "@/app/components/GeminiPromo";
 
 
 
@@ -757,6 +758,7 @@ async function handleSearch() {
     </section>
     <HomeHeroSlider />
     <CanvaPromo />
+    <GeminiPromo />
 
     <BpsMarketAdSection
       products={groupedProducts[country] || []}
