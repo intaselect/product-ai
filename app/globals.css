@@ -933,95 +933,113 @@ footer p,
 }
 
 @media (max-width: 768px) {
-  .mobileFloatingCard {
-    position: fixed;
-    left: 12px;
-    bottom: 155px;
-    z-index: 99998;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+.mobileFloatingCard {
+position: fixed;
+left: 15px;
+bottom: 160px;
+z-index: 99998;
 
-  .mobileFloatToggle {
-    display: none !important;
-  }
+display: flex;
+flex-direction: column-reverse;
+align-items: center;
+gap: 10px;
 
-  .mobileFloatArrow {
-    width: 46px;
-    height: 46px;
-    border-radius: 999px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: #ffffff;
-
-    font-size: 24px;
-    font-weight: 950;
-    cursor: pointer;
-
-    box-shadow:
-      0 12px 28px rgba(245,158,11,.35),
-      0 0 0 5px rgba(245,158,11,.12);
-
-    transition: all .25s ease;
-  }
-
-  .mobileFloatActions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    opacity: 0;
-    transform: translateX(-12px) scale(.94);
-    pointer-events: none;
-
-    transition: all .25s ease;
-  }
-
-  .mobileFloatToggle:checked ~ .mobileFloatActions {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-    pointer-events: auto;
-  }
-
-  .mobileFloatToggle:checked + .mobileFloatArrow {
-    transform: rotate(180deg);
-    background: linear-gradient(135deg, #22c55e, #2563eb);
-  }
-
-  .mobileFloatBtn {
-    padding: 9px 13px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 950;
-    white-space: nowrap;
-    color: #0f172a;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 10px 24px rgba(15,23,42,.14);
-  }
-
-  .addOfferBtn {
-    background: linear-gradient(135deg, #ecfdf5, #ffffff);
-    border-color: #86efac;
-  }
-
-  .advertiseBtn {
-    background: linear-gradient(135deg, #fff7ed, #ffffff);
-    border-color: #fed7aa;
-  }
 }
+
+.mobileFloatToggle {
+display: none !important;
+}
+
+.mobileFloatArrow {
+width: 52px;
+height: 52px;
+border-radius: 50%;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+background: linear-gradient(135deg, #f59e0b, #d97706);
+color: #ffffff;
+
+font-size: 0;
+cursor: pointer;
+
+box-shadow:
+  0 10px 25px rgba(245,158,11,.35),
+  0 0 18px rgba(245,158,11,.35);
+
+transition: all .25s ease;
+
+}
+
+.mobileFloatArrow::before {
+content: "⌃";
+font-size: 34px;
+font-weight: 950;
+line-height: 1;
+transform: translateY(3px);
+}
+
+.mobileFloatToggle + .mobileFloatArrow::before {
+content: "×";
+font-size: 30px;
+transform: translateY(-1px);
+}
+
+.mobileFloatActions {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+
+opacity: 0;
+transform: translateY(12px) scale(.94);
+pointer-events: none;
+
+transition: all .25s ease;
+
+}
+
+.mobileFloatToggle ~ .mobileFloatActions {
+opacity: 1;
+transform: translateY(0) scale(1);
+pointer-events: auto;
+}
+
+.mobileFloatBtn {
+padding: 9px 13px;
+border-radius: 999px;
+text-decoration: none;
+font-size: 12px;
+font-weight: 950;
+white-space: nowrap;
+
+color: #0f172a;
+background: #ffffff;
+border: 1px solid #e5e7eb;
+
+box-shadow: 0 10px 24px rgba(15,23,42,.14);
+
+}
+
+.addOfferBtn {
+background: linear-gradient(135deg, #ecfdf5, #ffffff);
+border-color: #86efac;
+}
+
+.advertiseBtn {
+background: linear-gradient(135deg, #fff7ed, #ffffff);
+border-color: #fed7aa;
+}
+
 .storeBtn {
-  background: linear-gradient(135deg, #dbeafe, #ffffff);
-  border-color: #93c5fd;
+background: linear-gradient(135deg, #dbeafe, #ffffff);
+border-color: #93c5fd;
 }
 
 .socialBtn {
-  background: linear-gradient(135deg, #f3e8ff, #ffffff);
-  border-color: #c4b5fd;
+background: linear-gradient(135deg, #f3e8ff, #ffffff);
+border-color: #c4b5fd;
+}
 }
