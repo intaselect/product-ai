@@ -597,6 +597,7 @@ fireMarketBtn: {
   boxShadow:
     "0 0 20px rgba(249,115,22,.7), 0 0 48px rgba(239,68,68,.38)",
   transition: "all .25s ease",
+  
 },
 
 fireMarketIcon: {
@@ -654,8 +655,8 @@ customerStoreBtn: {
   display: "inline-flex",
   alignItems: "center",
   gap: "10px",
-  minWidth: "205px",
-  padding: "9px 13px",
+  minWidth: "170px",
+padding: "8px 10px",
   borderRadius: "999px",
   background:
     "linear-gradient(135deg, #ffffff 0%, #f8fafc 55%, #ecfdf5 100%)",
@@ -672,8 +673,8 @@ quickBrowseBtn: {
   display: "inline-flex",
   alignItems: "center",
   gap: "10px",
-  minWidth: "190px",
-  padding: "9px 13px",
+  minWidth: "155px",
+padding: "8px 10px",
   borderRadius: "999px",
   background:
     "linear-gradient(135deg, #ffffff 0%, #fffbeb 55%, #fef3c7 100%)",
@@ -731,8 +732,8 @@ sellOnlineBtn: {
   display: "inline-flex",
   alignItems: "center",
   gap: "10px",
-  minWidth: "220px",
-  padding: "9px 13px",
+  minWidth: "180px",
+padding: "8px 10px",
   borderRadius: "999px",
   background:
     "linear-gradient(135deg,#ffffff 0%,#fff7ed 55%,#ffedd5 100%)",
@@ -810,9 +811,11 @@ sellerDashboardBtn: {
  navDesktop: {
   display: "flex",
   alignItems: "center",
-  gap: "10px",
+  justifyContent: "space-between",
+  gap: "6px",
+  width: "100%",
   color: "#ccc",
-  padding: "7px",
+  padding: "6px",
   borderRadius: "24px",
   background:
     "linear-gradient(135deg, rgba(15,23,42,.92), rgba(17,24,39,.78))",
@@ -825,8 +828,8 @@ sellerDashboardBtn: {
 navSmallGroup: {
   display: "flex",
   alignItems: "center",
-  gap: "6px",
-  padding: "6px",
+  gap: "4px",
+padding: "4px",
   borderRadius: "18px",
   background: "rgba(255,255,255,.045)",
   border: "1px solid rgba(148,163,184,.14)",
@@ -835,8 +838,8 @@ navSmallGroup: {
 navMainGroup: {
   display: "flex",
   alignItems: "center",
-  gap: "8px",
-  padding: "6px",
+  gap: "4px",
+padding: "4px",
   borderRadius: "20px",
   background:
     "linear-gradient(135deg, rgba(34,197,94,.08), rgba(37,99,235,.08))",
@@ -846,8 +849,8 @@ navMainGroup: {
 navUserGroup: {
   display: "flex",
   alignItems: "center",
-  gap: "8px",
-  padding: "6px",
+  gap: "4px",
+padding: "4px",
   borderRadius: "18px",
   background: "rgba(124,58,237,.08)",
   border: "1px solid rgba(167,139,250,.16)",
