@@ -41,7 +41,7 @@ export default function CanvaPromo() {
                 </h3>
               </div>
               <p className="text-gray-300 text-sm max-w-xl leading-relaxed">
-                استمتع بجميع الميزات والخطوط والقوالب المدفوعة لمدّة <span className="text-[#00c4cc] font-bold">سنة كاملة</span>. التفعيل مباشرة على <span className="text-[#7d2ae8] font-bold">إيميلك الشخصي</span> دون الحاجة لإنشاء حساب جديد، وضمان كامل طوال الفترة بواسطة <span className="underline decoration-wavy decoration-yellow-400">منصة BPS Chat</span>.
+                استمتع بجميع الميزات والخطوط والقوالب المدفوعة لمدّة <span className="text-[#00c4cc] font-bold">سنة كاملة</span>. التفعيل مباشرة على <span className="text-[#7d2ae8] font-bold">إيميلك الشخصي</span> دون الحاجة لإنشاء حساب جديد، وضمان كامل طوال الفترة بواسطة <span className="underline ">منصة BPS Chat</span>.
               </p>
               
               {/* الأسعار بتنسيق مرن وأنيق */}
