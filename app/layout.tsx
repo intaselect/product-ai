@@ -16,6 +16,7 @@ import TrustBanner from "@/app/components/TrustBanner";
 import DailyDealsBanner from "@/app/components/DailyDealsBanner";
 import BrandSplash from "@/app/components/BrandSplash";
 import { GoogleTagManager } from "@next/third-parties/google";
+import SidebarMarketProducts from "./components/SidebarMarketProducts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -283,11 +284,23 @@ export default function RootLayout({
 <InstallAppButton />
 
 
-
 <SidebarMenu />
-  <div className="flex-1">
+
+{/* الحاوية الأساسية المرنة - تمنع التداخل وتوزع المساحة */}
+<div className="w-full max-w-[1440px] mx-auto px-4 lg:flex lg:gap-6 lg:flex-row-reverse items-start">
+  
+  {/* العمود الجانبي الأيمن: يظهر ديسكتوب فقط ومحاذي لليمين تماماً */}
+  <aside className="hidden lg:block lg:w-[280px] shrink-0 sticky top-24 h-fit mt-8">
+    <SidebarMarketProducts products={[]} country="sa" />
+  </aside>
+
+  {/* محتوى الصفحات: يمتد في الجانب الأيسر بشكل مستقل تماماً */}
+  <main className="flex-1 min-w-0 w-full">
     {children}
-  </div>
+  </main>
+  
+</div>
+
 <InternalLinksBoost />
   <Footer />
 
