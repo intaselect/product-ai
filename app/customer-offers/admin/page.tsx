@@ -543,7 +543,7 @@ async function fetchDetails(id: number) {
     </div>
   </details>
 )}
-                <button
+ <button
   className={offer.is_ad ? "adOffBtn" : "adOnBtn"}
   disabled={actionLoading === `ad-${offer.id}`}
   onClick={() => toggleAd(offer.id, !offer.is_ad)}
@@ -553,19 +553,19 @@ async function fetchDetails(id: number) {
     : offer.is_ad
     ? "⭐ إلغاء الإعلان"
     : "⭐ تفعيل كإعلان"}
-    <button
+</button>
+
+<button
   className={offer.side_ad ? "sideOffBtn" : "sideOnBtn"}
   disabled={actionLoading === `side-${offer.id}`}
-  onClick={() =>
-    toggleSideAd(offer.id, !offer.side_ad)
-  }
+  onClick={() => toggleSideAd(offer.id, !offer.side_ad)}
 >
-  {offer.side_ad
+  {actionLoading === `side-${offer.id}`
+    ? "جاري..."
+    : offer.side_ad
     ? "📢 إزالة من إعلانات الأجناب"
     : "📢 أضف لإعلانات الأجناب"}
 </button>
-</button>
-
                 <div className="actions">
                   <button
                     className="approve"
