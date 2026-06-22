@@ -16,7 +16,7 @@ import TrustBanner from "@/app/components/TrustBanner";
 import DailyDealsBanner from "@/app/components/DailyDealsBanner";
 import BrandSplash from "@/app/components/BrandSplash";
 import { GoogleTagManager } from "@next/third-parties/google";
-import SidebarMarketProducts from "./components/SidebarMarketProducts";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -286,17 +286,9 @@ export default function RootLayout({
 
 
 <SidebarMenu />
-
-{/* الـ Sidebar العائم: يظهر فقط ديسكتوب ويقف في المساحة الفارغة أقصى اليمين بدون أن يلمس باقي العناصر */}
-<aside className="hidden lg:block fixed top-24 right-[calc(50%-700px)] w-[280px] h-[calc(100vh-120px)] overflow-y-auto z-40 px-2">
-  <SidebarMarketProducts products={[]} country="sa" />
-</aside>
-
-{/* محتوى الموقع الطبيعي تماماً بدون أي تغيير أو فلكس يخرب الترتيب */}
-<div className="flex-1 w-full">
-  {children}
-</div>
-
+  <div className="flex-1">
+    {children}
+  </div>
 <InternalLinksBoost />
   <Footer />
 

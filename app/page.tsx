@@ -12,6 +12,7 @@ import HomeCategoryPromoBanners from "@/app/components/HomeCategoryPromoBanners"
 import HomeHeroSlider from "@/app/components/HomeHeroSlider";
 import CanvaPromo from "@/app/components/CanvaPromo";
 import GeminiPromo from "@/app/components/GeminiPromo";
+import SidebarMarketProducts from "@/app/components/SidebarMarketProducts";
 
 
 
@@ -756,6 +757,10 @@ async function handleSearch() {
 
       <a href="/smart-search">جرّب البحث الذكي</a>
     </section>
+    {/* المكون العمودي العائم - يقف في الفراغ الجانبي بدون لمس باقي العناصر */}
+<aside className="hidden lg:block fixed top-32 right-[calc(50%-730px)] w-[260px] h-[calc(100vh-160px)] overflow-y-auto z-40 px-2">
+  <SidebarMarketProducts products={storeProducts} country={country} />
+</aside>
     <HomeHeroSlider />
     <CanvaPromo />
     <GeminiPromo />
