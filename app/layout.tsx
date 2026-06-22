@@ -288,7 +288,8 @@ export default function RootLayout({
 
 <SidebarMenu />
   <div className="flex-1">
-  <SideAds />
+    
+  {/* <SideAds /> */}
     {children}
   </div>
 <InternalLinksBoost />
