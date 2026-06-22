@@ -284,21 +284,17 @@ export default function RootLayout({
 <InstallAppButton />
 
 
+
 <SidebarMenu />
 
-{/* الحاوية الأساسية المرنة - تمنع التداخل وتوزع المساحة */}
-<div className="w-full max-w-[1440px] mx-auto px-4 lg:flex lg:gap-6 lg:flex-row-reverse items-start">
-  
-  {/* العمود الجانبي الأيمن: يظهر ديسكتوب فقط ومحاذي لليمين تماماً */}
-  <aside className="hidden lg:block lg:w-[280px] shrink-0 sticky top-24 h-fit mt-8">
-    <SidebarMarketProducts products={[]} country="sa" />
-  </aside>
+{/* الـ Sidebar العائم: يظهر فقط ديسكتوب ويقف في المساحة الفارغة أقصى اليمين بدون أن يلمس باقي العناصر */}
+<aside className="hidden lg:block fixed top-24 right-[calc(50%-700px)] w-[280px] h-[calc(100vh-120px)] overflow-y-auto z-40 px-2">
+  <SidebarMarketProducts products={[]} country="sa" />
+</aside>
 
-  {/* محتوى الصفحات: يمتد في الجانب الأيسر بشكل مستقل تماماً */}
-  <main className="flex-1 min-w-0 w-full">
-    {children}
-  </main>
-  
+{/* محتوى الموقع الطبيعي تماماً بدون أي تغيير أو فلكس يخرب الترتيب */}
+<div className="flex-1 w-full">
+  {children}
 </div>
 
 <InternalLinksBoost />
