@@ -426,7 +426,19 @@ if (body.action === "toggle_side_ad") {
     );
   }
 
-  const details = await generateAiProductDetails(offer);
+  let details;
+
+try {
+  details = await generateAiProductDetails(offer);
+} catch (err: any) {
+  return NextResponse.json(
+    {
+      ok: false,
+      error: err?.message || "فشل Gemini في توليد بيانات المنتج",
+    },
+    { status: 500 }
+  );
+}
 
   const { error } = await supabase
     .from("customer_offers")

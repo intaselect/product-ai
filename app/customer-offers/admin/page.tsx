@@ -114,9 +114,9 @@ export default function CustomerOffersAdminPage() {
 
       setOffers(data.offers || []);
       setLimits(data.limits || []);
-    } catch {
-      setError("حدث خطأ غير متوقع أثناء تحميل البيانات");
-    } finally {
+    } catch (err: any) {
+  setError(err?.message || "حدث خطأ غير متوقع أثناء تحسين المنتج");
+}finally {
       setLoading(false);
     }
   }
