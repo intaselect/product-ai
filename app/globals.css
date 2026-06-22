@@ -928,19 +928,19 @@ footer p,
     margin: 0 auto !important;
   }
 }
-.sideAds{
-  position:fixed;
-  top:180px;
-  width:170px;
-  z-index:50;
+.sideAds {
+  position: absolute;
+  top: 220px;
+  width: 170px;
+  z-index: 30;
 }
 
-.sideAdsLeft{
-  left:12px;
+.sideAdsLeft {
+  left: 12px;
 }
 
-.sideAdsRight{
-  right:12px;
+.sideAdsRight {
+  right: 12px;
 }
 
 .sideAdCard{
