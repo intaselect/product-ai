@@ -177,15 +177,19 @@ async function generateAiProductDetails(offer: any) {
 - إذا لم تكن المعلومة مؤكدة لا تذكرها.
 - اكتب نصاً إرشادياً يساعد المستخدم على اتخاذ قرار الشراء.
 
-أرجع JSON فقط:
+أرجع JSON صالح فقط بدون markdown وبدون شرح وبدون أي نص خارج JSON:
 {
-  "description": "وصف عربي أصلي",
-  "features": ["ميزة", "ميزة"],
+  "description": "وصف عربي أصلي من 120 إلى 180 كلمة",
+  "features": ["ميزة", "ميزة", "ميزة"],
   "keywords": ["كلمة مفتاحية", "كلمة مفتاحية"]
 }
 `;
 
-  const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
+  const models = [
+  "gemini-2.5-flash-lite",
+  "gemini-2.5-flash",
+  "gemini-2.0-flash",
+];
 
   for (const model of models) {
     try {
@@ -197,9 +201,10 @@ async function generateAiProductDetails(offer: any) {
           body: JSON.stringify({
             contents: [{ role: "user", parts: [{ text: prompt }] }],
             generationConfig: {
-              temperature: 0.35,
-              maxOutputTokens: 600,
-            },
+  temperature: 0.25,
+  maxOutputTokens: 700,
+  responseMimeType: "application/json",
+},
           }),
         }
       );
@@ -212,6 +217,8 @@ async function generateAiProductDetails(offer: any) {
 }
 
       const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      console.log("GEMINI RAW RESPONSE:");
+console.log(text);
 
       const cleaned = text
         .replace(/```json/g, "")
@@ -254,7 +261,8 @@ try {
     : [],
 };
    } catch (err: any) {
-  throw new Error(err?.message || "Gemini request failed");
+  console.error("Gemini model failed:", model, err?.message);
+  continue;
 }
   }
 
