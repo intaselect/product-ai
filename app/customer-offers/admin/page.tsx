@@ -72,16 +72,7 @@ export default function CustomerOffersAdminPage() {
     const totalSellers = new Set(
     offers.map((offer) => offer.user_id).filter(Boolean)
   ).size;
-const filteredOffers = useMemo(() => {
-  if (countryFilter === "all") return offers;
 
-  return offers.filter(
-    (offer) =>
-      String(offer.country || "")
-        .toLowerCase()
-        .trim() === countryFilter
-  );
-}, [offers, countryFilter]);
   const totalClicks = offers.reduce(
     (sum, offer) => sum + Number(offer.click_count || 0),
     0
