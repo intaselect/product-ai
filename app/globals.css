@@ -929,10 +929,25 @@ footer p,
   }
 }
 .sideAds {
-  position: absolute;
-  top: 520px;
+  position: fixed;
+  top: 170px;
   width: 170px;
-  z-index: 10;
+  z-index: 20;
+
+  max-height: calc(100vh - 190px);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding-bottom: 20px;
+}
+
+.sideAds::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sideAds::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 999px;
 }
 
 .sideAdsLeft {
@@ -941,10 +956,6 @@ footer p,
 
 .sideAdsRight {
   right: 12px;
-}
-
-.sideAdCard {
-  z-index: 10;
 }
 
 .sideAdCard{
