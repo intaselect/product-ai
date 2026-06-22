@@ -359,6 +359,8 @@ async function generateAiDetails(id: number) {
 
     const data = await res.json();
 
+    console.log("AI SEO RESPONSE:", data);
+
     if (!res.ok || !data.ok) {
       setError(data.error || "حدث خطأ أثناء تحسين المنتج");
       return;
@@ -371,15 +373,15 @@ async function generateAiDetails(id: number) {
               ...offer,
               ai_description: data.details?.description,
               ai_features: data.details?.features || [],
-              ai_specifications: data.details?.specifications || {},
               ai_keywords: data.details?.keywords || [],
               ai_enriched_at: new Date().toISOString(),
             }
           : offer
       )
     );
-  } catch {
-    setError("حدث خطأ غير متوقع أثناء تحسين المنتج");
+  } catch (err: any) {
+    console.error("AI SEO ERROR:", err);
+    setError(err?.message || "حدث خطأ غير متوقع أثناء تحسين المنتج");
   } finally {
     setActionLoading("");
   }
