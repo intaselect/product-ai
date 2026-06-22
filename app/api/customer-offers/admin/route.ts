@@ -205,7 +205,11 @@ async function generateAiProductDetails(offer: any) {
       );
 
       const data = await res.json();
-      if (!res.ok) continue;
+      if (!res.ok) {
+  throw new Error(
+    data?.error?.message || `Gemini failed with status ${res.status}`
+  );
+}
 
       const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
@@ -233,7 +237,9 @@ async function generateAiProductDetails(offer: any) {
         .slice(0, 12)
     : [],
 };
-    } catch {}
+   } catch (err: any) {
+  throw new Error(err?.message || "Gemini request failed");
+}
   }
 
   throw new Error("فشل توليد بيانات المنتج بالذكاء الاصطناعي");
