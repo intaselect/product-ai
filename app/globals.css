@@ -930,9 +930,9 @@ footer p,
 }
 .sideAds {
   position: absolute;
-  top: 220px;
+  top: 520px;
   width: 170px;
-  z-index: 30;
+  z-index: 10;
 }
 
 .sideAdsLeft {
@@ -941,6 +941,10 @@ footer p,
 
 .sideAdsRight {
   right: 12px;
+}
+
+.sideAdCard {
+  z-index: 10;
 }
 
 .sideAdCard{
