@@ -172,16 +172,15 @@ async function generateAiProductDetails(offer: any) {
 - لا تنسخ من أي موقع.
 - اكتب 5 إلى 7 مميزات مفيدة.
 - اكتب keywords مناسبة للدولة والمنتج.
+- استخدم فقط المعلومات الموجودة في اسم المنتج والوصف الأصلي.
+- لا تخترع مواصفات أو أرقام أو أحجام أو سعات غير موجودة.
+- إذا لم تكن المعلومة مؤكدة لا تذكرها.
+- اكتب نصاً إرشادياً يساعد المستخدم على اتخاذ قرار الشراء.
 
 أرجع JSON فقط:
 {
   "description": "وصف عربي أصلي",
   "features": ["ميزة", "ميزة"],
-  "specifications": {
-    "الدولة": "${countryName}",
-    "طريقة الشراء": "من خلال المتجر الأصلي",
-    "دور BPS Chat": "مقارنة الأسعار والوصول للعرض"
-  },
   "keywords": ["كلمة مفتاحية", "كلمة مفتاحية"]
 }
 `;
@@ -218,18 +217,22 @@ async function generateAiProductDetails(offer: any) {
       const parsed = JSON.parse(cleaned);
 
       return {
-        description: cleanText(parsed.description).slice(0, 1600),
-        features: Array.isArray(parsed.features)
-          ? parsed.features.map((x: any) => cleanText(x)).filter(Boolean).slice(0, 7)
-          : [],
-        specifications:
-          parsed.specifications && typeof parsed.specifications === "object"
-            ? parsed.specifications
-            : {},
-        keywords: Array.isArray(parsed.keywords)
-          ? parsed.keywords.map((x: any) => cleanText(x)).filter(Boolean).slice(0, 12)
-          : [],
-      };
+  description: cleanText(parsed.description).slice(0, 1600),
+
+  features: Array.isArray(parsed.features)
+    ? parsed.features
+        .map((x: any) => cleanText(x))
+        .filter(Boolean)
+        .slice(0, 7)
+    : [],
+
+  keywords: Array.isArray(parsed.keywords)
+    ? parsed.keywords
+        .map((x: any) => cleanText(x))
+        .filter(Boolean)
+        .slice(0, 12)
+    : [],
+};
     } catch {}
   }
 
@@ -428,13 +431,12 @@ if (body.action === "toggle_side_ad") {
   const { error } = await supabase
     .from("customer_offers")
     .update({
-      ai_description: details.description,
-      ai_features: details.features,
-      ai_specifications: details.specifications,
-      ai_keywords: details.keywords,
-      ai_enriched_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    })
+  ai_description: details.description,
+  ai_features: details.features,
+  ai_keywords: details.keywords,
+  ai_enriched_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+})
     .eq("id", id);
 
   if (error) {
