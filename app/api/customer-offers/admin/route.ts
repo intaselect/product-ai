@@ -198,7 +198,7 @@ async function generateAiProductDetails(offer: any) {
             contents: [{ role: "user", parts: [{ text: prompt }] }],
             generationConfig: {
               temperature: 0.35,
-              maxOutputTokens: 900,
+              maxOutputTokens: 600,
             },
           }),
         }
@@ -218,7 +218,23 @@ async function generateAiProductDetails(offer: any) {
         .replace(/```/g, "")
         .trim();
 
-      const parsed = JSON.parse(cleaned);
+      let parsed: any;
+
+try {
+  parsed = JSON.parse(cleaned);
+} catch {
+  const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+
+  if (!jsonMatch) {
+    throw new Error("Gemini رجّع نص غير صالح وليس JSON");
+  }
+
+  try {
+    parsed = JSON.parse(jsonMatch[0]);
+  } catch {
+    throw new Error("Gemini رجّع JSON غير مكتمل، جرّب المنتج مرة أخرى");
+  }
+}
 
       return {
   description: cleanText(parsed.description).slice(0, 1600),
