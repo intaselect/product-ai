@@ -634,14 +634,18 @@ async function generateAiDetails(id: number) {
   </details>
 )}
 <button
-  className="aiSeoBtn"
+  className={
+    offer.ai_description
+      ? "aiSeoDoneBtn"
+      : "aiSeoBtn"
+  }
   disabled={actionLoading === `ai-details-${offer.id}`}
   onClick={() => generateAiDetails(offer.id)}
 >
   {actionLoading === `ai-details-${offer.id}`
     ? "جاري تحسين المنتج..."
     : offer.ai_description
-    ? "🧠 إعادة تحسين SEO بالذكاء الاصطناعي"
+    ? "✅ تم تحسين SEO (اضغط لإعادة التحسين)"
     : "🧠 تحسين SEO بالذكاء الاصطناعي"}
 </button>
  <button
@@ -761,6 +765,16 @@ async function generateAiDetails(id: number) {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 16px;
+}
+  .aiSeoDoneBtn{
+  width:100%;
+  border:none;
+  border-radius:14px;
+  padding:14px;
+  font-weight:900;
+  color:#fff;
+  cursor:pointer;
+  background:linear-gradient(135deg,#16a34a,#22c55e);
 }
   .aiSeoBtn {
   width: 100%;
