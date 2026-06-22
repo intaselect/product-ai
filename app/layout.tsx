@@ -16,6 +16,7 @@ import TrustBanner from "@/app/components/TrustBanner";
 import DailyDealsBanner from "@/app/components/DailyDealsBanner";
 import BrandSplash from "@/app/components/BrandSplash";
 import { GoogleTagManager } from "@next/third-parties/google";
+import SideAds from "@/app/components/SideAds";
 
 
 const geistSans = Geist({
@@ -287,6 +288,7 @@ export default function RootLayout({
 
 <SidebarMenu />
   <div className="flex-1">
+  <SideAds />
     {children}
   </div>
 <InternalLinksBoost />

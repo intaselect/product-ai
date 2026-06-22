@@ -17,6 +17,7 @@ type Offer = {
   seller_email: string | null;
   click_count?: number;
   is_ad?: boolean;
+  side_ad?: boolean;
   description?: string;
 features?: string[];
 gallery_images?: string[];
@@ -172,6 +173,43 @@ async function toggleAd(id: number, is_ad: boolean) {
     );
   } catch {
     setError("حدث خطأ غير متوقع أثناء تحديث الإعلان");
+  } finally {
+    setActionLoading("");
+  }
+}
+async function toggleSideAd(
+  id: number,
+  side_ad: boolean
+) {
+  setActionLoading(`side-${id}`);
+
+  try {
+    const res = await fetch(
+      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "toggle_side_ad",
+          id,
+          side_ad,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!data.ok) return;
+
+    setOffers((prev) =>
+      prev.map((offer) =>
+        offer.id === id
+          ? { ...offer, side_ad }
+          : offer
+      )
+    );
   } finally {
     setActionLoading("");
   }
@@ -515,6 +553,17 @@ async function fetchDetails(id: number) {
     : offer.is_ad
     ? "⭐ إلغاء الإعلان"
     : "⭐ تفعيل كإعلان"}
+    <button
+  className={offer.side_ad ? "sideOffBtn" : "sideOnBtn"}
+  disabled={actionLoading === `side-${offer.id}`}
+  onClick={() =>
+    toggleSideAd(offer.id, !offer.side_ad)
+  }
+>
+  {offer.side_ad
+    ? "📢 إزالة من إعلانات الأجناب"
+    : "📢 أضف لإعلانات الأجناب"}
+</button>
 </button>
 
                 <div className="actions">
@@ -657,7 +706,33 @@ async function fetchDetails(id: number) {
   color: #86efac;
   font-size: 16px;
 }
+.sideOnBtn,
+.sideOffBtn{
+  width:100%;
+  border:0;
+  border-radius:14px;
+  padding:12px;
+  color:white;
+  font-weight:950;
+  cursor:pointer;
+  margin-bottom:10px;
+}
 
+.sideOnBtn{
+  background:linear-gradient(
+    135deg,
+    #2563eb,
+    #06b6d4
+  );
+}
+
+.sideOffBtn{
+  background:linear-gradient(
+    135deg,
+    #64748b,
+    #dc2626
+  );
+}
 .clicksMeta {
   margin: 0 0 10px;
   color: #86efac;

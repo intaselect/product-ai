@@ -205,6 +205,27 @@ export async function PATCH(req: Request) {
 
   return NextResponse.json({ ok: true });
 }
+if (body.action === "toggle_side_ad") {
+  const id = Number(body.id);
+  const side_ad = Boolean(body.side_ad);
+
+  const { error } = await supabase
+    .from("customer_offers")
+    .update({
+      side_ad,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  if (error) {
+    return NextResponse.json(
+      { ok: false, error: error.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ ok: true });
+}
 
   // ✅ تحديث حالة العرض: approved / rejected / pending
   if (body.action === "update_offer_status") {
