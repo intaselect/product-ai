@@ -287,12 +287,12 @@ export default function RootLayout({
 
 <SidebarMenu />
 
-{/* الحاوية المرنة الجديدة للديسكتوب */}
+{/* الحاوية المرنة للديسكتوب */}
 <div className="flex-1 w-full max-w-[1650px] mx-auto px-4 lg:flex lg:gap-6">
   
-  {/* العمود الجانبي: يظهر ديسكتوب فقط ومخفي تماماً على الموبايل */}
-  <aside className="hidden lg:block lg:w-[280px] shrink-0 sticky top-24 h-fit">
-    <SidebarMarketProducts products={[]} country="sa" />
+  {/* العمود الجانبي الأيمن: سنتركه كـ Container فارغ هنا */}
+  <aside id="sidebar-right-container" className="hidden lg:block lg:w-[280px] shrink-0 sticky top-24 h-fit">
+    {/* فارغ هنا وسيتم ملؤه من صفحة page.tsx */}
   </aside>
 
   {/* المحتوى الأساسي للموقع */}

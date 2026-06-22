@@ -12,6 +12,7 @@ import HomeCategoryPromoBanners from "@/app/components/HomeCategoryPromoBanners"
 import HomeHeroSlider from "@/app/components/HomeHeroSlider";
 import CanvaPromo from "@/app/components/CanvaPromo";
 import GeminiPromo from "@/app/components/GeminiPromo";
+import SidebarMarketProducts from "@/app/components/SidebarMarketProducts";
 
 
 
@@ -764,10 +765,17 @@ async function handleSearch() {
       products={groupedProducts[country] || []}
       country={country}
     />
-    <HomeMarketBanners
-  products={groupedProducts[country] || []}
-  country={country}
-/>
+   <div className="flex flex-col lg:flex-row gap-6 items-start">
+  {/* محتوى البانرات الأساسي */}
+  <div className="flex-1 min-w-0 w-full">
+    <HomeMarketBanners products={storeProducts} country={country} />
+  </div>
+
+  {/* المكون العمودي الجديد للديسكتوب في المساحة الفارغة */}
+  <aside className="hidden lg:block w-[280px] shrink-0 sticky top-24 h-fit">
+    <SidebarMarketProducts products={storeProducts} country={country} />
+  </aside>
+</div>
 <HomeDailyDealsBanner country={country} />
 <HomeCategoryPromoBanners
   products={groupedProducts[country] || []}
@@ -3391,7 +3399,7 @@ z-index: 3;
 }
 
 .container {
-  max-width: 1180px !important;
+  max-width: 1600px !important;
 }
 
 .newHero {
