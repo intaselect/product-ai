@@ -12,7 +12,6 @@ import HomeCategoryPromoBanners from "@/app/components/HomeCategoryPromoBanners"
 import HomeHeroSlider from "@/app/components/HomeHeroSlider";
 import CanvaPromo from "@/app/components/CanvaPromo";
 import GeminiPromo from "@/app/components/GeminiPromo";
-import SidebarMarketProducts from "@/app/components/SidebarMarketProducts";
 
 
 
@@ -585,10 +584,6 @@ async function handleSearch() {
 )}
 </aside>
       <main className="container">
-      {/* المكون العمودي العائم - يظهر في الأعلى فوراً ويجلب البيانات الحقيقية */}
-  <aside className="hidden lg:block fixed top-[220px] right-[calc(50%-720px)] w-[250px] h-[calc(100vh-250px)] overflow-y-auto z-50 px-1">
-    <SidebarMarketProducts products={groupedProducts[country] || []} country={country} />
-  </aside>
        <section className="newHero">
   <div className="heroGlow"></div>
 
@@ -761,7 +756,6 @@ async function handleSearch() {
 
       <a href="/smart-search">جرّب البحث الذكي</a>
     </section>
-    
     <HomeHeroSlider />
     <CanvaPromo />
     <GeminiPromo />
@@ -1016,10 +1010,6 @@ async function handleSearch() {
 
 </section>
 <ComparePricesSection />
-{/* المكان الصحيح: خارج شروط البحث ليفضل ثابت طول الوقت */}
-<aside className="hidden lg:block fixed top-32 right-[calc(50%-730px)] w-[260px] h-[calc(100vh-160px)] overflow-y-auto z-50 px-2">
-  <SidebarMarketProducts products={storeProducts} country={country} />
-</aside>
 </main>
 
 <style jsx>{`
