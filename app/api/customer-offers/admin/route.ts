@@ -125,7 +125,116 @@ export async function GET(req: Request) {
     limits: limits || [],
   });
 }
+async function generateAiProductDetails(offer: any) {
+  const apiKey = process.env.GEMINI_API_KEY;
 
+  if (!apiKey) {
+    throw new Error("GEMINI_API_KEY غير موجود");
+  }
+
+  const countryName =
+    offer.country === "sa" ? "السعودية" :
+    offer.country === "eg" ? "مصر" :
+    offer.country === "ae" ? "الإمارات" :
+    offer.country === "kw" ? "الكويت" :
+    offer.country === "qa" ? "قطر" :
+    offer.country === "bh" ? "البحرين" :
+    "السوق العربي";
+
+  const storesText =
+    offer.country === "eg"
+      ? "Amazon Egypt و Noon Egypt و Jumia و B.TECH و Carrefour"
+      : offer.country === "sa"
+      ? "Amazon السعودية و Noon و Jarir و Extra و Carrefour"
+      : "Amazon و Noon و Jarir و Extra و Carrefour و AliExpress";
+
+  const prompt = `
+أنت مساعد SEO لموقع BPS Chat.
+
+اكتب تحسينًا ذكيًا وآمنًا لصفحة منتج.
+
+بيانات المنتج:
+اسم المنتج: ${offer.product_name}
+السعر: ${offer.price}
+الدولة: ${countryName}
+المتجر: ${offer.store_name || "متجر خارجي"}
+الوصف الأصلي: ${offer.description || "لا يوجد وصف كافٍ"}
+
+القواعد:
+- اكتب وصفًا عربيًا أصليًا من 120 إلى 180 كلمة.
+- اجعل الكلام خاصًا بالمنتج والدولة: ${countryName}.
+- استخدم كلمات مفتاحية مناسبة للدولة مثل: سعر، عروض، شراء أونلاين، مقارنة أسعار، أفضل سعر في ${countryName}.
+- اربط BPS Chat طبيعيًا بالبحث ومقارنة الأسعار بين المتاجر الكبرى مثل ${storesText}.
+- لا تكرر اسم المنتج أكثر من 4 مرات.
+- لا تقل إن BPS Chat يبيع المنتج.
+- لا تخترع مواصفات تقنية غير مؤكدة.
+- لا تستخدم حشو كلمات مفتاحية.
+- لا تنسخ من أي موقع.
+- اكتب 5 إلى 7 مميزات مفيدة.
+- اكتب keywords مناسبة للدولة والمنتج.
+
+أرجع JSON فقط:
+{
+  "description": "وصف عربي أصلي",
+  "features": ["ميزة", "ميزة"],
+  "specifications": {
+    "الدولة": "${countryName}",
+    "طريقة الشراء": "من خلال المتجر الأصلي",
+    "دور BPS Chat": "مقارنة الأسعار والوصول للعرض"
+  },
+  "keywords": ["كلمة مفتاحية", "كلمة مفتاحية"]
+}
+`;
+
+  const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
+
+  for (const model of models) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.35,
+              maxOutputTokens: 900,
+            },
+          }),
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) continue;
+
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+      const cleaned = text
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+      const parsed = JSON.parse(cleaned);
+
+      return {
+        description: cleanText(parsed.description).slice(0, 1600),
+        features: Array.isArray(parsed.features)
+          ? parsed.features.map((x: any) => cleanText(x)).filter(Boolean).slice(0, 7)
+          : [],
+        specifications:
+          parsed.specifications && typeof parsed.specifications === "object"
+            ? parsed.specifications
+            : {},
+        keywords: Array.isArray(parsed.keywords)
+          ? parsed.keywords.map((x: any) => cleanText(x)).filter(Boolean).slice(0, 12)
+          : [],
+      };
+    } catch {}
+  }
+
+  throw new Error("فشل توليد بيانات المنتج بالذكاء الاصطناعي");
+}
 export async function PATCH(req: Request) {
   if (!checkAdmin(req)) {
     return NextResponse.json({ ok: false, error: "غير مصرح" }, { status: 401 });
@@ -291,6 +400,55 @@ if (body.action === "toggle_side_ad") {
 
     return NextResponse.json({ ok: true });
   }
+  if (body.action === "generate_ai_product_details") {
+  const id = Number(body.id);
+
+  if (!id) {
+    return NextResponse.json(
+      { ok: false, error: "رقم المنتج غير صحيح" },
+      { status: 400 }
+    );
+  }
+
+  const { data: offer, error: offerError } = await supabase
+    .from("customer_offers")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (offerError || !offer) {
+    return NextResponse.json(
+      { ok: false, error: "المنتج غير موجود" },
+      { status: 404 }
+    );
+  }
+
+  const details = await generateAiProductDetails(offer);
+
+  const { error } = await supabase
+    .from("customer_offers")
+    .update({
+      ai_description: details.description,
+      ai_features: details.features,
+      ai_specifications: details.specifications,
+      ai_keywords: details.keywords,
+      ai_enriched_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  if (error) {
+    return NextResponse.json(
+      { ok: false, error: error.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({
+    ok: true,
+    details,
+  });
+}
 
   return NextResponse.json(
     { ok: false, error: "نوع العملية غير معروف" },

@@ -675,11 +675,40 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
         </div>
 
         {offer.description && (
-          <>
-            <h2>وصف {offer.product_name}</h2>
-            <p>{offer.description}</p>
-          </>
-        )}
+  <>
+    <h2>وصف {offer.product_name}</h2>
+    <p>{offer.description}</p>
+  </>
+)}
+
+{offer.ai_description && (
+  <section className="aiSeoSection">
+    <h2>🧠 دليل ذكي قبل شراء {offer.product_name}</h2>
+
+    <p>{offer.ai_description}</p>
+
+    {Array.isArray(offer.ai_features) && offer.ai_features.length > 0 && (
+      <ul className="aiFeaturesList">
+        {offer.ai_features.slice(0, 7).map((feature: string, index: number) => (
+          <li key={`${feature}-${index}`}>{feature}</li>
+        ))}
+      </ul>
+    )}
+
+    {Array.isArray(offer.ai_keywords) && offer.ai_keywords.length > 0 && (
+      <div className="aiKeywordLinks">
+        {offer.ai_keywords.slice(0, 10).map((keyword: string) => (
+          <Link
+            key={keyword}
+            href={`/search/${slugify(keyword)}-${offer.country || "sa"}`}
+          >
+            {keyword}
+          </Link>
+        ))}
+      </div>
+    )}
+  </section>
+)}
 
         {productFeatures.length > 0 && (
           <>
@@ -1049,6 +1078,59 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
           color: #22c55e;
           font-weight: 950;
         }
+          .aiSeoSection {
+  margin-top: 34px;
+  padding: 22px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(34,197,94,.13), transparent 35%),
+    rgba(255,255,255,.055);
+  border: 1px solid rgba(34,197,94,.22);
+  box-shadow: 0 0 28px rgba(34,197,94,.08);
+}
+
+.aiSeoSection h2 {
+  margin-top: 0 !important;
+  color: #7fffe0;
+}
+
+.aiSeoSection p {
+  margin: 0;
+  color: #e8e8e8;
+  line-height: 2;
+}
+
+.aiFeaturesList {
+  margin: 16px 0 0;
+  padding-right: 22px;
+}
+
+.aiFeaturesList li {
+  color: #e8e8e8;
+  margin-bottom: 8px;
+}
+
+.aiKeywordLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.aiKeywordLinks a {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #bbf7d0;
+  background: rgba(34,197,94,.10);
+  border: 1px solid rgba(34,197,94,.22);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.aiKeywordLinks a:hover {
+  background: rgba(34,197,94,.18);
+}
 
         .priceBox span {
           padding: 5px 10px;

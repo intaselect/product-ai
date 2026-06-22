@@ -23,6 +23,11 @@ features?: string[];
 gallery_images?: string[];
 specifications?: Record<string, any>;
 source_brand?: string;
+ai_description?: string;
+ai_features?: string[];
+ai_specifications?: Record<string, any>;
+ai_keywords?: string[];
+ai_enriched_at?: string;
 };
 
 type Limit = {
@@ -335,6 +340,50 @@ async function fetchDetails(id: number) {
     setActionLoading("");
   }
 }
+async function generateAiDetails(id: number) {
+  setActionLoading(`ai-details-${id}`);
+  setError("");
+
+  try {
+    const res = await fetch(
+      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "generate_ai_product_details",
+          id,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      setError(data.error || "حدث خطأ أثناء تحسين المنتج");
+      return;
+    }
+
+    setOffers((prev) =>
+      prev.map((offer) =>
+        offer.id === id
+          ? {
+              ...offer,
+              ai_description: data.details?.description,
+              ai_features: data.details?.features || [],
+              ai_specifications: data.details?.specifications || {},
+              ai_keywords: data.details?.keywords || [],
+              ai_enriched_at: new Date().toISOString(),
+            }
+          : offer
+      )
+    );
+  } catch {
+    setError("حدث خطأ غير متوقع أثناء تحسين المنتج");
+  } finally {
+    setActionLoading("");
+  }
+}
   return (
     <main className="adminPage" dir="rtl">
       <section className="adminHero">
@@ -582,6 +631,17 @@ async function fetchDetails(id: number) {
     </div>
   </details>
 )}
+<button
+  className="aiSeoBtn"
+  disabled={actionLoading === `ai-details-${offer.id}`}
+  onClick={() => generateAiDetails(offer.id)}
+>
+  {actionLoading === `ai-details-${offer.id}`
+    ? "جاري تحسين المنتج..."
+    : offer.ai_description
+    ? "🧠 إعادة تحسين SEO بالذكاء الاصطناعي"
+    : "🧠 تحسين SEO بالذكاء الاصطناعي"}
+</button>
  <button
   className={offer.is_ad ? "adOffBtn" : "adOnBtn"}
   disabled={actionLoading === `ad-${offer.id}`}
@@ -699,6 +759,22 @@ async function fetchDetails(id: number) {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 16px;
+}
+  .aiSeoBtn {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px;
+  color: white;
+  font-weight: 950;
+  cursor: pointer;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+}
+
+.aiSeoBtn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
 }
 .adminFilters {
   max-width: 1100px;
