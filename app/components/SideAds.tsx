@@ -45,12 +45,13 @@ export default async function SideAds() {
     .eq("status", "approved")
     .eq("side_ad", true)
     .eq("country", country)
-    .limit(12);
+    .order("updated_at", { ascending: false })
+.limit(40);
 
   if (!data?.length) return null;
-
-  const left = data.slice(0, 6);
-  const right = data.slice(6, 12);
+const middle = Math.ceil(data.length / 2);
+const left = data.slice(0, middle);
+const right = data.slice(middle);
 
   const makeSlug = (item: any) =>
     `/customer-offers/product/bps-chat-${String(item.product_name || "")
