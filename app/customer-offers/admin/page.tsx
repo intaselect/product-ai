@@ -40,6 +40,18 @@ export default function CustomerOffersAdminPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string>("");
   const [error, setError] = useState("");
+  
+  const [countryFilter, setCountryFilter] = useState("all");
+  const filteredOffers = useMemo(() => {
+  if (countryFilter === "all") return offers;
+
+  return offers.filter(
+    (offer) =>
+      String(offer.country || "")
+        .toLowerCase()
+        .trim() === countryFilter
+  );
+}, [offers, countryFilter]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -60,7 +72,16 @@ export default function CustomerOffersAdminPage() {
     const totalSellers = new Set(
     offers.map((offer) => offer.user_id).filter(Boolean)
   ).size;
+const filteredOffers = useMemo(() => {
+  if (countryFilter === "all") return offers;
 
+  return offers.filter(
+    (offer) =>
+      String(offer.country || "")
+        .toLowerCase()
+        .trim() === countryFilter
+  );
+}, [offers, countryFilter]);
   const totalClicks = offers.reduce(
     (sum, offer) => sum + Number(offer.click_count || 0),
     0
@@ -382,9 +403,36 @@ async function fetchDetails(id: number) {
     </div>
   </section>
 )}
+{secret && (
+  <section className="adminFilters">
+    <button
+      className={countryFilter === "all" ? "active" : ""}
+      onClick={() => setCountryFilter("all")}
+    >
+      كل الدول
+    </button>
+
+    {[
+      ["sa", "السعودية"],
+      ["eg", "مصر"],
+      ["ae", "الإمارات"],
+      ["kw", "الكويت"],
+      ["qa", "قطر"],
+      ["bh", "البحرين"],
+    ].map(([code, name]) => (
+      <button
+        key={code}
+        className={countryFilter === code ? "active" : ""}
+        onClick={() => setCountryFilter(code)}
+      >
+        {name}
+      </button>
+    ))}
+  </section>
+)}
 
       <section className="offersGrid">
-        {offers.map((offer) => {
+        {filteredOffers.map((offer: Offer) => {
           const userLimit =
             offer.user_id && limitMap.get(offer.user_id)
               ? limitMap.get(offer.user_id)
@@ -661,7 +709,30 @@ async function fetchDetails(id: number) {
   grid-template-columns: 320px 1fr;
   gap: 16px;
 }
+.adminFilters {
+  max-width: 1100px;
+  margin: 0 auto 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
 
+.adminFilters button {
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 18px;
+  color: white;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.adminFilters button.active {
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+  box-shadow: 0 10px 26px rgba(37,99,235,.22);
+}
 .totalClicksCard,
 .sellerClicksList {
   padding: 18px;
