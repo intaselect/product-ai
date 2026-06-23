@@ -2,9 +2,9 @@ import { createClient } from "@supabase/supabase-js";
 
 import SeoSearchBar from "@/app/components/SeoSearchBar";
 import PopularSearches from "@/app/components/PopularSearches";
-import VideoPreview from "@/app/marketing-video/VideoPreview";
+
 import SidebarMenu from "@/app/components/SidebarMenu";
-import ShareSlugVideo from "@/app/components/ShareSlugVideo";
+
 
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
   
@@ -387,22 +387,6 @@ return (
   }}
 />
 
-
-{/* 🎥 Video Schema */}
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "VideoObject",
-      name: `أفضل سعر ${data?.query || query} في ${countryName}`,
-      description: `فيديو مقارنة أسعار ${data?.query || query} في ${countryName}`,
-      thumbnailUrl: "https://bpschat.com/og-image.png",
-      uploadDate: new Date().toISOString(),
-    }),
-  }}
-  
-/>
 <script
   type="application/ld+json"
   dangerouslySetInnerHTML={{
@@ -583,21 +567,7 @@ return (
           </div>
         ))}
       </div>
-      <div style={{ marginTop: "40px", marginBottom: "30px" }}>
-  <h2>🎥 فيديو مقارنة الأسعار</h2>
-
-  <VideoPreview
-    query={data?.query || query}
-    countryName={countryName}
-    products={products}
-  />
-</div>
-<ShareSlugVideo
-  query={data?.query || query}
-  countryName={countryName}
-  countryCode={countryCode}
-  slug={slug}
-/>
+ 
       <section style={{ marginTop: "20px", lineHeight: "1.8" }}>
   <p dir="rtl">
   يعرض لك <span dir="ltr">BPS Chat</span> تحليلًا مباشرًا ومحدثًا لأسعار{" "}
