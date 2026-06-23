@@ -515,7 +515,7 @@ return (
     📊 دراسة المنتج الكاملة
   </a>
 </div>
-    <div style={{ padding: "40px" }}>
+    <div className="seoMainContent">
       <h1>
   أفضل سعر {data?.query || query} في {countryName} عبر BPS Chat (بي بي اس شات)
 </h1>
@@ -852,35 +852,117 @@ return (
 </section>
     <PopularSearches />
     <style>{`
-  .seoPage {
-    color: white;
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-    background:
-      radial-gradient(circle at top, rgba(0,255,200,0.08), transparent 30%),
-      radial-gradient(circle at right, rgba(0,180,255,0.07), transparent 25%),
-      #0b0f14;
-  }
+.seoPage {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(245,158,11,.10), transparent 30%),
+    radial-gradient(circle at top left, rgba(34,197,94,.08), transparent 28%),
+    #fffaf0;
+  color: #1f2937;
+}
+
+.aiBackground {
+  display: none;
+}
+
+.seoMainContent {
+  max-width: 1180px;
+  margin: 28px auto;
+  padding: 34px 22px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(245,158,11,.22);
+  box-shadow: 0 18px 50px rgba(15,23,42,.08);
+}
+
+.seoMainContent h1 {
+  margin: 0 0 18px;
+  color: #111827;
+  font-size: clamp(26px, 4vw, 44px);
+  line-height: 1.45;
+  font-weight: 950;
+}
+
+.seoMainContent h2 {
+  color: #92400e;
+  font-weight: 950;
+}
+
+.seoMainContent h3 {
+  color: #1f2937;
+  font-weight: 900;
+}
+
+.seoMainContent p,
+.seoMainContent li {
+  color: #374151;
+  line-height: 2;
+}
+
+.marketplacesSeoText,
+.faqSeoSection,
+.adsenseContentBlock {
+  margin: 26px 0;
+  padding: 24px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ffffff, #fffbeb);
+  border: 1px solid rgba(245,158,11,.20);
+  box-shadow: 0 12px 34px rgba(15,23,42,.06);
+}
+
+.adsenseContentBlock {
+  max-width: 1180px;
+  margin: 30px auto;
+  color: #374151;
+}
+
+.adsenseContentBlock h2 {
+  color: #92400e;
+}
 
   .seoPage > *:not(.aiBackground) {
   position: relative;
   z-index: 2;
 }
 
-  .seoProductCard {
-  position: relative;
-overflow: hidden;
-    display: flex;
-    gap: 14px;
-    padding: 16px;
-    background: rgba(40,40,40,0.72);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 14px;
-    transition: all 0.25s ease;
-  }
+.seoProductCard {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 16px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid rgba(245,158,11,.20);
+  border-radius: 20px;
+  box-shadow: 0 10px 28px rgba(15,23,42,.07);
+  transition: .25s ease;
+}
 
+.seoProductCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245,158,11,.55);
+  box-shadow: 0 16px 38px rgba(245,158,11,.16);
+}
+
+.seoProductCard h3 {
+  color: #111827;
+}
+
+.seoProductCard p {
+  color: #374151 !important;
+}
+
+.seoProductCard a {
+  display: inline-flex;
+  margin-top: 8px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg,#f59e0b,#16a34a);
+  color: white !important;
+  text-decoration: none;
+  font-weight: 950;
+}
   .seoProductCard:hover {
  transform: translateY(-2px);
 
