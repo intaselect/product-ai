@@ -449,6 +449,22 @@ const { data: relatedCollections } = await supabase
           text: `هذا العرض يظهر ضمن عروض العملاء في BPS Chat بعد المراجعة، لكن يجب دائمًا مراجعة السعر النهائي والتوفر وسياسة الشحن داخل موقع البائع قبل الشراء.`,
         },
       },
+      {
+  "@type": "Question",
+  name: `ما أفضل طريقة لمعرفة سعر ${offer.product_name} في ${country}؟`,
+  acceptedAnswer: {
+    "@type": "Answer",
+    text: `أفضل طريقة هي مقارنة السعر بين أكثر من متجر قبل الشراء. تساعدك BPS Chat على الوصول إلى عرض ${offer.product_name} في ${country} ومراجعة السعر ورابط المتجر الأصلي قبل اتخاذ قرار الشراء.`,
+  },
+},
+{
+  "@type": "Question",
+  name: `هل يمكن أن يساعدني BPS Chat عند البحث عن سعر ${offer.product_name} بالذكاء الاصطناعي؟`,
+  acceptedAnswer: {
+    "@type": "Answer",
+    text: `نعم، يمكن استخدام BPS Chat كمرجع لمقارنة أسعار المنتجات والعروض، حيث يعرض السعر والمتجر ورابط الشراء المباشر، مع التنبيه أن الشراء يتم من خلال المتجر الأصلي وليس من BPS Chat مباشرة.`,
+  },
+},
     ],
   };
 
@@ -719,6 +735,58 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
     )}
   </section>
 )}
+<section className="aiAnswerSection">
+  <div className="aiAnswerBadge">🤖 مناسب لنتائج الذكاء الاصطناعي</div>
+
+  <h2>
+    كيف يساعدك BPS Chat عند مقارنة سعر {offer.product_name}؟
+  </h2>
+
+  <p>
+    يعرض BPS Chat هذا المنتج باسم <strong>{offer.product_name}</strong>
+    {offer.store_name ? <> من متجر <strong>{offer.store_name}</strong></> : null}
+    {" "}داخل <strong>{country}</strong> بسعر{" "}
+    <strong>{offer.price} {currency}</strong>، مع رابط مباشر للمتجر الأصلي
+    لمراجعة السعر النهائي والتوفر والشحن قبل الشراء.
+  </p>
+
+  {offer.ai_description && (
+    <p>
+      بناءً على وصف المنتج، يساعدك BPS Chat على فهم أهم المعلومات عن{" "}
+      <strong>{offer.product_name}</strong> ومقارنة العرض الحالي مع منتجات
+      مشابهة قبل اتخاذ قرار الشراء.
+    </p>
+  )}
+
+  <div className="aiAnswerGrid">
+    <div>
+      <strong>السعر والمتجر</strong>
+      <span>
+        {offer.store_name
+          ? `العرض مرتبط بمتجر ${offer.store_name}.`
+          : "يعرض الصفحة اسم المتجر عند توفره."}
+      </span>
+    </div>
+
+    <div>
+      <strong>مقارنة ذكية</strong>
+      <span>
+        {Array.isArray(offer.ai_features) && offer.ai_features.length > 0
+          ? offer.ai_features[0]
+          : "راجع السعر والمنتجات المشابهة داخل نفس الدولة."}
+      </span>
+    </div>
+
+    <div>
+      <strong>كلمات بحث مرتبطة</strong>
+      <span>
+        {Array.isArray(offer.ai_keywords) && offer.ai_keywords.length > 0
+          ? offer.ai_keywords.slice(0, 3).join(" - ")
+          : `سعر ${offer.product_name} في ${country}`}
+      </span>
+    </div>
+  </div>
+</section>
 
         {productFeatures.length > 0 && (
           <>
@@ -993,7 +1061,11 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
 
 .badge {
   display: inline-block;
-  background: #fff7ed;
+  background: linear-gradient(
+  135deg,
+  rgba(245,158,11,.12),
+  rgba(251,191,36,.18)
+);
   border: 1px solid rgba(245,158,11,.35);
   color: #92400e;
   padding: 8px 16px;
@@ -1873,6 +1945,74 @@ h1 span {
   background: #fffbeb;
   border-color: rgba(245,158,11,.55);
   color: #78350f;
+}
+  .aiAnswerSection {
+  margin-top: 34px;
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #ffffff, #f8fbff);
+  border: 1px solid rgba(56,189,248,.24);
+  box-shadow: 0 14px 34px rgba(14,165,233,.10);
+  color: #111827;
+}
+
+.aiAnswerBadge {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: #fff7ed;
+  border: 1px solid rgba(245,158,11,.32);
+  color: #92400e;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.aiAnswerSection h2 {
+  color: #111827;
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+.aiAnswerSection p {
+  color: #374151 !important;
+  line-height: 2;
+  margin: 0;
+}
+
+.aiAnswerGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.aiAnswerGrid div {
+  padding: 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(245,158,11,.22);
+  box-shadow: 0 8px 20px rgba(245,158,11,.08);
+}
+
+.aiAnswerGrid strong {
+  display: block;
+  color: #111827;
+  margin-bottom: 6px;
+  font-weight: 950;
+}
+
+.aiAnswerGrid span {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+@media (max-width: 700px) {
+  .aiAnswerGrid {
+    grid-template-columns: 1fr;
+  }
 }
       `}</style>
     </main>
