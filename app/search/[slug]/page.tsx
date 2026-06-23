@@ -578,7 +578,7 @@ return (
 </div>
 
       <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
-        {products?.slice(0, 20).map((product: any, index: number) => (
+        {products?.slice(0, 8).map((product: any, index: number) => (
          <div
   key={index}
   className="seoProductCard"
@@ -904,27 +904,26 @@ return (
 .marketplacesSeoText,
 .faqSeoSection,
 .adsenseContentBlock {
-  margin: 26px 0;
-  padding: 24px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, #ffffff, #fffbeb);
-  border: 1px solid rgba(245,158,11,.20);
-  box-shadow: 0 12px 34px rgba(15,23,42,.06);
-}
-
-.adsenseContentBlock {
   max-width: 1180px;
   margin: 30px auto;
+  padding: 28px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #ffffff, #fffbeb);
+  border: 1px solid rgba(245,158,11,.22);
+  box-shadow: 0 14px 38px rgba(15,23,42,.07);
   color: #374151;
+  line-height: 2;
 }
 
 .adsenseContentBlock h2 {
   color: #92400e;
+  margin-bottom: 12px;
+  font-size: 24px;
 }
 
-  .seoPage > *:not(.aiBackground) {
-  position: relative;
-  z-index: 2;
+.adsenseContentBlock p {
+  color: #374151;
+  margin-bottom: 12px;
 }
 
 .seoProductCard {
@@ -963,109 +962,7 @@ return (
   text-decoration: none;
   font-weight: 950;
 }
-  .seoProductCard:hover {
- transform: translateY(-2px);
 
-  border-color: rgba(0,255,200,0.45);
-
-  box-shadow:
-    0 0 22px rgba(0,255,200,0.22),
-    0 12px 35px rgba(0,0,0,0.28);
-}
-  .aiBackground {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    overflow: hidden;
-    pointer-events: none;
-  }
-.adsenseContentBlock{
-  margin:40px 0;
-  padding:28px;
-  border-radius:20px;
-
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-
-  line-height:2;
-  color:#d7d7d7;
-}
-
-.adsenseContentBlock h2{
-  color:#00ffd5;
-  margin-bottom:12px;
-  font-size:24px;
-}
-
-.adsenseContentBlock p{
-  margin-bottom:12px;
-}
-  .brainCore {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 700px;
-    height: 450px;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 30% 40%, rgba(0,255,200,1), transparent 10%),
-      radial-gradient(circle at 50% 50%, rgba(0,180,255,0.9), transparent 12%),
-      radial-gradient(circle at 70% 45%, rgba(16,163,127,1), transparent 10%),
-      radial-gradient(circle at 45% 70%, rgba(0,220,255,0.9), transparent 8%);
-    filter: blur(35px);
-    opacity: 0.22;
-    animation: brainPulse 6s ease-in-out infinite;
-  }
-
-  .grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,255,200,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,200,0.08) 1px, transparent 1px);
-    background-size: 50px 50px;
-    opacity: 0.22;
-    animation: gridMove 20s linear infinite;
-  }
-
-  .particles span {
-    position: absolute;
-    top: calc((var(--i) * 23%) % 100%);
-    left: calc((var(--i) * 37%) % 100%);
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #00f7ff;
-    box-shadow:
-      0 0 8px #00f7ff,
-      0 0 18px #00f7ff,
-      0 0 35px rgba(0,247,255,0.8);
-    animation:
-      floatParticle 8s ease-in-out infinite,
-      particleGlow 2.5s ease-in-out infinite;
-    animation-delay: calc(var(--i) * 0.2s);
-  }
-
-  @keyframes brainPulse {
-    0%,100% { transform: translateX(-50%) scale(1); opacity: 0.22; }
-    50% { transform: translateX(-50%) scale(1.06); opacity: 0.42; }
-  }
-
-  @keyframes gridMove {
-    from { background-position: 0 0; }
-    to { background-position: 120px 120px; }
-  }
-
-  @keyframes floatParticle {
-    0%,100% { transform: translateY(0px) scale(1); opacity: 0.3; }
-    50% { transform: translateY(-25px) scale(1.8); opacity: 1; }
-  }
-
-  @keyframes particleGlow {
-    0%,100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.8); }
-  }
     .slugMarketHero {
   max-width: 1320px;
   margin: 26px auto 28px;
@@ -1374,16 +1271,16 @@ return (
 .relatedSearchLink {
   padding: 10px 14px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(0,255,200,0.25);
-  color: #7fffe0;
+  background: #fff;
+  border: 1px solid rgba(245,158,11,.28);
+  color: #92400e;
   text-decoration: none;
-  font-weight: 800;
+  font-weight: 900;
   transition: .25s;
 }
 
 .relatedSearchLink:hover {
-  background: rgba(0,255,200,0.12);
+  background: rgba(245,158,11,.10);
   transform: translateY(-2px);
 }
 `}</style>
