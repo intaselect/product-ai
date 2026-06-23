@@ -495,30 +495,6 @@ return (
 
 <h2 style={{ marginTop: "30px" }}>أفضل عروض {data?.query || query}</h2>
 <div style={{ marginTop: "20px", marginBottom: "20px", textAlign: "center" }}>
-  <p style={{ marginBottom: "10px", fontSize: "18px" }}>
-    شاهد مقارنة الأسعار في فيديو 👇
-  </p>
-
-  <a
-  href={`/api/slug-video?query=${encodeURIComponent(
-    data?.query || query
-  )}&country=${countryCode}`}
->
-  <button
-    style={{
-      padding: "14px 24px",
-      borderRadius: 14,
-      border: "none",
-      cursor: "pointer",
-      fontWeight: "bold",
-      background: "linear-gradient(135deg, #00d4ff, #00ffa6)",
-      color: "#000",
-      fontSize: "16px",
-    }}
-  >
-    ⬇️ تحميل فيديو مقارنة الأسعار
-  </button>
-</a>
 </div>
 
       <div style={{ display: "grid", gap: "16px", marginTop: "20px" }}>
