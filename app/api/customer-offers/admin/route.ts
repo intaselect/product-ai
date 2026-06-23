@@ -519,7 +519,7 @@ if (body.action === "toggle_side_ad") {
 
 
 
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
   }
 

@@ -398,7 +398,7 @@ async function generateAiBulk() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "generate_ai_product_details_bulk",
-          limit: 25,
+          limit: 10,
         }),
       }
     );
