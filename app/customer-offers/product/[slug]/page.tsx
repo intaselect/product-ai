@@ -469,27 +469,34 @@ const { data: relatedCollections } = await supabase
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <section className="hero">
-        <div className="badge">BPS Chat | بي بي اس شات</div>
+     <section className="hero">
+  <div className="badge">BPS Chat | بي بي اس شات</div>
 
-        <h1>
-          {offer.product_name}
-          <span>أفضل سعر عبر BPS Chat (بي بي اس شات) في {country}</span>
-        </h1>
+  <h1>
+    {offer.product_name}
+    <span>أفضل سعر عبر BPS Chat (بي بي اس شات) في {country}</span>
+  </h1>
+</section>
 
-        <p>
-          يعرض لك <strong>BPS Chat (بي بي اس شات)</strong> أفضل سعر لمنتج{" "}
-          <strong>{offer.product_name}</strong> في {country} مع رابط مباشر من
-          البائع. يمكنك من خلال <strong>بي بي اس شات</strong> مقارنة الأسعار
-          والوصول لأفضل العروض بسهولة.
-          <br />
-<br />
-كما يساعدك BPS Chat في مقارنة الأسعار بين أشهر المتاجر الإلكترونية مثل
-Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.
-        </p>
-      </section>
+<section className="productIntroText">
+  <p>
+    يعرض لك <strong>BPS Chat (بي بي اس شات)</strong> أفضل سعر لمنتج{" "}
+    <strong>{offer.product_name}</strong> في {country} مع رابط مباشر من
+    البائع. يمكنك من خلال <strong>بي بي اس شات</strong> مقارنة الأسعار
+    والوصول لأفضل العروض بسهولة.
+  </p>
 
-      <SearchBeforeBuyBanner />
+  <p>
+    كما يساعدك BPS Chat في مقارنة الأسعار بين أشهر المتاجر الإلكترونية مثل
+    Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و
+    Namshi و Trendyol و AliExpress و Temu و Shein.
+  </p>
+</section>
+
+<SearchBeforeBuyBanner />
+
+<MarketPromoSection />
+    
 
      <section className="premiumProductBox">
   <div className="premiumImageBox">
@@ -906,54 +913,66 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
       </section>
 <ComparePricesSection />
       <style>{`
-        .seoProductPage {
-          color: white;
-          min-height: 100vh;
-          background:
-            radial-gradient(circle at top, rgba(0,255,200,0.08), transparent 30%),
-            radial-gradient(circle at right, rgba(0,180,255,0.07), transparent 25%),
-            #0b0f14;
-          padding-bottom: 60px;
-        }
+    .seoProductPage {
+  color: #111827;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(245,158,11,.10), transparent 30%),
+    radial-gradient(circle at top left, rgba(34,197,94,.08), transparent 28%),
+    #fffaf0;
+  padding-bottom: 60px;
+}
 
-        .hero {
-          max-width: 980px;
-          margin: 0 auto;
-          padding: 54px 18px 24px;
-          text-align: center;
-        }
+.hero {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 34px 18px 12px;
+  text-align: center;
+}
 
-        .badge {
-          display: inline-block;
-          background: rgba(16, 163, 127, 0.14);
-          border: 1px solid rgba(16, 163, 127, 0.35);
-          color: #7fffe0;
-          padding: 8px 16px;
-          border-radius: 999px;
-          margin-bottom: 18px;
-          font-weight: 800;
-        }
+.badge {
+  display: inline-block;
+  background: #fff7ed;
+  border: 1px solid rgba(245,158,11,.35);
+  color: #92400e;
+  padding: 8px 16px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  font-weight: 900;
+}
 
-        h1 {
-          font-size: 42px;
-          line-height: 1.35;
-          margin: 0 0 18px;
-        }
+h1 {
+  color: #111827;
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1.45;
+  margin: 0;
+  font-weight: 950;
+}
 
-        h1 span {
-          display: block;
-          font-size: 21px;
-          color: #cfcfcf;
-          margin-top: 8px;
-        }
+h1 span {
+  display: block;
+  font-size: 17px;
+  color: #92400e;
+  margin-top: 8px;
+  font-weight: 900;
+}
 
-        .hero p {
-          max-width: 800px;
-          margin: 0 auto;
-          color: #e8e8e8;
-          font-size: 18px;
-          line-height: 2;
-        }
+.productIntroText {
+  max-width: 1320px;
+  margin: 18px auto;
+  padding: 22px 24px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ffffff, #fffbeb);
+  border: 1px solid rgba(245,158,11,.22);
+  box-shadow: 0 12px 32px rgba(15,23,42,.06);
+  color: #374151;
+  line-height: 2;
+  font-size: 16px;
+}
+
+.productIntroText p {
+  margin: 0 0 10px;
+}
 
         .productBox {
           max-width: 980px;
