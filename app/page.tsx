@@ -630,7 +630,7 @@ async function handleSearch() {
 )}
   <div className="searchBox">
     <input
-      placeholder="اكتب اسم المنتج..."
+      placeholder="ابحث عن منتج في جميع متاجر بلدك"
       value={query}
       onChange={(e) => setQuery(e.target.value)}
       onKeyDown={(e) => {
