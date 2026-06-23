@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
+import { cookies, headers } from "next/headers";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -27,7 +28,30 @@ const countryNames: Record<string, string> = {
   bh: "البحرين",
   eg: "مصر",
 };
+async function detectCountry() {
+  const cookieStore = await cookies();
+  const headerStore = await headers();
 
+  const cookieCountry =
+    cookieStore.get("bps_country")?.value ||
+    cookieStore.get("country")?.value;
+
+  if (cookieCountry) return cookieCountry;
+
+  const vercelCountry =
+    headerStore.get("x-vercel-ip-country")?.toLowerCase();
+
+  const map: Record<string, string> = {
+    sa: "sa",
+    ae: "ae",
+    kw: "kw",
+    qa: "qa",
+    bh: "bh",
+    eg: "eg",
+  };
+
+  return map[vercelCountry || ""] || "sa";
+}
 export default async function CustomerOffersSearchPage({
   searchParams,
 }: {
@@ -35,19 +59,20 @@ export default async function CustomerOffersSearchPage({
 }) {
   const { q } = await searchParams;
   const query = String(q || "").trim();
-
+const detectedCountry = await detectCountry();
   let offers: any[] = [];
 
   if (query) {
     const { data } = await supabase
-      .from("customer_offers")
-      .select("id, product_name, price, image_url, store_name, country")
-      .eq("status", "approved")
-      .or(
-        `product_name.ilike.%${query}%,store_name.ilike.%${query}%`
-      )
-      .order("created_at", { ascending: false })
-      .limit(60);
+  .from("customer_offers")
+  .select("id, product_name, price, image_url, store_name, country")
+  .eq("status", "approved")
+  .eq("country", detectedCountry)
+  .or(
+    `product_name.ilike.%${query}%,store_name.ilike.%${query}%`
+  )
+  .order("created_at", { ascending: false })
+  .limit(100);
 
     offers = data || [];
   }
