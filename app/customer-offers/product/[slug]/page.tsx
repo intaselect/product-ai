@@ -1774,6 +1774,15 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
             justify-content: center;
           }
         }
+          .content p,
+.content li,
+.infoCard p,
+.infoCard li,
+.faqBox p,
+.faqBox li,
+.relatedSection p {
+  color: #374151 !important;
+}
       `}</style>
     </main>
   );
