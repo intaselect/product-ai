@@ -386,6 +386,39 @@ async function generateAiDetails(id: number) {
     setActionLoading("");
   }
 }
+async function generateAiBulk() {
+  setActionLoading("ai-bulk");
+  setError("");
+
+  try {
+    const res = await fetch(
+      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "generate_ai_product_details_bulk",
+          limit: 25,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      setError(data.error || "حدث خطأ أثناء تحسين الدفعة");
+      return;
+    }
+
+    await loadData();
+
+    alert(`تم تحسين ${data.success} منتج وفشل ${data.failed}`);
+  } catch (err: any) {
+    setError(err?.message || "حدث خطأ أثناء تحسين الدفعة");
+  } finally {
+    setActionLoading("");
+  }
+}
   return (
     <main className="adminPage" dir="rtl">
       <section className="adminHero">
@@ -415,6 +448,14 @@ async function generateAiDetails(id: number) {
             {loading ? "جاري التحميل..." : "تحديث البيانات"}
           </button>
         )}
+        <button
+  onClick={generateAiBulk}
+  disabled={actionLoading === "ai-bulk"}
+>
+  {actionLoading === "ai-bulk"
+    ? "جاري تحسين الدفعة..."
+    : "🧠 تحسين 25 منتج غير محسن"}
+</button>
 
         {error && <div className="errorMsg">{error}</div>}
       </section>

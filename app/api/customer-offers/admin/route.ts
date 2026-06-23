@@ -442,7 +442,60 @@ if (body.action === "toggle_side_ad") {
       { status: 400 }
     );
   }
+if (body.action === "generate_ai_product_details_bulk") {
+  const limit = Math.min(Number(body.limit || 25), 50);
 
+  const { data: offers, error: offersError } = await supabase
+    .from("customer_offers")
+    .select("*")
+    .eq("status", "approved")
+    .or("ai_description.is.null,ai_description.eq.")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (offersError) {
+    return NextResponse.json({ ok: false, error: offersError.message }, { status: 500 });
+  }
+
+  const results: any[] = [];
+
+  for (const offer of offers || []) {
+    try {
+      const details = await generateAiProductDetails(offer);
+
+      const { error } = await supabase
+        .from("customer_offers")
+        .update({
+          ai_description: details.description,
+          ai_features: details.features,
+          ai_keywords: details.keywords,
+          ai_enriched_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", offer.id);
+
+      if (error) throw error;
+
+      results.push({ id: offer.id, ok: true });
+    } catch (err: any) {
+      results.push({
+        id: offer.id,
+        ok: false,
+        error: err?.message || "فشل التحسين",
+      });
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+  }
+
+  return NextResponse.json({
+    ok: true,
+    total: results.length,
+    success: results.filter((x) => x.ok).length,
+    failed: results.filter((x) => !x.ok).length,
+    results,
+  });
+}
   const { data: offer, error: offerError } = await supabase
     .from("customer_offers")
     .select("*")
