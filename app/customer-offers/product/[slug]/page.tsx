@@ -525,15 +525,25 @@ const { data: relatedCollections } = await supabase
             )}
           </div>
 
-          <a
-          
-  href={`/api/customer-offers/click/${offer.id}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="premiumBuyBtn"
->
-  🔥 عرض المنتج الآن
-</a>
+         <div className="premiumButtons">
+  <a
+    href={`/api/customer-offers/click/${offer.id}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="premiumBuyBtn"
+  >
+    🛒 عرض المنتج
+  </a>
+
+  <a
+    href={`/api/customer-offers/click/${offer.id}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="premiumBuyNowBtn"
+  >
+    ⚡ اشتري الآن
+  </a>
+</div>
 
           <Link href="/customer-offers" className="premiumBackBtn">
             مشاهدة باقي عروض العملاء
@@ -1576,12 +1586,58 @@ h1 span {
           transition: all .25s ease;
         }
 
-        .premiumBuyBtn {
-          background: linear-gradient(135deg, #16a34a, #2563eb);
-          color: #fff;
-          box-shadow: 0 14px 32px rgba(37,99,235,0.24);
-          margin-bottom: 12px;
-        }
+        .premiumButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.premiumBuyBtn {
+  background: linear-gradient(
+    180deg,
+    #ffd814 0%,
+    #f7ca00 100%
+  );
+  color: #111827;
+  border: 1px solid #f2c200;
+  box-shadow: 0 8px 22px rgba(245, 158, 11, .18);
+}
+
+.premiumBuyBtn:hover {
+  background: linear-gradient(
+    180deg,
+    #ffe36a 0%,
+    #ffd814 100%
+  );
+  transform: translateY(-2px);
+}
+
+.premiumBuyNowBtn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 950;
+  border-radius: 16px;
+  padding: 15px 18px;
+
+  background: linear-gradient(
+    180deg,
+    #ff9900 0%,
+    #f08804 100%
+  );
+
+  color: white;
+  border: 1px solid #e47911;
+
+  transition: all .25s ease;
+  box-shadow: 0 8px 22px rgba(255, 153, 0, .25);
+}
+
+.premiumBuyNowBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
 
         .premiumBuyBtn:hover {
           transform: translateY(-3px);
