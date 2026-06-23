@@ -17,6 +17,7 @@ import DailyDealsBanner from "@/app/components/DailyDealsBanner";
 import BrandSplash from "@/app/components/BrandSplash";
 import { GoogleTagManager } from "@next/third-parties/google";
 import SideAds from "@/app/components/SideAds";
+import GlobalProductSearch from "@/app/components/GlobalProductSearch";
 
 
 const geistSans = Geist({
@@ -256,7 +257,7 @@ export default function RootLayout({
  <body className="min-h-screen flex flex-col">
   <BrandSplash />
  <Navbar />
- 
+ <GlobalProductSearch />
  <div className="mobileFloatingStoreCard">
     <a href="/customer-offers" className="mobileFloatingItem">
       <span>🛒</span>
