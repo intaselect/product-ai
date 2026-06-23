@@ -1236,12 +1236,13 @@ h1 span {
         }
 
         .infoCard {
-          background: rgba(40,40,40,0.72);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 18px;
-          padding: 20px;
-          box-shadow: 0 0 25px rgba(16,163,127,0.08);
-        }
+  background: linear-gradient(135deg, #ffffff, #f8fbff);
+  border: 1px solid rgba(56,189,248,.22);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 14px 34px rgba(14,165,233,.10);
+  color: #111827;
+}
 
         .infoCard h3 {
           font-size: 20px;
@@ -1255,16 +1256,16 @@ h1 span {
           margin-top: 18px;
         }
 
-        .relatedCard {
-          overflow: hidden;
-          border-radius: 20px;
-          background: rgba(40,40,40,0.72);
-          border: 1px solid rgba(255,255,255,0.08);
-          text-decoration: none;
-          color: white;
-          transition: all .25s ease;
-        }
-
+       .relatedCard {
+  overflow: hidden;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid rgba(56,189,248,.22);
+  text-decoration: none;
+  color: #111827;
+  transition: all .25s ease;
+  box-shadow: 0 14px 34px rgba(14,165,233,.10);
+}
         .relatedCard:hover {
           transform: translateY(-5px);
           border-color: rgba(16,163,127,0.5);
@@ -1272,8 +1273,8 @@ h1 span {
         }
 
         .relatedImage {
-          height: 170px;
-          background: #0f0f0f;
+        height: 170px;
+  background: #f8fafc;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -1310,9 +1311,9 @@ h1 span {
         }
 
         .relatedContent span {
-          color: #cfcfcf;
-          font-size: 12px;
-        }
+  color: #64748b;
+  font-size: 12px;
+}
 
         .quickLinks {
           display: flex;
@@ -1413,18 +1414,19 @@ h1 span {
           gap: 14px;
           margin-top: 18px;
         }
+.faqBox div {
+  background: linear-gradient(135deg, #ffffff, #f8fbff);
+  border: 1px solid rgba(56,189,248,.24);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 12px 30px rgba(14,165,233,.10);
+  color: #111827;
+}
 
-        .faqBox div {
-          background: rgba(40,40,40,0.72);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 18px;
-          padding: 18px;
-        }
-
-        .faqBox h3 {
-          margin: 0 0 8px;
-          color: #fff;
-        }
+.faqBox h3 {
+  margin: 0 0 8px;
+  color: #0f172a;
+}
 
         .premiumProductBox {
           max-width: 1120px;
@@ -1739,35 +1741,37 @@ h1 span {
         }
 
         .featuresList li {
-          background: rgba(40,40,40,0.72);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 14px;
-          padding: 10px 14px;
-        }
+  background: linear-gradient(135deg, #ffffff, #f0f9ff);
+  border: 1px solid rgba(56,189,248,.24);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: #111827;
+  box-shadow: 0 10px 24px rgba(14,165,233,.08);
+}
 
         .specsTable {
           display: grid;
           gap: 10px;
           margin-top: 16px;
         }
+.specsTable div {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 12px;
+  background: linear-gradient(135deg, #ffffff, #f8fbff);
+  border: 1px solid rgba(56,189,248,.22);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 24px rgba(14,165,233,.08);
+}
 
-        .specsTable div {
-          display: grid;
-          grid-template-columns: 220px 1fr;
-          gap: 12px;
-          background: rgba(40,40,40,0.72);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 14px;
-          padding: 12px 14px;
-        }
+.specsTable strong {
+  color: #047857;
+}
 
-        .specsTable strong {
-          color: #7fffe0;
-        }
-
-        .specsTable span {
-          color: #e8e8e8;
-        }
+.specsTable span {
+  color: #111827;
+}
 
         @media (max-width: 700px) {
           .specsTable div {
@@ -1788,6 +1792,31 @@ h1 span {
 .faqBox li,
 .relatedSection p {
   color: #374151 !important;
+}
+  .infoCard h3,
+.relatedContent h3 {
+  color: #111827;
+}
+
+.infoCard p,
+.featuresList li,
+.faqBox p,
+.relatedContent span,
+.specsTable span {
+  color: #374151 !important;
+}
+
+.quickLinks a {
+  background: #ffffff;
+  border: 1px solid rgba(245,158,11,.28);
+  color: #92400e;
+  box-shadow: 0 8px 20px rgba(245,158,11,.08);
+}
+
+.quickLinks a:hover {
+  background: #fffbeb;
+  border-color: rgba(245,158,11,.55);
+  color: #78350f;
 }
       `}</style>
     </main>
