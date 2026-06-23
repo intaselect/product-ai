@@ -974,43 +974,49 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
 }
 
         .hero {
-          max-width: 980px;
-          margin: 0 auto;
-          padding: 54px 18px 24px;
-          text-align: center;
-        }
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 54px 18px 24px;
+  text-align: center;
+  color: #111827;
+}
 
-        .badge {
-          display: inline-block;
-          background: rgba(16, 163, 127, 0.14);
-          border: 1px solid rgba(16, 163, 127, 0.35);
-          color: #7fffe0;
-          padding: 8px 16px;
-          border-radius: 999px;
-          margin-bottom: 18px;
-          font-weight: 800;
-        }
+.badge {
+  display: inline-block;
+  background: #fff7ed;
+  border: 1px solid rgba(245,158,11,.35);
+  color: #92400e;
+  padding: 8px 16px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+  font-weight: 900;
+}
 
-        h1 {
-          font-size: 42px;
-          line-height: 1.35;
-          margin: 0 0 18px;
-        }
+h1 {
+  font-size: 42px;
+  line-height: 1.35;
+  margin: 0 0 18px;
+  color: #111827;
+}
 
-        h1 span {
-          display: block;
-          font-size: 21px;
-          color: #cfcfcf;
-          margin-top: 8px;
-        }
+h1 span {
+  display: block;
+  font-size: 21px;
+  color: #374151;
+  margin-top: 8px;
+}
 
-        .hero p {
-          max-width: 800px;
-          margin: 0 auto;
-          color: #e8e8e8;
-          font-size: 18px;
-          line-height: 2;
-        }
+.hero p {
+  max-width: 800px;
+  margin: 0 auto;
+  color: #374151;
+  font-size: 18px;
+  line-height: 2;
+}
+
+.hero strong {
+  color: #111827;
+}
 
         .productBox {
           max-width: 980px;
