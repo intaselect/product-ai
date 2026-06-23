@@ -453,47 +453,7 @@ return (
   </div>
 </section>
 <SearchBeforeBuyBanner />
-{slugMarketOffers.length > 0 && (
-  <section className="slugMarketOffers" dir="rtl">
-    <div className="slugSectionHeader">
-      <div>
-        <h2>🔥 عروض من المتجر في {countryName}</h2>
-        <p>منتجات مختارة من BPS Market حسب الدولة</p>
-      </div>
 
-      <a href={`/customer-offers?country=${countryCode}`}>عرض كل العروض</a>
-    </div>
-
-    <div className="slugOffersGrid">
-      {slugMarketOffers.map((offer) => (
-        <article className="slugOfferCard" key={offer.id}>
-          <div className="slugOfferImage">
-            <img src={offer.image_url} alt={offer.product_name} loading="lazy" />
-            <span>{countryNames[offer.country || ""] || countryName}</span>
-          </div>
-
-          <div className="slugOfferContent">
-            <p>{offer.store_name || "عرض عميل BPS Chat"}</p>
-            <h3>{offer.product_name}</h3>
-
-            <div className="slugPriceRow">
-              <strong>{offer.price}</strong>
-              <small>{countryCurrencies[offer.country || ""]}</small>
-            </div>
-
-            <a
-              href={`/api/customer-offers/click/${offer.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              عرض المنتج
-            </a>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-)}
 <div
   style={{
     margin: "20px 0",
@@ -807,6 +767,87 @@ return (
   </div>
     </section>
     </div>
+    {slugMarketOffers.length > 0 && (
+
+  <section className="slugMarketOffers" dir="rtl">
+
+    <div className="slugSectionHeader">
+
+      <div>
+
+        <h2>🔥 عروض من المتجر في {countryName}</h2>
+
+        <p>منتجات مختارة من BPS Market حسب الدولة</p>
+
+      </div>
+
+
+
+      <a href={`/customer-offers?country=${countryCode}`}>عرض كل العروض</a>
+
+    </div>
+
+
+
+    <div className="slugOffersGrid">
+
+      {slugMarketOffers.map((offer) => (
+
+        <article className="slugOfferCard" key={offer.id}>
+
+          <div className="slugOfferImage">
+
+            <img src={offer.image_url} alt={offer.product_name} loading="lazy" />
+
+            <span>{countryNames[offer.country || ""] || countryName}</span>
+
+          </div>
+
+
+
+          <div className="slugOfferContent">
+
+            <p>{offer.store_name || "عرض عميل BPS Chat"}</p>
+
+            <h3>{offer.product_name}</h3>
+
+
+
+            <div className="slugPriceRow">
+
+              <strong>{offer.price}</strong>
+
+              <small>{countryCurrencies[offer.country || ""]}</small>
+
+            </div>
+
+
+
+            <a
+
+              href={`/api/customer-offers/click/${offer.id}`}
+
+              target="_blank"
+
+              rel="noopener noreferrer"
+
+            >
+
+              عرض المنتج
+
+            </a>
+
+          </div>
+
+        </article>
+
+      ))}
+
+    </div>
+
+  </section>
+
+)}
     <section className="adsenseContentBlock">
 
 <h2>
