@@ -469,27 +469,7 @@ const { data: relatedCollections } = await supabase
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <section className="hero">
-        <div className="badge">BPS Chat | بي بي اس شات</div>
-
-        <h1>
-          {offer.product_name}
-          <span>أفضل سعر عبر BPS Chat (بي بي اس شات) في {country}</span>
-        </h1>
-
-        <p>
-          يعرض لك <strong>BPS Chat (بي بي اس شات)</strong> أفضل سعر لمنتج{" "}
-          <strong>{offer.product_name}</strong> في {country} مع رابط مباشر من
-          البائع. يمكنك من خلال <strong>بي بي اس شات</strong> مقارنة الأسعار
-          والوصول لأفضل العروض بسهولة.
-          <br />
-<br />
-كما يساعدك BPS Chat في مقارنة الأسعار بين أشهر المتاجر الإلكترونية مثل
-Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.
-        </p>
-      </section>
-
-      <SearchBeforeBuyBanner />
+      
 
       <section className="premiumProductBox">
         <div className="premiumImageBox">
@@ -613,7 +593,27 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
       </section>
 
       <MarketPromoSection />
+<section className="hero">
+        <div className="badge">BPS Chat | بي بي اس شات</div>
 
+        <h1>
+          {offer.product_name}
+          <span>أفضل سعر عبر BPS Chat (بي بي اس شات) في {country}</span>
+        </h1>
+
+        <p>
+          يعرض لك <strong>BPS Chat (بي بي اس شات)</strong> أفضل سعر لمنتج{" "}
+          <strong>{offer.product_name}</strong> في {country} مع رابط مباشر من
+          البائع. يمكنك من خلال <strong>بي بي اس شات</strong> مقارنة الأسعار
+          والوصول لأفضل العروض بسهولة.
+          <br />
+<br />
+كما يساعدك BPS Chat في مقارنة الأسعار بين أشهر المتاجر الإلكترونية مثل
+Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.
+        </p>
+      </section>
+
+      <SearchBeforeBuyBanner />
       <section className="content">
         <h2>أفضل سعر {offer.product_name} في {country}</h2>
         <p>
