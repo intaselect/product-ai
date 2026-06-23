@@ -961,15 +961,17 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
       </section>
 <ComparePricesSection />
       <style>{`
-        .seoProductPage {
-          color: white;
-          min-height: 100vh;
-          background:
-            radial-gradient(circle at top, rgba(0,255,200,0.08), transparent 30%),
-            radial-gradient(circle at right, rgba(0,180,255,0.07), transparent 25%),
-            #0b0f14;
-          padding-bottom: 60px;
-        }
+       .seoProductPage {
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #fffdf7 35%,
+    #fffaf0 100%
+  );
+  color: #111827;
+  padding-bottom: 60px;
+}
 
         .hero {
           max-width: 980px;
