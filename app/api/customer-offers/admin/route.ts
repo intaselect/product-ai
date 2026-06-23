@@ -185,10 +185,10 @@ async function generateAiProductDetails(offer: any) {
 }
 `;
 
-  const models = [
-  "gemini-2.5-flash-lite",
-  "gemini-2.5-flash",
-  "gemini-2.0-flash",
+const models = [
+  "gemini-flash-latest",
+  "gemini-flash-lite-latest",
+  "gemini-pro-latest",
 ];
 
   for (const model of models) {
