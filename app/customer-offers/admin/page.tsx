@@ -749,12 +749,10 @@ async function generateAiBulk() {
     : offer.side_ad
     ? "📢 إزالة من إعلانات الأجناب"
     : "📢 أضف لإعلانات الأجناب"}
-    <button
-  className={
-    offer.best_offer
-      ? "sideOnBtn"
-      : "sideOffBtn"
-  }
+</button>
+
+<button
+  className={offer.best_offer ? "adOnBtn" : "adOffBtn"}
   disabled={actionLoading === `best-${offer.id}`}
   onClick={() =>
     toggleBestOffer(
@@ -763,10 +761,11 @@ async function generateAiBulk() {
     )
   }
 >
-  {offer.best_offer
+  {actionLoading === `best-${offer.id}`
+    ? "جاري..."
+    : offer.best_offer
     ? "🔥 ضمن أفضل العروض"
     : "⭐ أضف إلى أفضل العروض"}
-</button>
 </button>
                 <div className="actions">
                   <button
