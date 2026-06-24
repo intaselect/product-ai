@@ -311,12 +311,6 @@ const { data: relatedCollections } = await supabase
     name: offer.source_brand || offer.store_name || "منتج من متجر خارجي",
   },
 
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.4",
-    reviewCount: "87",
-  },
-
  offers: {
   "@type": "Offer",
   url: `${SITE_URL}/api/customer-offers/click/${offer.id}`,
