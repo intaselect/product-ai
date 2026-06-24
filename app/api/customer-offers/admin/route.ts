@@ -368,6 +368,32 @@ if (body.action === "toggle_side_ad") {
 
   return NextResponse.json({ ok: true });
 }
+if (body.action === "toggle_best_offer") {
+  const id = Number(body.id);
+  const best_offer = Boolean(body.best_offer);
+
+  const { error } = await supabase
+    .from("customer_offers")
+    .update({
+      best_offer,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  if (error) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: error.message,
+      },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({
+    ok: true,
+  });
+}
 
   // ✅ تحديث حالة العرض: approved / rejected / pending
   if (body.action === "update_offer_status") {

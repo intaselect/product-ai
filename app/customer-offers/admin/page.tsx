@@ -18,6 +18,7 @@ type Offer = {
   click_count?: number;
   is_ad?: boolean;
   side_ad?: boolean;
+  best_offer?: boolean;
   description?: string;
 features?: string[];
 gallery_images?: string[];
@@ -224,6 +225,43 @@ async function toggleSideAd(
       prev.map((offer) =>
         offer.id === id
           ? { ...offer, side_ad }
+          : offer
+      )
+    );
+  } finally {
+    setActionLoading("");
+  }
+}
+async function toggleBestOffer(
+  id: number,
+  best_offer: boolean
+) {
+  setActionLoading(`best-${id}`);
+
+  try {
+    const res = await fetch(
+      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "toggle_best_offer",
+          id,
+          best_offer,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!data.ok) return;
+
+    setOffers((prev) =>
+      prev.map((offer) =>
+        offer.id === id
+          ? { ...offer, best_offer }
           : offer
       )
     );
@@ -711,6 +749,24 @@ async function generateAiBulk() {
     : offer.side_ad
     ? "📢 إزالة من إعلانات الأجناب"
     : "📢 أضف لإعلانات الأجناب"}
+    <button
+  className={
+    offer.best_offer
+      ? "sideOnBtn"
+      : "sideOffBtn"
+  }
+  disabled={actionLoading === `best-${offer.id}`}
+  onClick={() =>
+    toggleBestOffer(
+      offer.id,
+      !offer.best_offer
+    )
+  }
+>
+  {offer.best_offer
+    ? "🔥 ضمن أفضل العروض"
+    : "⭐ أضف إلى أفضل العروض"}
+</button>
 </button>
                 <div className="actions">
                   <button

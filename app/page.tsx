@@ -12,6 +12,7 @@ import HomeCategoryPromoBanners from "@/app/components/HomeCategoryPromoBanners"
 import HomeHeroSlider from "@/app/components/HomeHeroSlider";
 import CanvaPromo from "@/app/components/CanvaPromo";
 import GeminiPromo from "@/app/components/GeminiPromo";
+import BestOffersSlider from "@/app/components/BestOffersSlider";
 
 
 
@@ -75,7 +76,9 @@ const currencyLabel: any = {
   bh: "دينار",
   eg: "جنيه",
 };
-
+const bestOffersProducts = (groupedProducts[country] || [])
+  .filter((product: any) => product.best_offer === true)
+  .slice(0, 20);
 const sponsoredProducts = (groupedProducts[country] || [])
   .sort(() => Math.random() - 0.5)
   .slice(0, 4);
@@ -589,6 +592,7 @@ async function handleSearch() {
 
   <div className="heroContent">
   <section className="composer heroComposer">
+    <BestOffersSlider products={bestOffersProducts} />
   {errorMessage && (
     <div className="aiErrorBox">
       {errorMessage}
