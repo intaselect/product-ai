@@ -16,7 +16,7 @@ export async function GET() {
       countries.map(async (country) => {
         const { data } = await supabase
           .from("customer_offers")
-          .select("id, product_name, price, image_url, country, store_name, created_at")
+          .select("id, product_name, price, image_url, product_url, country, store_name, created_at, best_offer")
           .eq("status", "approved")
           .eq("country", country)
           .order("created_at", { ascending: false })
