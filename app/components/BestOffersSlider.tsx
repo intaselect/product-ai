@@ -4,7 +4,14 @@ import Link from "next/link";
 
 export default function BestOffersSlider({ products }: { products: any[] }) {
   if (!products || products.length === 0) return null;
-
+const currencyMap: Record<string, string> = {
+  sa: "ريال",
+  ae: "درهم",
+  kw: "دينار",
+  qa: "ريال",
+  bh: "دينار",
+  eg: "جنيه",
+};
   return (
     <section className="bestOffersSlider">
       <div className="bestOffersHeader">
@@ -35,7 +42,9 @@ export default function BestOffersSlider({ products }: { products: any[] }) {
 
             <h3>{product.product_name}</h3>
 
-            <p className="bestOfferPrice">{product.price}</p>
+            <p className="bestOfferPrice">
+  {product.price} {currencyMap[product.country] || ""}
+</p>
 
             <span className="bestOfferStore">
               {product.store_name || "متجر خارجي"}
