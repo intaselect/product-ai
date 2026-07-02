@@ -20,15 +20,18 @@ type Offer = {
   side_ad?: boolean;
   best_offer?: boolean;
   description?: string;
-features?: string[];
-gallery_images?: string[];
-specifications?: Record<string, any>;
-source_brand?: string;
-ai_description?: string;
-ai_features?: string[];
-ai_specifications?: Record<string, any>;
-ai_keywords?: string[];
-ai_enriched_at?: string;
+  features?: string[];
+  gallery_images?: string[];
+  specifications?: Record<string, any>;
+  source_brand?: string;
+  ai_description?: string;
+  ai_features?: string[];
+  ai_specifications?: Record<string, any>;
+  ai_keywords?: string[];
+  ai_enriched_at?: string;
+  availability?: "in_stock" | "out_of_stock" | "unknown";
+  last_stock_checked_at?: string;
+  stock_check_note?: string;
 };
 
 type Limit = {
@@ -46,18 +49,18 @@ export default function CustomerOffersAdminPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string>("");
   const [error, setError] = useState("");
-  
+
   const [countryFilter, setCountryFilter] = useState("all");
   const filteredOffers = useMemo(() => {
-  if (countryFilter === "all") return offers;
+    if (countryFilter === "all") return offers;
 
-  return offers.filter(
-    (offer) =>
-      String(offer.country || "")
-        .toLowerCase()
-        .trim() === countryFilter
-  );
-}, [offers, countryFilter]);
+    return offers.filter(
+      (offer) =>
+        String(offer.country || "")
+          .toLowerCase()
+          .trim() === countryFilter
+    );
+  }, [offers, countryFilter]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -76,26 +79,26 @@ export default function CustomerOffersAdminPage() {
   }, [limits]);
   const adminStats = useMemo(() => {
     const totalSellers = new Set(
-    offers.map((offer) => offer.user_id).filter(Boolean)
-  ).size;
+      offers.map((offer) => offer.user_id).filter(Boolean)
+    ).size;
 
-  const totalClicks = offers.reduce(
-    (sum, offer) => sum + Number(offer.click_count || 0),
-    0
-  );
+    const totalClicks = offers.reduce(
+      (sum, offer) => sum + Number(offer.click_count || 0),
+      0
+    );
 
-  const sellerClicks = offers.reduce((acc: Record<string, number>, offer) => {
-    const email = offer.seller_email || "غير معروف";
-    acc[email] = (acc[email] || 0) + Number(offer.click_count || 0);
-    return acc;
-  }, {});
+    const sellerClicks = offers.reduce((acc: Record<string, number>, offer) => {
+      const email = offer.seller_email || "غير معروف";
+      acc[email] = (acc[email] || 0) + Number(offer.click_count || 0);
+      return acc;
+    }, {});
 
- return {
-  totalSellers,
-  totalClicks,
-  sellerClicks: Object.entries(sellerClicks).sort((a, b) => b[1] - a[1]),
-};
-}, [offers]);
+    return {
+      totalSellers,
+      totalClicks,
+      sellerClicks: Object.entries(sellerClicks).sort((a, b) => b[1] - a[1]),
+    };
+  }, [offers]);
 
   async function loadData(adminSecret = secret) {
     setLoading(true);
@@ -116,8 +119,8 @@ export default function CustomerOffersAdminPage() {
       setOffers(data.offers || []);
       setLimits(data.limits || []);
     } catch (err: any) {
-  setError(err?.message || "حدث خطأ غير متوقع أثناء تحسين المنتج");
-}finally {
+      setError(err?.message || "حدث خطأ غير متوقع أثناء تحسين المنتج");
+    } finally {
       setLoading(false);
     }
   }
@@ -161,114 +164,114 @@ export default function CustomerOffersAdminPage() {
       setActionLoading("");
     }
   }
-async function toggleAd(id: number, is_ad: boolean) {
-  setActionLoading(`ad-${id}`);
-  setError("");
+  async function toggleAd(id: number, is_ad: boolean) {
+    setActionLoading(`ad-${id}`);
+    setError("");
 
-  try {
-    const res = await fetch(
-      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "toggle_ad",
-          id,
-          is_ad,
-        }),
+    try {
+      const res = await fetch(
+        `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "toggle_ad",
+            id,
+            is_ad,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setError(data.error || "حدث خطأ أثناء تحديث الإعلان");
+        return;
       }
-    );
 
-    const data = await res.json();
-
-    if (!res.ok || !data.ok) {
-      setError(data.error || "حدث خطأ أثناء تحديث الإعلان");
-      return;
+      setOffers((prev) =>
+        prev.map((offer) => (offer.id === id ? { ...offer, is_ad } : offer))
+      );
+    } catch {
+      setError("حدث خطأ غير متوقع أثناء تحديث الإعلان");
+    } finally {
+      setActionLoading("");
     }
-
-    setOffers((prev) =>
-      prev.map((offer) => (offer.id === id ? { ...offer, is_ad } : offer))
-    );
-  } catch {
-    setError("حدث خطأ غير متوقع أثناء تحديث الإعلان");
-  } finally {
-    setActionLoading("");
   }
-}
-async function toggleSideAd(
-  id: number,
-  side_ad: boolean
-) {
-  setActionLoading(`side-${id}`);
+  async function toggleSideAd(
+    id: number,
+    side_ad: boolean
+  ) {
+    setActionLoading(`side-${id}`);
 
-  try {
-    const res = await fetch(
-      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          action: "toggle_side_ad",
-          id,
-          side_ad,
-        }),
-      }
-    );
+    try {
+      const res = await fetch(
+        `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "toggle_side_ad",
+            id,
+            side_ad,
+          }),
+        }
+      );
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!data.ok) return;
+      if (!data.ok) return;
 
-    setOffers((prev) =>
-      prev.map((offer) =>
-        offer.id === id
-          ? { ...offer, side_ad }
-          : offer
-      )
-    );
-  } finally {
-    setActionLoading("");
+      setOffers((prev) =>
+        prev.map((offer) =>
+          offer.id === id
+            ? { ...offer, side_ad }
+            : offer
+        )
+      );
+    } finally {
+      setActionLoading("");
+    }
   }
-}
-async function toggleBestOffer(
-  id: number,
-  best_offer: boolean
-) {
-  setActionLoading(`best-${id}`);
+  async function toggleBestOffer(
+    id: number,
+    best_offer: boolean
+  ) {
+    setActionLoading(`best-${id}`);
 
-  try {
-    const res = await fetch(
-      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          action: "toggle_best_offer",
-          id,
-          best_offer,
-        }),
-      }
-    );
+    try {
+      const res = await fetch(
+        `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "toggle_best_offer",
+            id,
+            best_offer,
+          }),
+        }
+      );
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!data.ok) return;
+      if (!data.ok) return;
 
-    setOffers((prev) =>
-      prev.map((offer) =>
-        offer.id === id
-          ? { ...offer, best_offer }
-          : offer
-      )
-    );
-  } finally {
-    setActionLoading("");
+      setOffers((prev) =>
+        prev.map((offer) =>
+          offer.id === id
+            ? { ...offer, best_offer }
+            : offer
+        )
+      );
+    } finally {
+      setActionLoading("");
+    }
   }
-}
   async function updateUserLimit(
     user_id: string,
     email: string,
@@ -329,36 +332,36 @@ async function toggleBestOffer(
       setActionLoading("");
     }
   }
-async function fetchDetails(id: number) {
-  setActionLoading(`details-${id}`);
-  setError("");
+  async function fetchDetails(id: number) {
+    setActionLoading(`details-${id}`);
+    setError("");
 
-  try {
-    const res = await fetch(
-      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          action: "fetch_product_details",
-          id,
-        }),
+    try {
+      const res = await fetch(
+        `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "fetch_product_details",
+            id,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setError(data.error || "حدث خطأ أثناء جلب التفاصيل");
+        return;
       }
-    );
 
-    const data = await res.json();
-
-    if (!res.ok || !data.ok) {
-      setError(data.error || "حدث خطأ أثناء جلب التفاصيل");
-      return;
-    }
-
-    setOffers((prev) =>
-      prev.map((offer) =>
-        offer.id === id
-          ? {
+      setOffers((prev) =>
+        prev.map((offer) =>
+          offer.id === id
+            ? {
               ...offer,
               description: data.details?.description || offer.description,
               features: data.details?.features || offer.features,
@@ -369,106 +372,141 @@ async function fetchDetails(id: number) {
               source_brand:
                 data.details?.source_brand || offer.source_brand,
             }
-          : offer
-      )
-    );
-  } catch {
-    setError("حدث خطأ غير متوقع أثناء جلب التفاصيل");
-  } finally {
-    setActionLoading("");
-  }
-}
-async function generateAiDetails(id: number) {
-  setActionLoading(`ai-details-${id}`);
-  setError("");
-
-  try {
-    const res = await fetch(
-      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "generate_ai_product_details",
-          id,
-        }),
-      }
-    );
-
-    const data = await res.json();
-
-    console.log("AI SEO RESPONSE:", data);
-
-    if (!res.ok || !data.ok) {
-      setError(data.error || "حدث خطأ أثناء تحسين المنتج");
-      return;
+            : offer
+        )
+      );
+    } catch {
+      setError("حدث خطأ غير متوقع أثناء جلب التفاصيل");
+    } finally {
+      setActionLoading("");
     }
+  }
+  async function generateAiDetails(id: number) {
+    setActionLoading(`ai-details-${id}`);
+    setError("");
 
-    setOffers((prev) =>
-      prev.map((offer) =>
-        offer.id === id
-          ? {
+    try {
+      const res = await fetch(
+        `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "generate_ai_product_details",
+            id,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      console.log("AI SEO RESPONSE:", data);
+
+      if (!res.ok || !data.ok) {
+        setError(data.error || "حدث خطأ أثناء تحسين المنتج");
+        return;
+      }
+
+      setOffers((prev) =>
+        prev.map((offer) =>
+          offer.id === id
+            ? {
               ...offer,
               ai_description: data.details?.description,
               ai_features: data.details?.features || [],
               ai_keywords: data.details?.keywords || [],
               ai_enriched_at: new Date().toISOString(),
             }
-          : offer
-      )
-    );
-  } catch (err: any) {
-    console.error("AI SEO ERROR:", err);
-    setError(err?.message || "حدث خطأ غير متوقع أثناء تحسين المنتج");
-  } finally {
-    setActionLoading("");
-  }
-}
-async function generateAiBulk() {
-  setActionLoading("ai-bulk");
-  setError("");
-
-  try {
-    const res = await fetch(
-      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "generate_ai_product_details_bulk",
-          limit: 10,
-        }),
-      }
-    );
-
-    const data = await res.json();
-
-    if (!res.ok || !data.ok) {
-      setError(data.error || "حدث خطأ أثناء تحسين الدفعة");
-      return;
+            : offer
+        )
+      );
+    } catch (err: any) {
+      console.error("AI SEO ERROR:", err);
+      setError(err?.message || "حدث خطأ غير متوقع أثناء تحسين المنتج");
+    } finally {
+      setActionLoading("");
     }
-
-    await loadData();
-
-    alert(`تم تحسين ${data.success} منتج وفشل ${data.failed}`);
-  } catch (err: any) {
-    setError(err?.message || "حدث خطأ أثناء تحسين الدفعة");
-  } finally {
-    setActionLoading("");
   }
-}
+  async function generateAiBulk() {
+    setActionLoading("ai-bulk");
+    setError("");
+
+    try {
+      const res = await fetch(
+        `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "generate_ai_product_details_bulk",
+            limit: 10,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setError(data.error || "حدث خطأ أثناء تحسين الدفعة");
+        return;
+      }
+
+      await loadData();
+
+      alert(`تم تحسين ${data.success} منتج وفشل ${data.failed}`);
+    } catch (err: any) {
+      setError(err?.message || "حدث خطأ أثناء تحسين الدفعة");
+    } finally {
+      setActionLoading("");
+    }
+  }
+  async function checkStockGoogleLikeBulk() {
+    setActionLoading("stock-check");
+    setError("");
+
+    try {
+      const res = await fetch(
+        `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "check_stock_google_like_bulk",
+            limit: 50,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setError(data.error || "حدث خطأ أثناء فحص التوفر");
+        return;
+      }
+
+      await loadData();
+
+      alert(
+        `تم فحص ${data.total} منتج\nمتوفر: ${data.inStock}\nغير متوفر وتم رفضه: ${data.outOfStock}\nغير واضح: ${data.unknown}`
+      );
+    } catch (err: any) {
+      setError(err?.message || "حدث خطأ أثناء فحص التوفر");
+    } finally {
+      setActionLoading("");
+    }
+  }
   return (
     <main className="adminPage" dir="rtl">
       <section className="adminHero">
         <h1>إدارة عروض العملاء</h1>
         {secret && (
-  <Link
-    href={`/customer-offers/admin-ads?secret=${encodeURIComponent(secret)}`}
-    className="adsDashboardBtn"
-  >
-    ⭐ إدارة الإعلانات
-  </Link>
-)}
+          <Link
+            href={`/customer-offers/admin-ads?secret=${encodeURIComponent(secret)}`}
+            className="adsDashboardBtn"
+          >
+            ⭐ إدارة الإعلانات
+          </Link>
+        )}
         <p>
           راجع العروض، وافق أو ارفض، وتحكم في عدد العروض المسموح بها لكل عميل.
         </p>
@@ -487,70 +525,78 @@ async function generateAiBulk() {
           </button>
         )}
         <button
-  onClick={generateAiBulk}
-  disabled={actionLoading === "ai-bulk"}
->
-  {actionLoading === "ai-bulk"
-    ? "جاري تحسين الدفعة..."
-    : "🧠 تحسين 25 منتج غير محسن"}
-</button>
+          onClick={generateAiBulk}
+          disabled={actionLoading === "ai-bulk"}
+        >
+          {actionLoading === "ai-bulk"
+            ? "جاري تحسين الدفعة..."
+            : "🧠 تحسين 25 منتج غير محسن"}
+        </button>
+        <button
+          onClick={checkStockGoogleLikeBulk}
+          disabled={actionLoading === "stock-check"}
+        >
+          {actionLoading === "stock-check"
+            ? "جاري فحص التوفر..."
+            : "🔍 فحص التوفر مثل Google Merchant"}
+        </button>
 
         {error && <div className="errorMsg">{error}</div>}
       </section>
       {secret && (
-  <section className="analyticsBox">
-  <div className="totalClicksCard">
-  <strong>{adminStats.totalSellers}</strong>
-  <span>عدد العملاء اللي أضافوا عروض</span>
-</div>
-    <div className="totalClicksCard">
-      <strong>{adminStats.totalClicks}</strong>
-      <span>إجمالي ضغطات كل عروض الموقع</span>
-    </div>
-
-    <div className="sellerClicksList">
-      <h2>ضغطات كل بائع</h2>
-
-      {adminStats.sellerClicks.length === 0 ? (
-        <p>لا توجد ضغطات حتى الآن</p>
-      ) : (
-        adminStats.sellerClicks.map(([email, clicks]) => (
-          <div className="sellerClickRow" key={email}>
-            <span>{email}</span>
-            <strong>{clicks}</strong>
+        <section className="analyticsBox">
+          <div className="totalClicksCard">
+            <strong>{adminStats.totalSellers}</strong>
+            <span>عدد العملاء اللي أضافوا عروض</span>
           </div>
-        ))
-      )}
-    </div>
-  </section>
-)}
-{secret && (
-  <section className="adminFilters">
-    <button
-      className={countryFilter === "all" ? "active" : ""}
-      onClick={() => setCountryFilter("all")}
-    >
-      كل الدول
-    </button>
+          <div className="totalClicksCard">
+            <strong>{adminStats.totalClicks}</strong>
+            <span>إجمالي ضغطات كل عروض الموقع</span>
+          </div>
 
-    {[
-      ["sa", "السعودية"],
-      ["eg", "مصر"],
-      ["ae", "الإمارات"],
-      ["kw", "الكويت"],
-      ["qa", "قطر"],
-      ["bh", "البحرين"],
-    ].map(([code, name]) => (
-      <button
-        key={code}
-        className={countryFilter === code ? "active" : ""}
-        onClick={() => setCountryFilter(code)}
-      >
-        {name}
-      </button>
-    ))}
-  </section>
-)}
+          <div className="sellerClicksList">
+            <h2>ضغطات كل بائع</h2>
+
+            {adminStats.sellerClicks.length === 0 ? (
+              <p>لا توجد ضغطات حتى الآن</p>
+            ) : (
+              adminStats.sellerClicks.map(([email, clicks]) => (
+                <div className="sellerClickRow" key={email}>
+                  <span>{email}</span>
+                  <strong>{clicks}</strong>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+      )}
+      {secret && (
+        <section className="adminFilters">
+          <button
+            className={countryFilter === "all" ? "active" : ""}
+            onClick={() => setCountryFilter("all")}
+          >
+            كل الدول
+          </button>
+
+          {[
+            ["sa", "السعودية"],
+            ["eg", "مصر"],
+            ["ae", "الإمارات"],
+            ["kw", "الكويت"],
+            ["qa", "قطر"],
+            ["bh", "البحرين"],
+          ].map(([code, name]) => (
+            <button
+              key={code}
+              className={countryFilter === code ? "active" : ""}
+              onClick={() => setCountryFilter(code)}
+            >
+              {name}
+            </button>
+          ))}
+        </section>
+      )}
 
       <section className="offersGrid">
         {filteredOffers.map((offer: Offer) => {
@@ -579,20 +625,41 @@ async function generateAiBulk() {
                   {offer.status === "pending"
                     ? "قيد المراجعة"
                     : offer.status === "approved"
-                    ? "موافق عليه"
-                    : "مرفوض"}
+                      ? "موافق عليه"
+                      : "مرفوض"}
                 </span>
 
                 <h2>{offer.product_name}</h2>
 
                 <p className="price">{offer.price}</p>
                 <p className="clicksMeta">
-  👁️ ضغطات العرض: <strong>{offer.click_count || 0}</strong>
-</p>
+                  👁️ ضغطات العرض: <strong>{offer.click_count || 0}</strong>
+                </p>
 
                 <p className="meta">المتجر: {offer.store_name || "غير محدد"}</p>
                 <p className="meta">الدولة: {offer.country || "غير محدد"}</p>
-                
+                <p className="meta">المتجر: {offer.store_name || "غير محدد"}</p>
+                <p className="meta">الدولة: {offer.country || "غير محدد"}</p>
+
+                <p className="meta">
+                  التوفر:{" "}
+                  <strong>
+                    {offer.availability === "in_stock"
+                      ? "✅ متوفر"
+                      : offer.availability === "out_of_stock"
+                        ? "❌ غير متوفر"
+                        : "❓ غير معروف"}
+                  </strong>
+                </p>
+
+                {offer.stock_check_note && (
+                  <p className="meta">
+                    سبب الفحص: {offer.stock_check_note}
+                  </p>
+                )}
+
+                <div className="sellerBox"></div>
+
 
                 <div className="sellerBox">
                   <p>
@@ -607,59 +674,59 @@ async function generateAiBulk() {
                     </strong>
                   </p>
 
-                 {offer.user_id ? (
-  <>
-    <div className="limitControl">
-      <input
-        type="number"
-        min={0}
-        defaultValue={maxOffers}
-        id={`limit-${offer.user_id}`}
-      />
+                  {offer.user_id ? (
+                    <>
+                      <div className="limitControl">
+                        <input
+                          type="number"
+                          min={0}
+                          defaultValue={maxOffers}
+                          id={`limit-${offer.user_id}`}
+                        />
 
-      <button
-        disabled={actionLoading === `limit-${offer.user_id}`}
-        onClick={() => {
-          const input = document.getElementById(
-            `limit-${offer.user_id}`
-          ) as HTMLInputElement | null;
+                        <button
+                          disabled={actionLoading === `limit-${offer.user_id}`}
+                          onClick={() => {
+                            const input = document.getElementById(
+                              `limit-${offer.user_id}`
+                            ) as HTMLInputElement | null;
 
-          const newLimit = Number(input?.value || 0);
+                            const newLimit = Number(input?.value || 0);
 
-          updateUserLimit(offer.user_id!, sellerEmail, newLimit);
-        }}
-      >
-        {actionLoading === `limit-${offer.user_id}`
-          ? "جاري..."
-          : "تحديث العدد"}
-      </button>
-    </div>
+                            updateUserLimit(offer.user_id!, sellerEmail, newLimit);
+                          }}
+                        >
+                          {actionLoading === `limit-${offer.user_id}`
+                            ? "جاري..."
+                            : "تحديث العدد"}
+                        </button>
+                      </div>
 
-   
-  </>
-) : (
-  <p className="oldOfferNote">
+
+                    </>
+                  ) : (
+                    <p className="oldOfferNote">
                       عرض قديم قبل ربط تسجيل الدخول
                     </p>
                   )}
                 </div>
                 <div className="blockControl">
-  <button
-    className="reject"
-    disabled={actionLoading === `limit-${offer.user_id}`}
-    onClick={() => updateUserLimit(offer.user_id!, sellerEmail, 0)}
-  >
-    🚫 حظر
-  </button>
+                  <button
+                    className="reject"
+                    disabled={actionLoading === `limit-${offer.user_id}`}
+                    onClick={() => updateUserLimit(offer.user_id!, sellerEmail, 0)}
+                  >
+                    🚫 حظر
+                  </button>
 
-  <button
-    className="approve"
-    disabled={actionLoading === `limit-${offer.user_id}`}
-    onClick={() => updateUserLimit(offer.user_id!, sellerEmail, 1)}
-  >
-    🔓 فك الحظر
-  </button>
-</div>
+                  <button
+                    className="approve"
+                    disabled={actionLoading === `limit-${offer.user_id}`}
+                    onClick={() => updateUserLimit(offer.user_id!, sellerEmail, 1)}
+                  >
+                    🔓 فك الحظر
+                  </button>
+                </div>
 
                 <a
                   href={offer.product_url}
@@ -670,103 +737,102 @@ async function generateAiBulk() {
                   فتح رابط المنتج
                 </a>
                 {offer.status === "approved" && (
-  <Link
-    href={`/customer-offers/product/bps-chat-${String(
-      offer.product_name || ""
-    )
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "")}-${
-      offer.country || "sa"
-    }-${offer.id}`}
-    target="_blank"
-    className="productCardLink"
-  >
-    🛒 عرض كارت المنتج
-  </Link>
-)}
+                  <Link
+                    href={`/customer-offers/product/bps-chat-${String(
+                      offer.product_name || ""
+                    )
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")
+                      .replace(/[^\u0600-\u06FFa-z0-9\-]/g, "")}-${offer.country || "sa"
+                      }-${offer.id}`}
+                    target="_blank"
+                    className="productCardLink"
+                  >
+                    🛒 عرض كارت المنتج
+                  </Link>
+                )}
                 <button
-  className="detailsBtn"
-  disabled={actionLoading === `details-${offer.id}`}
-  onClick={() => fetchDetails(offer.id)}
->
-  {actionLoading === `details-${offer.id}`
-    ? "جاري جلب التفاصيل..."
-    : "📄 جلب الوصف والمواصفات"}
-</button>
+                  className="detailsBtn"
+                  disabled={actionLoading === `details-${offer.id}`}
+                  onClick={() => fetchDetails(offer.id)}
+                >
+                  {actionLoading === `details-${offer.id}`
+                    ? "جاري جلب التفاصيل..."
+                    : "📄 جلب الوصف والمواصفات"}
+                </button>
                 {offer.description && (
-  <details
-    style={{
-      marginTop: 10,
-      padding: 10,
-      borderRadius: 12,
-      background: "rgba(255,255,255,.05)",
-    }}
-  >
-    <summary style={{ cursor: "pointer", fontWeight: 900 }}>
-      📄 عرض الوصف
-    </summary>
+                  <details
+                    style={{
+                      marginTop: 10,
+                      padding: 10,
+                      borderRadius: 12,
+                      background: "rgba(255,255,255,.05)",
+                    }}
+                  >
+                    <summary style={{ cursor: "pointer", fontWeight: 900 }}>
+                      📄 عرض الوصف
+                    </summary>
 
-    <div style={{ marginTop: 10, lineHeight: 1.8 }}>
-      {offer.description}
-    </div>
-  </details>
-)}
-<button
-  className={
-    offer.ai_description
-      ? "aiSeoDoneBtn"
-      : "aiSeoBtn"
-  }
-  disabled={actionLoading === `ai-details-${offer.id}`}
-  onClick={() => generateAiDetails(offer.id)}
->
-  {actionLoading === `ai-details-${offer.id}`
-    ? "جاري تحسين المنتج..."
-    : offer.ai_description
-    ? "✅ تم تحسين SEO (اضغط لإعادة التحسين)"
-    : "🧠 تحسين SEO بالذكاء الاصطناعي"}
-</button>
- <button
-  className={offer.is_ad ? "adOffBtn" : "adOnBtn"}
-  disabled={actionLoading === `ad-${offer.id}`}
-  onClick={() => toggleAd(offer.id, !offer.is_ad)}
->
-  {actionLoading === `ad-${offer.id}`
-    ? "جاري..."
-    : offer.is_ad
-    ? "⭐ إلغاء الإعلان"
-    : "⭐ تفعيل كإعلان"}
-</button>
+                    <div style={{ marginTop: 10, lineHeight: 1.8 }}>
+                      {offer.description}
+                    </div>
+                  </details>
+                )}
+                <button
+                  className={
+                    offer.ai_description
+                      ? "aiSeoDoneBtn"
+                      : "aiSeoBtn"
+                  }
+                  disabled={actionLoading === `ai-details-${offer.id}`}
+                  onClick={() => generateAiDetails(offer.id)}
+                >
+                  {actionLoading === `ai-details-${offer.id}`
+                    ? "جاري تحسين المنتج..."
+                    : offer.ai_description
+                      ? "✅ تم تحسين SEO (اضغط لإعادة التحسين)"
+                      : "🧠 تحسين SEO بالذكاء الاصطناعي"}
+                </button>
+                <button
+                  className={offer.is_ad ? "adOffBtn" : "adOnBtn"}
+                  disabled={actionLoading === `ad-${offer.id}`}
+                  onClick={() => toggleAd(offer.id, !offer.is_ad)}
+                >
+                  {actionLoading === `ad-${offer.id}`
+                    ? "جاري..."
+                    : offer.is_ad
+                      ? "⭐ إلغاء الإعلان"
+                      : "⭐ تفعيل كإعلان"}
+                </button>
 
-<button
-  className={offer.side_ad ? "sideOffBtn" : "sideOnBtn"}
-  disabled={actionLoading === `side-${offer.id}`}
-  onClick={() => toggleSideAd(offer.id, !offer.side_ad)}
->
-  {actionLoading === `side-${offer.id}`
-    ? "جاري..."
-    : offer.side_ad
-    ? "📢 إزالة من إعلانات الأجناب"
-    : "📢 أضف لإعلانات الأجناب"}
-</button>
+                <button
+                  className={offer.side_ad ? "sideOffBtn" : "sideOnBtn"}
+                  disabled={actionLoading === `side-${offer.id}`}
+                  onClick={() => toggleSideAd(offer.id, !offer.side_ad)}
+                >
+                  {actionLoading === `side-${offer.id}`
+                    ? "جاري..."
+                    : offer.side_ad
+                      ? "📢 إزالة من إعلانات الأجناب"
+                      : "📢 أضف لإعلانات الأجناب"}
+                </button>
 
-<button
-  className={offer.best_offer ? "adOnBtn" : "adOffBtn"}
-  disabled={actionLoading === `best-${offer.id}`}
-  onClick={() =>
-    toggleBestOffer(
-      offer.id,
-      !offer.best_offer
-    )
-  }
->
-  {actionLoading === `best-${offer.id}`
-    ? "جاري..."
-    : offer.best_offer
-    ? "🔥 ضمن أفضل العروض"
-    : "⭐ أضف إلى أفضل العروض"}
-</button>
+                <button
+                  className={offer.best_offer ? "adOnBtn" : "adOffBtn"}
+                  disabled={actionLoading === `best-${offer.id}`}
+                  onClick={() =>
+                    toggleBestOffer(
+                      offer.id,
+                      !offer.best_offer
+                    )
+                  }
+                >
+                  {actionLoading === `best-${offer.id}`
+                    ? "جاري..."
+                    : offer.best_offer
+                      ? "🔥 ضمن أفضل العروض"
+                      : "⭐ أضف إلى أفضل العروض"}
+                </button>
                 <div className="actions">
                   <button
                     className="approve"
