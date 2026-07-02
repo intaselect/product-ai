@@ -657,7 +657,73 @@ export async function PATCH(req: Request) {
   }
 
   const body = await req.json();
-  if (body.action === "fetch_product_details") {
+
+if (body.action === "check_stock_google_like_bulk") {
+  const limit = Math.min(Number(body.limit || 50), 100);
+
+  const { data: offers, error: offersError } = await supabase
+    .from("customer_offers")
+    .select("id, product_url")
+    .eq("status", "approved")
+    .not("product_url", "is", null)
+    .order("last_stock_checked_at", { ascending: true, nullsFirst: true })
+    .limit(limit);
+
+  if (offersError) {
+    return NextResponse.json(
+      { ok: false, error: offersError.message },
+      { status: 500 }
+    );
+  }
+
+  const results: any[] = [];
+
+  for (const offer of offers || []) {
+    const checked = await checkOneProductStock(offer.product_url);
+
+    const updateData: any = {
+      availability: checked.availability,
+      last_stock_checked_at: new Date().toISOString(),
+      stock_check_note: checked.note,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (checked.availability === "out_of_stock") {
+      updateData.status = "rejected";
+      updateData.is_ad = false;
+      updateData.side_ad = false;
+      updateData.best_offer = false;
+    }
+
+    const { error } = await supabase
+      .from("customer_offers")
+      .update(updateData)
+      .eq("id", offer.id);
+
+    results.push({
+      id: offer.id,
+      availability: checked.availability,
+      note: checked.note,
+      rejected: checked.availability === "out_of_stock",
+      ok: !error,
+      error: error?.message || null,
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+
+  return NextResponse.json({
+    ok: true,
+    total: results.length,
+    inStock: results.filter((x) => x.availability === "in_stock").length,
+    outOfStock: results.filter((x) => x.availability === "out_of_stock").length,
+    unknown: results.filter((x) => x.availability === "unknown").length,
+    rejected: results.filter((x) => x.rejected).length,
+    results,
+  });
+}
+
+if (body.action === "fetch_product_details") {
     const id = Number(body.id);
 
     if (!id) {
