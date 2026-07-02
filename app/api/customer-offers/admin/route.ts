@@ -523,7 +523,7 @@ if (checkoutScore >= 4) {
     }
   }
 
-  if (score >= 12) {
+  if (score >= 10) {
     return {
       availability: "in_stock",
       note: `Score ${score}: ${notes.slice(0, 6).join(" | ")}`,
@@ -907,7 +907,7 @@ export async function PATCH(req: Request) {
   }
 
   if (body.action === "check_stock_google_like_bulk") {
-    const limit = Math.min(Number(body.limit || 20), 20);
+    const limit = Math.min(Number(body.limit || 100), 100);
 
     const { data: offers, error: offersError } = await supabase
       .from("customer_offers")
