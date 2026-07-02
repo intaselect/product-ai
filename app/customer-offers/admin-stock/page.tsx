@@ -127,11 +127,10 @@ export default function AdminStockReportPage() {
                 return;
             }
 
-            setOffers((prev) =>
-                prev.map((offer) =>
-                    offer.id === id ? { ...offer, status } : offer
-                )
-            );
+            const availability =
+                status === "approved" ? "in_stock" : "out_of_stock";
+
+            setOffers((prev) => prev.filter((offer) => offer.id !== id));
         } finally {
             setActionLoading("");
         }

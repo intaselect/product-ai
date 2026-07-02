@@ -1104,13 +1104,29 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const { error } = await supabase
-      .from("customer_offers")
-      .update({
-        status,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", id);
+    const availability =
+  status === "approved"
+    ? "in_stock"
+    : status === "rejected"
+      ? "out_of_stock"
+      : "unknown";
+
+const { error } = await supabase
+  .from("customer_offers")
+  .update({
+    status,
+    availability,
+    manual_review: true,
+    stock_check_note:
+      status === "approved"
+        ? "Manual admin approval: marked in stock"
+        : status === "rejected"
+          ? "Manual admin rejection: marked out of stock"
+          : "Manual admin review: marked unknown",
+    last_stock_checked_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  })
+  .eq("id", id);
 
     if (error) {
       return NextResponse.json(
