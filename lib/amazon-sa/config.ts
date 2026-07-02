@@ -1,5 +1,5 @@
 export const AMAZON_SA_MARKETPLACE = "www.amazon.sa";
-export const AMAZON_SA_LANGUAGE = "ar_AE";
+export const AMAZON_SA_LANGUAGE = "en_AE";
 export const AMAZON_SA_CURRENCY = "SAR";
 export const AMAZON_CREDENTIAL_VERSION = "3.2";
 
