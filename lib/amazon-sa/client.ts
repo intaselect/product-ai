@@ -1,6 +1,6 @@
 import { getAmazonAccessToken } from "./token";
 import {
-  AMAZON_CREDENTIAL_VERSION,
+  
   AMAZON_SA_CURRENCY,
   AMAZON_SA_LANGUAGE,
   AMAZON_SA_MARKETPLACE,
@@ -14,7 +14,7 @@ export async function amazonSaRequest(path: string, payload: Record<string, any>
   const res = await fetch(`${getAmazonApiBase()}${path}`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}, Version ${AMAZON_CREDENTIAL_VERSION}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
       "x-marketplace": AMAZON_SA_MARKETPLACE,
     },
