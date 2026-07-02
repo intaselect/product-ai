@@ -14,6 +14,7 @@ type Offer = {
     availability?: "in_stock" | "out_of_stock" | "unknown";
     last_stock_checked_at?: string | null;
     stock_check_note?: string | null;
+    manual_review?: boolean;
 };
 
 export default function AdminStockReportPage() {
@@ -82,7 +83,7 @@ export default function AdminStockReportPage() {
         setFilter(value);
         loadReport(secret, value);
     }
-    
+
     async function updateOneOfferStatus(
         id: number,
         status: "approved" | "rejected"
@@ -100,6 +101,7 @@ export default function AdminStockReportPage() {
                         action: "update_offer_status",
                         id,
                         status,
+                        manual_review: status === "approved",
                     }),
                 }
             );
@@ -163,65 +165,65 @@ export default function AdminStockReportPage() {
         }
     }
     const stores = useMemo(() => {
-  const map = new Map<string, number>();
+        const map = new Map<string, number>();
 
-  offers.forEach((offer) => {
-    const store = offer.store_name || "متجر غير معروف";
-    map.set(store, (map.get(store) || 0) + 1);
-  });
+        offers.forEach((offer) => {
+            const store = offer.store_name || "متجر غير معروف";
+            map.set(store, (map.get(store) || 0) + 1);
+        });
 
-  return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
-}, [offers]);
+        return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
+    }, [offers]);
 
-const filteredOffers = useMemo(() => {
-  if (storeFilter === "all") return offers;
-  return offers.filter(
-    (offer) => (offer.store_name || "متجر غير معروف") === storeFilter
-  );
-}, [offers, storeFilter]);
+    const filteredOffers = useMemo(() => {
+        if (storeFilter === "all") return offers;
+        return offers.filter(
+            (offer) => (offer.store_name || "متجر غير معروف") === storeFilter
+        );
+    }, [offers, storeFilter]);
 
-async function bulkUpdateStore(
-  availability: "all" | "unknown" | "out_of_stock" | "in_stock",
-  status: "approved" | "rejected"
-) {
-  if (storeFilter === "all") {
-    alert("اختار متجر معين الأول");
-    return;
-  }
+    async function bulkUpdateStore(
+        availability: "all" | "unknown" | "out_of_stock" | "in_stock",
+        status: "approved" | "rejected"
+    ) {
+        if (storeFilter === "all") {
+            alert("اختار متجر معين الأول");
+            return;
+        }
 
-  if (!window.confirm(`تأكيد تحديث منتجات متجر: ${storeFilter}`)) return;
+        if (!window.confirm(`تأكيد تحديث منتجات متجر: ${storeFilter}`)) return;
 
-  setActionLoading(`store-${availability}-${status}`);
-  setError("");
+        setActionLoading(`store-${availability}-${status}`);
+        setError("");
 
-  try {
-    const res = await fetch(
-      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "bulk_update_stock_status_by_store",
-          store_name: storeFilter,
-          availability,
-          status,
-        }),
-      }
-    );
+        try {
+            const res = await fetch(
+                `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+                {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        action: "bulk_update_stock_status_by_store",
+                        store_name: storeFilter,
+                        availability,
+                        status,
+                    }),
+                }
+            );
 
-    const data = await res.json();
+            const data = await res.json();
 
-    if (!res.ok || !data.ok) {
-      setError(data.error || "حدث خطأ أثناء تحديث المتجر");
-      return;
+            if (!res.ok || !data.ok) {
+                setError(data.error || "حدث خطأ أثناء تحديث المتجر");
+                return;
+            }
+
+            await loadReport();
+            alert(`تم تحديث ${data.updated} منتج`);
+        } finally {
+            setActionLoading("");
+        }
     }
-
-    await loadReport();
-    alert(`تم تحديث ${data.updated} منتج`);
-  } finally {
-    setActionLoading("");
-  }
-}
 
     return (
         <main className="page" dir="rtl">
@@ -303,27 +305,27 @@ async function bulkUpdateStore(
                     </button>
                 </div>
                 <div className="storeTools">
-  <select value={storeFilter} onChange={(e) => setStoreFilter(e.target.value)}>
-    <option value="all">كل المتاجر</option>
-    {stores.map(([store, count]) => (
-      <option key={store} value={store}>
-        {store} ({count})
-      </option>
-    ))}
-  </select>
+                    <select value={storeFilter} onChange={(e) => setStoreFilter(e.target.value)}>
+                        <option value="all">كل المتاجر</option>
+                        {stores.map(([store, count]) => (
+                            <option key={store} value={store}>
+                                {store} ({count})
+                            </option>
+                        ))}
+                    </select>
 
-  <button className="danger" onClick={() => bulkUpdateStore("unknown", "rejected")}>
-    ❌ رفض غير الواضح من المتجر
-  </button>
+                    <button className="danger" onClick={() => bulkUpdateStore("unknown", "rejected")}>
+                        ❌ رفض غير الواضح من المتجر
+                    </button>
 
-  <button className="danger" onClick={() => bulkUpdateStore("all", "rejected")}>
-    ❌ رفض كل منتجات المتجر
-  </button>
+                    <button className="danger" onClick={() => bulkUpdateStore("all", "rejected")}>
+                        ❌ رفض كل منتجات المتجر
+                    </button>
 
-  <button className="success" onClick={() => bulkUpdateStore("all", "approved")}>
-    ✅ موافقة كل منتجات المتجر
-  </button>
-</div>
+                    <button className="success" onClick={() => bulkUpdateStore("all", "approved")}>
+                        ✅ موافقة كل منتجات المتجر
+                    </button>
+                </div>
 
                 <button className="reload" onClick={() => loadReport()}>
                     {loading ? "جاري التحميل..." : "تحديث التقرير"}
@@ -402,7 +404,7 @@ async function bulkUpdateStore(
                                     <td>
                                         <div className="rowActions">
                                             <button
-                                                className="success"
+                                                className={offer.manual_review ? "reviewed" : "success"}
                                                 disabled={actionLoading === `status-${offer.id}`}
                                                 onClick={() => updateOneOfferStatus(offer.id, "approved")}
                                             >
@@ -483,6 +485,10 @@ async function bulkUpdateStore(
           font-size: 32px;
           color: #86efac;
         }
+          .reviewed {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
 
         .stats span {
           color: #e5e7eb;
