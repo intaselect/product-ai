@@ -3,227 +3,352 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Offer = {
-  id: number;
-  product_name: string;
-  product_url: string;
-  image_url: string;
-  price: string;
-  store_name: string | null;
-  country: string | null;
-  status: string;
-  availability?: "in_stock" | "out_of_stock" | "unknown";
-  last_stock_checked_at?: string | null;
-  stock_check_note?: string | null;
+    id: number;
+    product_name: string;
+    product_url: string;
+    image_url: string;
+    price: string;
+    store_name: string | null;
+    country: string | null;
+    status: string;
+    availability?: "in_stock" | "out_of_stock" | "unknown";
+    last_stock_checked_at?: string | null;
+    stock_check_note?: string | null;
 };
 
 export default function AdminStockReportPage() {
-  const [secret, setSecret] = useState("");
-  const [filter, setFilter] = useState("all");
-  const [offers, setOffers] = useState<Offer[]>([]);
-  const [stats, setStats] = useState({
-    total: 0,
-    inStock: 0,
-    outOfStock: 0,
-    unknown: 0,
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+    const [secret, setSecret] = useState("");
+    const [filter, setFilter] = useState("all");
+    const [offers, setOffers] = useState<Offer[]>([]);
+    const [stats, setStats] = useState({
+        total: 0,
+        inStock: 0,
+        outOfStock: 0,
+        unknown: 0,
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [actionLoading, setActionLoading] = useState("");
 
-  async function loadReport(adminSecret = secret, selected = filter) {
-    if (!adminSecret) return;
+    async function loadReport(adminSecret = secret, selected = filter) {
+        if (!adminSecret) return;
 
-    setLoading(true);
-    setError("");
+        setLoading(true);
+        setError("");
 
-    try {
-      const res = await fetch(
-        `/api/customer-offers/admin?secret=${encodeURIComponent(
-          adminSecret
-        )}&action=stock_report&availability=${encodeURIComponent(selected)}`
-      );
+        try {
+            const res = await fetch(
+                `/api/customer-offers/admin?secret=${encodeURIComponent(
+                    adminSecret
+                )}&action=stock_report&availability=${encodeURIComponent(selected)}`
+            );
 
-      const data = await res.json();
+            const data = await res.json();
 
-      if (!res.ok || !data.ok) {
-        setError(data.error || "حدث خطأ أثناء تحميل التقرير");
-        return;
-      }
+            if (!res.ok || !data.ok) {
+                setError(data.error || "حدث خطأ أثناء تحميل التقرير");
+                return;
+            }
 
-      setOffers(data.offers || []);
-      setStats(data.stats || stats);
-    } catch (err: any) {
-      setError(err?.message || "حدث خطأ غير متوقع");
-    } finally {
-      setLoading(false);
+            setOffers(data.offers || []);
+            setStats(data.stats || stats);
+        } catch (err: any) {
+            setError(err?.message || "حدث خطأ غير متوقع");
+        } finally {
+            setLoading(false);
+        }
     }
-  }
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlSecret = params.get("secret") || "";
-    setSecret(urlSecret);
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const urlSecret = params.get("secret") || "";
+        setSecret(urlSecret);
 
-    if (urlSecret) {
-      loadReport(urlSecret, "all");
+        if (urlSecret) {
+            loadReport(urlSecret, "all");
+        }
+    }, []);
+
+    const title = useMemo(() => {
+        if (filter === "in_stock") return "المنتجات المتوفرة";
+        if (filter === "out_of_stock") return "المنتجات غير المتوفرة";
+        if (filter === "unknown") return "المنتجات غير الواضحة";
+        return "كل نتائج فحص التوفر";
+    }, [filter]);
+
+    function changeFilter(value: string) {
+        setFilter(value);
+        loadReport(secret, value);
     }
-  }, []);
+    async function updateOneOfferStatus(
+        id: number,
+        status: "approved" | "rejected"
+    ) {
+        setActionLoading(`status-${id}`);
+        setError("");
 
-  const title = useMemo(() => {
-    if (filter === "in_stock") return "المنتجات المتوفرة";
-    if (filter === "out_of_stock") return "المنتجات غير المتوفرة";
-    if (filter === "unknown") return "المنتجات غير الواضحة";
-    return "كل نتائج فحص التوفر";
-  }, [filter]);
+        try {
+            const res = await fetch(
+                `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+                {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        action: "update_offer_status",
+                        id,
+                        status,
+                    }),
+                }
+            );
 
-  function changeFilter(value: string) {
-    setFilter(value);
-    loadReport(secret, value);
-  }
+            const data = await res.json();
 
-  return (
-    <main className="page" dir="rtl">
-      <section className="hero">
-        <h1>📄 تقرير فحص توفر المنتجات</h1>
-        <p>
-          هنا تظهر نتائج فحص التوفر مع رابط المنتج وسبب القرار، علشان تراجع
-          يدويًا قبل تحديث Merchant.
-        </p>
+            if (!res.ok || !data.ok) {
+                setError(data.error || "حدث خطأ أثناء تحديث المنتج");
+                return;
+            }
 
-        <div className="stats">
-          <div>
-            <strong>{stats.total}</strong>
-            <span>كل المنتجات</span>
-          </div>
-          <div>
-            <strong>{stats.inStock}</strong>
-            <span>متوفر</span>
-          </div>
-          <div>
-            <strong>{stats.outOfStock}</strong>
-            <span>غير متوفر</span>
-          </div>
-          <div>
-            <strong>{stats.unknown}</strong>
-            <span>غير واضح</span>
-          </div>
-        </div>
+            setOffers((prev) =>
+                prev.map((offer) =>
+                    offer.id === id ? { ...offer, status } : offer
+                )
+            );
+        } finally {
+            setActionLoading("");
+        }
+    }
 
-        <div className="filters">
-          <button
-            className={filter === "all" ? "active" : ""}
-            onClick={() => changeFilter("all")}
-          >
-            الكل
-          </button>
-          <button
-            className={filter === "in_stock" ? "active" : ""}
-            onClick={() => changeFilter("in_stock")}
-          >
-            ✅ متوفر
-          </button>
-          <button
-            className={filter === "out_of_stock" ? "active" : ""}
-            onClick={() => changeFilter("out_of_stock")}
-          >
-            ❌ غير متوفر
-          </button>
-          <button
-            className={filter === "unknown" ? "active" : ""}
-            onClick={() => changeFilter("unknown")}
-          >
-            ❓ غير واضح
-          </button>
-        </div>
+    async function bulkUpdateByAvailability(
+        availability: "unknown" | "out_of_stock" | "in_stock",
+        status: "approved" | "rejected"
+    ) {
+        const ok = window.confirm(
+            `هل أنت متأكد؟ سيتم تحديث كل المنتجات ذات الحالة: ${availability}`
+        );
 
-        <button className="reload" onClick={() => loadReport()}>
-          {loading ? "جاري التحميل..." : "تحديث التقرير"}
-        </button>
+        if (!ok) return;
 
-        {error && <div className="error">{error}</div>}
-      </section>
+        setActionLoading(`bulk-${availability}-${status}`);
+        setError("");
 
-      <section className="tableBox">
-        <h2>{title}</h2>
+        try {
+            const res = await fetch(
+                `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+                {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        action: "bulk_update_stock_status",
+                        availability,
+                        status,
+                    }),
+                }
+            );
 
-        <div className="tableWrap">
-          <table>
-            <thead>
-              <tr>
-                <th>الصورة</th>
-                <th>المنتج</th>
-                <th>الحالة</th>
-                <th>قرار الموقع</th>
-                <th>سبب الفحص</th>
-                <th>آخر فحص</th>
-                <th>الرابط</th>
-              </tr>
-            </thead>
+            const data = await res.json();
 
-            <tbody>
-              {offers.map((offer) => (
-                <tr key={offer.id}>
-                  <td>
-                    <img src={offer.image_url} alt={offer.product_name} />
-                  </td>
-                  <td>
-                    <strong>{offer.product_name}</strong>
-                    <small>
-                      {offer.store_name || "متجر غير معروف"} -{" "}
-                      {offer.country || "دولة غير محددة"}
-                    </small>
-                    <small>{offer.price}</small>
-                  </td>
-                  <td>
-                    <span className={`badge ${offer.status}`}>
-                      {offer.status === "approved"
-                        ? "موافق عليه"
-                        : offer.status === "rejected"
-                        ? "مرفوض"
-                        : "قيد المراجعة"}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`stock ${offer.availability || "unknown"}`}>
-                      {offer.availability === "in_stock"
-                        ? "✅ متوفر"
-                        : offer.availability === "out_of_stock"
-                        ? "❌ غير متوفر"
-                        : "❓ غير واضح"}
-                    </span>
-                  </td>
-                  <td>{offer.stock_check_note || "-"}</td>
-                  <td>
-                    {offer.last_stock_checked_at
-                      ? new Date(offer.last_stock_checked_at).toLocaleString(
-                          "ar-SA"
-                        )
-                      : "لم يتم الفحص"}
-                  </td>
-                  <td>
-                    <a
-                      href={offer.product_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+            if (!res.ok || !data.ok) {
+                setError(data.error || "حدث خطأ أثناء التحديث الجماعي");
+                return;
+            }
+
+            await loadReport();
+
+            alert(`تم تحديث ${data.updated} منتج`);
+        } finally {
+            setActionLoading("");
+        }
+    }
+
+    return (
+        <main className="page" dir="rtl">
+            <section className="hero">
+                <h1>📄 تقرير فحص توفر المنتجات</h1>
+                <p>
+                    هنا تظهر نتائج فحص التوفر مع رابط المنتج وسبب القرار، علشان تراجع
+                    يدويًا قبل تحديث Merchant.
+                </p>
+
+                <div className="stats">
+                    <div>
+                        <strong>{stats.total}</strong>
+                        <span>كل المنتجات</span>
+                    </div>
+                    <div>
+                        <strong>{stats.inStock}</strong>
+                        <span>متوفر</span>
+                    </div>
+                    <div>
+                        <strong>{stats.outOfStock}</strong>
+                        <span>غير متوفر</span>
+                    </div>
+                    <div>
+                        <strong>{stats.unknown}</strong>
+                        <span>غير واضح</span>
+                    </div>
+                </div>
+
+                <div className="filters">
+                    <button
+                        className={filter === "all" ? "active" : ""}
+                        onClick={() => changeFilter("all")}
                     >
-                      فتح المنتج
-                    </a>
-                  </td>
-                </tr>
-              ))}
+                        الكل
+                    </button>
+                    <button
+                        className={filter === "in_stock" ? "active" : ""}
+                        onClick={() => changeFilter("in_stock")}
+                    >
+                        ✅ متوفر
+                    </button>
+                    <button
+                        className={filter === "out_of_stock" ? "active" : ""}
+                        onClick={() => changeFilter("out_of_stock")}
+                    >
+                        ❌ غير متوفر
+                    </button>
+                    <button
+                        className={filter === "unknown" ? "active" : ""}
+                        onClick={() => changeFilter("unknown")}
+                    >
+                        ❓ غير واضح
+                    </button>
+                </div>
+                <div className="bulkActions">
+                    <button
+                        className="danger"
+                        disabled={actionLoading === "bulk-unknown-rejected"}
+                        onClick={() => bulkUpdateByAvailability("unknown", "rejected")}
+                    >
+                        ❌ رفض كل غير الواضح
+                    </button>
 
-              {offers.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="empty">
-                    لا توجد نتائج
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
+                    <button
+                        className="danger"
+                        disabled={actionLoading === "bulk-out_of_stock-rejected"}
+                        onClick={() => bulkUpdateByAvailability("out_of_stock", "rejected")}
+                    >
+                        ❌ رفض كل غير المتوفر
+                    </button>
 
-      <style>{`
+                    <button
+                        className="success"
+                        disabled={actionLoading === "bulk-in_stock-approved"}
+                        onClick={() => bulkUpdateByAvailability("in_stock", "approved")}
+                    >
+                        ✅ موافقة كل المتوفر
+                    </button>
+                </div>
+
+                <button className="reload" onClick={() => loadReport()}>
+                    {loading ? "جاري التحميل..." : "تحديث التقرير"}
+                </button>
+
+                {error && <div className="error">{error}</div>}
+            </section>
+
+            <section className="tableBox">
+                <h2>{title}</h2>
+
+                <div className="tableWrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الصورة</th>
+                                <th>المنتج</th>
+                                <th>الحالة</th>
+                                <th>قرار الموقع</th>
+                                <th>سبب الفحص</th>
+                                <th>آخر فحص</th>
+                                <th>الرابط</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {offers.map((offer) => (
+                                <tr key={offer.id}>
+                                    <td>
+                                        <img src={offer.image_url} alt={offer.product_name} />
+                                    </td>
+                                    <td>
+                                        <strong>{offer.product_name}</strong>
+                                        <small>
+                                            {offer.store_name || "متجر غير معروف"} -{" "}
+                                            {offer.country || "دولة غير محددة"}
+                                        </small>
+                                        <small>{offer.price}</small>
+                                    </td>
+                                    <td>
+                                        <span className={`badge ${offer.status}`}>
+                                            {offer.status === "approved"
+                                                ? "موافق عليه"
+                                                : offer.status === "rejected"
+                                                    ? "مرفوض"
+                                                    : "قيد المراجعة"}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span className={`stock ${offer.availability || "unknown"}`}>
+                                            {offer.availability === "in_stock"
+                                                ? "✅ متوفر"
+                                                : offer.availability === "out_of_stock"
+                                                    ? "❌ غير متوفر"
+                                                    : "❓ غير واضح"}
+                                        </span>
+                                    </td>
+                                    <td>{offer.stock_check_note || "-"}</td>
+                                    <td>
+                                        {offer.last_stock_checked_at
+                                            ? new Date(offer.last_stock_checked_at).toLocaleString(
+                                                "ar-SA"
+                                            )
+                                            : "لم يتم الفحص"}
+                                    </td>
+                                    <td>
+                                        <a
+                                            href={offer.product_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            فتح المنتج
+                                        </a>
+                                    </td>
+                                    <td>
+  <div className="rowActions">
+    <button
+      className="success"
+      disabled={actionLoading === `status-${offer.id}`}
+      onClick={() => updateOneOfferStatus(offer.id, "approved")}
+    >
+      ✅ موافقة
+    </button>
+
+    <button
+      className="danger"
+      disabled={actionLoading === `status-${offer.id}`}
+      onClick={() => updateOneOfferStatus(offer.id, "rejected")}
+    >
+      ❌ عدم موافقة
+    </button>
+  </div>
+</td>
+                                </tr>
+                            ))}
+
+                            {offers.length === 0 && (
+                                <tr>
+                                    <td colSpan={8} className="empty">
+                                        لا توجد نتائج
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <style>{`
         .page {
           min-height: 100vh;
           padding: 34px 16px 80px;
@@ -411,6 +536,41 @@ export default function AdminStockReportPage() {
           color: #cbd5e1;
           padding: 30px;
         }
+          .bulkActions,
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.bulkActions {
+  margin-top: 16px;
+}
+
+.bulkActions button,
+.rowActions button {
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 14px;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.success {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+}
+
+.danger {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+}
+
+.bulkActions button:disabled,
+.rowActions button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
 
         @media (max-width: 800px) {
           .stats {
@@ -422,6 +582,6 @@ export default function AdminStockReportPage() {
           }
         }
       `}</style>
-    </main>
-  );
+        </main>
+    );
 }
