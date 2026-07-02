@@ -20,6 +20,7 @@ type Offer = {
 export default function AdminStockReportPage() {
     const [secret, setSecret] = useState("");
     const [filter, setFilter] = useState("all");
+    const [countryFilter, setCountryFilter] = useState("all");
     const [offers, setOffers] = useState<Offer[]>([]);
     const [stats, setStats] = useState({
         total: 0,
@@ -41,12 +42,13 @@ export default function AdminStockReportPage() {
         setError("");
 
         try {
-            const res = await fetch(
-                `/api/customer-offers/admin?secret=${encodeURIComponent(
-                    adminSecret
-                )}&action=stock_report&availability=${encodeURIComponent(selected)}`
-            );
-
+           const res = await fetch(
+  `/api/customer-offers/admin?secret=${encodeURIComponent(
+    adminSecret
+  )}&action=stock_report&availability=${encodeURIComponent(
+    selected
+  )}&country=${encodeURIComponent(countryFilter)}`
+);
             const data = await res.json();
 
             if (!res.ok || !data.ok) {
@@ -339,6 +341,28 @@ export default function AdminStockReportPage() {
                         ✅ موافقة كل منتجات المتجر
                     </button>
                 </div>
+                <div className="countryFilters">
+  {[
+    ["all", "كل الدول"],
+    ["sa", "السعودية"],
+    ["ae", "الإمارات"],
+    ["eg", "مصر"],
+    ["kw", "الكويت"],
+    ["qa", "قطر"],
+    ["bh", "البحرين"],
+  ].map(([value, label]) => (
+    <button
+      key={value}
+      className={countryFilter === value ? "active" : ""}
+      onClick={() => {
+        setCountryFilter(value);
+        setTimeout(() => loadReport(secret, filter), 0);
+      }}
+    >
+      {label}
+    </button>
+  ))}
+</div>
 
                 <button className="reload" onClick={() => loadReport()}>
                     {loading ? "جاري التحميل..." : "تحديث التقرير"}
@@ -494,6 +518,27 @@ export default function AdminStockReportPage() {
           background: rgba(255,255,255,.06);
           border: 1px solid rgba(255,255,255,.1);
         }
+          .countryFilters {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.countryFilters button {
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 15px;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  background: rgba(255,255,255,.1);
+}
+
+.countryFilters button.active {
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+}
 
         .stats strong {
           display: block;

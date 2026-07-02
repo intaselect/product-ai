@@ -603,6 +603,7 @@ export async function GET(req: Request) {
 
   if (action === "stock_report") {
     const availability = url.searchParams.get("availability") || "all";
+    const country = url.searchParams.get("country") || "all";
 
     let query = supabase
       .from("customer_offers")
@@ -615,6 +616,9 @@ export async function GET(req: Request) {
     if (availability !== "all") {
       query = query.eq("availability", availability);
     }
+    if (country !== "all") {
+  query = query.eq("country", country);
+}
 
     const { data, error } = await query;
 
@@ -625,24 +629,36 @@ export async function GET(req: Request) {
       );
     }
 
-    const { count: total } = await supabase
-      .from("customer_offers")
-      .select("*", { count: "exact", head: true });
+    let totalQuery = supabase
+  .from("customer_offers")
+  .select("*", { count: "exact", head: true });
 
-    const { count: inStock } = await supabase
-      .from("customer_offers")
-      .select("*", { count: "exact", head: true })
-      .eq("availability", "in_stock");
+let inStockQuery = supabase
+  .from("customer_offers")
+  .select("*", { count: "exact", head: true })
+  .eq("availability", "in_stock");
 
-    const { count: outOfStock } = await supabase
-      .from("customer_offers")
-      .select("*", { count: "exact", head: true })
-      .eq("availability", "out_of_stock");
+let outOfStockQuery = supabase
+  .from("customer_offers")
+  .select("*", { count: "exact", head: true })
+  .eq("availability", "out_of_stock");
 
-    const { count: unknown } = await supabase
-      .from("customer_offers")
-      .select("*", { count: "exact", head: true })
-      .eq("availability", "unknown");
+let unknownQuery = supabase
+  .from("customer_offers")
+  .select("*", { count: "exact", head: true })
+  .eq("availability", "unknown");
+
+if (country !== "all") {
+  totalQuery = totalQuery.eq("country", country);
+  inStockQuery = inStockQuery.eq("country", country);
+  outOfStockQuery = outOfStockQuery.eq("country", country);
+  unknownQuery = unknownQuery.eq("country", country);
+}
+
+const { count: total } = await totalQuery;
+const { count: inStock } = await inStockQuery;
+const { count: outOfStock } = await outOfStockQuery;
+const { count: unknown } = await unknownQuery;
 
     return NextResponse.json({
       ok: true,
