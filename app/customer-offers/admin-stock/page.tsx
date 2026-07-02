@@ -33,6 +33,7 @@ export default function AdminStockReportPage() {
     const [storeFilter, setStoreFilter] = useState("all");
     const [actionLoading, setActionLoading] = useState("");
     const [openedProducts, setOpenedProducts] = useState<number[]>([]);
+    const [priceEdits, setPriceEdits] = useState<Record<number, string>>({});
 
 
     async function loadReport(adminSecret = secret, selected = filter) {
@@ -42,13 +43,13 @@ export default function AdminStockReportPage() {
         setError("");
 
         try {
-           const res = await fetch(
-  `/api/customer-offers/admin?secret=${encodeURIComponent(
-    adminSecret
-  )}&action=stock_report&availability=${encodeURIComponent(
-    selected
-  )}&country=${encodeURIComponent(countryFilter)}`
-);
+            const res = await fetch(
+                `/api/customer-offers/admin?secret=${encodeURIComponent(
+                    adminSecret
+                )}&action=stock_report&availability=${encodeURIComponent(
+                    selected
+                )}&country=${encodeURIComponent(countryFilter)}`
+            );
             const data = await res.json();
 
             if (!res.ok || !data.ok) {
@@ -101,9 +102,10 @@ export default function AdminStockReportPage() {
     }
 
     async function updateOneOfferStatus(
-        id: number,
-        status: "approved" | "rejected"
-    ) {
+  id: number,
+  status: "approved" | "rejected",
+  price?: string
+){
         setActionLoading(`status-${id}`);
         setError("");
 
@@ -117,6 +119,7 @@ export default function AdminStockReportPage() {
                         action: "update_offer_status",
                         id,
                         status,
+                        price,
                         manual_review: status === "approved",
                     }),
                 }
@@ -342,27 +345,27 @@ export default function AdminStockReportPage() {
                     </button>
                 </div>
                 <div className="countryFilters">
-  {[
-    ["all", "كل الدول"],
-    ["sa", "السعودية"],
-    ["ae", "الإمارات"],
-    ["eg", "مصر"],
-    ["kw", "الكويت"],
-    ["qa", "قطر"],
-    ["bh", "البحرين"],
-  ].map(([value, label]) => (
-    <button
-      key={value}
-      className={countryFilter === value ? "active" : ""}
-      onClick={() => {
-        setCountryFilter(value);
-        setTimeout(() => loadReport(secret, filter), 0);
-      }}
-    >
-      {label}
-    </button>
-  ))}
-</div>
+                    {[
+                        ["all", "كل الدول"],
+                        ["sa", "السعودية"],
+                        ["ae", "الإمارات"],
+                        ["eg", "مصر"],
+                        ["kw", "الكويت"],
+                        ["qa", "قطر"],
+                        ["bh", "البحرين"],
+                    ].map(([value, label]) => (
+                        <button
+                            key={value}
+                            className={countryFilter === value ? "active" : ""}
+                            onClick={() => {
+                                setCountryFilter(value);
+                                setTimeout(() => loadReport(secret, filter), 0);
+                            }}
+                        >
+                            {label}
+                        </button>
+                    ))}
+                </div>
 
                 <button className="reload" onClick={() => loadReport()}>
                     {loading ? "جاري التحميل..." : "تحديث التقرير"}
@@ -401,7 +404,17 @@ export default function AdminStockReportPage() {
                                             {offer.store_name || "متجر غير معروف"} -{" "}
                                             {offer.country || "دولة غير محددة"}
                                         </small>
-                                        <small>{offer.price}</small>
+                                        <input
+  className="priceInput"
+  value={priceEdits[offer.id] ?? offer.price ?? ""}
+  onChange={(e) =>
+    setPriceEdits((prev) => ({
+      ...prev,
+      [offer.id]: e.target.value,
+    }))
+  }
+  placeholder="السعر"
+/>
                                     </td>
                                     <td>
                                         <span className={`badge ${offer.status}`}>
@@ -445,7 +458,13 @@ export default function AdminStockReportPage() {
                                             <button
                                                 className={offer.manual_review ? "reviewed" : "success"}
                                                 disabled={actionLoading === `status-${offer.id}`}
-                                                onClick={() => updateOneOfferStatus(offer.id, "approved")}
+                                                onClick={() =>
+                                                    updateOneOfferStatus(
+                                                        offer.id,
+                                                        "approved",
+                                                        priceEdits[offer.id] ?? offer.price
+                                                    )
+                                                }
                                             >
                                                 ✅ موافقة
                                             </button>
@@ -504,6 +523,17 @@ export default function AdminStockReportPage() {
           color: #d1d5db;
           line-height: 1.8;
         }
+          .priceInput {
+  margin-top: 8px;
+  width: 120px;
+  border: 1px solid rgba(34,197,94,.35);
+  background: rgba(255,255,255,.08);
+  color: #86efac;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 900;
+  text-align: center;
+}
 
         .stats {
           display: grid;

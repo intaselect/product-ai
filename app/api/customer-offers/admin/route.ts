@@ -274,147 +274,147 @@ function detectAvailabilityFromHtml(html: string, finalUrl = ""): StockResult {
     "نبهني عند التوفر",
   ];
 
- const strongInWords = [
-  "add to cart",
-  "add to basket",
-  "buy now",
-  "checkout now",
-  "place order",
-  "confirm order",
-  "complete order",
-  "submit order",
-  "order now",
-  "purchase now",
-  "proceed to checkout",
-  "cash on delivery",
-  "in stock",
-  "available in stock",
-  "available now",
-  "ready to ship",
-  "ships today",
-  "free delivery",
-  "express delivery",
-  "delivery tomorrow",
-  "quantity",
-  "qty",
-  "sold by",
-  "fulfilled by",
-  "prime",
-  "أضف إلى السلة",
-  "اضف إلى السلة",
-  "أضف للسلة",
-  "اضف للسلة",
-  "إضافة إلى عربة التسوق",
-  "أضف إلى عربة التسوق",
-  "اشتر الآن",
-  "شراء الآن",
-  "اطلب الآن",
-  "اطلب الان",
-  "الطلب الآن",
-  "الطلب الان",
-  "تأكيد الطلب",
-  "تاكيد الطلب",
-  "إنهاء الطلب",
-  "انهاء الطلب",
-  "إتمام الطلب",
-  "اتمام الطلب",
-  "إكمال الطلب",
-  "اكمال الطلب",
-  "تثبيت الطلب",
-  "إرسال الطلب",
-  "ارسل الطلب",
-  "الدفع عند الاستلام",
-  "ادفع عند الاستلام",
-  "متوفر",
-  "متاح",
-  "الكمية",
-  "توصيل مجاني",
-  "شحن مجاني",
-  "يصلك",
-  "استلمه",
-  "التوصيل",
-  "تبقى",
-  "يشحن من",
-  "الشحن من",
-  "يباع من",
-  "جاهز للشحن",
-];
+  const strongInWords = [
+    "add to cart",
+    "add to basket",
+    "buy now",
+    "checkout now",
+    "place order",
+    "confirm order",
+    "complete order",
+    "submit order",
+    "order now",
+    "purchase now",
+    "proceed to checkout",
+    "cash on delivery",
+    "in stock",
+    "available in stock",
+    "available now",
+    "ready to ship",
+    "ships today",
+    "free delivery",
+    "express delivery",
+    "delivery tomorrow",
+    "quantity",
+    "qty",
+    "sold by",
+    "fulfilled by",
+    "prime",
+    "أضف إلى السلة",
+    "اضف إلى السلة",
+    "أضف للسلة",
+    "اضف للسلة",
+    "إضافة إلى عربة التسوق",
+    "أضف إلى عربة التسوق",
+    "اشتر الآن",
+    "شراء الآن",
+    "اطلب الآن",
+    "اطلب الان",
+    "الطلب الآن",
+    "الطلب الان",
+    "تأكيد الطلب",
+    "تاكيد الطلب",
+    "إنهاء الطلب",
+    "انهاء الطلب",
+    "إتمام الطلب",
+    "اتمام الطلب",
+    "إكمال الطلب",
+    "اكمال الطلب",
+    "تثبيت الطلب",
+    "إرسال الطلب",
+    "ارسل الطلب",
+    "الدفع عند الاستلام",
+    "ادفع عند الاستلام",
+    "متوفر",
+    "متاح",
+    "الكمية",
+    "توصيل مجاني",
+    "شحن مجاني",
+    "يصلك",
+    "استلمه",
+    "التوصيل",
+    "تبقى",
+    "يشحن من",
+    "الشحن من",
+    "يباع من",
+    "جاهز للشحن",
+  ];
 
- const buyButtonSignals = [
-  "add-to-cart-button",
-  "buy-now-button",
-  "submit.add-to-cart",
-  "addtocart",
-  "buy-now",
-  "btn-cart",
-  "cart-button",
-  "add_to_cart",
-  "checkout",
-  "place-order",
-  "place_order",
-  "confirm-order",
-  "confirm_order",
-  "complete-order",
-  "complete_order",
-  "submit-order",
-  "submit_order",
-  "order-now",
-  "order_now",
-];
+  const buyButtonSignals = [
+    "add-to-cart-button",
+    "buy-now-button",
+    "submit.add-to-cart",
+    "addtocart",
+    "buy-now",
+    "btn-cart",
+    "cart-button",
+    "add_to_cart",
+    "checkout",
+    "place-order",
+    "place_order",
+    "confirm-order",
+    "confirm_order",
+    "complete-order",
+    "complete_order",
+    "submit-order",
+    "submit_order",
+    "order-now",
+    "order_now",
+  ];
 
   if (buyButtonSignals.some((x) => lower.includes(x))) {
     add(14, "HTML buy/add-to-cart button");
   }
   const checkoutSignals = [
-  "تأكيد الطلب",
-  "تاكيد الطلب",
-  "إنهاء الطلب",
-  "انهاء الطلب",
-  "إتمام الطلب",
-  "اتمام الطلب",
-  "إكمال الطلب",
-  "اكمال الطلب",
-  "تثبيت الطلب",
-  "إرسال الطلب",
-  "ارسل الطلب",
-  "اطلب الآن",
-  "اطلب الان",
-  "الطلب الآن",
-  "الطلب الان",
-  "ملخص الطلب",
-  "سعر المنتجات",
-  "سعر الشحن",
-  "المستحق للدفع",
-  "طريقة الدفع",
-  "ادفع عند الاستلام",
-  "الدفع عند الاستلام",
-  "العنوان",
-  "الاسم",
-  "رقم الجوال",
-  "رقم الهاتف",
-  "المحافظة",
-  "الشارع",
-  "الشقة",
-  "shipping address",
-  "billing address",
-  "order summary",
-  "confirm order",
-  "place order",
-  "complete order",
-  "submit order",
-  "order now",
-  "checkout",
-  "cash on delivery",
-  "cod",
-];
+    "تأكيد الطلب",
+    "تاكيد الطلب",
+    "إنهاء الطلب",
+    "انهاء الطلب",
+    "إتمام الطلب",
+    "اتمام الطلب",
+    "إكمال الطلب",
+    "اكمال الطلب",
+    "تثبيت الطلب",
+    "إرسال الطلب",
+    "ارسل الطلب",
+    "اطلب الآن",
+    "اطلب الان",
+    "الطلب الآن",
+    "الطلب الان",
+    "ملخص الطلب",
+    "سعر المنتجات",
+    "سعر الشحن",
+    "المستحق للدفع",
+    "طريقة الدفع",
+    "ادفع عند الاستلام",
+    "الدفع عند الاستلام",
+    "العنوان",
+    "الاسم",
+    "رقم الجوال",
+    "رقم الهاتف",
+    "المحافظة",
+    "الشارع",
+    "الشقة",
+    "shipping address",
+    "billing address",
+    "order summary",
+    "confirm order",
+    "place order",
+    "complete order",
+    "submit order",
+    "order now",
+    "checkout",
+    "cash on delivery",
+    "cod",
+  ];
 
-const checkoutScore = checkoutSignals.filter((x) =>
-  text.includes(x.toLowerCase())
-).length;
+  const checkoutScore = checkoutSignals.filter((x) =>
+    text.includes(x.toLowerCase())
+  ).length;
 
-if (checkoutScore >= 4) {
-  add(24, `Checkout/order form detected: ${checkoutScore} signals`);
-}
+  if (checkoutScore >= 4) {
+    add(24, `Checkout/order form detected: ${checkoutScore} signals`);
+  }
 
   if (hasAny(text, hardOutWords)) {
     add(-25, "Visible out-of-stock text");
@@ -618,8 +618,8 @@ export async function GET(req: Request) {
       query = query.eq("availability", availability);
     }
     if (country !== "all") {
-  query = query.eq("country", country);
-}
+      query = query.eq("country", country);
+    }
 
     const { data, error } = await query;
 
@@ -630,40 +630,40 @@ export async function GET(req: Request) {
       );
     }
 
-  let totalQuery = supabase
-  .from("customer_offers")
-  .select("*", { count: "exact", head: true })
-  .eq("status", "approved");
+    let totalQuery = supabase
+      .from("customer_offers")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "approved");
 
-let inStockQuery = supabase
-  .from("customer_offers")
-  .select("*", { count: "exact", head: true })
-  .eq("status", "approved")
-  .eq("availability", "in_stock");
+    let inStockQuery = supabase
+      .from("customer_offers")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "approved")
+      .eq("availability", "in_stock");
 
-let outOfStockQuery = supabase
-  .from("customer_offers")
-  .select("*", { count: "exact", head: true })
-  .eq("status", "approved")
-  .eq("availability", "out_of_stock");
+    let outOfStockQuery = supabase
+      .from("customer_offers")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "approved")
+      .eq("availability", "out_of_stock");
 
-let unknownQuery = supabase
-  .from("customer_offers")
-  .select("*", { count: "exact", head: true })
-  .eq("status", "approved")
-  .eq("availability", "unknown");
+    let unknownQuery = supabase
+      .from("customer_offers")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "approved")
+      .eq("availability", "unknown");
 
-if (country !== "all") {
-  totalQuery = totalQuery.eq("country", country);
-  inStockQuery = inStockQuery.eq("country", country);
-  outOfStockQuery = outOfStockQuery.eq("country", country);
-  unknownQuery = unknownQuery.eq("country", country);
-}
+    if (country !== "all") {
+      totalQuery = totalQuery.eq("country", country);
+      inStockQuery = inStockQuery.eq("country", country);
+      outOfStockQuery = outOfStockQuery.eq("country", country);
+      unknownQuery = unknownQuery.eq("country", country);
+    }
 
-const { count: total } = await totalQuery;
-const { count: inStock } = await inStockQuery;
-const { count: outOfStock } = await outOfStockQuery;
-const { count: unknown } = await unknownQuery;
+    const { count: total } = await totalQuery;
+    const { count: inStock } = await inStockQuery;
+    const { count: outOfStock } = await outOfStockQuery;
+    const { count: unknown } = await unknownQuery;
 
     return NextResponse.json({
       ok: true,
@@ -860,6 +860,7 @@ export async function PATCH(req: Request) {
     const storeName = String(body.store_name || "").trim();
     const availability = String(body.availability || "");
     const status = String(body.status || "");
+
 
     if (!storeName || !["approved", "rejected", "pending"].includes(status)) {
       return NextResponse.json(
@@ -1117,6 +1118,7 @@ export async function PATCH(req: Request) {
   if (body.action === "update_offer_status") {
     const id = Number(body.id);
     const status = String(body.status || "");
+    const price = cleanText(body.price);
 
     if (!id || !["approved", "rejected", "pending"].includes(status)) {
       return NextResponse.json(
@@ -1126,28 +1128,29 @@ export async function PATCH(req: Request) {
     }
 
     const availability =
-  status === "approved"
-    ? "in_stock"
-    : status === "rejected"
-      ? "out_of_stock"
-      : "unknown";
-
-const { error } = await supabase
-  .from("customer_offers")
-  .update({
-    status,
-    availability,
-    manual_review: true,
-    stock_check_note:
       status === "approved"
-        ? "Manual admin approval: marked in stock"
+        ? "in_stock"
         : status === "rejected"
-          ? "Manual admin rejection: marked out of stock"
-          : "Manual admin review: marked unknown",
-    last_stock_checked_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  })
-  .eq("id", id);
+          ? "out_of_stock"
+          : "unknown";
+
+    const { error } = await supabase
+      .from("customer_offers")
+      .update({
+        status,
+        availability,
+        price: price || undefined,
+        manual_review: true,
+        stock_check_note:
+          status === "approved"
+            ? "Manual admin approval: marked in stock"
+            : status === "rejected"
+              ? "Manual admin rejection: marked out of stock"
+              : "Manual admin review: marked unknown",
+        last_stock_checked_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id);
 
     if (error) {
       return NextResponse.json(
