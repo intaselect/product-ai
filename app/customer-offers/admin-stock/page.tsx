@@ -31,6 +31,7 @@ export default function AdminStockReportPage() {
     const [error, setError] = useState("");
     const [storeFilter, setStoreFilter] = useState("all");
     const [actionLoading, setActionLoading] = useState("");
+    const [openedProducts, setOpenedProducts] = useState<number[]>([]);
 
 
     async function loadReport(adminSecret = secret, selected = filter) {
@@ -71,6 +72,19 @@ export default function AdminStockReportPage() {
             loadReport(urlSecret, "all");
         }
     }, []);
+
+    useEffect(() => {
+        const saved = localStorage.getItem("admin_opened_products");
+        if (saved) {
+            setOpenedProducts(JSON.parse(saved));
+        }
+    }, []);
+
+    function markProductOpened(id: number) {
+        const next = Array.from(new Set([...openedProducts, id]));
+        setOpenedProducts(next);
+        localStorage.setItem("admin_opened_products", JSON.stringify(next));
+    }
 
     const title = useMemo(() => {
         if (filter === "in_stock") return "المنتجات المتوفرة";
@@ -394,9 +408,11 @@ export default function AdminStockReportPage() {
                                     </td>
                                     <td>
                                         <a
+                                            className={openedProducts.includes(offer.id) ? "openedLink" : ""}
                                             href={offer.product_url}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            onClick={() => markProductOpened(offer.id)}
                                         >
                                             فتح المنتج
                                         </a>
@@ -594,6 +610,13 @@ export default function AdminStockReportPage() {
           color: #93c5fd;
           font-weight: 900;
         }
+          .openedLink {
+  color: white;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  padding: 7px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+}
 
         .badge,
         .stock {
