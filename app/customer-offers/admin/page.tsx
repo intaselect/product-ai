@@ -540,6 +540,14 @@ export default function CustomerOffersAdminPage() {
             ? "جاري فحص التوفر..."
             : "🔍 فحص التوفر مثل Google Merchant"}
         </button>
+        {secret && (
+  <Link
+    href={`/customer-offers/admin-stock?secret=${encodeURIComponent(secret)}`}
+    className="adsDashboardBtn"
+  >
+    📄 تقرير فحص التوفر
+  </Link>
+)}
 
         {error && <div className="errorMsg">{error}</div>}
       </section>

@@ -90,16 +90,6 @@ async function fetchProductDetails(productUrl: string) {
     };
   }
 }
-function stripHtml(html: string) {
-  return String(html || "")
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLowerCase();
-}
-
 function decodeHtmlText(value: string) {
   return String(value || "")
     .replace(/&quot;/g, '"')
@@ -109,6 +99,46 @@ function decodeHtmlText(value: string) {
     .replace(/&#39;/g, "'")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">");
+}
+
+function stripHtml(html: string) {
+  return decodeHtmlText(String(html || ""))
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function normalizeSignal(value: any) {
+  return String(value || "").toLowerCase().replace(/[\s_\-]/g, "");
+}
+
+function classifyAvailabilitySignal(value: any) {
+  const v = normalizeSignal(value);
+
+  if (
+    v.includes("outofstock") ||
+    v.includes("soldout") ||
+    v.includes("discontinued") ||
+    v.includes("unavailable") ||
+    v.includes("notavailable")
+  ) {
+    return "out_of_stock";
+  }
+
+  if (
+    v.includes("instock") ||
+    v.includes("limitedavailability") ||
+    v.includes("preorder") ||
+    v.includes("presale")
+  ) {
+    return "in_stock";
+  }
+
+  return "unknown";
 }
 
 function extractJsonLdBlocks(html: string) {
@@ -124,8 +154,21 @@ function extractJsonLdBlocks(html: string) {
   return blocks;
 }
 
-function deepFindAvailability(input: any): string[] {
+function safeJsonParse(input: string) {
+  try {
+    return JSON.parse(input);
+  } catch {
+    try {
+      return JSON.parse(input.replace(/,\s*}/g, "}").replace(/,\s*]/g, "]"));
+    } catch {
+      return null;
+    }
+  }
+}
+
+function deepFindKeys(input: any, keys: string[]) {
   const found: string[] = [];
+  const wanted = keys.map((k) => k.toLowerCase());
 
   function walk(value: any) {
     if (!value) return;
@@ -137,7 +180,7 @@ function deepFindAvailability(input: any): string[] {
 
     if (typeof value === "object") {
       for (const [key, val] of Object.entries(value)) {
-        if (String(key).toLowerCase() === "availability") {
+        if (wanted.includes(String(key).toLowerCase())) {
           found.push(String(val || ""));
         }
         walk(val);
@@ -149,111 +192,181 @@ function deepFindAvailability(input: any): string[] {
   return found;
 }
 
-function detectAvailabilityFromHtml(html: string): {
+function detectAvailabilityFromHtml(html: string, finalUrl = ""): {
   availability: "in_stock" | "out_of_stock" | "unknown";
   note: string;
 } {
   const raw = decodeHtmlText(html || "");
   const lower = raw.toLowerCase();
+  const text = stripHtml(raw);
 
-  for (const block of extractJsonLdBlocks(raw)) {
-    try {
-      const parsed = JSON.parse(block);
-      const values = deepFindAvailability(parsed).join(" ").toLowerCase();
-
-      if (
-        values.includes("outofstock") ||
-        values.includes("soldout") ||
-        values.includes("discontinued")
-      ) {
-        return { availability: "out_of_stock", note: "JSON-LD OutOfStock" };
-      }
-
-      if (
-        values.includes("instock") ||
-        values.includes("limitedavailability") ||
-        values.includes("preorder") ||
-        values.includes("presale")
-      ) {
-        return { availability: "in_stock", note: "JSON-LD InStock" };
-      }
-    } catch {}
+  if (
+    text.includes("page not found") ||
+    text.includes("product not found") ||
+    text.includes("404") ||
+    text.includes("هذه الصفحة غير موجودة") ||
+    text.includes("المنتج غير موجود") ||
+    text.includes("لم يتم العثور على المنتج")
+  ) {
+    return { availability: "out_of_stock", note: "Product page not found" };
   }
 
-  const availabilityMeta = [
+  if (
+    text.includes("access denied") ||
+    text.includes("captcha") ||
+    text.includes("robot check") ||
+    text.includes("verify you are human")
+  ) {
+    return { availability: "unknown", note: "Blocked / Captcha page" };
+  }
+
+  for (const block of extractJsonLdBlocks(raw)) {
+    const parsed = safeJsonParse(block);
+    if (!parsed) continue;
+
+    const values = deepFindKeys(parsed, ["availability", "itemAvailability"]);
+    for (const value of values) {
+      const detected = classifyAvailabilitySignal(value);
+      if (detected !== "unknown") {
+        return {
+          availability: detected,
+          note: `JSON-LD availability: ${value}`,
+        };
+      }
+    }
+  }
+
+  const structuredPatterns = [
     /itemprop=["']availability["'][^>]+href=["']([^"']+)["']/i,
     /itemprop=["']availability["'][^>]+content=["']([^"']+)["']/i,
     /content=["']([^"']+)["'][^>]+itemprop=["']availability["']/i,
     /href=["']([^"']+)["'][^>]+itemprop=["']availability["']/i,
+    /property=["']product:availability["'][^>]+content=["']([^"']+)["']/i,
+    /property=["']og:availability["'][^>]+content=["']([^"']+)["']/i,
+    /name=["']availability["'][^>]+content=["']([^"']+)["']/i,
+    /data-availability=["']([^"']+)["']/i,
+    /data-stock=["']([^"']+)["']/i,
+    /data-instock=["']([^"']+)["']/i,
   ];
 
-  for (const pattern of availabilityMeta) {
+  for (const pattern of structuredPatterns) {
     const match = raw.match(pattern);
-    const value = String(match?.[1] || "").toLowerCase();
+    const value = match?.[1] || "";
+    const detected = classifyAvailabilitySignal(value);
 
-    if (
-      value.includes("outofstock") ||
-      value.includes("soldout") ||
-      value.includes("discontinued")
-    ) {
-      return { availability: "out_of_stock", note: "Microdata OutOfStock" };
-    }
-
-    if (
-      value.includes("instock") ||
-      value.includes("limitedavailability") ||
-      value.includes("preorder")
-    ) {
-      return { availability: "in_stock", note: "Microdata InStock" };
+    if (detected !== "unknown") {
+      return {
+        availability: detected,
+        note: `Structured attribute: ${value}`,
+      };
     }
   }
 
-  const text = stripHtml(raw);
+  const scriptAvailabilityPatterns = [
+    /"availability"\s*:\s*"([^"]+)"/i,
+    /"stockStatus"\s*:\s*"([^"]+)"/i,
+    /"stock_status"\s*:\s*"([^"]+)"/i,
+    /"isInStock"\s*:\s*(true|false)/i,
+    /"inStock"\s*:\s*(true|false)/i,
+    /"available"\s*:\s*(true|false)/i,
+  ];
 
-  const outWords = [
+  for (const pattern of scriptAvailabilityPatterns) {
+    const match = lower.match(pattern);
+    const value = match?.[1];
+
+    if (value === "false") {
+      return { availability: "out_of_stock", note: `Script signal: ${match?.[0]}` };
+    }
+
+    if (value === "true") {
+      return { availability: "in_stock", note: `Script signal: ${match?.[0]}` };
+    }
+
+    const detected = classifyAvailabilitySignal(value);
+    if (detected !== "unknown") {
+      return { availability: detected, note: `Script availability: ${value}` };
+    }
+  }
+
+  const strongOutWords = [
     "out of stock",
     "currently unavailable",
     "temporarily unavailable",
     "sold out",
+    "not available",
     "unavailable",
-    "غير متوفر",
-    "غير متاح",
+    "discontinued",
     "نفد المخزون",
     "نفدت الكمية",
+    "غير متوفر",
+    "غير متاح",
     "حاليا غير متوفر",
     "حالياً غير متوفر",
+    "غير متوفر حالياً",
+    "هذا المنتج غير متوفر",
+    "المنتج غير متوفر",
+    "لا يتوفر هذا المنتج",
   ];
 
-  for (const word of outWords) {
+  for (const word of strongOutWords) {
     if (text.includes(word)) {
-      return { availability: "out_of_stock", note: `Text: ${word}` };
+      return { availability: "out_of_stock", note: `Visible text: ${word}` };
     }
   }
 
-  const inWords = [
+  const disabledCartPatterns = [
+    /<button[^>]+disabled[^>]*>[\s\S]{0,120}(add to cart|buy now|أضف|اضف|شراء|اشتر)/i,
+    /<button[^>]*>[\s\S]{0,120}(out of stock|sold out|غير متوفر|نفد المخزون)[\s\S]{0,120}<\/button>/i,
+  ];
+
+  for (const pattern of disabledCartPatterns) {
+    if (pattern.test(raw)) {
+      return { availability: "out_of_stock", note: "Disabled cart button" };
+    }
+  }
+
+  const strongInWords = [
     "in stock",
-    "available",
+    "available in stock",
     "add to cart",
     "add to basket",
     "buy now",
+    "available now",
     "متوفر",
+    "متوفر الآن",
     "أضف إلى السلة",
     "اضف إلى السلة",
     "اشتر الآن",
+    "شراء الآن",
   ];
 
-  for (const word of inWords) {
+  for (const word of strongInWords) {
     if (text.includes(word)) {
-      return { availability: "in_stock", note: `Text: ${word}` };
+      return { availability: "in_stock", note: `Visible text: ${word}` };
     }
   }
 
-  return { availability: "unknown", note: "No clear availability signal" };
+  const hasPrice =
+    /itemprop=["']price["']/i.test(raw) ||
+    /"price"\s*:\s*"?[0-9]/i.test(raw) ||
+    /property=["']product:price:amount["']/i.test(raw);
+
+  const hasOffer =
+    lower.includes("schema.org/offer") ||
+    lower.includes('"@type":"offer"') ||
+    lower.includes('"@type": "offer"');
+
+  if (hasPrice && hasOffer) {
+    return { availability: "unknown", note: "Price and Offer found, no stock signal" };
+  }
+
+  return { availability: "unknown", note: "No clear stock signal" };
 }
 
 async function checkOneProductStock(productUrl: string) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 9000);
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
   try {
     const res = await fetch(productUrl, {
@@ -261,14 +374,29 @@ async function checkOneProductStock(productUrl: string) {
       redirect: "follow",
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (compatible; BPSChatMerchantChecker/1.0; +https://bpschat.com)",
+          "Mozilla/5.0 (compatible; BPSChatMerchantChecker/1.0; +https://www.bpschat.com)",
         Accept:
           "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "ar,en-US;q=0.9,en;q=0.8",
+        "Accept-Language": "ar-SA,ar;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Cache-Control": "no-cache",
       },
     });
 
     clearTimeout(timeout);
+
+    if ([404, 410].includes(res.status)) {
+      return {
+        availability: "out_of_stock" as const,
+        note: `HTTP ${res.status} product removed`,
+      };
+    }
+
+    if ([401, 403, 429, 503].includes(res.status)) {
+      return {
+        availability: "unknown" as const,
+        note: `HTTP ${res.status} blocked or rate limited`,
+      };
+    }
 
     if (!res.ok) {
       return {
@@ -278,7 +406,7 @@ async function checkOneProductStock(productUrl: string) {
     }
 
     const html = await res.text();
-    return detectAvailabilityFromHtml(html);
+    return detectAvailabilityFromHtml(html, res.url);
   } catch (err: any) {
     clearTimeout(timeout);
 
@@ -292,6 +420,63 @@ export async function GET(req: Request) {
   if (!checkAdmin(req)) {
     return NextResponse.json({ ok: false, error: "غير مصرح" }, { status: 401 });
   }
+  const url = new URL(req.url);
+const action = url.searchParams.get("action");
+
+if (action === "stock_report") {
+  const availability = url.searchParams.get("availability") || "all";
+
+  let query = supabase
+    .from("customer_offers")
+    .select(
+      "id, product_name, product_url, image_url, price, store_name, country, status, availability, last_stock_checked_at, stock_check_note"
+    )
+    .order("last_stock_checked_at", { ascending: false, nullsFirst: false })
+    .limit(500);
+
+  if (availability !== "all") {
+    query = query.eq("availability", availability);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    return NextResponse.json(
+      { ok: false, error: error.message },
+      { status: 500 }
+    );
+  }
+
+  const { count: total } = await supabase
+    .from("customer_offers")
+    .select("*", { count: "exact", head: true });
+
+  const { count: inStock } = await supabase
+    .from("customer_offers")
+    .select("*", { count: "exact", head: true })
+    .eq("availability", "in_stock");
+
+  const { count: outOfStock } = await supabase
+    .from("customer_offers")
+    .select("*", { count: "exact", head: true })
+    .eq("availability", "out_of_stock");
+
+  const { count: unknown } = await supabase
+    .from("customer_offers")
+    .select("*", { count: "exact", head: true })
+    .eq("availability", "unknown");
+
+  return NextResponse.json({
+    ok: true,
+    stats: {
+      total: total || 0,
+      inStock: inStock || 0,
+      outOfStock: outOfStock || 0,
+      unknown: unknown || 0,
+    },
+    offers: data || [],
+  });
+}
 
   const { data: offers, error: offersError } = await supabase
     .from("customer_offers")
@@ -592,70 +777,6 @@ export async function PATCH(req: Request) {
       ok: true,
     });
   }
-  if (body.action === "check_stock_google_like_bulk") {
-  const limit = Math.min(Number(body.limit || 50), 100);
-
-  const { data: offers, error: offersError } = await supabase
-    .from("customer_offers")
-    .select("id, product_url, status")
-    .eq("status", "approved")
-    .not("product_url", "is", null)
-    .order("last_stock_checked_at", { ascending: true, nullsFirst: true })
-    .limit(limit);
-
-  if (offersError) {
-    return NextResponse.json(
-      { ok: false, error: offersError.message },
-      { status: 500 }
-    );
-  }
-
-  const results: any[] = [];
-
-  for (const offer of offers || []) {
-    const checked = await checkOneProductStock(offer.product_url);
-
-    const updateData: any = {
-      availability: checked.availability,
-      last_stock_checked_at: new Date().toISOString(),
-      stock_check_note: checked.note,
-      updated_at: new Date().toISOString(),
-    };
-
-    if (checked.availability === "out_of_stock") {
-      updateData.status = "rejected";
-      updateData.is_ad = false;
-      updateData.side_ad = false;
-      updateData.best_offer = false;
-    }
-
-    const { error } = await supabase
-      .from("customer_offers")
-      .update(updateData)
-      .eq("id", offer.id);
-
-    results.push({
-      id: offer.id,
-      availability: checked.availability,
-      note: checked.note,
-      rejected: checked.availability === "out_of_stock",
-      ok: !error,
-      error: error?.message || null,
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 700));
-  }
-
-  return NextResponse.json({
-    ok: true,
-    total: results.length,
-    inStock: results.filter((x) => x.availability === "in_stock").length,
-    outOfStock: results.filter((x) => x.availability === "out_of_stock").length,
-    unknown: results.filter((x) => x.availability === "unknown").length,
-    rejected: results.filter((x) => x.rejected).length,
-    results,
-  });
-}
 
   // ✅ تحديث حالة العرض: approved / rejected / pending
   if (body.action === "update_offer_status") {
