@@ -288,6 +288,23 @@ function detectAvailabilityFromHtml(html: string, finalUrl = ""): {
       return { availability: detected, note: `Script availability: ${value}` };
     }
   }
+  const amazonAvailable =
+  finalUrl.includes("amazon.") &&
+  (
+    text.includes("add to cart") ||
+    text.includes("buy now") ||
+    text.includes("إضافة إلى عربة التسوق") ||
+    text.includes("أضف إلى عربة التسوق") ||
+    text.includes("اشتر الآن") ||
+    text.includes("متوفر")
+  );
+
+if (amazonAvailable) {
+  return {
+    availability: "in_stock",
+    note: "Amazon visible buy box available",
+  };
+}
 
   const strongOutWords = [
     "out of stock",
