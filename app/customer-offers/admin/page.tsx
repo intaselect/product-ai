@@ -472,7 +472,7 @@ export default function CustomerOffersAdminPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             action: "check_stock_google_like_bulk",
-            limit: 300,
+            limit: 20,
           }),
         }
       );

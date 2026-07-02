@@ -822,7 +822,7 @@ export async function PATCH(req: Request) {
   }
 
   if (body.action === "check_stock_google_like_bulk") {
-    const limit = Math.min(Number(body.limit || 300), 300);
+    const limit = Math.min(Number(body.limit || 20), 20);
 
     const { data: offers, error: offersError } = await supabase
       .from("customer_offers")
