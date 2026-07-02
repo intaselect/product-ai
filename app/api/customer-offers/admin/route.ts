@@ -610,6 +610,7 @@ export async function GET(req: Request) {
       .select(
         "id, product_name, product_url, image_url, price, store_name, country, status, manual_review, availability, last_stock_checked_at, stock_check_note"
       )
+      .eq("status", "approved")
       .order("last_stock_checked_at", { ascending: false, nullsFirst: false })
       .limit(500);
 
@@ -629,23 +630,27 @@ export async function GET(req: Request) {
       );
     }
 
-    let totalQuery = supabase
+  let totalQuery = supabase
   .from("customer_offers")
-  .select("*", { count: "exact", head: true });
+  .select("*", { count: "exact", head: true })
+  .eq("status", "approved");
 
 let inStockQuery = supabase
   .from("customer_offers")
   .select("*", { count: "exact", head: true })
+  .eq("status", "approved")
   .eq("availability", "in_stock");
 
 let outOfStockQuery = supabase
   .from("customer_offers")
   .select("*", { count: "exact", head: true })
+  .eq("status", "approved")
   .eq("availability", "out_of_stock");
 
 let unknownQuery = supabase
   .from("customer_offers")
   .select("*", { count: "exact", head: true })
+  .eq("status", "approved")
   .eq("availability", "unknown");
 
 if (country !== "all") {
