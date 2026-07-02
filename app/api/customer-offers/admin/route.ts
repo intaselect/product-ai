@@ -657,6 +657,44 @@ export async function PATCH(req: Request) {
   }
 
   const body = await req.json();
+  if (body.action === "bulk_update_stock_status_by_store") {
+  const storeName = String(body.store_name || "").trim();
+  const availability = String(body.availability || "");
+  const status = String(body.status || "");
+
+  if (!storeName || !["approved", "rejected", "pending"].includes(status)) {
+    return NextResponse.json(
+      { ok: false, error: "بيانات غير صحيحة" },
+      { status: 400 }
+    );
+  }
+
+  let query = supabase
+    .from("customer_offers")
+    .update({
+      status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("store_name", storeName);
+
+  if (availability !== "all") {
+    query = query.eq("availability", availability);
+  }
+
+  const { data, error } = await query.select("id");
+
+  if (error) {
+    return NextResponse.json(
+      { ok: false, error: error.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({
+    ok: true,
+    updated: data?.length || 0,
+  });
+}
   if (body.action === "bulk_update_stock_status") {
   const availability = String(body.availability || "");
   const status = String(body.status || "");

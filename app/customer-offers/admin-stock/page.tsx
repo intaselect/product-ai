@@ -28,7 +28,9 @@ export default function AdminStockReportPage() {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [storeFilter, setStoreFilter] = useState("all");
     const [actionLoading, setActionLoading] = useState("");
+
 
     async function loadReport(adminSecret = secret, selected = filter) {
         if (!adminSecret) return;
@@ -80,6 +82,7 @@ export default function AdminStockReportPage() {
         setFilter(value);
         loadReport(secret, value);
     }
+    
     async function updateOneOfferStatus(
         id: number,
         status: "approved" | "rejected"
@@ -159,6 +162,66 @@ export default function AdminStockReportPage() {
             setActionLoading("");
         }
     }
+    const stores = useMemo(() => {
+  const map = new Map<string, number>();
+
+  offers.forEach((offer) => {
+    const store = offer.store_name || "متجر غير معروف";
+    map.set(store, (map.get(store) || 0) + 1);
+  });
+
+  return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
+}, [offers]);
+
+const filteredOffers = useMemo(() => {
+  if (storeFilter === "all") return offers;
+  return offers.filter(
+    (offer) => (offer.store_name || "متجر غير معروف") === storeFilter
+  );
+}, [offers, storeFilter]);
+
+async function bulkUpdateStore(
+  availability: "all" | "unknown" | "out_of_stock" | "in_stock",
+  status: "approved" | "rejected"
+) {
+  if (storeFilter === "all") {
+    alert("اختار متجر معين الأول");
+    return;
+  }
+
+  if (!window.confirm(`تأكيد تحديث منتجات متجر: ${storeFilter}`)) return;
+
+  setActionLoading(`store-${availability}-${status}`);
+  setError("");
+
+  try {
+    const res = await fetch(
+      `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "bulk_update_stock_status_by_store",
+          store_name: storeFilter,
+          availability,
+          status,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      setError(data.error || "حدث خطأ أثناء تحديث المتجر");
+      return;
+    }
+
+    await loadReport();
+    alert(`تم تحديث ${data.updated} منتج`);
+  } finally {
+    setActionLoading("");
+  }
+}
 
     return (
         <main className="page" dir="rtl">
@@ -239,6 +302,28 @@ export default function AdminStockReportPage() {
                         ✅ موافقة كل المتوفر
                     </button>
                 </div>
+                <div className="storeTools">
+  <select value={storeFilter} onChange={(e) => setStoreFilter(e.target.value)}>
+    <option value="all">كل المتاجر</option>
+    {stores.map(([store, count]) => (
+      <option key={store} value={store}>
+        {store} ({count})
+      </option>
+    ))}
+  </select>
+
+  <button className="danger" onClick={() => bulkUpdateStore("unknown", "rejected")}>
+    ❌ رفض غير الواضح من المتجر
+  </button>
+
+  <button className="danger" onClick={() => bulkUpdateStore("all", "rejected")}>
+    ❌ رفض كل منتجات المتجر
+  </button>
+
+  <button className="success" onClick={() => bulkUpdateStore("all", "approved")}>
+    ✅ موافقة كل منتجات المتجر
+  </button>
+</div>
 
                 <button className="reload" onClick={() => loadReport()}>
                     {loading ? "جاري التحميل..." : "تحديث التقرير"}
@@ -266,7 +351,7 @@ export default function AdminStockReportPage() {
                         </thead>
 
                         <tbody>
-                            {offers.map((offer) => (
+                            {filteredOffers.map((offer) => (
                                 <tr key={offer.id}>
                                     <td>
                                         <img src={offer.image_url} alt={offer.product_name} />
@@ -315,28 +400,28 @@ export default function AdminStockReportPage() {
                                         </a>
                                     </td>
                                     <td>
-  <div className="rowActions">
-    <button
-      className="success"
-      disabled={actionLoading === `status-${offer.id}`}
-      onClick={() => updateOneOfferStatus(offer.id, "approved")}
-    >
-      ✅ موافقة
-    </button>
+                                        <div className="rowActions">
+                                            <button
+                                                className="success"
+                                                disabled={actionLoading === `status-${offer.id}`}
+                                                onClick={() => updateOneOfferStatus(offer.id, "approved")}
+                                            >
+                                                ✅ موافقة
+                                            </button>
 
-    <button
-      className="danger"
-      disabled={actionLoading === `status-${offer.id}`}
-      onClick={() => updateOneOfferStatus(offer.id, "rejected")}
-    >
-      ❌ عدم موافقة
-    </button>
-  </div>
-</td>
+                                            <button
+                                                className="danger"
+                                                disabled={actionLoading === `status-${offer.id}`}
+                                                onClick={() => updateOneOfferStatus(offer.id, "rejected")}
+                                            >
+                                                ❌ عدم موافقة
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                             ))}
 
-                            {offers.length === 0 && (
+                            {filteredOffers.length === 0 && (
                                 <tr>
                                     <td colSpan={8} className="empty">
                                         لا توجد نتائج
@@ -570,6 +655,31 @@ export default function AdminStockReportPage() {
 .rowActions button:disabled {
   opacity: .55;
   cursor: not-allowed;
+}
+  .storeTools {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.storeTools select {
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: #111;
+  color: white;
+  font-weight: 900;
+}
+
+.storeTools button {
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 14px;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
 }
 
         @media (max-width: 800px) {
