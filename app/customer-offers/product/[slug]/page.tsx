@@ -313,7 +313,7 @@ const { data: relatedCollections } = await supabase
 
  offers: {
   "@type": "Offer",
-  url: `${SITE_URL}/api/customer-offers/click/${offer.id}`,
+  url: pageUrl,
   priceCurrency: currencyCode,
   price: cleanPrice(offer.price),
   availability: "https://schema.org/InStock",
