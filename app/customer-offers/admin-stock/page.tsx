@@ -15,11 +15,7 @@ type Offer = {
     last_stock_checked_at?: string | null;
     stock_check_note?: string | null;
     manual_review?: boolean;
-    original_store_price?: string | null;
-    original_store_price_checked_at?: string | null;
-    original_store_price_note?: string | null;
 };
-
 
 export default function AdminStockReportPage() {
     const [secret, setSecret] = useState("");
@@ -69,53 +65,6 @@ export default function AdminStockReportPage() {
             setLoading(false);
         }
     }
-    async function checkOriginalPrice(id: number) {
-    setActionLoading(`price-${id}`);
-    setError("");
-
-    try {
-        const res = await fetch(
-            `/api/customer-offers/admin?secret=${encodeURIComponent(secret)}`,
-            {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    action: "check_original_store_price",
-                    id,
-                }),
-            }
-        );
-
-        const data = await res.json();
-
-        if (!res.ok || !data.ok) {
-            setError(data.error || "فشل فحص السعر");
-            return;
-        }
-
-        setOffers((prev) =>
-            prev.map((offer) =>
-                offer.id === id
-                    ? {
-                        ...offer,
-                        original_store_price: data.price || null,
-                        original_store_price_note: data.note || "",
-                        original_store_price_checked_at: new Date().toISOString(),
-                    }
-                    : offer
-            )
-        );
-
-        if (data.price) {
-            setPriceEdits((prev) => ({
-                ...prev,
-                [id]: data.price,
-            }));
-        }
-    } finally {
-        setActionLoading("");
-    }
-}
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -153,10 +102,10 @@ export default function AdminStockReportPage() {
     }
 
     async function updateOneOfferStatus(
-        id: number,
-        status: "approved" | "rejected",
-        price?: string
-    ) {
+  id: number,
+  status: "approved" | "rejected",
+  price?: string
+){
         setActionLoading(`status-${id}`);
         setError("");
 
@@ -434,9 +383,6 @@ export default function AdminStockReportPage() {
                             <tr>
                                 <th>الصورة</th>
                                 <th>المنتج</th>
-
-                                <th>السعر في المتجر الأصلي</th>
-
                                 <th>الحالة</th>
                                 <th>قرار الموقع</th>
                                 <th>سبب الفحص</th>
@@ -459,35 +405,16 @@ export default function AdminStockReportPage() {
                                             {offer.country || "دولة غير محددة"}
                                         </small>
                                         <input
-                                            className="priceInput"
-                                            value={priceEdits[offer.id] ?? offer.price ?? ""}
-                                            onChange={(e) =>
-                                                setPriceEdits((prev) => ({
-                                                    ...prev,
-                                                    [offer.id]: e.target.value,
-                                                }))
-                                            }
-                                            placeholder="السعر"
-                                        />
-                                    </td>
-                                    <td>
-                                        <strong style={{ color: "#86efac" }}>
-                                            {offer.original_store_price || "-"}
-                                        </strong>
-
-                                        <small>
-                                            {offer.original_store_price_note || ""}
-                                        </small>
-
-                                        <button
-                                            className="success"
-                                            disabled={actionLoading === `price-${offer.id}`}
-                                            onClick={() => checkOriginalPrice(offer.id)}
-                                        >
-                                            {actionLoading === `price-${offer.id}`
-                                                ? "جاري الفحص..."
-                                                : "فحص السعر"}
-                                        </button>
+  className="priceInput"
+  value={priceEdits[offer.id] ?? offer.price ?? ""}
+  onChange={(e) =>
+    setPriceEdits((prev) => ({
+      ...prev,
+      [offer.id]: e.target.value,
+    }))
+  }
+  placeholder="السعر"
+/>
                                     </td>
                                     <td>
                                         <span className={`badge ${offer.status}`}>
@@ -556,7 +483,7 @@ export default function AdminStockReportPage() {
 
                             {filteredOffers.length === 0 && (
                                 <tr>
-                                    <td colSpan={9} className="empty">
+                                    <td colSpan={8} className="empty">
                                         لا توجد نتائج
                                     </td>
                                 </tr>
