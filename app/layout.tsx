@@ -18,6 +18,7 @@ import BrandSplash from "@/app/components/BrandSplash";
 import { GoogleTagManager } from "@next/third-parties/google";
 import SideAds from "@/app/components/SideAds";
 import GlobalProductSearch from "@/app/components/GlobalProductSearch";
+import LayoutVisibility from "@/app/components/LayoutVisibility";
 
 
 const geistSans = Geist({
@@ -268,20 +269,22 @@ export default function RootLayout({
       <b>أضف منتجك</b>
     </a>
   </div>
-<TrustedSourcesBar />
-<TrustBanner />
-<GlobalAdsSlider />
-<DailyDealsBanner />
+<LayoutVisibility>
+  <TrustedSourcesBar />
+  <TrustBanner />
+  <GlobalAdsSlider />
+  <DailyDealsBanner />
 
-<div className="storesPromoBanner">
-  <a href="/bps-for-stores" className="storesPromoLink">
-    <span className="storesPromoIcon">🎁</span>
-    <span className="storesPromoText">
-     للتجار: أضف أول منتج مجاناً داخل عالم المنتجات من BPS Chat
-    </span>
-    <span className="storesPromoBtn">ابدأ الآن 🚀</span>
-  </a>
-</div>
+  <div className="storesPromoBanner">
+    <a href="/bps-for-stores" className="storesPromoLink">
+      <span className="storesPromoIcon">🎁</span>
+      <span className="storesPromoText">
+        للتجار: أضف أول منتج مجاناً داخل عالم المنتجات من BPS Chat
+      </span>
+      <span className="storesPromoBtn">ابدأ الآن 🚀</span>
+    </a>
+  </div>
+</LayoutVisibility>
 
 <InstallAppButton />
 
