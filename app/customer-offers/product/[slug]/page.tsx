@@ -199,43 +199,42 @@ export async function generateMetadata({
   const pageUrl = `${SITE_URL}/customer-offers/product/${slug}`;
 
   const shortProductName =
-  String(offer.product_name || "").length > 55
-    ? `${String(offer.product_name).slice(0, 55).trim()}...`
-    : String(offer.product_name || "");
+    String(offer.product_name || "").length > 55
+      ? `${String(offer.product_name).slice(0, 55).trim()}...`
+      : String(offer.product_name || "");
 
-return {
-  title: `${shortProductName} | أفضل سعر في ${country} | BPS Chat`,
-  description: `شاهد عرض ${shortProductName} في ${country} بسعر ${offer.price} ${currency} من ${
-    offer.store_name || "متجر موثوق"
-  }. قارن السعر وادخل لرابط الشراء عبر BPS Chat.`,
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: pageUrl,
-  },
+  return {
+    title: `${shortProductName} | أفضل سعر في ${country} | BPS Chat`,
+    description: `شاهد عرض ${shortProductName} في ${country} بسعر ${offer.price} ${currency} من ${offer.store_name || "متجر موثوق"
+      }. قارن السعر وادخل لرابط الشراء عبر BPS Chat.`,
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: `${offer.product_name} | BPS Chat بي بي اس شات`,
       description: `أفضل عرض ${offer.product_name} في ${country} بسعر ${offer.price} ${currency}.`,
       url: pageUrl,
       images: offer.image_url
         ? [
-            {
-              url: offer.image_url,
-              width: 1200,
-              height: 630,
-            },
-          ]
+          {
+            url: offer.image_url,
+            width: 1200,
+            height: 630,
+          },
+        ]
         : [],
       type: "website",
     },
     twitter: {
-  card: "summary_large_image",
-  title: `${offer.product_name} | ${offer.price} ${currency}`,
-  description: `أفضل عرض في ${country} بسعر ${offer.price} ${currency} عبر BPS Chat.`,
-  images: offer.image_url ? [offer.image_url] : [`${SITE_URL}/og-image.png`],
-},
+      card: "summary_large_image",
+      title: `${offer.product_name} | ${offer.price} ${currency}`,
+      description: `أفضل عرض في ${country} بسعر ${offer.price} ${currency} عبر BPS Chat.`,
+      images: offer.image_url ? [offer.image_url] : [`${SITE_URL}/og-image.png`],
+    },
   };
 }
 
@@ -251,18 +250,18 @@ export default async function ProductSeoPage({
 
   const relatedOffers = await getRelatedOffers(offer);
   const countryOffers = await getCountryOffers(
-  offer.country || "sa",
-  offer.id
-);
-const relatedSearchTerms = await getRelatedSearchTerms(
-  offer.product_name,
-  offer.country || "sa"
-);
-const { data: relatedCollections } = await supabase
-  .from("seo_landing_pages")
-  .select("slug,title")
-  .order("created_at", { ascending: false })
-  .limit(12);
+    offer.country || "sa",
+    offer.id
+  );
+  const relatedSearchTerms = await getRelatedSearchTerms(
+    offer.product_name,
+    offer.country || "sa"
+  );
+  const { data: relatedCollections } = await supabase
+    .from("seo_landing_pages")
+    .select("slug,title")
+    .order("created_at", { ascending: false })
+    .limit(12);
 
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
@@ -290,105 +289,105 @@ const { data: relatedCollections } = await supabase
       : [];
 
   const schema = {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  name:
-  String(offer.product_name || "").length > 120
-    ? `${String(offer.product_name).slice(0, 120).trim()}...`
-    : offer.product_name,
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name:
+      String(offer.product_name || "").length > 120
+        ? `${String(offer.product_name).slice(0, 120).trim()}...`
+        : offer.product_name,
 
-  image:
-    productImages.length > 0
-      ? productImages
-      : [offer.image_url].filter(Boolean),
+    image:
+      productImages.length > 0
+        ? productImages
+        : [offer.image_url].filter(Boolean),
 
-  description:
-    offer.description ||
-    `صفحة عرض ومقارنة سعر لمنتج ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}. BPS Chat لا يبيع المنتج مباشرة، ويتم إتمام الشراء من خلال المتجر الأصلي صاحب الرابط.`,
+    description:
+      offer.description ||
+      `صفحة عرض ومقارنة سعر لمنتج ${offer.product_name} في ${country} عبر BPS Chat بي بي اس شات بسعر ${offer.price} ${currency}. BPS Chat لا يبيع المنتج مباشرة، ويتم إتمام الشراء من خلال المتجر الأصلي صاحب الرابط.`,
 
-  brand: {
-    "@type": "Brand",
-    name: offer.source_brand || offer.store_name || "منتج من متجر خارجي",
-  },
-
- offers: {
-  "@type": "Offer",
-  url: pageUrl,
-  priceCurrency: currencyCode,
-  price: cleanPrice(offer.price),
-  availability: "https://schema.org/InStock",
-  itemCondition: "https://schema.org/NewCondition",
-
-  seller: {
-    "@type": "Organization",
-    name: offer.store_name || "External Store",
-  },
-
- shippingDetails: {
-  "@type": "OfferShippingDetails",
-  shippingDestination: {
-    "@type": "DefinedRegion",
-    addressCountry:
-      offer.country === "sa"
-        ? "SA"
-        : offer.country === "ae"
-        ? "AE"
-        : offer.country === "kw"
-        ? "KW"
-        : offer.country === "qa"
-        ? "QA"
-        : offer.country === "bh"
-        ? "BH"
-        : offer.country === "eg"
-        ? "EG"
-        : "SA",
-  },
-  shippingRate: {
-    "@type": "MonetaryAmount",
-    value: "0",
-    currency: currencyCode,
-  },
-  deliveryTime: {
-    "@type": "ShippingDeliveryTime",
-    handlingTime: {
-      "@type": "QuantitativeValue",
-      minValue: 0,
-      maxValue: 2,
-      unitCode: "DAY",
+    brand: {
+      "@type": "Brand",
+      name: offer.source_brand || offer.store_name || "منتج من متجر خارجي",
     },
-    transitTime: {
-      "@type": "QuantitativeValue",
-      minValue: 1,
-      maxValue: 7,
-      unitCode: "DAY",
-    },
-  },
-},
 
-  hasMerchantReturnPolicy: {
-    "@type": "MerchantReturnPolicy",
-    applicableCountry:
-      offer.country === "sa"
-        ? "SA"
-        : offer.country === "ae"
-        ? "AE"
-        : offer.country === "kw"
-        ? "KW"
-        : offer.country === "qa"
-        ? "QA"
-        : offer.country === "bh"
-        ? "BH"
-        : offer.country === "eg"
-        ? "EG"
-        : "SA",
-    returnPolicyCategory:
-      "https://schema.org/MerchantReturnFiniteReturnWindow",
-    merchantReturnDays: 14,
-    returnMethod: "https://schema.org/ReturnByMail",
-    returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
-  },
-},
-};
+    offers: {
+      "@type": "Offer",
+      url: pageUrl,
+      priceCurrency: currencyCode,
+      price: cleanPrice(offer.price),
+      availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+
+      seller: {
+        "@type": "Organization",
+        name: offer.store_name || "External Store",
+      },
+
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry:
+            offer.country === "sa"
+              ? "SA"
+              : offer.country === "ae"
+                ? "AE"
+                : offer.country === "kw"
+                  ? "KW"
+                  : offer.country === "qa"
+                    ? "QA"
+                    : offer.country === "bh"
+                      ? "BH"
+                      : offer.country === "eg"
+                        ? "EG"
+                        : "SA",
+        },
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: "0",
+          currency: currencyCode,
+        },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 0,
+            maxValue: 2,
+            unitCode: "DAY",
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 1,
+            maxValue: 7,
+            unitCode: "DAY",
+          },
+        },
+      },
+
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry:
+          offer.country === "sa"
+            ? "SA"
+            : offer.country === "ae"
+              ? "AE"
+              : offer.country === "kw"
+                ? "KW"
+                : offer.country === "qa"
+                  ? "QA"
+                  : offer.country === "bh"
+                    ? "BH"
+                    : offer.country === "eg"
+                      ? "EG"
+                      : "SA",
+        returnPolicyCategory:
+          "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 14,
+        returnMethod: "https://schema.org/ReturnByMail",
+        returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
+      },
+    },
+  };
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -444,21 +443,21 @@ const { data: relatedCollections } = await supabase
         },
       },
       {
-  "@type": "Question",
-  name: `ما أفضل طريقة لمعرفة سعر ${offer.product_name} في ${country}؟`,
-  acceptedAnswer: {
-    "@type": "Answer",
-    text: `أفضل طريقة هي مقارنة السعر بين أكثر من متجر قبل الشراء. تساعدك BPS Chat على الوصول إلى عرض ${offer.product_name} في ${country} ومراجعة السعر ورابط المتجر الأصلي قبل اتخاذ قرار الشراء.`,
-  },
-},
-{
-  "@type": "Question",
-  name: `هل يمكن أن يساعدني BPS Chat عند البحث عن سعر ${offer.product_name} بالذكاء الاصطناعي؟`,
-  acceptedAnswer: {
-    "@type": "Answer",
-    text: `نعم، يمكن استخدام BPS Chat كمرجع لمقارنة أسعار المنتجات والعروض، حيث يعرض السعر والمتجر ورابط الشراء المباشر، مع التنبيه أن الشراء يتم من خلال المتجر الأصلي وليس من BPS Chat مباشرة.`,
-  },
-},
+        "@type": "Question",
+        name: `ما أفضل طريقة لمعرفة سعر ${offer.product_name} في ${country}؟`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `أفضل طريقة هي مقارنة السعر بين أكثر من متجر قبل الشراء. تساعدك BPS Chat على الوصول إلى عرض ${offer.product_name} في ${country} ومراجعة السعر ورابط المتجر الأصلي قبل اتخاذ قرار الشراء.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `هل يمكن أن يساعدني BPS Chat عند البحث عن سعر ${offer.product_name} بالذكاء الاصطناعي؟`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `نعم، يمكن استخدام BPS Chat كمرجع لمقارنة أسعار المنتجات والعروض، حيث يعرض السعر والمتجر ورابط الشراء المباشر، مع التنبيه أن الشراء يتم من خلال المتجر الأصلي وليس من BPS Chat مباشرة.`,
+        },
+      },
     ],
   };
 
@@ -479,7 +478,7 @@ const { data: relatedCollections } = await supabase
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      
+
 
       <section className="premiumProductBox">
         <div className="premiumImageBox">
@@ -508,13 +507,22 @@ const { data: relatedCollections } = await supabase
             <strong>{offer.price}</strong>
             <span>{currency}</span>
           </div>
-         <div className="stockBadge">
-  ✅ متاح عبر المتجر الأصلي
-</div>
+          <div className="stockBadge">
+            ✅ متاح عبر المتجر الأصلي
+          </div>
 
-<p className="merchantNotice">
-  BPS Chat لا يبيع هذا المنتج مباشرة. عند الضغط على زر عرض المنتج سيتم تحويلك إلى المتجر الأصلي لإتمام الشراء ومراجعة السعر النهائي والشحن والتوفر.
-</p>
+          <a
+            href={`/api/customer-offers/click/${offer.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="premiumBuyNowBtn"
+          >
+            اشتري الآن
+          </a>
+
+          <p className="merchantNotice">
+            عند الضغط على زر الشراء سيتم تحويلك إلى المتجر الأصلي لمراجعة السعر النهائي والشحن والتوفر قبل إتمام عملية الشراء.
+          </p>
 
           <div className="premiumMetaGrid">
             <div>
@@ -535,25 +543,16 @@ const { data: relatedCollections } = await supabase
             )}
           </div>
 
-         <div className="premiumButtons">
-  <a
-    href={`/api/customer-offers/click/${offer.id}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="premiumBuyBtn"
-  >
-    🛒 عرض المنتج
-  </a>
-
-  <a
-    href={`/api/customer-offers/click/${offer.id}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="premiumBuyNowBtn"
-  >
-    ⚡ اشتري الآن
-  </a>
-</div>
+          <div className="premiumButtons">
+            <a
+              href={`/api/customer-offers/click/${offer.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="premiumBuyBtn"
+            >
+               اشتري الآن
+            </a>
+          </div>
 
           <Link href="/customer-offers" className="premiumBackBtn">
             مشاهدة باقي عروض العملاء
@@ -613,7 +612,7 @@ const { data: relatedCollections } = await supabase
       </section>
 
       <MarketPromoSection />
-<section className="hero">
+      <section className="hero">
         <div className="badge">BPS Chat | بي بي اس شات</div>
 
         <h1>
@@ -627,9 +626,9 @@ const { data: relatedCollections } = await supabase
           البائع. يمكنك من خلال <strong>بي بي اس شات</strong> مقارنة الأسعار
           والوصول لأفضل العروض بسهولة.
           <br />
-<br />
-كما يساعدك BPS Chat في مقارنة الأسعار بين أشهر المتاجر الإلكترونية مثل
-Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.
+          <br />
+          كما يساعدك BPS Chat في مقارنة الأسعار بين أشهر المتاجر الإلكترونية مثل
+          Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.
         </p>
       </section>
 
@@ -637,9 +636,9 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
       <section className="content">
         <h2>أفضل سعر {offer.product_name} في {country}</h2>
         <p>
-يعرض BPS Chat (بي بي اس شات) أسعار وعروض المنتجات من متاجر متعددة،
-ويساعد المستخدمين على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress للوصول إلى أفضل سعر متاح.
-</p>
+          يعرض BPS Chat (بي بي اس شات) أسعار وعروض المنتجات من متاجر متعددة،
+          ويساعد المستخدمين على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress للوصول إلى أفضل سعر متاح.
+        </p>
 
         <p>
           يعتبر موقع <strong>BPS Chat</strong> من أفضل المواقع لمقارنة أسعار
@@ -695,92 +694,92 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
         </div>
 
         {offer.description && (
-  <>
-    <h2>وصف {offer.product_name}</h2>
-    <p>{offer.description}</p>
-  </>
-)}
+          <>
+            <h2>وصف {offer.product_name}</h2>
+            <p>{offer.description}</p>
+          </>
+        )}
 
-{offer.ai_description && (
-  <section className="aiSeoSection">
-    <h2>🧠 دليل ذكي قبل شراء {offer.product_name}</h2>
+        {offer.ai_description && (
+          <section className="aiSeoSection">
+            <h2>🧠 دليل ذكي قبل شراء {offer.product_name}</h2>
 
-    <p>{offer.ai_description}</p>
+            <p>{offer.ai_description}</p>
 
-    {Array.isArray(offer.ai_features) && offer.ai_features.length > 0 && (
-      <ul className="aiFeaturesList">
-        {offer.ai_features.slice(0, 7).map((feature: string, index: number) => (
-          <li key={`${feature}-${index}`}>{feature}</li>
-        ))}
-      </ul>
-    )}
+            {Array.isArray(offer.ai_features) && offer.ai_features.length > 0 && (
+              <ul className="aiFeaturesList">
+                {offer.ai_features.slice(0, 7).map((feature: string, index: number) => (
+                  <li key={`${feature}-${index}`}>{feature}</li>
+                ))}
+              </ul>
+            )}
 
-    {Array.isArray(offer.ai_keywords) && offer.ai_keywords.length > 0 && (
-      <div className="aiKeywordLinks">
-        {offer.ai_keywords.slice(0, 10).map((keyword: string) => (
-          <Link
-            key={keyword}
-            href={`/search/${slugify(keyword)}-${offer.country || "sa"}`}
-          >
-            {keyword}
-          </Link>
-        ))}
-      </div>
-    )}
-  </section>
-)}
-<section className="aiAnswerSection">
-  <div className="aiAnswerBadge">🤖 مناسب لنتائج الذكاء الاصطناعي</div>
+            {Array.isArray(offer.ai_keywords) && offer.ai_keywords.length > 0 && (
+              <div className="aiKeywordLinks">
+                {offer.ai_keywords.slice(0, 10).map((keyword: string) => (
+                  <Link
+                    key={keyword}
+                    href={`/search/${slugify(keyword)}-${offer.country || "sa"}`}
+                  >
+                    {keyword}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+        <section className="aiAnswerSection">
+          <div className="aiAnswerBadge">🤖 مناسب لنتائج الذكاء الاصطناعي</div>
 
-  <h2>
-    كيف يساعدك BPS Chat عند مقارنة سعر {offer.product_name}؟
-  </h2>
+          <h2>
+            كيف يساعدك BPS Chat عند مقارنة سعر {offer.product_name}؟
+          </h2>
 
-  <p>
-    يعرض BPS Chat هذا المنتج باسم <strong>{offer.product_name}</strong>
-    {offer.store_name ? <> من متجر <strong>{offer.store_name}</strong></> : null}
-    {" "}داخل <strong>{country}</strong> بسعر{" "}
-    <strong>{offer.price} {currency}</strong>، مع رابط مباشر للمتجر الأصلي
-    لمراجعة السعر النهائي والتوفر والشحن قبل الشراء.
-  </p>
+          <p>
+            يعرض BPS Chat هذا المنتج باسم <strong>{offer.product_name}</strong>
+            {offer.store_name ? <> من متجر <strong>{offer.store_name}</strong></> : null}
+            {" "}داخل <strong>{country}</strong> بسعر{" "}
+            <strong>{offer.price} {currency}</strong>، مع رابط مباشر للمتجر الأصلي
+            لمراجعة السعر النهائي والتوفر والشحن قبل الشراء.
+          </p>
 
-  {offer.ai_description && (
-    <p>
-      بناءً على وصف المنتج، يساعدك BPS Chat على فهم أهم المعلومات عن{" "}
-      <strong>{offer.product_name}</strong> ومقارنة العرض الحالي مع منتجات
-      مشابهة قبل اتخاذ قرار الشراء.
-    </p>
-  )}
+          {offer.ai_description && (
+            <p>
+              بناءً على وصف المنتج، يساعدك BPS Chat على فهم أهم المعلومات عن{" "}
+              <strong>{offer.product_name}</strong> ومقارنة العرض الحالي مع منتجات
+              مشابهة قبل اتخاذ قرار الشراء.
+            </p>
+          )}
 
-  <div className="aiAnswerGrid">
-    <div>
-      <strong>السعر والمتجر</strong>
-      <span>
-        {offer.store_name
-          ? `العرض مرتبط بمتجر ${offer.store_name}.`
-          : "يعرض الصفحة اسم المتجر عند توفره."}
-      </span>
-    </div>
+          <div className="aiAnswerGrid">
+            <div>
+              <strong>السعر والمتجر</strong>
+              <span>
+                {offer.store_name
+                  ? `العرض مرتبط بمتجر ${offer.store_name}.`
+                  : "يعرض الصفحة اسم المتجر عند توفره."}
+              </span>
+            </div>
 
-    <div>
-      <strong>مقارنة ذكية</strong>
-      <span>
-        {Array.isArray(offer.ai_features) && offer.ai_features.length > 0
-          ? offer.ai_features[0]
-          : "راجع السعر والمنتجات المشابهة داخل نفس الدولة."}
-      </span>
-    </div>
+            <div>
+              <strong>مقارنة ذكية</strong>
+              <span>
+                {Array.isArray(offer.ai_features) && offer.ai_features.length > 0
+                  ? offer.ai_features[0]
+                  : "راجع السعر والمنتجات المشابهة داخل نفس الدولة."}
+              </span>
+            </div>
 
-    <div>
-      <strong>كلمات بحث مرتبطة</strong>
-      <span>
-        {Array.isArray(offer.ai_keywords) && offer.ai_keywords.length > 0
-          ? offer.ai_keywords.slice(0, 3).join(" - ")
-          : `سعر ${offer.product_name} في ${country}`}
-      </span>
-    </div>
-  </div>
-</section>
+            <div>
+              <strong>كلمات بحث مرتبطة</strong>
+              <span>
+                {Array.isArray(offer.ai_keywords) && offer.ai_keywords.length > 0
+                  ? offer.ai_keywords.slice(0, 3).join(" - ")
+                  : `سعر ${offer.product_name} في ${country}`}
+              </span>
+            </div>
+          </div>
+        </section>
 
         {productFeatures.length > 0 && (
           <>
@@ -832,18 +831,18 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
         </p>
         <h2>لماذا يبحث المستخدمون عن {offer.product_name} ؟</h2>
 
-<p>
-يعتبر {offer.product_name} من المنتجات التي يبحث عنها المستخدمون في {country}
-بسبب المميزات والسعر وتوفره لدى أكثر من متجر.
-ويقوم BPS Chat بمساعدة المستخدمين في مقارنة الأسعار والعثور على أفضل العروض.
-</p>
+        <p>
+          يعتبر {offer.product_name} من المنتجات التي يبحث عنها المستخدمون في {country}
+          بسبب المميزات والسعر وتوفره لدى أكثر من متجر.
+          ويقوم BPS Chat بمساعدة المستخدمين في مقارنة الأسعار والعثور على أفضل العروض.
+        </p>
 
-<h2>مقارنة سعر {offer.product_name}</h2>
+        <h2>مقارنة سعر {offer.product_name}</h2>
 
-<p>
-قد يختلف سعر {offer.product_name} بين المتاجر حسب العروض المتاحة وتكاليف الشحن
-وسياسات البيع، لذلك يفضل دائماً مقارنة الأسعار قبل اتخاذ قرار الشراء.
-</p>
+        <p>
+          قد يختلف سعر {offer.product_name} بين المتاجر حسب العروض المتاحة وتكاليف الشحن
+          وسياسات البيع، لذلك يفضل دائماً مقارنة الأسعار قبل اتخاذ قرار الشراء.
+        </p>
 
         <h2>كلمات بحث مرتبطة بـ {offer.product_name}</h2>
 
@@ -856,26 +855,26 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
         </p>
         <h2>كلمات بحث مرتبطة بـ {offer.product_name}</h2>
 
-<p>
-  سعر {offer.product_name} في {country} - شراء {offer.product_name}
-  أونلاين - أفضل عرض ...
-</p>
+        <p>
+          سعر {offer.product_name} في {country} - شراء {offer.product_name}
+          أونلاين - أفضل عرض ...
+        </p>
 
-<div className="quickLinks">
-  <Link href={`/search/${offer.product_name}-${offer.country}`}>
-    سعر {offer.product_name}
-  </Link>
+        <div className="quickLinks">
+          <Link href={`/search/${offer.product_name}-${offer.country}`}>
+            سعر {offer.product_name}
+          </Link>
 
-  <Link href={`/search/${offer.product_name} عروض-${offer.country}`}>
-    عروض {offer.product_name}
-  </Link>
+          <Link href={`/search/${offer.product_name} عروض-${offer.country}`}>
+            عروض {offer.product_name}
+          </Link>
 
-  <Link href={`/search/${offer.product_name} ارخص سعر-${offer.country}`}>
-    أرخص سعر {offer.product_name}
-  </Link>
-</div>
+          <Link href={`/search/${offer.product_name} ارخص سعر-${offer.country}`}>
+            أرخص سعر {offer.product_name}
+          </Link>
+        </div>
 
-<h2>أسئلة شائعة عن {offer.product_name}</h2>
+        <h2>أسئلة شائعة عن {offer.product_name}</h2>
 
         <h2>أسئلة شائعة عن {offer.product_name}</h2>
 
@@ -939,68 +938,68 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
           </>
         )}
         {countryOffers.length > 0 && (
-  <>
-    <h2>أحدث منتجات {country}</h2>
+          <>
+            <h2>أحدث منتجات {country}</h2>
 
-    <div className="relatedGrid">
-      {countryOffers.map((item: any) => (
-        <Link
-          key={item.id}
-          href={offerSeoUrl(item)}
-          className="relatedCard"
-        >
-          <div className="relatedImage">
-            <img src={item.image_url} alt={item.product_name} />
-          </div>
+            <div className="relatedGrid">
+              {countryOffers.map((item: any) => (
+                <Link
+                  key={item.id}
+                  href={offerSeoUrl(item)}
+                  className="relatedCard"
+                >
+                  <div className="relatedImage">
+                    <img src={item.image_url} alt={item.product_name} />
+                  </div>
 
-          <div className="relatedContent">
-            <h3>{item.product_name}</h3>
+                  <div className="relatedContent">
+                    <h3>{item.product_name}</h3>
 
-            <strong>
-              {item.price}
-            </strong>
+                    <strong>
+                      {item.price}
+                    </strong>
 
-            <span>
-              {item.store_name || "عرض عميل"}
-            </span>
-          </div>
-        </Link>
-      ))}
-    </div>
-  </>
-)}
-{relatedSearchTerms.length > 0 && (
-  <>
-    <h2>عمليات بحث مرتبطة بـ {offer.product_name}</h2>
+                    <span>
+                      {item.store_name || "عرض عميل"}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+        {relatedSearchTerms.length > 0 && (
+          <>
+            <h2>عمليات بحث مرتبطة بـ {offer.product_name}</h2>
 
-    <div className="quickLinks">
-      {relatedSearchTerms.map((item: any) => (
-        <Link
-          key={`${item.slug}-${item.query}`}
-          href={`/search/${item.slug}`}
-        >
-          {item.query}
-        </Link>
-      ))}
-    </div>
-  </>
-)}
-{relatedCollections && relatedCollections.length > 0 && (
-  <>
-    <h2>أدلة الشراء والمراجعات</h2>
+            <div className="quickLinks">
+              {relatedSearchTerms.map((item: any) => (
+                <Link
+                  key={`${item.slug}-${item.query}`}
+                  href={`/search/${item.slug}`}
+                >
+                  {item.query}
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+        {relatedCollections && relatedCollections.length > 0 && (
+          <>
+            <h2>أدلة الشراء والمراجعات</h2>
 
-    <div className="quickLinks">
-      {relatedCollections.map((item: any) => (
-        <Link
-          key={item.slug}
-          href={`/collections/${item.slug}`}
-        >
-          {item.title}
-        </Link>
-      ))}
-    </div>
-  </>
-)}
+            <div className="quickLinks">
+              {relatedCollections.map((item: any) => (
+                <Link
+                  key={item.slug}
+                  href={`/collections/${item.slug}`}
+                >
+                  {item.title}
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
         <h2>روابط مفيدة داخل BPS Chat</h2>
         <div className="quickLinks">
           <Link href="/customer-offers">أفضل عروض العملاء</Link>
@@ -1031,7 +1030,7 @@ Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و 
           </Link>
         </div>
       </section>
-<ComparePricesSection />
+      <ComparePricesSection />
       <style>{`
        .seoProductPage {
   min-height: 100vh;
