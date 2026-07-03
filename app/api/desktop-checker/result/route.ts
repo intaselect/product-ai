@@ -41,10 +41,7 @@ export async function POST(req: Request) {
     .maybeSingle();
 
   if (currentError) {
-    return NextResponse.json(
-      { ok: false, error: currentError.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: currentError.message }, { status: 500 });
   }
 
   const oldPrice = String(current?.price || "").trim();
@@ -62,18 +59,35 @@ export async function POST(req: Request) {
     updated_at: new Date().toISOString(),
   };
 
-  if (availability === "out_of_stock") {
-    updateData.desktop_out_of_stock_count =
-      Number(current?.desktop_out_of_stock_count || 0) + 1;
-
-    updateData.desktop_in_stock_count = 0;
-  }
-
   if (availability === "in_stock") {
     updateData.desktop_in_stock_count =
       Number(current?.desktop_in_stock_count || 0) + 1;
 
     updateData.desktop_out_of_stock_count = 0;
+
+    updateData.availability = "in_stock";
+    updateData.status = "approved";
+
+    if (newPrice) {
+      updateData.price = newPrice;
+    }
+  }
+
+  if (availability === "out_of_stock") {
+    updateData.desktop_out_of_stock_count =
+      Number(current?.desktop_out_of_stock_count || 0) + 1;
+
+    updateData.desktop_in_stock_count = 0;
+
+    updateData.availability = "out_of_stock";
+    updateData.status = "rejected";
+    updateData.is_ad = false;
+    updateData.side_ad = false;
+    updateData.best_offer = false;
+  }
+
+  if (availability === "unknown") {
+    updateData.availability = "unknown";
   }
 
   const { error } = await supabase
@@ -85,5 +99,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({
+    ok: true,
+    applied: true,
+    availability,
+    price_updated: availability === "in_stock" && Boolean(newPrice),
+    rejected: availability === "out_of_stock",
+  });
 }
