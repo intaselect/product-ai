@@ -541,11 +541,20 @@ export default function CustomerOffersAdminPage() {
             : "🔍 فحص التوفر مثل Google Merchant"}
         </button>
         {secret && (
+          <Link
+            href={`/customer-offers/admin-stock?secret=${encodeURIComponent(secret)}`}
+            className="adsDashboardBtn"
+          >
+            📄 تقرير فحص التوفر
+          </Link>
+          
+        )}
+        {secret && (
   <Link
-    href={`/customer-offers/admin-stock?secret=${encodeURIComponent(secret)}`}
+    href={`/customer-offers/desktop-checker?secret=${encodeURIComponent(secret)}`}
     className="adsDashboardBtn"
   >
-    📄 تقرير فحص التوفر
+    🖥️ نتائج Desktop Checker
   </Link>
 )}
 
