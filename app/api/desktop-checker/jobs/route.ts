@@ -18,7 +18,7 @@ export async function GET(req: Request) {
   }
 
   const url = new URL(req.url);
-  const limit = Math.min(Number(url.searchParams.get("limit") || 10), 50);
+  const limit = Math.min(Number(url.searchParams.get("limit") || 10), 5000);
   const country = url.searchParams.get("country") || "sa";
 
   const { data, error } = await supabase
