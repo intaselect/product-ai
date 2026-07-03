@@ -508,21 +508,23 @@ export default async function ProductSeoPage({
             <span>{currency}</span>
           </div>
           <div className="stockBadge">
-            ✅ متاح عبر المتجر الأصلي
+            متاح عبر المتجر الأصلي
           </div>
 
-          <a
-            href={`/api/customer-offers/click/${offer.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="premiumBuyNowBtn"
-          >
-            اشتري الآن
-          </a>
+          <div className="topCheckoutBox">
+            <a
+              href={`/api/customer-offers/click/${offer.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="premiumBuyNowBtn"
+            >
+              اشتري الآن
+            </a>
 
-          <p className="merchantNotice">
-            عند الضغط على زر الشراء سيتم تحويلك إلى المتجر الأصلي لمراجعة السعر النهائي والشحن والتوفر قبل إتمام عملية الشراء.
-          </p>
+            <p className="merchantNotice">
+              عند الضغط على زر الشراء سيتم تحويلك إلى المتجر الأصلي لمراجعة السعر النهائي والشحن والتوفر قبل إتمام عملية الشراء.
+            </p>
+          </div>
 
           <div className="premiumMetaGrid">
             <div>
@@ -550,7 +552,7 @@ export default async function ProductSeoPage({
               rel="noopener noreferrer"
               className="premiumBuyBtn"
             >
-               اشتري الآن
+              اشتري الآن
             </a>
           </div>
 
@@ -1066,7 +1068,20 @@ export default async function ProductSeoPage({
   margin-bottom: 18px;
   font-weight: 900;
 }
+.topCheckoutBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 0 18px;
+}
 
+.topCheckoutBox .premiumBuyNowBtn {
+  margin: 0;
+}
+
+.topCheckoutBox .merchantNotice {
+  margin: 0;
+}
 h1 {
   font-size: 42px;
   line-height: 1.35;
