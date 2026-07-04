@@ -513,7 +513,7 @@ export default async function ProductSeoPage({
 
           <div className="topCheckoutBox">
             <a
-              href={`/api/customer-offers/click/${offer.id}`}
+              href={offer.product_url}
               target="_blank"
               rel="noopener noreferrer"
               className="premiumBuyNowBtn"
@@ -547,7 +547,7 @@ export default async function ProductSeoPage({
 
           <div className="premiumButtons">
             <a
-              href={`/api/customer-offers/click/${offer.id}`}
+              href={offer.product_url}
               target="_blank"
               rel="noopener noreferrer"
               className="premiumBuyBtn"
