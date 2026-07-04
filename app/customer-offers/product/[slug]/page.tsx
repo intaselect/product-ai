@@ -312,79 +312,14 @@ export default async function ProductSeoPage({
 
     offers: {
       "@type": "Offer",
-      url: pageUrl,
+      url: offer.product_url || pageUrl, 
       priceCurrency: currencyCode,
       price: cleanPrice(offer.price),
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
-
       seller: {
         "@type": "Organization",
-        name: offer.store_name || "External Store",
-      },
-
-      shippingDetails: {
-        "@type": "OfferShippingDetails",
-        shippingDestination: {
-          "@type": "DefinedRegion",
-          addressCountry:
-            offer.country === "sa"
-              ? "SA"
-              : offer.country === "ae"
-                ? "AE"
-                : offer.country === "kw"
-                  ? "KW"
-                  : offer.country === "qa"
-                    ? "QA"
-                    : offer.country === "bh"
-                      ? "BH"
-                      : offer.country === "eg"
-                        ? "EG"
-                        : "SA",
-        },
-        shippingRate: {
-          "@type": "MonetaryAmount",
-          value: "0",
-          currency: currencyCode,
-        },
-        deliveryTime: {
-          "@type": "ShippingDeliveryTime",
-          handlingTime: {
-            "@type": "QuantitativeValue",
-            minValue: 0,
-            maxValue: 2,
-            unitCode: "DAY",
-          },
-          transitTime: {
-            "@type": "QuantitativeValue",
-            minValue: 1,
-            maxValue: 7,
-            unitCode: "DAY",
-          },
-        },
-      },
-
-      hasMerchantReturnPolicy: {
-        "@type": "MerchantReturnPolicy",
-        applicableCountry:
-          offer.country === "sa"
-            ? "SA"
-            : offer.country === "ae"
-              ? "AE"
-              : offer.country === "kw"
-                ? "KW"
-                : offer.country === "qa"
-                  ? "QA"
-                  : offer.country === "bh"
-                    ? "BH"
-                    : offer.country === "eg"
-                      ? "EG"
-                      : "SA",
-        returnPolicyCategory:
-          "https://schema.org/MerchantReturnFiniteReturnWindow",
-        merchantReturnDays: 14,
-        returnMethod: "https://schema.org/ReturnByMail",
-        returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
+        name: offer.store_name ? String(offer.store_name).trim() : "متجر إلكتروني موثوق", 
       },
     },
   };
@@ -461,6 +396,8 @@ export default async function ProductSeoPage({
     ],
   };
 
+  const dynamicStoreName = offer.store_name ? String(offer.store_name).trim() : "المتجر الأصلي";
+
   return (
     <main className="seoProductPage" dir="rtl">
       <script
@@ -477,8 +414,6 @@ export default async function ProductSeoPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-
-
 
       <section className="premiumProductBox">
         <div className="premiumImageBox">
@@ -508,7 +443,7 @@ export default async function ProductSeoPage({
             <span>{currency}</span>
           </div>
           <div className="stockBadge">
-            متاح عبر المتجر الأصلي
+            متاح عبر {dynamicStoreName}
           </div>
 
           <div className="topCheckoutBox">
@@ -518,7 +453,7 @@ export default async function ProductSeoPage({
               rel="noopener noreferrer"
               className="premiumBuyNowBtn"
             >
-              اشتري الآن
+              عرض المنتج في {dynamicStoreName}
             </a>
 
             <p className="merchantNotice">
@@ -552,7 +487,7 @@ export default async function ProductSeoPage({
               rel="noopener noreferrer"
               className="premiumBuyBtn"
             >
-              اشتري الآن
+              تسوق عبر {dynamicStoreName}
             </a>
           </div>
 
@@ -630,7 +565,7 @@ export default async function ProductSeoPage({
           <br />
           <br />
           كما يساعدك BPS Chat في مقارنة الأسعار بين أشهر المتاجر الإلكترونية مثل
-          Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.
+          Amazon و Noon و Jumia و Jarir & Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress و Temu و Shein.
         </p>
       </section>
 
@@ -639,7 +574,7 @@ export default async function ProductSeoPage({
         <h2>أفضل سعر {offer.product_name} في {country}</h2>
         <p>
           يعرض BPS Chat (بي بي اس شات) أسعار وعروض المنتجات من متاجر متعددة،
-          ويساعد المستخدمين على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir و Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress للوصول إلى أفضل سعر متاح.
+          ويساعد المستخدمين على مقارنة الأسعار بين Amazon و Noon و Jumia و Jarir & Extra و Carrefour و Sharaf DG و Xcite و Namshi و Trendyol و AliExpress للوصول إلى أفضل سعر متاح.
         </p>
 
         <p>
@@ -821,7 +756,7 @@ export default async function ProductSeoPage({
         <p>
           صفحة <strong>{offer.product_name}</strong> على BPS Chat مصممة لمساعدة
           المستخدمين في الوصول إلى سعر واضح ورابط مباشر للمنتج داخل {country}.
-          يظهر هذا العرض ضمن قسم عروض العملاء في <strong>بي بي اس شات</strong>{" "}
+          Yظهر هذا العرض ضمن قسم عروض العملاء في <strong>بي بي اس شات</strong>{" "}
           حتى يتمكن الزوار من اكتشاف منتجات وأسعار من متاجر وبائعين مختلفين.
         </p>
 
@@ -1034,7 +969,7 @@ export default async function ProductSeoPage({
       </section>
       <ComparePricesSection />
       <style>{`
-       .seoProductPage {
+        .seoProductPage {
   min-height: 100vh;
   background: linear-gradient(
     to bottom,
