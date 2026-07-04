@@ -449,16 +449,16 @@ export default async function ProductSeoPage({
           <div className="topCheckoutBox">
             <a
               href={offer.product_url}
-              target="_blank"
+              target="_self"
               rel="noopener noreferrer"
               className="premiumBuyNowBtn"
             >
-              عرض المنتج في {dynamicStoreName}
+             🛒 اشترِ الآن من {dynamicStoreName}
             </a>
 
-            <p className="merchantNotice">
-              عند الضغط على زر الشراء سيتم تحويلك إلى المتجر الأصلي لمراجعة السعر النهائي والشحن والتوفر قبل إتمام عملية الشراء.
-            </p>
+           <p className="merchantNotice">
+سيتم فتح صفحة المنتج الرسمية على {dynamicStoreName}.
+</p>
           </div>
 
           <div className="premiumMetaGrid">
@@ -483,7 +483,7 @@ export default async function ProductSeoPage({
           <div className="premiumButtons">
             <a
               href={offer.product_url}
-              target="_blank"
+              target="_self"
               rel="noopener noreferrer"
               className="premiumBuyBtn"
             >
