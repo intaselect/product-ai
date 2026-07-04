@@ -162,17 +162,18 @@ let from = 0;
 
 while (true) {
   const { data, error } = await supabase
-    .from("customer_offers")
-    .select(
-      "id, product_name, price, image_url, product_url, store_name, country, status, description, source_brand, gallery_images, image_url_2, image_url_3, updated_at, created_at, seller_email, is_ad, category"
-    )
-    .eq("status", "approved")
-    .eq("is_ad", false)
-    .not("product_name", "is", null)
-    .not("price", "is", null)
-    .not("image_url", "is", null)
-    .order("updated_at", { ascending: false })
-    .range(from, from + batchSize - 1);
+  .from("customer_offers")
+  .select(
+    "id, product_name, price, image_url, product_url, store_name, country, status, description, source_brand, gallery_images, image_url_2, image_url_3, updated_at, created_at, seller_email, is_ad, category"
+  )
+  .eq("status", "approved")
+  .eq("country", "sa")
+  .eq("is_ad", false)
+  .not("product_name", "is", null)
+  .not("price", "is", null)
+  .not("image_url", "is", null)
+  .order("updated_at", { ascending: false })
+  .range(from, from + batchSize - 1);
 
   if (error) {
     return new NextResponse(`Feed error: ${error.message}`, { status: 500 });
