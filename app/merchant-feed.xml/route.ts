@@ -56,7 +56,7 @@ function cleanPrice(price: any) {
 function buildDescription(offer: any) {
   return (
     offer.description ||
-    `عرض ${offer.product_name} من ${offer.store_name || "BPS Chat"} عبر BPS Chat. يتم الشراء من المتجر أو البائع صاحب العرض.`
+    `عرض ومقارنة سعر ${offer.product_name} من متجر ${offer.store_name || "BPS Chat"} عبر منصة بي بي اس شات ومقارنة العروض المتاحة أونلاين.`
   ).slice(0, 4800);
 }
 function cleanMerchantTitle(title: any) {
@@ -97,7 +97,7 @@ function getGoogleProductCategory(offer: any) {
     title.includes("جوال") ||
     title.includes("موبايل")
   ) {
-    return "267"; // Electronics > Communications > Telephony > Mobile Phones
+    return "267";
   }
 
   if (
@@ -106,7 +106,7 @@ function getGoogleProductCategory(offer: any) {
     title.includes("laptop") ||
     title.includes("لابتوب")
   ) {
-    return "328"; // Computers
+    return "328";
   }
 
   if (
@@ -116,7 +116,7 @@ function getGoogleProductCategory(offer: any) {
     title.includes("عناية") ||
     title.includes("beauty")
   ) {
-    return "469"; // Health & Beauty
+    return "469";
   }
 
   if (
@@ -125,7 +125,7 @@ function getGoogleProductCategory(offer: any) {
     title.includes("حذاء") ||
     title.includes("ملابس")
   ) {
-    return "166"; // Apparel & Accessories
+    return "166";
   }
 
   if (
@@ -133,7 +133,7 @@ function getGoogleProductCategory(offer: any) {
     title.includes("منزل") ||
     title.includes("مطبخ")
   ) {
-    return "536"; // Home & Garden
+    return "536";
   }
 
   if (
@@ -141,7 +141,7 @@ function getGoogleProductCategory(offer: any) {
     title.includes("دراجة") ||
     title.includes("رياض")
   ) {
-    return "988"; // Sporting Goods
+    return "988";
   }
 
   if (
@@ -149,10 +149,10 @@ function getGoogleProductCategory(offer: any) {
     title.includes("أطفال") ||
     title.includes("لعبة")
   ) {
-    return "1239"; // Toys & Games
+    return "1239";
   }
 
-  return "5605"; // General / miscellaneous
+  return "5605";
 }
 
 export async function GET() {
@@ -227,7 +227,7 @@ const mainImage = improveImageUrl(offer.image_url);
     <g:id>${xmlEscape(`bps-${offer.id}`)}</g:id>
     <g:title>${xmlEscape(title)}</g:title>
     <g:description>${xmlEscape(buildDescription(offer))}</g:description>
-        <g:google_product_category>${xmlEscape(getGoogleProductCategory(offer))}</g:google_product_category>
+    <g:google_product_category>${xmlEscape(getGoogleProductCategory(offer))}</g:google_product_category>
     <g:product_type>${xmlEscape(
       Array.isArray(offer.category) && offer.category.length
         ? offer.category.join(" > ")
@@ -243,21 +243,16 @@ const mainImage = improveImageUrl(offer.image_url);
       )
       .join("\n    ")}
     <g:availability>in_stock</g:availability>
-    
     <g:condition>new</g:condition>
-    <g:shipping>
-  <g:country>${shippingCountries[offer.country] || "SA"}</g:country>
-  <g:price>0 ${currency}</g:price>
-</g:shipping>
     <g:price>${xmlEscape(price)} ${currency}</g:price>
     <g:brand>${xmlEscape(
-      offer.source_brand || offer.store_name || "BPS Chat"
+      offer.store_name || offer.source_brand || "BPS Chat"
     )}</g:brand>
     <g:mpn>${xmlEscape(`bps-${offer.id}`)}</g:mpn>
     <g:identifier_exists>no</g:identifier_exists>
     <g:adult>no</g:adult>
     <g:custom_label_0>BPS Chat</g:custom_label_0>
-<g:custom_label_1>${xmlEscape(offer.country || "sa")}</g:custom_label_1>
+    <g:custom_label_1>${xmlEscape(offer.country || "sa")}</g:custom_label_1>
   </item>`;
     })
     .join("");
