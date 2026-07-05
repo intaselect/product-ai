@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { getApprovedOffers } from "@/lib/local-db";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import SearchBeforeBuyBanner from "@/app/components/SearchBeforeBuyBanner";
@@ -63,10 +63,7 @@ image_url_3: string | null;
   created_at: string;
 };
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+
 const vercelCountryToCode: Record<string, string> = {
   SA: "sa",
   AE: "ae",
@@ -261,70 +258,79 @@ const to = from + limit - 1;
 
 let error: any = null;
 
+
+
+const allOffers = getApprovedOffers() as CustomerOffer[];
+
+const localCount =
+  selectedCountry === "all"
+    ? allOffers.length
+    : allOffers.filter(
+        (offer: any) => offer.country === selectedCountry
+      ).length;
+
 const gccFallbackCountries = ["kw", "qa", "bh"];
-
-let localCountQuery = supabase
-  .from("customer_offers")
-  .select("id", { count: "exact", head: true })
-  .eq("status", "approved");
-
-if (selectedCountry !== "all") {
-  localCountQuery = localCountQuery.eq("country", selectedCountry);
-}
-
-const { count: localCount } = await localCountQuery;
 
 const shouldUseSaudiFallback =
   gccFallbackCountries.includes(selectedCountry) &&
   selectedCountry !== "all" &&
-  (localCount || 0) === 0;
+  localCount === 0;
 
-let query = supabase
-  .from("customer_offers")
-  .select(
-    "id, product_name, price, image_url, image_url_2, image_url_3, product_url, store_name, country, category, created_at",
-    { count: "exact" }
-  )
-  .eq("status", "approved")
-  .order("created_at", { ascending: false });
+let filtered = allOffers;
 
 if (selectedCountry !== "all") {
-  query = query.eq("country", shouldUseSaudiFallback ? "sa" : selectedCountry);
+  filtered = filtered.filter(
+    (offer: any) =>
+      offer.country ===
+      (shouldUseSaudiFallback ? "sa" : selectedCountry)
+  );
 }
 
 if (selectedCategory !== "all") {
-  query = query.contains("category", [selectedCategory]);
+  filtered = filtered.filter((offer: any) =>
+    Array.isArray(offer.category)
+      ? offer.category.includes(selectedCategory)
+      : false
+  );
 }
 
 if (searchQuery) {
-  query = query.or(
-    `product_name.ilike.%${searchQuery}%,store_name.ilike.%${searchQuery}%,price.ilike.%${searchQuery}%`
+  const q = searchQuery.toLowerCase();
+
+  filtered = filtered.filter((offer: any) =>
+    `${offer.product_name || ""} ${offer.store_name || ""} ${offer.price || ""}`
+      .toLowerCase()
+      .includes(q)
   );
 }
 
 if (selectedBrand) {
-  const brand = brandDefinitions.find((b) => b.key === selectedBrand);
+  const brand = brandDefinitions.find(
+    (b) => b.key === selectedBrand
+  );
 
   if (brand) {
-    const brandOr = brand.terms
-      .flatMap((term) => [
-        `product_name.ilike.%${term}%`,
-        `store_name.ilike.%${term}%`,
-      ])
-      .join(",");
+    filtered = filtered.filter((offer: any) => {
+      const text =
+        `${offer.product_name || ""} ${offer.store_name || ""}`.toLowerCase();
 
-    query = query.or(brandOr);
+      return brand.terms.some((term) =>
+        text.includes(term.toLowerCase())
+      );
+    });
   }
 }
 
-const { data: offers, error: offersError, count } = await query.range(from, to);
+filtered = filtered.sort(
+  (a: any, b: any) =>
+    new Date(b.created_at || 0).getTime() -
+    new Date(a.created_at || 0).getTime()
+);
 
-if (offersError) {
-  error = offersError;
-}
+const totalOffers = filtered.length;
 
-const filteredOffers = (offers || []) as CustomerOffer[];
-const totalOffers = count || 0;
+const filteredOffers = filtered.slice(from, to + 1) as CustomerOffer[];
+
 const hasMore = page * limit < totalOffers;
 
 function buildOffersUrl(nextPage: number) {
