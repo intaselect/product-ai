@@ -1,4 +1,10 @@
-import { createClient } from "@supabase/supabase-js";
+import {
+  getOfferBySlug,
+  getRelatedOffers,
+  getCountryOffers,
+  getRelatedSearchTerms,
+  getRelatedCollections,
+} from "@/lib/local-db";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -11,10 +17,6 @@ export const dynamicParams = true;
 
 const SITE_URL = "https://www.bpschat.com";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 const countryNames: Record<string, string> = {
   sa: "السعودية",
@@ -67,126 +69,14 @@ function offerSeoUrl(offer: any) {
   )}-${offer.country || "sa"}-${offer.id}`;
 }
 
-async function getOffer(slug: string) {
-  const id = getIdFromSlug(slug);
-  if (!id) return null;
 
-  const { data } = await supabase
-    .from("customer_offers")
-    .select("*")
-    .eq("id", id)
-    .eq("status", "approved")
-    .single();
-
-  return data;
-}
-
-async function getRelatedOffers(offer: any) {
-  const category = Array.isArray(offer.category) ? offer.category : [];
-  const country = offer.country || "sa";
-
-  if (category.length > 0) {
-    const { data } = await supabase
-      .from("customer_offers")
-      .select("id, product_name, price, image_url, store_name, country, category")
-      .eq("status", "approved")
-      .eq("country", country)
-      .neq("id", offer.id)
-      .overlaps("category", category)
-      .limit(40);
-
-    if (data && data.length > 0) return data;
-  }
-
-  const { data } = await supabase
-    .from("customer_offers")
-    .select("id, product_name, price, image_url, store_name, country, category")
-    .eq("status", "approved")
-    .eq("country", country)
-    .neq("id", offer.id)
-    .limit(12);
-
-  return data || [];
-}
-async function getCountryOffers(country: string, currentId: number) {
-  const { data } = await supabase
-    .from("customer_offers")
-    .select("id, product_name, price, image_url, store_name, country")
-    .eq("status", "approved")
-    .eq("country", country)
-    .neq("id", currentId)
-    .order("created_at", { ascending: false })
-    .limit(12);
-
-  return data || [];
-}
-function buildSmartSeoQueries(productName: string, countryName: string) {
-  const name = String(productName || "").trim();
-
-  if (!name) return [];
-
-  return [
-    `مراجعة ${name}`,
-    `مميزات وعيوب ${name}`,
-    `هل ${name} يستحق الشراء`,
-    `أفضل بدائل ${name}`,
-    `مقارنة ${name} مع منتجات مشابهة`,
-    `${name} في ${countryName}`,
-    `أفضل عروض ${name}`,
-    `سعر ${name} اليوم`,
-  ];
-}
-
-async function getRelatedSearchTerms(productName: string, country: string) {
-  const queryWords = String(productName || "")
-    .split(/\s+/)
-    .map((w) => w.trim())
-    .filter((w) => w.length > 2)
-    .slice(0, 5);
-
-  const countryName = countryNames[country] || "السعودية";
-
-  if (!queryWords.length) {
-    return buildSmartSeoQueries(productName, countryName).map((query) => ({
-      query,
-      slug: `${slugify(query)}-${country}`,
-    }));
-  }
-
-  const searchFilters = queryWords
-    .map((w) => `query.ilike.%${w}%`)
-    .join(",");
-
-  const { data } = await supabase
-    .from("search_terms")
-    .select("query, slug, search_count, country")
-    .eq("country", country)
-    .or(searchFilters)
-    .order("search_count", { ascending: false })
-    .limit(8);
-
-  const realTerms = data || [];
-
-  const smartTerms = buildSmartSeoQueries(productName, countryName).map(
-    (query) => ({
-      query,
-      slug: `${slugify(query)}-${country}`,
-    })
-  );
-
-  const merged = [...realTerms, ...smartTerms];
-
-  return Array.from(
-    new Map(merged.map((item: any) => [item.query, item])).values()
-  ).slice(0, 8);
-}
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const offer = await getOffer(slug);
+  const offer = getOfferBySlug(slug);
 
   if (!offer) {
     return {
@@ -244,24 +134,16 @@ export default async function ProductSeoPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const offer = await getOffer(slug);
-
+  const offer = getOfferBySlug(slug);
   if (!offer) notFound();
 
-  const relatedOffers = await getRelatedOffers(offer);
-  const countryOffers = await getCountryOffers(
-    offer.country || "sa",
-    offer.id
-  );
-  const relatedSearchTerms = await getRelatedSearchTerms(
-    offer.product_name,
-    offer.country || "sa"
-  );
-  const { data: relatedCollections } = await supabase
-    .from("seo_landing_pages")
-    .select("slug,title")
-    .order("created_at", { ascending: false })
-    .limit(12);
+const relatedOffers = getRelatedOffers(offer);
+const countryOffers = getCountryOffers(offer.country || "sa", offer.id);
+const relatedSearchTerms = getRelatedSearchTerms(
+  offer.product_name,
+  offer.country || "sa"
+);
+const relatedCollections = getRelatedCollections();
 
   const country = countryNames[offer.country || ""] || "غير محدد";
   const currency = currencies[offer.country || ""] || "";
