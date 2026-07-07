@@ -128,7 +128,7 @@ export async function GET(req: Request) {
       products = products.slice(0, limit);
     }
 
-    const campaign = "BPS Products Saudi";
+    const campaign = "Website traffic-Search-6/7/2026";
 
     const commentLines = [
       '"# Assets can be shown in any order, so make sure that they make sense individually or in combination, and don’t violate our policies or local law."',
