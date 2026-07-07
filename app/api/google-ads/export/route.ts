@@ -11,7 +11,7 @@ function csvEscape(value: any) {
 
 function cleanProductName(name: string) {
   return String(name || "")
-    .replace(/[^\p{L}\p{N}\s\-\+\.\&]/gu, " ")
+    .replace(/[^\w\s\u0600-\u06FF\-+.&]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 80);
@@ -19,10 +19,10 @@ function cleanProductName(name: string) {
 
 function makeSlug(text: string) {
   return encodeURIComponent(
-    String(text || "")
+    cleanProductName(text)
       .toLowerCase()
-      .replace(/[^\p{L}\p{N}]+/gu, "-")
-      .replace(/^-+|-+$/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
   );
 }
 
@@ -44,7 +44,7 @@ function makeKeywords(name: string) {
   return [
     `[${n}]`,
     `"${n}"`,
-    `${n}`,
+    n,
     `سعر ${n}`,
     `شراء ${n}`,
     `${n} السعودية`,
@@ -74,10 +74,9 @@ export async function GET(req: Request) {
     const allProducts = JSON.parse(raw);
 
     const products = allProducts
-      .filter((p: any) => p.status === "approved")
-      .filter((p: any) => String(p.country || "sa") === country)
-      .filter((p: any) => p.product_name)
-      .slice(0, limit);
+  .filter((p: any) => p.status === "approved")
+  .filter((p: any) => String(p.country || "sa") === country)
+  .filter((p: any) => p.product_name);
 
     const headers = [
       "Campaign",
@@ -99,7 +98,7 @@ export async function GET(req: Request) {
       const name = cleanProductName(product.product_name);
       const finalUrl = makeFinalUrl(product);
 
-      const campaign = country === "sa" ? "BPS Products Saudi" : `BPS Products ${country}`;
+      const campaign = "BPS Products Saudi";
       const adGroup = name.slice(0, 60);
 
       const headline1 = `أفضل سعر ${name}`.slice(0, 30);
@@ -107,14 +106,18 @@ export async function GET(req: Request) {
       const headline3 = "BPS Chat";
 
       const description1 = `اعرف سعر ${name} وقارن بين المتاجر قبل الشراء.`.slice(0, 90);
-      const description2 = "صفحة منتج واحدة تعرض السعر والتفاصيل ورابط الشراء.".slice(0, 90);
+      const description2 = "صفحة المنتج تعرض السعر ورابط الشراء.".slice(0, 90);
 
       for (const keyword of makeKeywords(name)) {
         rows.push([
           campaign,
           adGroup,
           keyword,
-          keyword.startsWith("[") ? "Exact" : keyword.startsWith('"') ? "Phrase" : "Broad",
+          keyword.startsWith("[")
+            ? "Exact"
+            : keyword.startsWith('"')
+            ? "Phrase"
+            : "Broad",
           finalUrl,
           headline1,
           headline2,
@@ -132,7 +135,6 @@ export async function GET(req: Request) {
     ].join("\n");
 
     return new NextResponse(csv, {
-      status: 200,
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": `attachment; filename="bps-google-ads-${country}.csv"`,
@@ -140,8 +142,13 @@ export async function GET(req: Request) {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { ok: false, error: error?.message || "Export failed" },
-      { status: 500 }
+      {
+        ok: false,
+        error: error?.message || "Export failed",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
