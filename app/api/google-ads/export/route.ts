@@ -25,28 +25,21 @@ function cleanPrice(value: any) {
 }
 
 function makeSlug(text: string) {
-  return encodeURIComponent(
-    cleanText(text, 120)
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-  );
-}
-
-function makeFinalUrl(product: any) {
-  const slug = cleanText(product.product_name, 120)
+  return cleanText(text, 120)
     .toLowerCase()
     .replace(/[^\u0600-\u06FFa-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
+}
 
+function makeFinalUrl(product: any) {
+  const slug = makeSlug(product.product_name);
   return `https://bpschat.com/customer-offers/product/bps-chat-${slug}-${product.country || "sa"}-${product.id}`;
 }
 
 function makeKeywords(name: string) {
   const n = cleanText(name, 80);
-
   return [
     { keyword: `[${n}]`, matchType: "Exact" },
     { keyword: `"${n}"`, matchType: "Phrase" },
@@ -61,17 +54,8 @@ function makeKeywords(name: string) {
 }
 
 function makePath1(product: any) {
-  const category = Array.isArray(product.category)
-    ? product.category[0]
-    : product.category;
-
-  return cleanText(category || "products", 15)
-    .replace(/\s+/g, "-")
-    .slice(0, 15);
-}
-
-function makePath2() {
-  return "sa";
+  const category = Array.isArray(product.category) ? product.category[0] : product.category;
+  return cleanText(category || "products", 15).replace(/\s+/g, "-").slice(0, 15);
 }
 
 function makeHeadlines(product: any) {
@@ -107,13 +91,10 @@ function makeDescriptions(product: any) {
     price
       ? `شاهد سعر المنتج حوالي ${price} وقارن التفاصيل قبل الشراء.`.slice(0, 90)
       : "قارن أسعار المنتجات في السعودية واعرف التفاصيل ورابط الشراء.".slice(0, 90),
-
     store
       ? `انتقل من BPS Chat إلى ${store} لإتمام الشراء من المتجر.`.slice(0, 90)
       : "صفحة المنتج تعرض السعر والتفاصيل ورابط الشراء من المتجر.".slice(0, 90),
-
     "اعرف تفاصيل المنتج والسعر ثم انتقل للمتجر لإتمام عملية الشراء.".slice(0, 90),
-
     "BPS Chat يساعدك على الوصول لصفحة المنتج ومقارنة السعر قبل الشراء.".slice(0, 90),
   ];
 }
@@ -147,6 +128,8 @@ export async function GET(req: Request) {
     }
 
     const headers = [
+      "Row type",
+      "Action",
       "Campaign",
       "Ad group",
       "Keyword",
@@ -186,19 +169,50 @@ export async function GET(req: Request) {
       const headlines = makeHeadlines(product);
       const descriptions = makeDescriptions(product);
       const path1 = makePath1(product);
-      const path2 = makePath2();
+
+      rows.push([
+        "Ad group",
+        "Add",
+        campaign,
+        adGroup,
+        "",
+        "",
+        "",
+        ...Array(15).fill(""),
+        ...Array(4).fill(""),
+        "",
+        "",
+        "Enabled",
+      ]);
+
+      rows.push([
+        "Responsive search ad",
+        "Add",
+        campaign,
+        adGroup,
+        "",
+        "",
+        finalUrl,
+        ...headlines,
+        ...descriptions,
+        path1,
+        "sa",
+        "Enabled",
+      ]);
 
       for (const item of makeKeywords(name)) {
         rows.push([
+          "Keyword",
+          "Add",
           campaign,
           adGroup,
           item.keyword,
           item.matchType,
           finalUrl,
-          ...headlines,
-          ...descriptions,
-          path1,
-          path2,
+          ...Array(15).fill(""),
+          ...Array(4).fill(""),
+          "",
+          "",
           "Enabled",
         ]);
       }
