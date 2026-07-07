@@ -4,9 +4,16 @@ import path from "path";
 
 export const dynamic = "force-dynamic";
 
-function csvEscape(value: any) {
-  const text = String(value ?? "").replace(/\s+/g, " ").trim();
-  return `"${text.replace(/"/g, '""')}"`;
+const HEADERS = [
+  "Campaign","Labels","Campaign Type","Networks","Budget","Budget type","EU political ads","Standard conversion goals","Customer acquisition","Languages","Bid Strategy Type","Bid Strategy Name","Enhanced CPC","Maximum CPC bid limit","Start Date","End Date","Broad match keywords","Ad Schedule","Ad rotation","Content exclusions","Targeting method","Exclusion method","Audience targeting","Flexible Reach","AI Max","Text customization","Final URL expansion","Ad Group","Max CPC","Max CPM","Target CPA","Max CPV","Target CPV","Percent CPC","Target CPM","Target ROAS","Target CPC","Desktop Bid Modifier","Mobile Bid Modifier","Tablet Bid Modifier","TV Screen Bid Modifier","Display Network Custom Bid Type","Optimized targeting","Strict age and gender targeting","Search term matching","Ad Group Type","Channels","Audience name","Age demographic","Gender demographic","Income demographic","Parental status demographic","Remarketing audience segments","Interest categories","Life events","Custom audience segments","Detailed demographics","Remarketing audience exclusions","Tracking template","Final URL suffix","Custom parameters","ID","Location","Reach","Location groups","Radius","Unit","Bid Modifier","Criterion Type","Keyword","First page bid","Top of page bid","First position bid","Quality score","Landing page experience","Expected CTR","Ad relevance","Final URL","Final mobile URL","Image Size","Upgraded extension","Link source","Business name","Ad type","Headline 1","Headline 1 position","Headline 2","Headline 2 position","Headline 3","Headline 3 position","Headline 4","Headline 4 position","Headline 5","Headline 5 position","Headline 6","Headline 6 position","Headline 7","Headline 7 position","Headline 8","Headline 8 position","Headline 9","Headline 9 position","Headline 10","Headline 10 position","Headline 11","Headline 11 position","Headline 12","Headline 12 position","Headline 13","Headline 13 position","Headline 14","Headline 14 position","Headline 15","Headline 15 position","Description 1","Description 1 position","Description 2","Description 2 position","Description 3","Description 3 position","Description 4","Description 4 position","Path 1","Path 2","Link Text","Description Line 1","Description Line 2","Source","Campaign Status","Ad Group Status","Status","Approval Status","Ad strength","Comment"
+];
+
+function cell(v: any) {
+  return String(v ?? "").replace(/\t/g, " ").replace(/\r?\n/g, " ").trim();
+}
+
+function row(data: Record<string, any>) {
+  return HEADERS.map((h) => cell(data[h])).join("\t");
 }
 
 function cleanText(value: any, max = 80) {
@@ -18,13 +25,12 @@ function cleanText(value: any, max = 80) {
 }
 
 function cleanPrice(value: any) {
-  const text = String(value ?? "").replace(/[^\d.]/g, "");
-  const num = Number(text);
+  const num = Number(String(value ?? "").replace(/[^\d.]/g, ""));
   if (!Number.isFinite(num) || num <= 0) return "";
   return `${Math.round(num)} ريال`;
 }
 
-function makeSlug(text: string) {
+function makeSlug(text: any) {
   return cleanText(text, 120)
     .toLowerCase()
     .replace(/[^\u0600-\u06FFa-z0-9\s-]/g, "")
@@ -34,28 +40,20 @@ function makeSlug(text: string) {
 }
 
 function makeFinalUrl(product: any) {
-  const slug = makeSlug(product.product_name);
-  return `https://bpschat.com/customer-offers/product/bps-chat-${slug}-${product.country || "sa"}-${product.id}`;
+  return `https://www.bpschat.com/customer-offers/product/bps-chat-${makeSlug(product.product_name)}-${product.country || "sa"}-${product.id}`;
 }
 
 function makeKeywords(name: string) {
   const n = cleanText(name, 80);
   return [
-    { keyword: `[${n}]`, matchType: "Exact" },
-    { keyword: `"${n}"`, matchType: "Phrase" },
-    { keyword: n, matchType: "Broad" },
-    { keyword: `سعر ${n}`, matchType: "Phrase" },
-    { keyword: `شراء ${n}`, matchType: "Phrase" },
-    { keyword: `${n} السعودية`, matchType: "Phrase" },
-    { keyword: `${n} سعر السعودية`, matchType: "Phrase" },
-    { keyword: `${n} امازون`, matchType: "Phrase" },
-    { keyword: `${n} نون`, matchType: "Phrase" },
+    { k: n, t: "Broad" },
+    { k: `سعر ${n}`, t: "Phrase" },
+    { k: `شراء ${n}`, t: "Phrase" },
+    { k: `${n} السعودية`, t: "Phrase" },
+    { k: `${n} سعر السعودية`, t: "Phrase" },
+    { k: `${n} امازون`, t: "Phrase" },
+    { k: `${n} نون`, t: "Phrase" },
   ];
-}
-
-function makePath1(product: any) {
-  const category = Array.isArray(product.category) ? product.category[0] : product.category;
-  return cleanText(category || "products", 15).replace(/\s+/g, "-").slice(0, 15);
 }
 
 function makeHeadlines(product: any) {
@@ -88,14 +86,10 @@ function makeDescriptions(product: any) {
   const store = cleanText(product.store_name, 20);
 
   return [
-    price
-      ? `شاهد سعر المنتج حوالي ${price} وقارن التفاصيل قبل الشراء.`.slice(0, 90)
-      : "قارن أسعار المنتجات في السعودية واعرف التفاصيل ورابط الشراء.".slice(0, 90),
-    store
-      ? `انتقل من BPS Chat إلى ${store} لإتمام الشراء من المتجر.`.slice(0, 90)
-      : "صفحة المنتج تعرض السعر والتفاصيل ورابط الشراء من المتجر.".slice(0, 90),
-    "اعرف تفاصيل المنتج والسعر ثم انتقل للمتجر لإتمام عملية الشراء.".slice(0, 90),
-    "BPS Chat يساعدك على الوصول لصفحة المنتج ومقارنة السعر قبل الشراء.".slice(0, 90),
+    price ? `شاهد سعر المنتج حوالي ${price} وقارن التفاصيل قبل الشراء.`.slice(0, 90) : "قارن أسعار المنتجات في السعودية واعرف التفاصيل ورابط الشراء.",
+    store ? `انتقل من BPS Chat إلى ${store} لإتمام الشراء من المتجر.`.slice(0, 90) : "صفحة المنتج تعرض السعر والتفاصيل ورابط الشراء من المتجر.",
+    "اعرف تفاصيل المنتج والسعر ثم انتقل للمتجر لإتمام عملية الشراء.",
+    "BPS Chat يساعدك على الوصول لصفحة المنتج ومقارنة السعر قبل الشراء.",
   ];
 }
 
@@ -106,16 +100,7 @@ export async function GET(req: Request) {
     const limit = limitParam ? Number(limitParam) : null;
 
     const filePath = path.join(process.cwd(), "data", "customer_offers.json");
-
-    if (!fs.existsSync(filePath)) {
-      return NextResponse.json(
-        { ok: false, error: "ملف customer_offers.json غير موجود داخل data" },
-        { status: 404 }
-      );
-    }
-
-    const raw = fs.readFileSync(filePath, "utf8");
-    const allProducts = JSON.parse(raw);
+    const allProducts = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
     let products = allProducts
       .filter((p: any) => p.status === "approved")
@@ -127,40 +112,35 @@ export async function GET(req: Request) {
       products = products.slice(0, limit);
     }
 
-    const headers = [
-      "Row type",
-      "Action",
-      "Campaign",
-      "Ad group",
-      "Keyword",
-      "Match type",
-      "Final URL",
-      "Headline 1",
-      "Headline 2",
-      "Headline 3",
-      "Headline 4",
-      "Headline 5",
-      "Headline 6",
-      "Headline 7",
-      "Headline 8",
-      "Headline 9",
-      "Headline 10",
-      "Headline 11",
-      "Headline 12",
-      "Headline 13",
-      "Headline 14",
-      "Headline 15",
-      "Description 1",
-      "Description 2",
-      "Description 3",
-      "Description 4",
-      "Path 1",
-      "Path 2",
-      "Status",
-    ];
-
-    const rows: string[][] = [];
     const campaign = "BPS Products Saudi";
+    const lines: string[] = [];
+
+    lines.push(HEADERS.join("\t"));
+
+    lines.push(row({
+      Campaign: campaign,
+      "Campaign Type": "Search",
+      Networks: "Google search;Search Partners",
+      Budget: "10.00",
+      "Budget type": "Daily",
+      "EU political ads": "Not specified",
+      "Standard conversion goals": "Account-level",
+      "Customer acquisition": "Bid equally",
+      Languages: "ar;en",
+      "Bid Strategy Type": "Maximize clicks",
+      "Enhanced CPC": "Disabled",
+      "Maximum CPC bid limit": "0.00",
+      "Broad match keywords": "Off",
+      "Ad rotation": "Optimize for clicks",
+      "Targeting method": "Location of presence or Area of interest",
+      "Exclusion method": "Location of presence",
+      "Audience targeting": "Audience segments",
+      "Flexible Reach": "Audience segments",
+      "AI Max": "Disabled",
+      "Text customization": "Disabled",
+      "Final URL expansion": "Disabled",
+      "Campaign Status": "Enabled",
+    }));
 
     for (const product of products) {
       const name = cleanText(product.product_name, 80);
@@ -168,65 +148,79 @@ export async function GET(req: Request) {
       const finalUrl = makeFinalUrl(product);
       const headlines = makeHeadlines(product);
       const descriptions = makeDescriptions(product);
-      const path1 = makePath1(product);
+      const path1 = cleanText(Array.isArray(product.category) ? product.category[0] : product.category || "products", 15);
 
-      rows.push([
-        "Ad group",
-        "Add",
-        campaign,
-        adGroup,
-        "",
-        "",
-        "",
-        ...Array(15).fill(""),
-        ...Array(4).fill(""),
-        "",
-        "",
-        "Enabled",
-      ]);
+      lines.push(row({
+        Campaign: campaign,
+        Languages: "All",
+        "Audience targeting": "Audience segments",
+        "Flexible Reach": "Audience segments;Genders;Ages;Parental status;Household incomes",
+        "Ad Group": adGroup,
+        "Max CPC": "0.01",
+        "Max CPM": "0.01",
+        "Target CPV": "0.01",
+        "Target CPM": "0.01",
+        "Display Network Custom Bid Type": "None",
+        "Optimized targeting": "Disabled",
+        "Strict age and gender targeting": "Disabled",
+        "Search term matching": "Enabled",
+        "Ad Group Type": "Standard",
+        Channels: "[]",
+        "Campaign Status": "Enabled",
+        "Ad Group Status": "Enabled",
+      }));
 
-      rows.push([
-        "Responsive search ad",
-        "Add",
-        campaign,
-        adGroup,
-        "",
-        "",
-        finalUrl,
-        ...headlines,
-        ...descriptions,
-        path1,
-        "sa",
-        "Enabled",
-      ]);
+      const ad: Record<string, any> = {
+        Campaign: campaign,
+        "Ad Group": adGroup,
+        "Final URL": finalUrl,
+        "Ad type": "Responsive search ad",
+        "Campaign Status": "Enabled",
+        "Ad Group Status": "Enabled",
+        Status: "Enabled",
+        "Path 1": path1,
+        "Path 2": "sa",
+      };
 
-      for (const item of makeKeywords(name)) {
-        rows.push([
-          "Keyword",
-          "Add",
-          campaign,
-          adGroup,
-          item.keyword,
-          item.matchType,
-          finalUrl,
-          ...Array(15).fill(""),
-          ...Array(4).fill(""),
-          "",
-          "",
-          "Enabled",
-        ]);
+      headlines.forEach((h, i) => {
+        ad[`Headline ${i + 1}`] = h;
+        ad[`Headline ${i + 1} position`] = " -";
+      });
+
+      descriptions.forEach((d, i) => {
+        ad[`Description ${i + 1}`] = d;
+        ad[`Description ${i + 1} position`] = " -";
+      });
+
+      lines.push(row(ad));
+
+      for (const kw of makeKeywords(name)) {
+        lines.push(row({
+          Campaign: campaign,
+          "Ad Group": adGroup,
+          "Criterion Type": kw.t,
+          Keyword: kw.k,
+          "First page bid": "0.00",
+          "Top of page bid": "0.00",
+          "First position bid": "0.00",
+          "Landing page experience": " -",
+          "Expected CTR": " -",
+          "Ad relevance": " -",
+          "Final URL": finalUrl,
+          "Campaign Status": "Enabled",
+          "Ad Group Status": "Enabled",
+          Status: "Enabled",
+        }));
       }
     }
 
-    const csv = [
-      headers.map(csvEscape).join(","),
-      ...rows.map((row) => row.map(csvEscape).join(",")),
-    ].join("\n");
+    const tsv = lines.join("\r\n");
+    const buffer = Buffer.from("\uFEFF" + tsv, "utf16le");
 
-    return new NextResponse(csv, {
+    return new NextResponse(buffer, {
       headers: {
-        "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": `attachment; filename="bps-google-ads-editor-sa.csv"`,
+        "Content-Type": "text/tab-separated-values; charset=utf-16le",
+        "Content-Disposition": `attachment; filename="bps-google-ads-editor-sa.tsv"`,
       },
     });
   } catch (error: any) {
