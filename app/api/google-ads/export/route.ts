@@ -34,13 +34,14 @@ function makeSlug(text: string) {
 }
 
 function makeFinalUrl(product: any) {
-  const id = product.id;
-  const name = cleanText(product.product_name, 120);
-  const slug = makeSlug(name);
+  const slug = cleanText(product.product_name, 120)
+    .toLowerCase()
+    .replace(/[^\u0600-\u06FFa-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 
-  if (id) return `https://bpschat.com/customer-offers/product/${id}-${slug}`;
-
-  return `https://bpschat.com/search/${slug}-sa`;
+  return `https://bpschat.com/customer-offers/product/bps-chat-${slug}-${product.country || "sa"}-${product.id}`;
 }
 
 function makeKeywords(name: string) {
