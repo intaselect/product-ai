@@ -25,6 +25,7 @@ function csvEscape(value: any) {
 
 function cleanText(value: any, max = 80) {
   return String(value || "")
+    .normalize("NFKD")
     .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
@@ -32,7 +33,7 @@ function cleanText(value: any, max = 80) {
 }
 
 function makeKeyword(product: any) {
-  const words = cleanText(product.product_name, 120)
+  const words = cleanText(product.product_name, 200)
     .split(" ")
     .filter(Boolean)
     .slice(0, 8);
