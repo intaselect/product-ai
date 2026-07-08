@@ -32,8 +32,15 @@ function cleanText(value: any, max = 80) {
 }
 
 function makeKeyword(product: any) {
-  const name = cleanText(product.product_name, 55);
-  return name || "منتج";
+  const words = String(product.product_name || "")
+    .replace(/[^\w\s\u0600-\u06FF]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 8);
+
+  return words.join(" ") || "منتج";
 }
 
 function makeSlug(text: any) {
