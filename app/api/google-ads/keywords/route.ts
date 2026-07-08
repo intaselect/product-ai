@@ -32,10 +32,8 @@ function cleanAdGroup(value: any, max = 60) {
     .slice(0, max);
 }
 
-// تنظيف صارم للكلمات فقط
 function cleanKeyword(value: any) {
   return String(value || "")
-    .normalize("NFKD")
     .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
