@@ -23,26 +23,34 @@ function csvEscape(value: any) {
   return `"${text.replace(/"/g, '""')}"`;
 }
 
-function cleanText(value: any, max = 80) {
+// نفس تنظيف ملف الـ Ad Groups بالظبط عشان الاسم يطابق الموجود في Google
+function cleanAdGroup(value: any, max = 60) {
   return String(value || "")
-    .normalize("NFKD")
-    .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
+    .replace(/[^\w\s\u0600-\u06FF\-+.&]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, max);
 }
 
-function makeKeyword(product: any) {
-  const words = cleanText(product.product_name, 200)
+// تنظيف صارم للكلمات فقط
+function cleanKeyword(value: any) {
+  return String(value || "")
+    .normalize("NFKD")
+    .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
     .split(" ")
     .filter(Boolean)
-    .slice(0, 8);
-
-  return words.join(" ") || "منتج";
+    .slice(0, 8)
+    .join(" ");
 }
 
 function makeSlug(text: any) {
-  return cleanText(text, 120)
+  return String(text || "")
+    .normalize("NFKD")
+    .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
@@ -90,10 +98,17 @@ export async function GET(req: Request) {
     }
 
     const rows: string[][] = [];
+    const seen = new Set<string>();
 
     for (const product of products) {
-      const adGroup = cleanText(product.product_name, 60);
-      const keyword = makeKeyword(product);
+      const adGroup = cleanAdGroup(product.product_name, 60);
+      const keyword = cleanKeyword(product.product_name);
+
+      if (!adGroup || !keyword) continue;
+
+      const key = `${adGroup}__${keyword}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
 
       rows.push([
         "Keyword",
