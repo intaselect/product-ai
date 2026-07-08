@@ -25,17 +25,14 @@ function csvEscape(value: any) {
 
 function cleanText(value: any, max = 80) {
   return String(value || "")
-    .replace(/[^\w\s\u0600-\u06FF\-+.&]/g, " ")
+    .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, max);
 }
 
 function makeKeyword(product: any) {
-  const words = String(product.product_name || "")
-    .replace(/[^\w\s\u0600-\u06FF]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
+  const words = cleanText(product.product_name, 120)
     .split(" ")
     .filter(Boolean)
     .slice(0, 8);
@@ -46,7 +43,6 @@ function makeKeyword(product: any) {
 function makeSlug(text: any) {
   return cleanText(text, 120)
     .toLowerCase()
-    .replace(/[^\u0600-\u06FFa-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
