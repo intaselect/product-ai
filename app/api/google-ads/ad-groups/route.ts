@@ -33,11 +33,11 @@ export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
 
-    const campaign =
-      url.searchParams.get("campaign") || "Website traffic-Search-6/7/2026";
+ const campaign =
+  url.searchParams.get("campaign") || "Website traffic-Search-2-6/7/2026";
 
-    const campaignId =
-      url.searchParams.get("campaignId") || "24008888842";
+const campaignId =
+  url.searchParams.get("campaignId") || "23999519217";
 
     const filePath = path.join(process.cwd(), "data", "customer_offers.json");
 

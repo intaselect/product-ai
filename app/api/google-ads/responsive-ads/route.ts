@@ -127,12 +127,11 @@ export async function GET(req: Request) {
         if (limit && Number.isFinite(limit) && limit > 0) {
             products = products.slice(0, limit);
         }
+const campaign =
+  url.searchParams.get("campaign") || "Website traffic-Search-2-6/7/2026";
 
-        const campaign =
-            url.searchParams.get("campaign") || "Website traffic-Search-6/7/2026";
-
-        const campaignId =
-            url.searchParams.get("campaignId") || "24008888842";
+const campaignId =
+  url.searchParams.get("campaignId") || "23999519217";
 
         const commentLines = [
             '"# Assets can be shown in any order, so make sure that they make sense individually or in combination, and don’t violate our policies or local law."',
